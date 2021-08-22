@@ -1,6 +1,36 @@
 
 #include "header.h"
 
+void check_remove_piece(Board board, Point start, Point stop)
+{
+	bool empty = board_piece_empty(board, stop.height, stop.width);
+
+	Color start_c = board[start.height][start.width].color;
+	Color stop_c = board[stop.height][stop.width].color;
+
+	bool different = (stop_c != NONE && stop_c != start_c);
+
+	if(!empty && different)
+	{
+		remove_board_piece(board, stop.height, stop.width);
+	}
+}
+
+bool team_board_piece(Board board, Point start, Point stop)
+{
+	Color start_c = board[start.height][start.width].color;
+	Color stop_c = board[stop.height][stop.width].color;
+
+	return (start_c == stop_c);
+}
+
+bool remove_board_piece(Board board, int height, int width)
+{
+	if(!point_inside_bounds(height, width)) return false;
+	Piece piece = {EMPTY, NONE};
+	board[height][width] = piece; return true;
+}
+
 bool clear_moving_path(Board board, Point start, Point stop)
 {
 	int hOffset = start.height - stop.height;
@@ -152,19 +182,16 @@ bool execute_pawn_move(Board board, Point start, Point stop)
 	{
 		if(!board_piece_empty(board, stop.height, stop.width)) return false;
 		if(!clear_moving_path(board, start, stop)) return false;
-
-		switch_chess_pieces(board, start, stop);
 	}
 	else // Taking a piece!
 	{
-		Color start_c = board[start.height][start.width].color;
-		Color stop_c = board[stop.height][stop.width].color;
-
-		if(stop_c == NONE || stop_c == start_c) return false;
+		if(team_board_piece(board, start, stop)) return false;
 		
-		remove_board_piece(board, stop.height, stop.width);
-		switch_chess_pieces(board, start, stop);
+		check_remove_piece(board, start, stop);
 	}
+
+	switch_chess_pieces(board, start, stop);
+
 	return true;
 }
 
@@ -173,9 +200,22 @@ bool moving_rook_valid(Board board, Point start, Point stop)
 	int hSteps = abs(start.height - stop.height);
 	int wSteps = abs(start.width - stop.width);
 
-	if((hSteps != 0) && (wSteps != 0)) return false;
+	return (hSteps == 0) || (wSteps == 0);
+}
 
-	return true;
+bool rook_king_switch(Board board, Point start, Point stop)
+{
+	bool start_h = (start.height == 0) || (start.height == 7);
+	bool start_w = (start.width == 0) || (start.width == 7);
+	bool rook_start = (start_h && start_w);
+
+	bool stop_h = (stop.height == 0) || (stop.height == 7);
+	bool stop_w = (stop.width == 4);
+	bool king_start = (stop_h && stop_w);
+
+	bool king = board[stop.height][stop.width].type == KING;
+
+	return (rook_start && king_start && king);
 }
 
 bool execute_rook_move(Board board, Point start, Point stop)
@@ -184,7 +224,13 @@ bool execute_rook_move(Board board, Point start, Point stop)
 
 	if(!clear_straight_path(board, start, stop)) return false;
 
-	remove_board_piece(board, stop.height, stop.width);
+	if(!rook_king_switch(board, start, stop))
+	{
+		if(team_board_piece(board, start, stop)) return false;
+
+		check_remove_piece(board, start, stop);
+	}
+
 	switch_chess_pieces(board, start, stop);
 
 	return true;
@@ -206,7 +252,10 @@ bool execute_knight_move(Board board, Point start, Point stop)
 {
 	if(!moving_knight_valid(board, start, stop)) return false;
 
-	remove_board_piece(board, stop.height, stop.width);
+	if(team_board_piece(board, start, stop)) return false;
+
+	check_remove_piece(board, start, stop);
+
 	switch_chess_pieces(board, start, stop);
 
 	return true;
@@ -224,9 +273,12 @@ bool execute_bishop_move(Board board, Point start, Point stop)
 {
 	if(!moving_bishop_valid(board, start, stop)) return false;
 
+	if(team_board_piece(board, start, stop)) return false;
+
 	if(!clear_diagonal_path(board, start, stop)) return false;
 
-	remove_board_piece(board, stop.height, stop.width);
+	check_remove_piece(board, start, stop);
+
 	switch_chess_pieces(board, start, stop);
 
 	return true;
@@ -247,9 +299,12 @@ bool execute_queen_move(Board board, Point start, Point stop)
 {
 	if(!moving_queen_valid(board, start, stop)) return false;
 
+	if(team_board_piece(board, start, stop)) return false;
+
 	if(!clear_moving_path(board, start, stop)) return false;
 
-	remove_board_piece(board, stop.height, stop.width);
+	check_remove_piece(board, start, stop);
+
 	switch_chess_pieces(board, start, stop);
 
 	return true;
@@ -267,7 +322,10 @@ bool execute_king_move(Board board, Point start, Point stop)
 {
 	if(!moving_king_valid(board, start, stop)) return false;
 
-	remove_board_piece(board, stop.height, stop.width);
+	if(team_board_piece(board, start, stop)) return false;
+
+	check_remove_piece(board, start, stop);
+
 	switch_chess_pieces(board, start, stop);
 
 	return true;

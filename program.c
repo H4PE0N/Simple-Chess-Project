@@ -30,7 +30,7 @@ int main(int argAmount, char* arguments[])
 		scanf("%s", stop);
 
 		Point start_p, stop_p;
-		
+
 		parse_chess_position(&start_p, start);
 		parse_chess_position(&stop_p, stop);
 
@@ -41,13 +41,6 @@ int main(int argAmount, char* arguments[])
 
 	free(board);
 	return false;
-}
-
-bool remove_board_piece(Board board, int height, int width)
-{
-	if(!point_inside_bounds(height, width)) return false;
-	Piece piece = {EMPTY, NONE};
-	board[height][width] = piece; return true;
 }
 
 bool point_inside_bounds(int height, int width)

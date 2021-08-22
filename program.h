@@ -24,6 +24,4 @@ bool board_piece_empty(Board, int, int);
 
 bool point_inside_bounds(int, int);
 
-bool remove_board_piece(Board, int, int);
-
 #endif
