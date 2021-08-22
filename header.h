@@ -31,7 +31,33 @@ typedef struct Point
 
 typedef Piece** Board;
 
+typedef struct Move
+{
+	Point start;
+	Point stop;
+} Move;
+
+typedef struct RKSwitch
+{
+	bool right;
+	bool left;
+} RKSwitch;
+
+typedef struct Info
+{
+	Color current;
+	Move lastMove;
+	RKSwitch whiteRKS;
+	RKSwitch blackRKS;
+	Point bKing;
+	Point wKing;
+	int turns;
+} Info;
+
 #include "program.h"
+#include "check-move.h"
+#include "check-check.h"
+#include "move-piece.h"
 #include "move.h"
 
 #endif

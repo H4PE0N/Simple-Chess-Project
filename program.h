@@ -20,8 +20,16 @@ void display_chess_board(Board);
 
 bool parse_chess_position(Point*, char[]);
 
-bool board_piece_empty(Board, int, int);
+bool board_piece_empty(Board, Point);
 
 bool point_inside_bounds(int, int);
+
+bool game_still_running(Board, Info);
+
+Info create_game_info(void);
+
+bool parse_chess_move(Move*, char[]);
+
+bool input_string_move(char*);
 
 #endif

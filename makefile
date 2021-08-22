@@ -1,3 +1,3 @@
 
-program: program.c move.c
-	gcc $^ -o program -lm
+program: *.c *.h
+	gcc *.c -o program -lm

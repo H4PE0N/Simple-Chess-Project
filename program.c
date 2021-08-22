@@ -16,25 +16,37 @@ int main(int argAmount, char* arguments[])
 		return false;
 	}
 
-	char start[10], stop[10];
+	Info info = create_game_info();
 
-	while(strcmp(start, "stop"))
+	while(game_still_running(board, info))
 	{
 		display_chess_board(board);
+		printf("Current \t: (%d)\n", info.current);
+		printf("WhiteRKS\t: (%d-%d)\n", info.whiteRKS.left, info.whiteRKS.right);
+		printf("BlackRKS\t: (%d-%d)\n", info.blackRKS.left, info.blackRKS.right);
+		printf("TURNS   \t: (%d)\n", info.turns);
 
-		printf("INPUT: ");
-		scanf("%s", start); 
+		char string[20];
+		
+		if(!input_string_move(string)) break;
 
-		if(!strcmp(start, "stop")) break;
+		if(!strcmp(string, "stop")) break;
 
-		scanf("%s", stop);
+		printf("Move: [%s]\n", string);
 
-		Point start_p, stop_p;
+		Move move;
 
-		parse_chess_position(&start_p, start);
-		parse_chess_position(&stop_p, stop);
+		if(!parse_chess_move(&move, string)) continue;
 
-		move_chess_piece(board, start_p, stop_p);
+		if(move_chess_piece(board, move, &info))
+		{
+			info.current = (info.current == WHITE) ? BLACK : WHITE;
+			info.turns += 1;
+		}
+		else
+		{
+			continue;
+		}
 	}
 	
 	display_chess_board(board);
@@ -43,14 +55,62 @@ int main(int argAmount, char* arguments[])
 	return false;
 }
 
+bool input_string_move(char* string)
+{
+	printf("INPUT POSITION: ");
+	if(!scanf("%[^\n]%*c", string)) return false;
+
+	if(strlen(string) == 0) return false;
+
+	return true;
+}
+
+bool parse_chess_move(Move* move, char string[])
+{
+	char seperator[] = " ";
+	char* start = strtok(string, seperator);
+	char* stop = strtok(NULL, seperator);
+
+	if(start == NULL || stop == NULL) return false;
+
+	if(!parse_chess_position(&move->start, start)) return false;
+	if(!parse_chess_position(&move->stop, stop)) return false;
+
+	return true;
+}
+
+Info create_game_info(void)
+{
+	Info info;
+	info.current = WHITE;
+	info.whiteRKS = (RKSwitch) {true, true};
+	info.blackRKS = (RKSwitch) {true, true};
+	info.bKing = (Point) {0, 4};
+	info.wKing = (Point) {7, 4};
+	info.turns = 0;
+	return info;
+}
+
+bool game_still_running(Board board, Info info)
+{
+	for(int round = 0; round < 2; round = round + 1)
+	{
+		Point king = (round == 0) ? info.bKing : info.wKing;
+		if(check_mate_situation(board, king.height, king.width)) return false;
+		if(check_draw_situation(board, king.height, king.width)) return false;
+	}
+
+	return true;
+}
+
 bool point_inside_bounds(int height, int width)
 {
 	return (height >= 0 && height < 8) && (width >= 0 && width < 8);
 }
 
-bool board_piece_empty(Board board, int height, int width)
+bool board_piece_empty(Board board, Point point)
 {
-	return (board[height][width].type == EMPTY);
+	return (board[point.height][point.width].type == EMPTY);
 }
 
 bool parse_chess_position(Point* point, char string[])
