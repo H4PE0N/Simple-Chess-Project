@@ -1,19 +1,14 @@
 
 #include "header.h"
 
-const char white_symbols[] = {'.', 'p', 'r', 'b', 'n', 'q', 'k'};
-const char black_symbols[] = {'.', 'P', 'R', 'B', 'N', 'Q', 'K'};
+const char white_symbols[] = {'.', 'p', 'r', 'n', 'b', 'q', 'k'};
+const char black_symbols[] = {'.', 'P', 'R', 'N', 'B', 'Q', 'K'};
 
 const char letters[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
 const char numbers[] = {'1', '2', '3', '4', '5', '6', '7', '8'};
 
 int main(int argAmount, char* arguments[])
 {
-	if(argAmount < 3) return false;
-
-	char* start = arguments[1];
-	char* stop = arguments[2];
-
 	Board board = create_chess_board();
 	if(!extract_start_board(board, FILENAME))
 	{
@@ -21,17 +16,27 @@ int main(int argAmount, char* arguments[])
 		return false;
 	}
 
-	display_chess_board(board);
+	char start[10], stop[10];
 
-	Point start_p, stop_p;
-	parse_chess_position(&start_p, start);
-	parse_chess_position(&stop_p, stop);
-
-	if(!move_chess_piece(board, start_p, stop_p))
+	while(strcmp(start, "stop"))
 	{
-		printf("No!\n");
-	}
+		display_chess_board(board);
 
+		printf("INPUT: ");
+		scanf("%s", start); 
+
+		if(!strcmp(start, "stop")) break;
+
+		scanf("%s", stop);
+
+		Point start_p, stop_p;
+		
+		parse_chess_position(&start_p, start);
+		parse_chess_position(&stop_p, stop);
+
+		move_chess_piece(board, start_p, stop_p);
+	}
+	
 	display_chess_board(board);
 
 	free(board);

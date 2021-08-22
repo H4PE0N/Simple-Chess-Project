@@ -3,8 +3,6 @@
 
 bool clear_moving_path(Board board, Point start, Point stop)
 {
-	//if(moving_knight_valid(board, start, stop)) return true;
-
 	int hOffset = start.height - stop.height;
 	int wOffset = start.width - stop.width;
 
@@ -19,7 +17,7 @@ bool clear_moving_path(Board board, Point start, Point stop)
 		if(!clear_diagonal_path(board, start, stop)) return false;
 	}
 
-	else if(straight)
+	if(straight)
 	{
 		if(!clear_straight_path(board, start, stop)) return false;
 	}
@@ -35,7 +33,7 @@ bool clear_diagonal_path(Board board, Point start, Point stop)
 	int hAdder = (hOffset != 0) ? (-hOffset / abs(hOffset)) : 0;
 	int wAdder = (wOffset != 0) ? (-wOffset / abs(wOffset)) : 0;
 
-	for(int index = 0; index < abs(hOffset); index = index + 1)
+	for(int index = 1; index < abs(hOffset); index = index + 1)
 	{
 		int hIndex = start.height + (index * hAdder);
 		int wIndex = start.width + (index * wAdder);
@@ -54,7 +52,7 @@ bool clear_straight_path(Board board, Point start, Point stop)
 
 	if(wOffset == 0)
 	{
-		for(int height = 1; height <= abs(hOffset); height = height + 1)
+		for(int height = 1; height < abs(hOffset); height = height + 1)
 		{
 			int hIndex = start.height + (height * hAdder);
 			if(board[hIndex][start.width].type != EMPTY) return false;
@@ -62,7 +60,7 @@ bool clear_straight_path(Board board, Point start, Point stop)
 	}
 	else if(hOffset == 0)
 	{
-		for(int width = 1; width <= abs(wOffset); width += 1)
+		for(int width = 1; width < abs(wOffset); width += 1)
 		{
 			int wIndex = start.width + (width * wAdder);
 			if(board[start.height][wIndex].type != EMPTY) return false;
@@ -85,34 +83,28 @@ bool move_chess_piece(Board board, Point start, Point stop)
 		case(NONE): return false;
 
 		case(PAWN):
-		printf("PAWN!\n");
-		if(!execute_pawn_move(board, start, stop)) return false;
-		break;
+			if(!execute_pawn_move(board, start, stop)) return false;
+			break;
 
 		case(ROOK):
-		printf("ROOK!\n");
-		if(!execute_rook_move(board, start, stop)) return false;
-		break;
+			if(!execute_rook_move(board, start, stop)) return false;
+			break;
 
 		case(KNIGHT):
-		printf("KNIGHT!\n");
-		if(!execute_knight_move(board, start, stop)) return false;
-		break;
+			if(!execute_knight_move(board, start, stop)) return false;
+			break;
 
 		case(BISHOP):
-		printf("BISHOP!\n");
-		if(!execute_bishop_move(board, start, stop)) return false;
-		break;
+			if(!execute_bishop_move(board, start, stop)) return false;
+			break;
 
 		case(QUEEN):
-		printf("QUEEN!\n");
-		if(!execute_queen_move(board, start, stop)) return false;
-		break;
+			if(!execute_queen_move(board, start, stop)) return false;
+			break;
 
 		case(KING):
-		printf("KING!\n");
-		if(!execute_king_move(board, start, stop)) return false;
-		break;
+			if(!execute_king_move(board, start, stop)) return false;
+			break;
 	}
 	return true;
 }
@@ -176,8 +168,25 @@ bool execute_pawn_move(Board board, Point start, Point stop)
 	return true;
 }
 
+bool moving_rook_valid(Board board, Point start, Point stop)
+{
+	int hSteps = abs(start.height - stop.height);
+	int wSteps = abs(start.width - stop.width);
+
+	if((hSteps != 0) && (wSteps != 0)) return false;
+
+	return true;
+}
+
 bool execute_rook_move(Board board, Point start, Point stop)
 {
+	if(!moving_rook_valid(board, start, stop)) return false;
+
+	if(!clear_straight_path(board, start, stop)) return false;
+
+	remove_board_piece(board, stop.height, stop.width);
+	switch_chess_pieces(board, start, stop);
+
 	return true;
 }
 
@@ -195,20 +204,71 @@ bool moving_knight_valid(Board board, Point start, Point stop)
 
 bool execute_knight_move(Board board, Point start, Point stop)
 {
+	if(!moving_knight_valid(board, start, stop)) return false;
+
+	remove_board_piece(board, stop.height, stop.width);
+	switch_chess_pieces(board, start, stop);
+
 	return true;
+}
+
+bool moving_bishop_valid(Board board, Point start, Point stop)
+{
+	int hSteps = abs(start.height - stop.height);
+	int wSteps = abs(start.width - stop.width);
+
+	return (hSteps == wSteps);
 }
 
 bool execute_bishop_move(Board board, Point start, Point stop)
 {
+	if(!moving_bishop_valid(board, start, stop)) return false;
+
+	if(!clear_diagonal_path(board, start, stop)) return false;
+
+	remove_board_piece(board, stop.height, stop.width);
+	switch_chess_pieces(board, start, stop);
+
 	return true;
+}
+
+bool moving_queen_valid(Board board, Point start, Point stop)
+{
+	int hSteps = abs(start.height - stop.height);
+	int wSteps = abs(start.width - stop.width);
+
+	bool diagonal = (hSteps == wSteps);
+	bool straight = (hSteps == 0) || (wSteps == 0);
+
+	return (diagonal || straight);
 }
 
 bool execute_queen_move(Board board, Point start, Point stop)
 {
+	if(!moving_queen_valid(board, start, stop)) return false;
+
+	if(!clear_moving_path(board, start, stop)) return false;
+
+	remove_board_piece(board, stop.height, stop.width);
+	switch_chess_pieces(board, start, stop);
+
 	return true;
+}
+
+bool moving_king_valid(Board board, Point start, Point stop)
+{
+	int hSteps = abs(start.height - stop.height);
+	int wSteps = abs(start.width - stop.width);
+
+	return (hSteps <= 1) && (wSteps <= 1);
 }
 
 bool execute_king_move(Board board, Point start, Point stop)
 {
+	if(!moving_king_valid(board, start, stop)) return false;
+
+	remove_board_piece(board, stop.height, stop.width);
+	switch_chess_pieces(board, start, stop);
+
 	return true;
 }
