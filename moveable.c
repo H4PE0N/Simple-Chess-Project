@@ -61,6 +61,7 @@ bool board_pawn_moveable(Board board, Point start, Color color)
 
 			if(width == 1 && (height == 1 || height == 2)) // Forward
 			{
+				if(height == 2 && (start.height != 1 || start.height != 6)) continue;
 				if(path_empty_and_clear(board, start, stop)) return true;
 			}
 			else if(height == 1 && (width == 0 || width == 2)) // Attack!
@@ -85,6 +86,8 @@ bool path_empty_and_clear(Board board, Point start, Point stop)
 {
 	bool empty = board_piece_empty(board, stop.height, stop.width);
 	bool clear = clear_moving_path(board, start, stop);
+
+	printf("Empty=%d CLEAR=%d\n", empty, clear);
 
 	return (empty && clear);
 }
@@ -142,7 +145,12 @@ bool straight_move_able(Board board, Point start, Color color)
 			stop = (Point) {height, width};
 			if(chess_team_point(board, start, stop)) continue;
 
-			if(clear_straight_path(board, start, stop)) return true;
+			if(clear_straight_path(board, start, stop))
+			{
+				printf("Straight move is able (%d-%d) to (%d-%d)\n",
+					start.height, start.width, stop.height, stop.width);
+				return true;
+			}
 		}
 	}
 	return false;

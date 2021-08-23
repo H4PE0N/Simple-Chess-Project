@@ -3,6 +3,8 @@
 
 bool check_draw_situation(Board board, Point point, Color color)
 {
+	printf("Checking draw at (%d-%d)\n", point.height, point.width);
+	printf("Color=%d\n", color);
 	if(board_king_moveable(board, point, color)) return false;
 
 	if(other_pieces_moveable(board, color)) return false;

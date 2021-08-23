@@ -54,10 +54,12 @@ bool clear_straight_path(Board board, Point start, Point stop)
 	int hOffset = stop.height - start.height;
 	int wOffset = stop.width - start.width;
 
+	int steps = (abs(hOffset) > abs(wOffset)) ? abs(hOffset) : abs(wOffset);
+
 	int hAdder = (hOffset == 0) ? 0 : (hOffset / abs(hOffset));
 	int wAdder = (wOffset == 0) ? 0 : (wOffset / abs(wOffset));
 
-	for(int index = 1; index < abs(hOffset); index = index + 1)
+	for(int index = 1; index < steps; index = index + 1)
 	{
 		int hIndex = start.height + (index * hAdder);
 		int wIndex = start.width + (index * wAdder);
@@ -69,22 +71,42 @@ bool clear_straight_path(Board board, Point start, Point stop)
 
 bool clear_moving_path(Board board, Point start, Point stop)
 {
+	// int hOffset = stop.height - start.height;
+	// int wOffset = stop.width - start.width;
+
+	// bool diagonal = abs(hOffset) == abs(wOffset);
+	// bool straight = (abs(hOffset) == 0) || (abs(wOffset) == 0);
+
+	// printf("Checking path from (%d-%d) to (%d-%d)\n",
+	// 	start.height, start.width, stop.height, stop.width);
+
+	// if(diagonal)
+	// {
+	// 	if(clear_diagonal_path(board, start, stop)) return true;
+	// }
+
+	// if(straight)
+	// {
+	// 	if(clear_straight_path(board, start, stop)) return true;
+	// }
+
+	// return false;
+
 	int hOffset = stop.height - start.height;
 	int wOffset = stop.width - start.width;
 
-	bool diagonal = abs(hOffset) == abs(wOffset);
-	bool straight = (abs(hOffset) == 0) || (abs(wOffset) == 0);
+	int steps = (abs(hOffset) > abs(wOffset)) ? abs(hOffset) : abs(wOffset);
 
-	if(diagonal)
+	int hAdder = (hOffset == 0) ? 0 : (hOffset / abs(hOffset));
+	int wAdder = (wOffset == 0) ? 0 : (wOffset / abs(wOffset));
+
+	for(int index = 1; index < steps; index = index + 1)
 	{
-		if(!clear_diagonal_path(board, start, stop)) return false;
-	}
+		int hIndex = start.height + (index * hAdder);
+		int wIndex = start.width + (index * wAdder);
 
-	if(straight)
-	{
-		if(!clear_straight_path(board, start, stop)) return false;
+		if(board[hIndex][wIndex].type != EMPTY) return false;
 	}
-
 	return true;
 }
 

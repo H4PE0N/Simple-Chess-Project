@@ -13,6 +13,7 @@ bool execute_pawn_move(Board board, Move move, Info* info)
 	if(straight)
 	{
 		if(!board_piece_empty(board, stop.height, stop.width)) return false;
+
 		if(!clear_moving_path(board, start, stop)) return false;
 
 		switch_chess_pieces(board, start, stop);
