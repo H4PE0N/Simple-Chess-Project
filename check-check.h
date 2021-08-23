@@ -18,4 +18,8 @@ bool check_pawn_check(Board, int, int);
 
 bool king_is_moveable(Board, int, int);
 
+Board copy_chess_board(Board);
+
+bool simulate_check_move(Board, Point, Color);
+
 #endif

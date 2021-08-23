@@ -38,20 +38,34 @@ bool execute_rook_move(Board board, Move move, Info* info)
 
 	if(!clear_straight_path(board, start, stop)) return false;
 
-	Color color = board[start.height][start.width].color;
-	RKSwitch* RKS = (color == BLACK) ? &info->blackRKS : &info->whiteRKS;
-
-	Type type = board[start.height][start.width].type;
-
 	bool team = chess_team_point(board, start, stop);
 	bool isRKS = rook_king_switch(board, start, stop);
 
-	if(team && !isRKS) return false;
+	Color color = board[start.height][start.width].color;
+	if(color == NONE) return false;
 
-	if(isRKS && (!RKS->right && !RKS->left)) return false;
+	RKSwitch* RKS = (color == BLACK) ? &info->blackRKS : &info->whiteRKS;
 
-	if(start.width == 0) RKS->left = false;
-	else if(start.width == 7) RKS->right = false;
+	bool* RKValue = NULL;
+
+	if(start.width == 0) RKValue = &RKS->left;
+	if(start.width == 7) RKValue = &RKS->right;
+
+	if(RKValue != NULL)
+	{
+		if(isRKS && RKValue)
+		{
+			switch_chess_pieces(board, start, stop);
+
+			RKS->right = false;
+			RKS->left = false;
+
+			return true;
+		}
+		else if(team) return false;
+
+		*RKValue = false;
+	}
 
 	if(chess_enemy_point(board, start, stop))
 	{

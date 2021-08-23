@@ -21,7 +21,7 @@ int main(int argAmount, char* arguments[])
 	while(game_still_running(board, info))
 	{
 		display_chess_board(board);
-		printf("Current \t: (%d)\n", info.current);
+		printf("Current \t: (%s)\n", (info.current == WHITE) ? "WHITE" : "BLACK");
 		printf("WhiteRKS\t: (%d-%d)\n", info.whiteRKS.left, info.whiteRKS.right);
 		printf("BlackRKS\t: (%d-%d)\n", info.blackRKS.left, info.blackRKS.right);
 		printf("TURNS   \t: (%d)\n", info.turns);
@@ -50,6 +50,8 @@ int main(int argAmount, char* arguments[])
 	}
 	
 	display_chess_board(board);
+
+	display_chess_values(board);
 
 	free(board);
 	return false;
@@ -96,9 +98,20 @@ bool game_still_running(Board board, Info info)
 	for(int round = 0; round < 2; round = round + 1)
 	{
 		Point king = (round == 0) ? info.bKing : info.wKing;
+		
 		if(check_mate_situation(board, king.height, king.width)) return false;
 		if(check_draw_situation(board, king.height, king.width)) return false;
 	}
+
+	return true;
+}
+
+bool allocate_board_piece(Board board, Point point, Type type, Color color)
+{
+	if(!point_inside_bounds(point.height, point.width)) return false;
+
+	board[point.height][point.width].type = type;
+	board[point.height][point.width].color = color;
 
 	return true;
 }
@@ -157,6 +170,21 @@ void display_chess_board(Board board)
 			char symbol = (color == WHITE) ? white_symbols[type] : black_symbols[type];
 
 			printf("%c ", symbol);
+		}
+		printf("\n");
+	}
+}
+
+void display_chess_values(Board board)
+{
+	for(int height = 0; height < 8; height = height + 1)
+	{
+		for(int width = 0; width < 8; width = width + 1)
+		{
+			Type type = board[height][width].type;
+			Color color = board[height][width].color;
+
+			printf("%d%d", type, color);
 		}
 		printf("\n");
 	}

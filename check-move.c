@@ -6,7 +6,7 @@ bool chess_enemy_point(Board board, Point start, Point stop)
 	Color start_c = board[start.height][start.width].color;
 	Color stop_c = board[stop.height][stop.width].color;
 
-	return (stop_c != NONE && stop_c != start_c);
+	return (start_c != NONE && stop_c != NONE && stop_c != start_c);
 }
 
 bool chess_team_point(Board board, Point start, Point stop)
@@ -14,7 +14,7 @@ bool chess_team_point(Board board, Point start, Point stop)
 	Color start_c = board[start.height][start.width].color;
 	Color stop_c = board[stop.height][stop.width].color;
 
-	return (start_c == stop_c);
+	return (start_c != NONE && stop_c != NONE && start_c == stop_c);
 }
 
 bool board_points_equal(Point first, Point second)

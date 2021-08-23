@@ -7,7 +7,9 @@ bool check_draw_situation(Board board, int height, int width)
 
 	if(king_is_moveable(board, height, width)) return false;
 
-	return false; // True
+	printf("King is not movable!\n");
+
+	return true; // True
 }
 
 bool check_mate_situation(Board board, int height, int width)
@@ -21,35 +23,68 @@ bool check_mate_situation(Board board, int height, int width)
 	return true;
 }
 
+Board copy_chess_board(Board board)
+{
+	Board copy = malloc(sizeof(Piece*) * 8);
+	for(int height = 0; height < 8; height = height + 1)
+	{
+		copy[height] = malloc(sizeof(Piece) * 8);
+		for(int width = 0; width < 8; width = width + 1)
+		{
+			copy[height][width].type = board[height][width].type;
+			copy[height][width].color = board[height][width].color;
+		}
+	}
+	return copy;
+}
+
+bool simulate_check_move(Board copy, Point point, Color color)
+{
+	int height = point.height, width = point.width;
+
+	if(!point_inside_bounds(height, width)) return false;
+
+	if(copy[height][width].color == color) return false;
+
+	allocate_board_piece(copy, point, KING, color);
+
+	if(!king_check_situation(copy, height, width)) return true;
+
+	remove_board_piece(copy, height, width);
+
+	return false;
+}
+
 bool king_is_moveable(Board board, int height, int width)
 {
-	if(board[height][width].type != KING) return false;
+	Board copy = copy_chess_board(board);
+	remove_board_piece(copy, height, width);
 
+	Color color = board[height][width].color;
 	Point start = {height, width}, stop;
+
 	for(int hIndex = 0; hIndex < 3; hIndex = hIndex + 1)
 	{
 		for(int wIndex = 0; wIndex < 3; wIndex = wIndex + 1)
 		{
-			if(hIndex == height && wIndex == width) continue;
-
 			int rHeight = (height - 1) + hIndex;
 			int rWidth = (width - 1) + wIndex;
 
-			if(!point_inside_bounds(rHeight, rWidth)) continue;
-
 			stop = (Point) {rHeight, rWidth};
-			if(chess_team_point(board, start, stop)) continue;
 
-			if(!king_check_situation(board, rHeight, rWidth)) return true;
+			if(board_points_equal(start, stop)) continue;
+
+			if(simulate_check_move(copy, stop, color))
+			{
+				free(copy); return true;
+			}
 		}
 	}
-	return false;
+	free(copy); return false;
 }
 
 bool king_check_situation(Board board, int height, int width)
 {
-	if(board[height][width].type != KING) return true;
-
 	if(check_knight_check(board, height, width)) return true;
 
 	if(check_pawn_check(board, height, width)) return true;
@@ -112,8 +147,8 @@ bool check_diagonal_check(Board board, int height, int width)
 	Type type;
 	Point start = {height, width}, stop;
 	for(int index = -8; index <= 16; index = index + 1)
-	{ 
-		for(int round = 0; round < 2; round = round + 1);
+	{
+		for(int round = 0; round < 2; round = round + 1)
 		{
 			int hIndex = (index + height);
 			int wIndex = (round == 0) ? (index + width) : (width - index);
