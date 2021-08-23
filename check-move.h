@@ -20,7 +20,7 @@ bool chess_enemy_point(Board, Point, Point);
 
 bool chess_team_point(Board, Point, Point);
 
-bool moving_pawn_valid(Board, Move, Info*);
+bool moving_pawn_valid(Board, Point, Point);
 
 bool moving_rook_valid(Board, Point, Point);
 

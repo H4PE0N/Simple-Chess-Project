@@ -158,9 +158,9 @@ bool point_inside_bounds(int height, int width)
 	return (height >= 0 && height < 8) && (width >= 0 && width < 8);
 }
 
-bool board_piece_empty(Board board, Point point)
+bool board_piece_empty(Board board, int height, int width)
 {
-	return (board[point.height][point.width].type == EMPTY);
+	return (board[height][width].type == EMPTY);
 }
 
 bool parse_chess_position(Point* point, char string[])

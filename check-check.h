@@ -16,11 +16,7 @@ bool check_straight_check(Board, Point, Color);
 
 bool check_pawn_check(Board, Point, Color);
 
-bool king_is_moveable(Board, Point, Color);
-
 Board copy_chess_board(Board);
-
-bool simulate_check_move(Board, Move, Color);
 
 bool check_king_check(Board, Point, Color);
 

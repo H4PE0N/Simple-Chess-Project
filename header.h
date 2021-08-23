@@ -55,6 +55,7 @@ typedef struct Info
 } Info;
 
 #include "program.h"
+#include "moveable.h"
 #include "check-move.h"
 #include "check-check.h"
 #include "move-piece.h"

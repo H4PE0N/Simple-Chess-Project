@@ -3,7 +3,7 @@
 
 bool check_draw_situation(Board board, Point point, Color color)
 {
-	if(king_is_moveable(board, point, color)) return false;
+	if(board_king_moveable(board, point, color)) return false;
 
 	if(other_pieces_moveable(board, color)) return false;
 
@@ -29,14 +29,9 @@ bool other_pieces_moveable(Board board, Color color)
 	return true;
 }
 
-// bool board_piece_moveable(Board board, Piece piece, Move move)
-// {
-	
-// }
-
 bool check_mate_situation(Board board, Point point, Color color)
 {
-	if(king_is_moveable(board, point, color)) return false;
+	if(board_king_moveable(board, point, color)) return false;
 
 	if(!king_check_situation(board, point, color)) return false;
 
@@ -56,62 +51,6 @@ Board copy_chess_board(Board board)
 		}
 	}
 	return copy;
-}
-
-bool simulate_check_move(Board board, Move move, Color color)
-{
-	Point start = move.start, stop = move.stop;
-	if(!point_inside_bounds(stop.height, stop.width)) return false;
-
-	// The function:
-	Board copy = copy_chess_board(board);
-	allocate_board_piece(copy, start, KING, color);
-
-	printf("(%d %d) -> (%d %d)\n", start.height, start.width, stop.height, stop.width);
-
-	if(chess_team_point(copy, start, stop))
-	{
-		printf("Team mate is in the way!\n");
-		free(copy); return false;
-	}
-
-	remove_board_piece(copy, stop.height, stop.width);
-	switch_chess_pieces(copy, start, stop);
-
-	if(!king_check_situation(copy, stop, color))
-	{
-		free(copy); return true;
-	}
-
-	printf("The king is in check then!\n");
-
-	free(copy); return false;
-}
-
-bool king_is_moveable(Board board, Point point, Color color)
-{
-	Point enemy;
-
-	for(int height = 0; height < 3; height = height + 1)
-	{
-		for(int width = 0; width < 3; width = width + 1)
-		{
-			int rHeight = (point.height - 1) + height;
-			int rWidth = (point.width - 1) + width;
-
-			enemy = (Point) {rHeight, rWidth};
-
-			if(board_points_equal(point, enemy)) continue;
-
-			Move move = {point, enemy};
-
-			if(simulate_check_move(board, move, color))
-			{
-				return true;
-			}
-		}
-	}
-	return false;
 }
 
 bool king_check_situation(Board board, Point point, Color color)

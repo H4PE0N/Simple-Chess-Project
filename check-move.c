@@ -36,13 +36,14 @@ bool clear_diagonal_path(Board board, Point start, Point stop)
 	int hOffset = stop.height - start.height;
 	int wOffset = stop.width - start.width;
 
-	int hAdder = (hOffset != 0) ? (hOffset / abs(hOffset)) : 0;
-	int wAdder = (wOffset != 0) ? (wOffset / abs(wOffset)) : 0;
+	int hAdder = (hOffset / abs(hOffset)); // Either -1 or 1
+	int wAdder = (wOffset / abs(wOffset));
 
 	for(int index = 1; index < abs(hOffset); index = index + 1)
 	{
 		int hIndex = start.height + (index * hAdder);
 		int wIndex = start.width + (index * wAdder);
+
 		if(board[hIndex][wIndex].type != EMPTY) return false;
 	}
 	return true;
@@ -53,24 +54,15 @@ bool clear_straight_path(Board board, Point start, Point stop)
 	int hOffset = stop.height - start.height;
 	int wOffset = stop.width - start.width;
 
-	int hAdder = (hOffset != 0) ? (hOffset / abs(hOffset)) : 0;
-	int wAdder = (wOffset != 0) ? (wOffset / abs(wOffset)) : 0;
+	int hAdder = (hOffset == 0) ? 0 : (hOffset / abs(hOffset));
+	int wAdder = (wOffset == 0) ? 0 : (wOffset / abs(wOffset));
 
-	if(wOffset == 0)
+	for(int index = 1; index < abs(hOffset); index = index + 1)
 	{
-		for(int height = 1; height < abs(hOffset); height = height + 1)
-		{
-			int hIndex = start.height + (height * hAdder);
-			if(board[hIndex][start.width].type != EMPTY) return false;
-		}
-	}
-	else if(hOffset == 0)
-	{
-		for(int width = 1; width < abs(wOffset); width += 1)
-		{
-			int wIndex = start.width + (width * wAdder);
-			if(board[start.height][wIndex].type != EMPTY) return false;
-		}
+		int hIndex = start.height + (index * hAdder);
+		int wIndex = start.width + (index * wAdder);
+
+		if(board[hIndex][wIndex].type != EMPTY) return false;
 	}
 	return true;
 }
@@ -79,9 +71,6 @@ bool clear_moving_path(Board board, Point start, Point stop)
 {
 	int hOffset = stop.height - start.height;
 	int wOffset = stop.width - start.width;
-
-	int hAdder = (hOffset != 0) ? (hOffset / abs(hOffset)) : 0;
-	int wAdder = (wOffset != 0) ? (wOffset / abs(wOffset)) : 0;
 
 	bool diagonal = abs(hOffset) == abs(wOffset);
 	bool straight = (abs(hOffset) == 0) || (abs(wOffset) == 0);
@@ -99,25 +88,22 @@ bool clear_moving_path(Board board, Point start, Point stop)
 	return true;
 }
 
-bool moving_pawn_valid(Board board, Move move, Info* info)
+bool moving_pawn_valid(Board board, Point start, Point stop)
 {
-	Point start = move.start, stop = move.stop;
-
 	int hOffset = stop.height - start.height;
 	int wOffset = stop.width - start.width;
 
 	if(abs(hOffset) == 0) return false;
 
-	// White not moving in its direction
 	Color color = board[start.height][start.width].color;
 
+	// White not moving in its direction
 	if((color == WHITE) && (hOffset >= 0)) return false;
 
 	// Black not moving in its direction
 	if((color == BLACK) && (hOffset <= 0)) return false;
 
 	bool straight = (start.width == stop.width);
-
 	bool starting = (start.height == 1 || start.height == 6);
 
 	if(straight && abs(hOffset) == 1) return true;

@@ -10,6 +10,6 @@ bool move_chess_piece(Board, Move, Info*);
 
 void switch_chess_pieces(Board, Point, Point);
 
-void switch_pawn_queen(Board, Point, Point);
+void make_pawn_queen(Board, Point, Color);
 
 #endif

@@ -5,18 +5,19 @@ bool execute_pawn_move(Board board, Move move, Info* info)
 {
 	Point start = move.start, stop = move.stop;
 
-	if(!moving_pawn_valid(board, move, info)) return false;
+	if(!moving_pawn_valid(board, start, stop)) return false;
 
 	bool straight = (start.width == stop.width);
+	Color color = board[start.height][start.width].color;
 
 	if(straight)
 	{
-		if(!board_piece_empty(board, stop)) return false;
+		if(!board_piece_empty(board, stop.height, stop.width)) return false;
 		if(!clear_moving_path(board, start, stop)) return false;
 
-		switch_pawn_queen(board, start, stop);
-
 		switch_chess_pieces(board, start, stop);
+
+		make_pawn_queen(board, stop, color);
 	}
 	else
 	{

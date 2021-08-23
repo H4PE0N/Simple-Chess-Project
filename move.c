@@ -59,14 +59,13 @@ bool remove_board_piece(Board board, int height, int width)
 	board[height][width] = piece; return true;
 }
 
-void switch_pawn_queen(Board board, Point start, Point stop)
+void make_pawn_queen(Board board, Point point, Color color)
 {
-	Color color = board[start.height][start.width].color;
-	bool whiteQueen = (color == WHITE && stop.height == 0);
-	bool blackQueen = (color == BLACK && stop.height == 7);
+	bool whiteQueen = (color == WHITE && point.height == 0);
+	bool blackQueen = (color == BLACK && point.height == 7);
 
 	if(whiteQueen || blackQueen)
 	{
-		board[start.height][start.width].type = QUEEN;
+		board[point.height][point.width].type = QUEEN;
 	}
 }

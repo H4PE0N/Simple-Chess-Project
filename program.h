@@ -20,7 +20,7 @@ void display_chess_values(Board);
 
 bool parse_chess_position(Point*, char[]);
 
-bool board_piece_empty(Board, Point);
+bool board_piece_empty(Board, int, int);
 
 bool point_inside_bounds(int, int);
 
