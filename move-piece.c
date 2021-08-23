@@ -38,7 +38,7 @@ bool execute_rook_move(Board board, Move move, Info* info)
 
 	if(!moving_rook_valid(board, start, stop)) return false;
 
-	if(!clear_straight_path(board, start, stop)) return false;
+	if(!clear_moving_path(board, start, stop)) return false;
 
 	bool team = chess_team_point(board, start, stop);
 	bool isRKS = rook_king_switch(board, start, stop);
@@ -104,7 +104,7 @@ bool execute_bishop_move(Board board, Move move, Info* info)
 
 	if(chess_team_point(board, start, stop)) return false;
 
-	if(!clear_diagonal_path(board, start, stop)) return false;
+	if(!clear_moving_path(board, start, stop)) return false;
 
 	if(chess_enemy_point(board, start, stop))
 	{

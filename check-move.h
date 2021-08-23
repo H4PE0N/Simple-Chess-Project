@@ -6,10 +6,6 @@
 
 bool rook_king_switch(Board, Point, Point);
 
-bool clear_diagonal_path(Board, Point, Point);
-
-bool clear_straight_path(Board, Point, Point);
-
 bool clear_moving_path(Board, Point, Point);
 
 bool board_points_equal(Point, Point);

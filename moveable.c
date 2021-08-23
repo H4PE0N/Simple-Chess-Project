@@ -87,8 +87,6 @@ bool path_empty_and_clear(Board board, Point start, Point stop)
 	bool empty = board_piece_empty(board, stop.height, stop.width);
 	bool clear = clear_moving_path(board, start, stop);
 
-	printf("Empty=%d CLEAR=%d\n", empty, clear);
-
 	return (empty && clear);
 }
 
@@ -145,12 +143,7 @@ bool straight_move_able(Board board, Point start, Color color)
 			stop = (Point) {height, width};
 			if(chess_team_point(board, start, stop)) continue;
 
-			if(clear_straight_path(board, start, stop))
-			{
-				printf("Straight move is able (%d-%d) to (%d-%d)\n",
-					start.height, start.width, stop.height, stop.width);
-				return true;
-			}
+			if(clear_moving_path(board, start, stop)) return true;
 		}
 	}
 	return false;
@@ -171,7 +164,7 @@ bool diagonal_move_able(Board board, Point start, Color color)
 
 			if(!point_inside_bounds(stop.height, stop.width)) continue;
 
-			if(!clear_straight_path(board, start, stop)) continue;
+			if(!clear_moving_path(board, start, stop)) continue;
 
 			enemyColor = board[stop.height][stop.width].color;
 			if(enemyColor != color) return true;

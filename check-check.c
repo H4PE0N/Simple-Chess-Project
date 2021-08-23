@@ -3,13 +3,9 @@
 
 bool check_draw_situation(Board board, Point point, Color color)
 {
-	printf("Checking draw at (%d-%d)\n", point.height, point.width);
-	printf("Color=%d\n", color);
 	if(board_king_moveable(board, point, color)) return false;
 
 	if(other_pieces_moveable(board, color)) return false;
-
-	printf("Its a draw!\n");
 
 	return true;
 }
@@ -193,7 +189,7 @@ bool check_diagonal_check(Board board, Point point, Color color)
 
 			if(enemyColor == NONE || enemyColor == color) continue;
 
-			if(!clear_straight_path(board, point, enemy)) continue;
+			if(!clear_moving_path(board, point, enemy)) continue;
 
 			if(enemyType == BISHOP || enemyType == QUEEN) return true;
 		}
@@ -219,7 +215,7 @@ bool check_straight_check(Board board, Point point, Color color)
 
 			if(enemyColor == NONE || enemyColor == color) continue;
 
-			if(!clear_straight_path(board, point, enemy)) continue;
+			if(!clear_moving_path(board, point, enemy)) continue;
 
 			if(enemyType == ROOK || enemyType == QUEEN) return true;
 		}
