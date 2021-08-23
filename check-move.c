@@ -24,6 +24,13 @@ bool board_points_equal(Point first, Point second)
 	return (height && width);
 }
 
+bool board_piece_equal(Piece first, Piece second)
+{
+	bool type = first.type == second.type;
+	bool color = first.color == second.color;
+	return (type && color);
+}
+
 bool clear_diagonal_path(Board board, Point start, Point stop)
 {
 	int hOffset = stop.height - start.height;
@@ -175,15 +182,15 @@ bool rook_king_switch(Board board, Point start, Point stop)
 	bool start_w = (start.width == 0) || (start.width == 7);
 	bool rook_start = (start_h && start_w);
 
-	if(!start_h || !start_w) return false;
-
 	bool stop_h = (stop.height == start.height);
 	bool stop_w = (stop.width == 4);
 	bool king_start = (stop_h && stop_w);
 
 	bool king = board[stop.height][stop.width].type == KING;
+	bool rook = board[start.height][start.width].type == ROOK;
+	bool types = (king && rook);
 
-	return (rook_start && king_start && king);
+	return (rook_start && king_start && types);
 }
 
 bool board_point_piece(Board board, Point point, Type type)

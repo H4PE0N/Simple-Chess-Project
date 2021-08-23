@@ -9,14 +9,29 @@ const char numbers[] = {'1', '2', '3', '4', '5', '6', '7', '8'};
 
 int main(int argAmount, char* arguments[])
 {
-	Board board = create_chess_board();
-	if(!extract_start_board(board, FILENAME))
+	char* filename;
+	if(argAmount > 1)
 	{
-		free(board);
-		return false;
+		filename = arguments[1];
+	}
+	else
+	{
+		filename = "standard-board.txt";
 	}
 
-	Info info = create_game_info();
+	Board board = create_chess_board();
+	if(!extract_start_board(board, filename))
+	{
+		printf("Could not load board!\n");
+		free(board); return false;
+	}
+
+	Info info;
+	if(!create_game_info(&info, board))
+	{
+		printf("Could not create info!\n");
+		free(board); return false;
+	}
 
 	while(game_still_running(board, info))
 	{
@@ -81,26 +96,48 @@ bool parse_chess_move(Move* move, char string[])
 	return true;
 }
 
-Info create_game_info(void)
+bool create_game_info(Info* info, Board board)
 {
-	Info info;
-	info.current = WHITE;
-	info.whiteRKS = (RKSwitch) {true, true};
-	info.blackRKS = (RKSwitch) {true, true};
-	info.bKing = (Point) {0, 4};
-	info.wKing = (Point) {7, 4};
-	info.turns = 0;
-	return info;
+	info->current = WHITE;
+	info->whiteRKS = (RKSwitch) {true, true};
+	info->blackRKS = (RKSwitch) {true, true};
+
+	if(!find_board_piece(&info->bKing, board, KING, BLACK)) return false;
+	if(!find_board_piece(&info->wKing, board, KING, WHITE)) return false;
+
+	info->turns = 0;
+	return true;
+}
+
+bool find_board_piece(Point* point, Board board, Type type, Color color)
+{
+	Piece finding = {type, color};
+	for(int height = 0; height < 8; height = height + 1)
+	{
+		for(int width = 0; width < 8; width = width + 1)
+		{
+			Piece current = board[height][width];
+
+			if(board_piece_equal(finding, current))
+			{
+				point->height = height;
+				point->width = width;
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 bool game_still_running(Board board, Info info)
 {
 	for(int round = 0; round < 2; round = round + 1)
 	{
-		Point king = (round == 0) ? info.bKing : info.wKing;
+		Color color = (round == 0) ? WHITE : BLACK;
+		Point point = (color == WHITE) ? info.wKing : info.bKing;
 		
-		if(check_mate_situation(board, king.height, king.width)) return false;
-		if(check_draw_situation(board, king.height, king.width)) return false;
+		if(check_mate_situation(board, point, color)) return false;
+		if(check_draw_situation(board, point, color)) return false;
 	}
 
 	return true;

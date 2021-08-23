@@ -14,6 +14,8 @@ bool clear_moving_path(Board, Point, Point);
 
 bool board_points_equal(Point, Point);
 
+bool board_piece_equal(Piece, Piece);
+
 bool chess_enemy_point(Board, Point, Point);
 
 bool chess_team_point(Board, Point, Point);

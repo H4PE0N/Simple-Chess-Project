@@ -2,8 +2,6 @@
 #ifndef PROGRAM
 #define PROGRAM
 
-#define FILENAME "starting.txt"
-
 extern const char white_symbols[];
 extern const char black_symbols[];
 
@@ -28,7 +26,9 @@ bool point_inside_bounds(int, int);
 
 bool game_still_running(Board, Info);
 
-Info create_game_info(void);
+bool create_game_info(Info*, Board);
+
+bool find_board_piece(Point*, Board, Type, Color);
 
 bool parse_chess_move(Move*, char[]);
 

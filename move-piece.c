@@ -143,7 +143,11 @@ bool execute_king_move(Board board, Move move, Info* info)
 	if(chess_team_point(board, start, stop)) return false;
 
 	Color color = board[start.height][start.width].color;
-	RKSwitch* RKS = (color == BLACK) ? &info->blackRKS : &info->whiteRKS;
+
+	if(!simulate_check_move(board, move, color)) return false;
+	
+	RKSwitch* RKS = (color == WHITE) ? &info->whiteRKS : &info->blackRKS;
+	Point* kingP = (color == WHITE) ? &info->wKing : &info->bKing;
 
 	RKS->left = false;
 	RKS->right = false;
@@ -152,6 +156,9 @@ bool execute_king_move(Board board, Move move, Info* info)
 	{
 		remove_board_piece(board, stop.height, stop.width);
 	}
+
+	kingP->height = stop.height;
+	kingP->width = stop.width;
 
 	switch_chess_pieces(board, start, stop);
 
