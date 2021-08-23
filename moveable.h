@@ -2,6 +2,10 @@
 #ifndef MOVEABLE
 #define MOVEABLE
 
+bool straight_move_able(Board, Point, Color);
+
+bool diagonal_move_able(Board, Point, Color);
+
 bool board_piece_moveable(Board, Piece, Point);
 
 bool path_empty_and_clear(Board, Point, Point);

@@ -16,7 +16,7 @@ bool move_chess_piece(Board board, Move move, Info* info)
 
 	switch(piece.type)
 	{
-		case(NONE): return false;
+		case(EMPTY): return false;
 
 		case(PAWN):
 			if(!execute_pawn_move(board, move, info)) return false;

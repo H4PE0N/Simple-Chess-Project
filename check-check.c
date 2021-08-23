@@ -7,26 +7,30 @@ bool check_draw_situation(Board board, Point point, Color color)
 
 	if(other_pieces_moveable(board, color)) return false;
 
+	printf("Its a draw!\n");
+
 	return true;
 }
 
 bool other_pieces_moveable(Board board, Color color)
 {
 	if(color == NONE) return false;
-	Color teamColor; Type teamType;
+
+	Piece piece; Point point;
+
 	for(int height = 0; height < 8; height = height + 1)
 	{
 		for(int width = 0; width < 8; width = width + 1)
 		{
-			teamColor = board[height][width].color;
-			teamType = board[height][width].type;
+			piece = board[height][width];
+			point = (Point) {height, width};
 
-			if(teamColor != color) continue;
+			if(piece.color != color) continue;
 			
-			
+			if(board_piece_moveable(board, piece, point)) return true;
 		}
 	}
-	return true;
+	return false;
 }
 
 bool check_mate_situation(Board board, Point point, Color color)
@@ -34,6 +38,8 @@ bool check_mate_situation(Board board, Point point, Color color)
 	if(board_king_moveable(board, point, color)) return false;
 
 	if(!king_check_situation(board, point, color)) return false;
+
+	printf("Its a draw!\n");
 
 	return true;
 }

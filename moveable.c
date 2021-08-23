@@ -8,32 +8,35 @@ bool board_piece_moveable(Board board, Piece piece, Point point)
 
 	if(!point_inside_bounds(point.height, point.width)) return false;
 
+	printf("Checking if (T=%d C=%d) is moveable at (%d-%d)\n",
+		piece.type, piece.color, point.height, point.width);
+
 	switch(piece.type)
 	{
-		case(NONE): return false;
+		case(EMPTY): return false;
 
 		case(PAWN):
-			if(!board_pawn_moveable(board, point, color)) return true;
+			if(board_pawn_moveable(board, point, color)) return true;
 			break;
 
 		case(ROOK):
-			if(!board_rook_moveable(board, point, color)) return true;
+			if(board_rook_moveable(board, point, color)) return true;
 			break;
 
 		case(KNIGHT):
-			if(!board_knight_moveable(board, point, color)) return true;
+			if(board_knight_moveable(board, point, color)) return true;
 			break;
 
 		case(BISHOP):
-			if(!board_bishop_moveable(board, point, color)) return true;
+			if(board_bishop_moveable(board, point, color)) return true;
 			break;
 
 		case(QUEEN):
-			if(!board_queen_moveable(board, point, color)) return true;
+			if(board_queen_moveable(board, point, color)) return true;
 			break;
 
 		case(KING):
-			if(!board_king_moveable(board, point, color)) return true;
+			if(board_king_moveable(board, point, color)) return true;
 			break;
 	}
 
@@ -43,7 +46,7 @@ bool board_piece_moveable(Board board, Piece piece, Point point)
 bool board_pawn_moveable(Board board, Point start, Color color)
 {
 	Point stop;
-	for(int height = 2; height >= 0; height = height - 1)
+	for(int height = 2; height > 0; height = height - 1)
 	{
 		for(int width = 0; width < 3; width = width + 1)
 		{
@@ -58,7 +61,7 @@ bool board_pawn_moveable(Board board, Point start, Color color)
 
 			if(width == 1 && (height == 1 || height == 2)) // Forward
 			{
-				return path_empty_and_clear(board, start, stop);
+				if(path_empty_and_clear(board, start, stop)) return true;
 			}
 			else if(height == 1 && (width == 0 || width == 2)) // Attack!
 			{
@@ -73,20 +76,8 @@ bool board_pawn_moveable(Board board, Point start, Color color)
 
 bool board_rook_moveable(Board board, Point start, Color color)
 {
-	Point stop;
-	for(int index = 0; index < 8; index = index + 1)
-	{
-		for(int round = 0; round < 2; round = round + 1)
-		{
-			int height = (round == 0) ? index : start.height;
-			int width = (round == 0) ? start.width : index;
+	if(straight_move_able(board, start, color)) return true;
 
-			stop = (Point) {height, width};
-			if(chess_team_point(board, start, stop)) continue;
-
-			if(clear_straight_path(board, start, stop)) return true;
-		}
-	}
 	return false;
 }
 
@@ -124,12 +115,61 @@ bool board_knight_moveable(Board board, Point start, Color color)
 
 bool board_bishop_moveable(Board board, Point start, Color color)
 {
-	return true;
+	if(diagonal_move_able(board, start, color)) return true;
+
+	return false;
 }
 
 bool board_queen_moveable(Board board, Point start, Color color)
 {
-	return true;
+	if(diagonal_move_able(board, start, color)) return true;
+
+	if(straight_move_able(board, start, color)) return true;
+
+	return false;
+}
+
+bool straight_move_able(Board board, Point start, Color color)
+{
+	Point stop;
+	for(int index = 0; index < 8; index = index + 1)
+	{
+		for(int round = 0; round < 2; round = round + 1)
+		{
+			int height = (round == 0) ? index : start.height;
+			int width = (round == 0) ? start.width : index;
+
+			stop = (Point) {height, width};
+			if(chess_team_point(board, start, stop)) continue;
+
+			if(clear_straight_path(board, start, stop)) return true;
+		}
+	}
+	return false;
+}
+
+bool diagonal_move_able(Board board, Point start, Color color)
+{
+	Color enemyColor; Type enemyType; Point stop;
+
+	for(int index = -8; index <= 16; index = index + 1)
+	{
+		for(int round = 0; round < 2; round = round + 1)
+		{
+			int height = (index + start.height);
+			int width = (round == 0) ? (index + start.width) : (start.width - index);
+
+			stop = (Point) {height, width};
+
+			if(!point_inside_bounds(stop.height, stop.width)) continue;
+
+			if(!clear_straight_path(board, start, stop)) continue;
+
+			enemyColor = board[stop.height][stop.width].color;
+			if(enemyColor != color) return true;
+		}
+	}
+	return false;
 }
 
 bool board_king_moveable(Board board, Point point, Color color)
