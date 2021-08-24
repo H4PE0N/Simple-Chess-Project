@@ -27,9 +27,6 @@ bool piece_prevent_check(Board board, Point point, Info* info)
 
 	if(!point_inside_bounds(point.height, point.width)) return false;
 
-	printf("Can (T=%d C=%d) at (%d-%d) prevent check?\n",
-		piece.type, piece.color, point.height, point.width);
-
 	switch(piece.type)
 	{
 		case(EMPTY): return false;
@@ -76,9 +73,6 @@ bool pawn_prevent_check(Board board, Point start, Info* info)
 			stop = (Point) {rHeight, rWidth};
 
 			if(!pawn_move_acceptable(board, start, stop)) continue;
-
-			printf("The pawn can move from (%d-%d) to (%d-%d)\n",
-				start.height, start.width, stop.height, stop.width);
 
 			move = (Move) {start, stop};
 
@@ -186,10 +180,13 @@ bool move_prevent_check(Board board, Move move, Info* info)
 
 	Board copy = copy_chess_board(board);
 
-	if(!move_board_piece(board, start, stop)) return false;
+	if(!move_board_piece(copy, start, stop)) return false;
 
 	if(!king_check_situation(copy, king, color))
 	{
+		printf("At (%d-%d) to (%d-%d) prevent check!\n",
+			start.height, start.width, stop.height, stop.width);
+		
 		free(copy); return true;
 	}
 
