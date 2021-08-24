@@ -14,8 +14,8 @@ void execute_pawn_move(Board board, Move move, Info* info)
 void execute_rook_switch(Board board, Move move, Info* info)
 {
 	Point start = move.start, stop = move.stop;
-	Color color = board[start.height][start.width].color;
 
+	Color color = board[start.height][start.width].color;
 	RKSwitch* RKS = (color == BLACK) ? &info->blackRKS : &info->whiteRKS;
 
 	switch_chess_pieces(board, start, stop);
@@ -26,7 +26,15 @@ void execute_rook_switch(Board board, Move move, Info* info)
 
 void execute_rook_move(Board board, Move move, Info* info)
 {
+	Point start = move.start, stop = move.stop;
+
+	Color color = board[start.height][start.width].color;
+	RKSwitch* RKS = (color == BLACK) ? &info->blackRKS : &info->whiteRKS;
+
 	move_board_piece(board, move.start, move.stop);
+
+	if(start.width == 0) RKS->left = false;
+	if(start.width == 7) RKS->right = false;
 }
 
 void execute_knight_move(Board board, Move move, Info* info)

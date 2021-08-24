@@ -16,6 +16,8 @@ Board create_chess_board(void);
 
 void display_chess_board(Board);
 
+bool points_inside_bounds(Point, Point);
+
 void display_chess_values(Board);
 
 bool parse_chess_position(Point*, char[]);
@@ -24,7 +26,7 @@ bool board_piece_empty(Board, int, int);
 
 bool point_inside_bounds(int, int);
 
-bool game_still_running(Board, Info*);
+bool game_still_running(Color*, Board, Info*);
 
 bool create_game_info(Info*, Board);
 

@@ -10,14 +10,9 @@ const char numbers[] = {'1', '2', '3', '4', '5', '6', '7', '8'};
 int main(int argAmount, char* arguments[])
 {
 	char* filename;
-	if(argAmount > 1)
-	{
-		filename = arguments[1];
-	}
-	else
-	{
-		filename = "standard-board.txt";
-	}
+	if(argAmount > 1) filename = arguments[1];
+	
+	else filename = "standard-board.txt";
 
 	Board board = create_chess_board();
 	if(!extract_start_board(board, filename))
@@ -33,10 +28,14 @@ int main(int argAmount, char* arguments[])
 		free(board); return false;
 	}
 
-	while(game_still_running(board, &info))
+	Color winner = NONE;
+
+	while(game_still_running(&winner, board, &info))
 	{
 		display_chess_board(board);
 		printf("Current \t: (%s)\n", (info.current == WHITE) ? "RED" : "BLUE");
+		printf("WhiteRKS\t: (%d-%d)\n", info.whiteRKS.left, info.whiteRKS.right);
+		printf("BlackRKS\t: (%d-%d)\n", info.blackRKS.left, info.blackRKS.right);
 		printf("TURNS   \t: (%d)\n", info.turns);
 
 		char string[20];
@@ -56,15 +55,20 @@ int main(int argAmount, char* arguments[])
 			info.current = (info.current == WHITE) ? BLACK : WHITE;
 			info.turns += 1;
 		}
-		else
-		{
-			continue;
-		}
 	}
 	
 	display_chess_board(board);
 
-	display_chess_values(board);
+	if(winner == NONE)
+	{
+		printf("It's a draw!\n");
+	}
+	else
+	{
+		printf("The winner is: [%s]!\n", (winner == WHITE) ? "RED" : "BLUE");
+	}
+
+	//display_chess_values(board);
 
 	free(board);
 	return false;
@@ -130,15 +134,23 @@ bool find_board_piece(Point* point, Board board, Type type, Color color)
 	return false;
 }
 
-bool game_still_running(Board board, Info* info)
+bool game_still_running(Color* winner, Board board, Info* info)
 {
 	for(int round = 0; round < 2; round = round + 1)
 	{
 		Color color = (round == 0) ? WHITE : BLACK;
 		Point point = (color == WHITE) ? info->wKing : info->bKing;
 		
-		if(check_mate_situation(board, point, info)) return false;
-		if(check_draw_situation(board, point, color)) return false;
+		if(check_mate_situation(board, point, info))
+		{
+			*winner = (color == WHITE) ? BLACK : WHITE;
+			return false;
+		}
+		if(check_draw_situation(board, point, color))
+		{
+			*winner = NONE;
+			return false;
+		}
 	}
 
 	return true;
@@ -150,6 +162,14 @@ bool allocate_board_piece(Board board, Point point, Type type, Color color)
 
 	board[point.height][point.width].type = type;
 	board[point.height][point.width].color = color;
+
+	return true;
+}
+
+bool points_inside_bounds(Point first, Point second)
+{
+	if(!point_inside_bounds(first.height, first.width)) return false;
+	if(!point_inside_bounds(second.height, second.width)) return false;
 
 	return true;
 }

@@ -49,11 +49,7 @@ bool rook_switch_able(Board board, Move move, Info* info)
 
 	RKSwitch* RKS = (color == BLACK) ? &info->blackRKS : &info->whiteRKS;
 
-	bool* RKValue = (start.width == 0) ? &RKS->left : &RKS->right;
-
-	if(RKValue) return true;
-
-	return false;
+	return (start.width == 0) ? RKS->left : RKS->right;
 }
 
 bool clear_moving_path(Board board, Point start, Point stop)
@@ -97,30 +93,21 @@ bool check_check_situation(Board board, Move move, Info* info)
 
 bool moving_pawn_valid(Board board, Point start, Point stop)
 {
-	if(!point_inside_bounds(start.height, start.width)) return false;
-	if(!point_inside_bounds(stop.height, stop.width)) return false;
+	if(!points_inside_bounds(start, stop)) return false;
 
 	if(board_points_equal(start, stop)) return false;
 
 	Color color = board[start.height][start.width].color;
 
-	int hOffset = stop.height - start.height;
-	int wOffset = stop.width - start.width;
-
-	// White not moving in its direction
-	if((color == WHITE) && (hOffset >= 0)) return false;
-
-	// Black not moving in its direction
-	if((color == BLACK) && (hOffset <= 0)) return false;
+	int hOffset = (color == WHITE) ? (start.height - stop.height) : (stop.height - start.height);
+	int wOffset = abs(start.width - stop.width);
 
 	bool straight = (start.width == stop.width);
 	bool starting = (start.height == 1 || start.height == 6);
 
-	if(straight && abs(hOffset) == 1) return true;
-
-	if(straight && starting && abs(hOffset) == 2) return true;
-
-	if(abs(hOffset) == 1 && abs(wOffset) == 1) return true;
+	if(straight && hOffset == 1) return true;
+	if(straight && starting && hOffset == 2) return true;
+	if(hOffset == 1 && wOffset == 1) return true;
 
 	return false;
 }
@@ -134,8 +121,7 @@ bool moving_rook_valid(Point start, Point stop)
 
 bool moving_knight_valid(Point start, Point stop)
 {
-	if(!point_inside_bounds(start.height, start.width)) return false;
-	if(!point_inside_bounds(stop.height, stop.width)) return false;
+	if(!points_inside_bounds(start, stop)) return false;
 
 	if(board_points_equal(start, stop)) return false;
 
@@ -158,8 +144,7 @@ bool moving_bishop_valid(Point start, Point stop)
 
 bool straight_move_valid(Point start, Point stop)
 {
-	if(!point_inside_bounds(start.height, start.width)) return false;
-	if(!point_inside_bounds(stop.height, stop.width)) return false;
+	if(!points_inside_bounds(start, stop)) return false;
 
 	if(board_points_equal(start, stop)) return false;
 
@@ -171,8 +156,7 @@ bool straight_move_valid(Point start, Point stop)
 
 bool diagonal_move_valid(Point start, Point stop)
 {
-	if(!point_inside_bounds(start.height, start.width)) return false;
-	if(!point_inside_bounds(stop.height, stop.width)) return false;
+	if(!points_inside_bounds(start, stop)) return false;
 
 	if(board_points_equal(start, stop)) return false;
 
@@ -193,8 +177,7 @@ bool moving_queen_valid(Point start, Point stop)
 
 bool moving_king_valid(Point start, Point stop)
 {
-	if(!point_inside_bounds(start.height, start.width)) return false;
-	if(!point_inside_bounds(stop.height, stop.width)) return false;
+	if(!points_inside_bounds(start, stop)) return false;
 
 	if(board_points_equal(start, stop)) return false;
 

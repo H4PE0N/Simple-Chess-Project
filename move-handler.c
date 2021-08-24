@@ -27,7 +27,7 @@ bool rook_move_handler(Board board, Move move, Info* info)
 		execute_rook_switch(board, move, info); return true;
 	}
 	
-	execute_rook_move(board, move, info); return true;
+	execute_rook_move(board, move, info);
 
 	return true;
 }
