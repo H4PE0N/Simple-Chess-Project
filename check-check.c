@@ -3,7 +3,9 @@
 
 bool check_draw_situation(Board board, Point point, Color color)
 {
-	if(board_king_moveable(board, point, color)) return false;
+	if(king_check_situation(board, point, color)) return false;
+
+	if(board_king_moveable(board, point)) return false;
 
 	if(other_pieces_moveable(board, color)) return false;
 
@@ -12,8 +14,6 @@ bool check_draw_situation(Board board, Point point, Color color)
 
 bool other_pieces_moveable(Board board, Color color)
 {
-	if(color == NONE) return false;
-
 	Piece piece; Point point;
 
 	for(int height = 0; height < 8; height = height + 1)
@@ -31,15 +31,17 @@ bool other_pieces_moveable(Board board, Color color)
 	return false;
 }
 
-bool check_mate_situation(Board board, Point point, Color color)
+bool check_mate_situation(Board board, Point point, Info* info)
 {
+	Color color = board[point.height][point.width].color;
+
 	if(!king_check_situation(board, point, color)) return false;
 	// King is in check
 
-	if(board_king_moveable(board, point, color)) return false;
+	if(board_king_moveable(board, point)) return false;
 	// King cant move
 
-	if(team_prevent_check(board, color)) return false;
+	if(team_prevent_check(board, info, color)) return false;
 	// Team mate cant prevent check
 
 	return true;

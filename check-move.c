@@ -9,6 +9,14 @@ bool chess_enemy_point(Board board, Point start, Point stop)
 	return (start_c != NONE && stop_c != NONE && stop_c != start_c);
 }
 
+bool path_empty_and_clear(Board board, Point start, Point stop)
+{
+	bool empty = board_piece_empty(board, stop.height, stop.width);
+	bool clear = clear_moving_path(board, start, stop);
+
+	return (empty && clear);
+}
+
 bool chess_team_point(Board board, Point start, Point stop)
 {
 	Color start_c = board[start.height][start.width].color;
@@ -31,6 +39,23 @@ bool board_piece_equal(Piece first, Piece second)
 	return (type && color);
 }
 
+bool rook_switch_able(Board board, Move move, Info* info)
+{
+	Point start = move.start, stop = move.stop;
+
+	if(!rook_king_switch(board, start, stop)) return false;
+
+	Color color = board[start.height][start.width].color;
+
+	RKSwitch* RKS = (color == BLACK) ? &info->blackRKS : &info->whiteRKS;
+
+	bool* RKValue = (start.width == 0) ? &RKS->left : &RKS->right;
+
+	if(RKValue) return true;
+
+	return false;
+}
+
 bool clear_moving_path(Board board, Point start, Point stop)
 {
 	int hOffset = stop.height - start.height;
@@ -51,14 +76,36 @@ bool clear_moving_path(Board board, Point start, Point stop)
 	return true;
 }
 
-bool moving_pawn_valid(Board board, Point start, Point stop)
+bool check_check_situation(Board board, Move move, Info* info)
 {
-	int hOffset = stop.height - start.height;
-	int wOffset = stop.width - start.width;
-
-	if(abs(hOffset) == 0) return false;
+	Point start = move.start, stop = move.stop;
 
 	Color color = board[start.height][start.width].color;
+
+	Point king = (color == WHITE) ? info->wKing : info->bKing;
+	bool* check = (color == WHITE) ? &info->wCheck : &info->bCheck;
+
+	if(!king_check_situation(board, king, color)) return true;
+
+	if(move_prevent_check(board, move, info))
+	{
+		*check = false;
+		return true;
+	}
+	return false;
+}
+
+bool moving_pawn_valid(Board board, Point start, Point stop)
+{
+	if(!point_inside_bounds(start.height, start.width)) return false;
+	if(!point_inside_bounds(stop.height, stop.width)) return false;
+
+	if(board_points_equal(start, stop)) return false;
+
+	Color color = board[start.height][start.width].color;
+
+	int hOffset = stop.height - start.height;
+	int wOffset = stop.width - start.width;
 
 	// White not moving in its direction
 	if((color == WHITE) && (hOffset >= 0)) return false;
@@ -78,16 +125,20 @@ bool moving_pawn_valid(Board board, Point start, Point stop)
 	return false;
 }
 
-bool moving_rook_valid(Board board, Point start, Point stop)
+bool moving_rook_valid(Point start, Point stop)
 {
-	int hSteps = abs(start.height - stop.height);
-	int wSteps = abs(start.width - stop.width);
+	if(straight_move_valid(start, stop)) return true;
 
-	return (hSteps == 0) || (wSteps == 0);
+	return false;
 }
 
-bool moving_knight_valid(Board board, Point start, Point stop)
+bool moving_knight_valid(Point start, Point stop)
 {
+	if(!point_inside_bounds(start.height, start.width)) return false;
+	if(!point_inside_bounds(stop.height, stop.width)) return false;
+
+	if(board_points_equal(start, stop)) return false;
+
 	int hSteps = abs(start.height - stop.height);
 	int wSteps = abs(start.width - stop.width);
 
@@ -98,27 +149,55 @@ bool moving_knight_valid(Board board, Point start, Point stop)
 	return false;
 }
 
-bool moving_bishop_valid(Board board, Point start, Point stop)
+bool moving_bishop_valid(Point start, Point stop)
 {
+	if(diagonal_move_valid(start, stop)) return true;
+
+	return false;
+}
+
+bool straight_move_valid(Point start, Point stop)
+{
+	if(!point_inside_bounds(start.height, start.width)) return false;
+	if(!point_inside_bounds(stop.height, stop.width)) return false;
+
+	if(board_points_equal(start, stop)) return false;
+
+	int hSteps = abs(start.height - stop.height);
+	int wSteps = abs(start.width - stop.width);
+
+	return (hSteps == 0) || (wSteps == 0);
+}
+
+bool diagonal_move_valid(Point start, Point stop)
+{
+	if(!point_inside_bounds(start.height, start.width)) return false;
+	if(!point_inside_bounds(stop.height, stop.width)) return false;
+
+	if(board_points_equal(start, stop)) return false;
+
 	int hSteps = abs(start.height - stop.height);
 	int wSteps = abs(start.width - stop.width);
 
 	return (hSteps == wSteps);
 }
 
-bool moving_queen_valid(Board board, Point start, Point stop)
+bool moving_queen_valid(Point start, Point stop)
 {
-	int hSteps = abs(start.height - stop.height);
-	int wSteps = abs(start.width - stop.width);
+	if(diagonal_move_valid(start, stop)) return true;
 
-	bool diagonal = (hSteps == wSteps);
-	bool straight = (hSteps == 0) || (wSteps == 0);
+	if(straight_move_valid(start, stop)) return true;
 
-	return (diagonal || straight);
+	return false;
 }
 
-bool moving_king_valid(Board board, Point start, Point stop)
+bool moving_king_valid(Point start, Point stop)
 {
+	if(!point_inside_bounds(start.height, start.width)) return false;
+	if(!point_inside_bounds(stop.height, stop.width)) return false;
+
+	if(board_points_equal(start, stop)) return false;
+
 	int hSteps = abs(start.height - stop.height);
 	int wSteps = abs(start.width - stop.width);
 

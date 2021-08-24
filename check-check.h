@@ -4,7 +4,7 @@
 
 bool check_draw_situation(Board, Point, Color);
 
-bool check_mate_situation(Board, Point, Color);
+bool check_mate_situation(Board, Point, Info*);
 
 bool king_check_situation(Board, Point, Color);
 

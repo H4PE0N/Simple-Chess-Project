@@ -59,6 +59,7 @@ typedef struct Info
 #include "program.h"
 #include "moveable.h"
 #include "prevent-check.h"
+#include "acceptable.h"
 #include "check-move.h"
 #include "check-check.h"
 #include "move-piece.h"

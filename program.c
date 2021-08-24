@@ -33,7 +33,7 @@ int main(int argAmount, char* arguments[])
 		free(board); return false;
 	}
 
-	while(game_still_running(board, info))
+	while(game_still_running(board, &info))
 	{
 		display_chess_board(board);
 		printf("Current \t: (%s)\n", (info.current == WHITE) ? "RED" : "BLUE");
@@ -130,14 +130,14 @@ bool find_board_piece(Point* point, Board board, Type type, Color color)
 	return false;
 }
 
-bool game_still_running(Board board, Info info)
+bool game_still_running(Board board, Info* info)
 {
 	for(int round = 0; round < 2; round = round + 1)
 	{
 		Color color = (round == 0) ? WHITE : BLACK;
-		Point point = (color == WHITE) ? info.wKing : info.bKing;
+		Point point = (color == WHITE) ? info->wKing : info->bKing;
 		
-		if(check_mate_situation(board, point, color)) return false;
+		if(check_mate_situation(board, point, info)) return false;
 		if(check_draw_situation(board, point, color)) return false;
 	}
 

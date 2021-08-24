@@ -14,10 +14,6 @@ bool move_chess_piece(Board board, Move move, Info* info)
 
 	if(piece.color != info->current) return false;
 
-	// bool kingCheck = (piece.color == WHITE) ? info->wCheck : info->bCheck;
-
-	// if(kingCheck && piece.type != KING) return false;
-
 	switch(piece.type)
 	{
 		case(EMPTY): return false;
@@ -43,17 +39,22 @@ bool move_chess_piece(Board board, Move move, Info* info)
 			break;
 
 		case(KING):
-			if(execute_king_move(board, move, info)) return true;
+			if(king_move_handler(board, move, info)) return true;
 			break;
 	}
 	return false;
 }
 
-void switch_chess_pieces(Board board, Point first, Point second)
+bool switch_chess_pieces(Board board, Point first, Point second)
 {
+	if(!point_inside_bounds(first.height, first.width)) return false;
+	if(!point_inside_bounds(second.height, second.width)) return false;
+
 	Piece temporary = board[first.height][first.width];
 	board[first.height][first.width] = board[second.height][second.width];
 	board[second.height][second.width] = temporary;
+
+	return true;
 }
 
 bool remove_board_piece(Board board, int height, int width)
@@ -61,6 +62,14 @@ bool remove_board_piece(Board board, int height, int width)
 	if(!point_inside_bounds(height, width)) return false;
 	Piece piece = {EMPTY, NONE};
 	board[height][width] = piece; return true;
+}
+
+bool move_board_piece(Board board, Point start, Point stop)
+{
+	if(!remove_board_piece(board, stop.height, stop.width)) return false;
+	if(!switch_chess_pieces(board, start, stop)) return false;
+
+	return true;
 }
 
 void make_pawn_queen(Board board, Point point, Color color)

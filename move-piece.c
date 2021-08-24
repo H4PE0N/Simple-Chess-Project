@@ -1,175 +1,72 @@
 
 #include "header.h"
 
-bool execute_pawn_move(Board board, Move move, Info* info)
+void execute_pawn_move(Board board, Move move, Info* info)
 {
 	Point start = move.start, stop = move.stop;
-
-	bool straight = (start.width == stop.width);
-
 	Color color = board[start.height][start.width].color;
-	bool* check = (color == WHITE) ? &info->wCheck : &info->bCheck;
 
-	if(straight)
-	{
-		if(!board_piece_empty(board, stop.height, stop.width)) return false;
+	move_board_piece(board, start, stop);
 
-		if(!clear_moving_path(board, start, stop)) return false;
-
-		if(*check && !move_prevent_check(board, move, info)) return false;
-		else if(*check) *check = false;
-
-		switch_chess_pieces(board, start, stop);
-
-		make_pawn_queen(board, stop, color);
-	}
-	else
-	{
-		if(!chess_enemy_point(board, start, stop)) return false;
-		
-		if(*check && !move_prevent_check(board, move, info)) return false;
-		else if(*check) *check = false;
-
-		remove_board_piece(board, stop.height, stop.width);
-
-		switch_chess_pieces(board, start, stop);
-	}
-
-	return true;
+	make_pawn_queen(board, stop, color);
 }
 
-bool execute_rook_move(Board board, Move move, Info* info)
+void execute_rook_switch(Board board, Move move, Info* info)
 {
 	Point start = move.start, stop = move.stop;
-
-	bool team = chess_team_point(board, start, stop);
-	bool isRKS = rook_king_switch(board, start, stop);
-
 	Color color = board[start.height][start.width].color;
-	bool* check = (color == WHITE) ? &info->wCheck : &info->bCheck;
-
-	if(color == NONE) return false;
 
 	RKSwitch* RKS = (color == BLACK) ? &info->blackRKS : &info->whiteRKS;
 
-	bool* RKValue = NULL;
-
-	if(start.width == 0) RKValue = &RKS->left;
-	if(start.width == 7) RKValue = &RKS->right;
-
-	if(RKValue != NULL)
-	{
-		if(isRKS && RKValue)
-		{
-			switch_chess_pieces(board, start, stop);
-
-			RKS->right = false;
-			RKS->left = false;
-
-			return true;
-		}
-		else if(team) return false;
-
-		*RKValue = false;
-	}
-
-	if(*check && !move_prevent_check(board, move, info)) return false;
-	else if(*check) *check = false;
-
-	if(chess_enemy_point(board, start, stop))
-	{
-		remove_board_piece(board, stop.height, stop.width);
-	}
 	switch_chess_pieces(board, start, stop);
 
-	return true;
+	RKS->right = false;
+	RKS->left = false;
 }
 
-bool execute_knight_move(Board board, Move move, Info* info)
+void execute_rook_move(Board board, Move move, Info* info)
 {
-	Point start = move.start, stop = move.stop;
-
-	Color color = board[start.height][start.width].color;
-	bool* check = (color == WHITE) ? &info->wCheck : &info->bCheck;
-
-	if(*check && !move_prevent_check(board, move, info)) return false;
-	else if(*check) *check = false;
-
-	if(chess_enemy_point(board, start, stop))
-	{
-		remove_board_piece(board, stop.height, stop.width);
-	}
-
-	switch_chess_pieces(board, start, stop);
-
-	return true;
+	move_board_piece(board, move.start, move.stop);
 }
 
-bool execute_bishop_move(Board board, Move move, Info* info)
+void execute_knight_move(Board board, Move move, Info* info)
 {
-	Point start = move.start, stop = move.stop;
-
-	Color color = board[start.height][start.width].color;
-	bool* check = (color == WHITE) ? &info->wCheck : &info->bCheck;
-
-	if(*check && !move_prevent_check(board, move, info)) return false;
-	else if(*check) *check = false;
-
-	if(chess_enemy_point(board, start, stop))
-	{
-		remove_board_piece(board, stop.height, stop.width);
-	}
-
-	switch_chess_pieces(board, start, stop);
-
-	return true;
+	move_board_piece(board, move.start, move.stop);
 }
 
-bool execute_queen_move(Board board, Move move, Info* info)
+void execute_bishop_move(Board board, Move move, Info* info)
 {
-	Point start = move.start, stop = move.stop;
-
-	Color color = board[start.height][start.width].color;
-	bool* check = (color == WHITE) ? &info->wCheck : &info->bCheck;
-
-	if(*check && !move_prevent_check(board, move, info)) return false;
-	else if(*check) *check = false;
-
-	if(chess_enemy_point(board, start, stop))
-	{
-		remove_board_piece(board, stop.height, stop.width);
-	}
-
-	switch_chess_pieces(board, start, stop);
-
-	return true;
+	move_board_piece(board, move.start, move.stop);
 }
 
-bool execute_king_move(Board board, Move move, Info* info)
+void execute_queen_move(Board board, Move move, Info* info)
 {
-	Point start = move.start, stop = move.stop;
+	move_board_piece(board, move.start, move.stop);
+}
 
-	if(chess_team_point(board, start, stop)) return false;
-
-	Color color = board[start.height][start.width].color;
-
-	if(!simulate_check_move(board, move, color)) return false;
-	
+void turn_off_rook_switch(Info* info, Color color)
+{
 	RKSwitch* RKS = (color == WHITE) ? &info->whiteRKS : &info->blackRKS;
-	Point* kingP = (color == WHITE) ? &info->wKing : &info->bKing;
-
+	
 	RKS->left = false;
 	RKS->right = false;
+}
 
-	if(chess_enemy_point(board, start, stop))
-	{
-		remove_board_piece(board, stop.height, stop.width);
-	}
+void update_king_point(Info* info, Color color, Point point)
+{
+	Point* kingP = (color == WHITE) ? &info->wKing : &info->bKing;
 
-	kingP->height = stop.height;
-	kingP->width = stop.width;
+	kingP->height = point.height;
+	kingP->width = point.width;
+}
 
-	switch_chess_pieces(board, start, stop);
+void execute_king_move(Board board, Move move, Info* info)
+{
+	Point start = move.start, stop = move.stop;
+	Color color = board[start.height][start.width].color;
 
-	return true;
+	turn_off_rook_switch(info, color);
+	update_king_point(info, color, stop);
+
+	move_board_piece(board, start, stop);
 }

@@ -24,7 +24,7 @@ bool board_piece_empty(Board, int, int);
 
 bool point_inside_bounds(int, int);
 
-bool game_still_running(Board, Info);
+bool game_still_running(Board, Info*);
 
 bool create_game_info(Info*, Board);
 
