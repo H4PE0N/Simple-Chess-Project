@@ -141,6 +141,9 @@ bool straight_move_able(Board board, Point start, Color color)
 			int width = (round == 0) ? start.width : index;
 
 			stop = (Point) {height, width};
+
+			if(board_points_equal(start, stop)) continue;
+
 			if(chess_team_point(board, start, stop)) continue;
 
 			if(clear_moving_path(board, start, stop)) return true;
@@ -164,6 +167,8 @@ bool diagonal_move_able(Board board, Point start, Color color)
 
 			if(!point_inside_bounds(stop.height, stop.width)) continue;
 
+			if(board_points_equal(start, stop)) continue;
+
 			if(!clear_moving_path(board, start, stop)) continue;
 
 			enemyColor = board[stop.height][stop.width].color;
@@ -175,7 +180,7 @@ bool diagonal_move_able(Board board, Point start, Color color)
 
 bool board_king_moveable(Board board, Point point, Color color)
 {
-	Point enemy;
+	Point stop;
 
 	for(int height = 0; height < 3; height = height + 1)
 	{
@@ -184,11 +189,13 @@ bool board_king_moveable(Board board, Point point, Color color)
 			int rHeight = (point.height - 1) + height;
 			int rWidth = (point.width - 1) + width;
 
-			enemy = (Point) {rHeight, rWidth};
+			stop = (Point) {rHeight, rWidth};
 
-			if(board_points_equal(point, enemy)) continue;
+			if(!point_inside_bounds(stop.height, stop.width)) continue;
 
-			Move move = {point, enemy};
+			if(board_points_equal(point, stop)) continue;
+
+			Move move = {point, stop};
 
 			if(simulate_check_move(board, move, color))
 			{
@@ -202,7 +209,6 @@ bool board_king_moveable(Board board, Point point, Color color)
 bool simulate_check_move(Board board, Move move, Color color)
 {
 	Point start = move.start, stop = move.stop;
-	if(!point_inside_bounds(stop.height, stop.width)) return false;
 
 	// The function:
 	Board copy = copy_chess_board(board);

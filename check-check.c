@@ -33,11 +33,14 @@ bool other_pieces_moveable(Board board, Color color)
 
 bool check_mate_situation(Board board, Point point, Color color)
 {
-	if(board_king_moveable(board, point, color)) return false;
-
 	if(!king_check_situation(board, point, color)) return false;
+	// King is in check
 
-	printf("Its a draw!\n");
+	if(board_king_moveable(board, point, color)) return false;
+	// King cant move
+
+	if(team_prevent_check(board, color)) return false;
+	// Team mate cant prevent check
 
 	return true;
 }

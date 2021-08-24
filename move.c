@@ -14,35 +14,39 @@ bool move_chess_piece(Board board, Move move, Info* info)
 
 	if(piece.color != info->current) return false;
 
+	// bool kingCheck = (piece.color == WHITE) ? info->wCheck : info->bCheck;
+
+	// if(kingCheck && piece.type != KING) return false;
+
 	switch(piece.type)
 	{
 		case(EMPTY): return false;
 
 		case(PAWN):
-			if(!execute_pawn_move(board, move, info)) return false;
+			if(pawn_move_handler(board, move, info)) return true;
 			break;
 
 		case(ROOK):
-			if(!execute_rook_move(board, move, info)) return false;
+			if(rook_move_handler(board, move, info)) return true;
 			break;
 
 		case(KNIGHT):
-			if(!execute_knight_move(board, move, info)) return false;
+			if(knight_move_handler(board, move, info)) return true;
 			break;
 
 		case(BISHOP):
-			if(!execute_bishop_move(board, move, info)) return false;
+			if(bishop_move_handler(board, move, info)) return true;
 			break;
 
 		case(QUEEN):
-			if(!execute_queen_move(board, move, info)) return false;
+			if(queen_move_handler(board, move, info)) return true;
 			break;
 
 		case(KING):
-			if(!execute_king_move(board, move, info)) return false;
+			if(execute_king_move(board, move, info)) return true;
 			break;
 	}
-	return true;
+	return false;
 }
 
 void switch_chess_pieces(Board board, Point first, Point second)

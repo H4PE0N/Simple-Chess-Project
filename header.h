@@ -51,14 +51,18 @@ typedef struct Info
 	RKSwitch blackRKS;
 	Point bKing;
 	Point wKing;
+	bool bCheck;
+	bool wCheck;
 	int turns;
 } Info;
 
 #include "program.h"
 #include "moveable.h"
+#include "prevent-check.h"
 #include "check-move.h"
 #include "check-check.h"
 #include "move-piece.h"
+#include "move-handler.h"
 #include "move.h"
 
 #endif

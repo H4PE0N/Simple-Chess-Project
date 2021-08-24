@@ -36,9 +36,7 @@ int main(int argAmount, char* arguments[])
 	while(game_still_running(board, info))
 	{
 		display_chess_board(board);
-		printf("Current \t: (%s)\n", (info.current == WHITE) ? "WHITE" : "BLACK");
-		printf("WhiteRKS\t: (%d-%d)\n", info.whiteRKS.left, info.whiteRKS.right);
-		printf("BlackRKS\t: (%d-%d)\n", info.blackRKS.left, info.blackRKS.right);
+		printf("Current \t: (%s)\n", (info.current == WHITE) ? "RED" : "BLUE");
 		printf("TURNS   \t: (%d)\n", info.turns);
 
 		char string[20];
@@ -104,6 +102,9 @@ bool create_game_info(Info* info, Board board)
 
 	if(!find_board_piece(&info->bKing, board, KING, BLACK)) return false;
 	if(!find_board_piece(&info->wKing, board, KING, WHITE)) return false;
+
+	info->bCheck = king_check_situation(board, info->bKing, BLACK);
+	info->wCheck = king_check_situation(board, info->wKing, WHITE);
 
 	info->turns = 0;
 	return true;
@@ -205,8 +206,13 @@ void display_chess_board(Board board)
 			Color color = board[height][width].color;
 
 			char symbol = (color == WHITE) ? white_symbols[type] : black_symbols[type];
+			char ascii_c[20];
 
-			printf("%c ", symbol);
+			if(color == WHITE) strcpy(ascii_c, "\033[31m");
+			else if(color == BLACK) strcpy(ascii_c, "\033[34m");
+			else strcpy(ascii_c, "\033[0m");
+
+			printf("%s%c%s ", ascii_c, symbol, "\033[0m");
 		}
 		printf("\n");
 	}
