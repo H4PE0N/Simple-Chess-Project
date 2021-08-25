@@ -8,4 +8,12 @@
 
 #include <stdbool.h>
 
+#include <string.h>
+
+#include <math.h>
+
+#include "struct-definitions-header.h"
+
+#include "common-functions-program.h"
+
 #endif
