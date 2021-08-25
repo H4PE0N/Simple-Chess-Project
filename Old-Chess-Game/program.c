@@ -1,8 +1,7 @@
 
 #include "header.h"
 
-const char white_symbols[] = {'.', 'p', 'r', 'n', 'b', 'q', 'k'};
-const char black_symbols[] = {'.', 'P', 'R', 'N', 'B', 'Q', 'K'};
+const char symbols[] = {'.', 'P', 'R', 'H', 'B', 'Q', 'K'};
 
 const char letters[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
 const char numbers[] = {'1', '2', '3', '4', '5', '6', '7', '8'};
@@ -34,8 +33,6 @@ int main(int argAmount, char* arguments[])
 	{
 		display_chess_board(board);
 		printf("Current \t: (%s)\n", (info.current == WHITE) ? "RED" : "BLUE");
-		printf("WhiteRKS\t: (%d-%d)\n", info.whiteRKS.left, info.whiteRKS.right);
-		printf("BlackRKS\t: (%d-%d)\n", info.blackRKS.left, info.blackRKS.right);
 		printf("TURNS   \t: (%d)\n", info.turns);
 
 		char string[20];
@@ -225,7 +222,7 @@ void display_chess_board(Board board)
 			Type type = board[height][width].type;
 			Color color = board[height][width].color;
 
-			char symbol = (color == WHITE) ? white_symbols[type] : black_symbols[type];
+			char symbol = symbols[type];
 			char ascii_c[20];
 
 			if(color == WHITE) strcpy(ascii_c, "\033[31m");
