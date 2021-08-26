@@ -12,6 +12,10 @@
 
 #include <math.h>
 
+#include <time.h>
+
+#include <unistd.h>
+
 #include "struct-definitions-header.h"
 
 #include "common-functions-program.h"

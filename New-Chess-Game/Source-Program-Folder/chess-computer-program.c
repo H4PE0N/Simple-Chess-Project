@@ -5,14 +5,7 @@ bool computer_chess_move(Board board, Info* info, Color color)
 {
 	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
 
-	if(!find_computer_move(&move, board, info, color))
-		{
-			printf("Cant find move!\n");
-			return false;
-		}
-
-	printf("move (%d %d) (%d %d)\n",
-		move.start.height, move.start.width, move.stop.height, move.stop.width);
+	if(!find_computer_move(&move, board, info, color)) return false;
 
 	Piece piece = board_point_piece(board, move.start);
 	Point* king = (color == WHITE) ? &info->wKing : &info->bKing;
@@ -26,50 +19,101 @@ bool computer_chess_move(Board board, Info* info, Color color)
 
 bool find_computer_move(Move* move, Board board, Info* info, Color color)
 {
-	//if(computer_offence_move(move, board, info, color)) return true;
+	Move* moves = all_possible_moves(board, info, color);
+	int amount = moves_array_amount(moves);
 
-	if(computer_suicide_move(move, board, info, color)) return true;
+	if(amount == 0)
+	{
+		free(moves); return false;
+	}
 
-	//if(computer_defence_move(move, board, info, color)) return true;
+	int random = create_random_number(0, amount - 1);
+	Move bestMove = moves[random];
+	Move current;
+	Type bestMoveEnemy = EMPTY;
+	Piece piece;
 
-	if(computer_regular_move(move, board, info, color)) return true;
+	for(int index = 0; index < amount; index += 1)
+	{
+		current = moves[index];
+		Point stop = current.stop, start = current.start;
+		piece = board_point_piece(board, stop);
 
-	return false;
+		if(board_points_enemy(board, start, stop) && (piece.type > bestMoveEnemy))
+		{
+			bestMove = current;
+			bestMoveEnemy = piece.type;
+		}
+	}
+
+	*move = bestMove;
+
+	free(moves);
+
+	return true;
 }
 
-bool computer_suicide_move(Move* move, Board board, Info* info, Color color)
+Move* all_possible_moves(Board board, Info* info, Color color)
 {
-	Move moves[16]; int amount = 0;
+	Move* moves = create_moves_array(1024);
+	Move* adding;
+
 	for(int height = 0; height < B_HEIGHT; height += 1)
 	{
 		for(int width = 0; width < B_WIDTH; width += 1)
 		{
 			Point point = {height, width};
 			Color currColor = board_point_color(board, point);
-
 			if(currColor != color) continue;
 
-			if(!piece_suicide_move(&moves[amount], board, info, point)) continue;
+			adding = create_moves_array(40);
 
-			amount += 1;
+			if(!piece_possible_moves(adding, board, info, point)) continue;
+
+			append_moves_array(moves, adding);
+
+			free(adding);
 		}
 	}
-
-	printf("Found (%d) moves!\n", amount);
-
-	if(amount == 0) return false;
-
-	int index = (rand() % amount);
-
-	*move = moves[index];
-	//*move = moves[0];
-
-	return true;
+	return moves;
 }
 
-bool piece_suicide_move(Move* move, Board board, Info* info, Point start)
+void append_moves_array(Move* moves, Move* adding)
 {
-	Point stop; Move currMove;
+	int amount = moves_array_amount(moves);
+	int addAmount = moves_array_amount(adding);
+
+	for(int index = 0; index < addAmount; index += 1)
+	{
+		moves[amount + index] = adding[index];
+	}
+}
+
+int moves_array_amount(Move* moves)
+{
+	int amount = 0;
+	while(points_inside_board(moves[amount].start, moves[amount].stop))
+	{
+		amount += 1;
+	}
+	return amount;
+}
+
+Move* create_moves_array(int amount)
+{
+	Move* moves = malloc(sizeof(Move) * amount);
+	Point start, stop;
+	for(int index = 0; index < amount; index += 1)
+	{
+		start = (Point) {-1, -1}, stop = (Point) {-1, -1};
+		moves[index] = (Move) {start, stop};
+	}
+	return moves;
+}
+
+bool piece_possible_moves(Move* moves, Board board, Info* info, Point start)
+{
+	Point stop; Move currMove; int amount = 0;
 	for(int height = 0; height < B_HEIGHT; height += 1)
 	{
 		for(int width = 0; width < B_WIDTH; width += 1)
@@ -78,80 +122,11 @@ bool piece_suicide_move(Move* move, Board board, Info* info, Point start)
 			currMove = (Move) {start, stop};
 
 			if(!piece_move_acceptable(board, currMove, info)) continue;
-
 			if(!move_prevent_check(board, currMove, info)) continue;
 
-			if(!board_points_enemy(board, start, stop)) continue;
-
-			*move = currMove; 
-			return true;
-		}
-	}
-	return false;
-}
-
-bool computer_offence_move(Move* move, Board board, Info* info, Color color)
-{
-	return false;
-}
-
-bool computer_defence_move(Move* move, Board board, Info* info, Color color)
-{
-	return false;
-}
-
-bool computer_regular_move(Move* move, Board board, Info* info, Color color)
-{
-	Move moves[16]; int amount = 0;
-	for(int height = 0; height < B_HEIGHT; height += 1)
-	{
-		for(int width = 0; width < B_WIDTH; width += 1)
-		{
-			Point point = {height, width};
-			Color currColor = board_point_color(board, point);
-
-			if(currColor != color) continue;
-
-			if(!piece_regular_move(&moves[amount], board, info, point)) continue;
-
+			moves[amount] = currMove; 
 			amount += 1;
 		}
 	}
-
-	printf("Found (%d) moves!\n", amount);
-
-	if(amount == 0) return false;
-
-	int index = (rand() % amount);
-
-	*move = moves[index];
-	//*move = moves[0];
-
-	return true;
+	return (amount != 0);
 }
-
-bool piece_regular_move(Move* move, Board board, Info* info, Point start)
-{
-	Point stop; Move currMove;
-	for(int height = 0; height < B_HEIGHT; height += 1)
-	{
-		for(int width = 0; width < B_WIDTH; width += 1)
-		{
-			stop = (Point) {height, width};
-			currMove = (Move) {start, stop};
-
-			if(!piece_move_acceptable(board, currMove, info)) continue;
-
-			printf("move (%d %d) (%d %d)\n",
-				start.height, start.width, stop.height, stop.width);
-
-			if(!move_prevent_check(board, currMove, info)) continue;
-
-			*move = currMove; 
-			return true; 
-		}
-	}
-	return false;
-}
-
-

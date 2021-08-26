@@ -113,9 +113,6 @@ bool king_move_acceptable(Board board, Point start, Point stop)
 
 	if(!simulate_check_move(board, start, stop)) return false;
 	
-	printf("King move acceptable! (%d %d) (%d %d)\n",
-		start.height, start.width, stop.height, stop.width);
-
 	return true;
 }
 

@@ -188,9 +188,6 @@ bool move_prevent_check(Board board, Move move, Info* info)
 
 	if(!king_check_situation(copy, king))
 	{
-		printf("At (%d-%d) to (%d-%d) prevent check!\n",
-			start.height, start.width, stop.height, stop.width);
-		
 		free(copy); return true;
 	}
 

@@ -7,12 +7,9 @@ bool game_still_running(Color* winner, Board board, Info* info)
 	{
 		Color color = (round == 0) ? WHITE : BLACK;
 		Point point = color_king_point(*info, color);
-		
-		printf("Checking game!\n");
 
 		if(check_mate_situation(board, point, info))
 		{
-			printf("It check mate!\n");
 			*winner = (color == WHITE) ? BLACK : WHITE;
 			return false;
 		}
@@ -58,18 +55,11 @@ bool check_draw_situation(Board board, Point point)
 	return true;
 }
 
-#include "../Header-Program-Folder/game-interface-program.h"
-
 bool check_mate_situation(Board board, Point point, Info* info)
 {
 	Color color = board_point_color(board, point);
 
 	if(!king_check_situation(board, point)) return false;
-	printf("Its check for the king!\n");
-
-	printf("Point king = (%d %d)\n", point.height, point.width);
-
-	display_chess_board(board);
 
 	if(board_king_moveable(board, point)) return false;
 

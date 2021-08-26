@@ -11,14 +11,14 @@ bool computer_chess_move(Board, Info*, Color);
 
 bool find_computer_move(Move*, Board, Info*, Color);
 
-bool computer_suicide_move(Move*, Board, Info*, Color);
-bool piece_suicide_move(Move*, Board, Info*, Point);
+bool piece_possible_moves(Move*, Board, Info*, Point);
 
-bool computer_offence_move(Move*, Board, Info*, Color);
+Move* all_possible_moves(Board, Info*, Color);
 
-bool computer_defence_move(Move*, Board, Info*, Color);
+int moves_array_amount(Move*);
 
-bool computer_regular_move(Move*, Board, Info*, Color);
-bool piece_regular_move(Move*, Board, Info*, Point);
+void append_moves_array(Move*, Move*);
+
+Move* create_moves_array(int);
 
 #endif

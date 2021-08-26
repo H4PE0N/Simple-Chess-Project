@@ -3,6 +3,7 @@
 
 int main(int argAmount, char* arguments[])
 {
+	srand(time(NULL));
 	printf("Welcome to single-player-chess.c!\n");
 
 	Board board = malloc(sizeof(Piece*) * B_HEIGHT);
@@ -53,6 +54,11 @@ bool single_player_chess(Color* winner, Board board, Info* info)
 		printf("Now its time for the comuter!\n");
 
 		if(!game_still_running(winner, board, info)) break;
+
+		display_chess_board(board);
+		display_chess_info(*info);
+
+		sleep(1);
 
 		if(!computer_chess_move(board, info, BLACK))
 		{

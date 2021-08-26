@@ -24,6 +24,11 @@ bool points_inside_board(Point first, Point second)
 	return true;
 }
 
+int create_random_number(int minimum, int maximum)
+{
+	return (rand() % (maximum - minimum + 1) + minimum);
+}
+
 Piece board_point_piece(Board board, Point point)
 {
 	return board[point.height][point.width];

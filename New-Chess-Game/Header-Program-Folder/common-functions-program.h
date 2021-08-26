@@ -16,6 +16,8 @@ void remove_board_piece(Board, Point);
 
 void move_board_piece(Board, Point, Point);
 
+int create_random_number(int, int);
+
 void switch_chess_pieces(Board, Point, Point);
 
 bool board_piece_equal(Piece, Piece);
