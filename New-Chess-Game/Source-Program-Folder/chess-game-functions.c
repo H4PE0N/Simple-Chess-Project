@@ -8,6 +8,9 @@ bool game_still_running(Color* winner, Board board, Info* info)
 		Color color = (round == 0) ? WHITE : BLACK;
 		Point point = color_king_point(*info, color);
 
+		if(!point_inside_board(point)) return false;
+		if(board_point_empty(board, point)) return false;
+
 		if(check_mate_situation(board, point, info))
 		{
 			*winner = (color == WHITE) ? BLACK : WHITE;

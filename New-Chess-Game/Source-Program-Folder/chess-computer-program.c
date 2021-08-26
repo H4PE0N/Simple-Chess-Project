@@ -12,7 +12,7 @@ bool computer_chess_move(Board board, Info* info, Color color)
 
 	if(piece.type == KING) *king = move.stop;
 
-	move_board_piece(board, move.start, move.stop);
+	if(!move_chess_piece(board, move, info)) return false;
 
 	return true;
 }

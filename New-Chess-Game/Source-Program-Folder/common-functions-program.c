@@ -109,6 +109,7 @@ Board copy_chess_board(Board board)
 
 Point color_king_point(Info info, Color color)
 {
+	if(color == NONE) return (Point) {-1, -1};
 	return (color == WHITE) ? info.wKing : info.bKing;
 }
 
