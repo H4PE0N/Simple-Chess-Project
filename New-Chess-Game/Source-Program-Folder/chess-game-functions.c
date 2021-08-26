@@ -67,7 +67,7 @@ bool check_draw_situation(Board board, Info* info, Point point)
 {
 	Color color = board_point_color(board, point);
 
-	if(king_check_situation(board, point)) return false;
+	if(king_check_situation(board, point, color)) return false;
 
 	if(board_piece_moveable(board, info, point)) return false;
 
@@ -80,7 +80,7 @@ bool check_mate_situation(Board board, Info* info, Point point)
 {
 	Color color = board_point_color(board, point);
 
-	if(!king_check_situation(board, point)) return false;
+	if(!king_check_situation(board, point, color)) return false;
 
 	if(board_piece_moveable(board, info, point)) return false;
 

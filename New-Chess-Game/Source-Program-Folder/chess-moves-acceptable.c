@@ -170,8 +170,24 @@ bool simulate_check_move(Board board, Point start, Point stop)
 	Board copy = copy_chess_board(board);
 	move_board_piece(copy, start, stop);
 
-	if(!king_check_situation(copy, stop))
-	{ free(copy); return true; }
+	if(!king_check_situation(copy, stop, color))
+	{ 
+		free(copy); return true; 
+	}
 
 	free(copy); return false;
+}
+
+bool check_check_situation(Board board, Move move, Info* info)
+{
+	Point start = move.start, stop = move.stop;
+
+	Color color = board_point_color(board, start);
+	Point king = color_king_point(*info, color);
+
+	if(!king_check_situation(board, king, color)) return true;
+
+	if(move_prevent_check(board, move, info)) return true;
+	
+	return false;
 }

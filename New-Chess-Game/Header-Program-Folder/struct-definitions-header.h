@@ -47,6 +47,14 @@ typedef struct Info
 	int turns;
 } Info;
 
+typedef struct BestMove
+{
+	Move move;
+	bool setsCheck;
+	bool takeEnemy;
+	bool getsTaken;
+} BestMove;
+
 #define B_HEIGHT 8
 #define B_WIDTH 8
 

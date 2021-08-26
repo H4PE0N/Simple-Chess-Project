@@ -4,7 +4,7 @@
 
 #include "../Header-Program-Folder/global-include-header.h"
 
-bool king_check_situation(Board, Point);
+bool king_check_situation(Board, Point, Color);
 
 bool check_knight_check(Board, Point, Color);
 

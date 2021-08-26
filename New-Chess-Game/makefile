@@ -28,6 +28,9 @@ single-player-chess: $(SOURCE_OBJECTS) $(SINGLE_OBJECT)
 multi-player-chess: $(SOURCE_OBJECTS) $(MULTI_OBJECT)
 	$(COMPILE_COMPILOR) $(COMPILE_FLAGS) $^ -o $@
 
+remove-objects:
+	rm $(SOURCE_OBJECTS) $(MULTI_OBJECT) $(SINGLE_OBJECT)
+
 $(SRCOBJ_FOLDER)/%.o: $(SOURCE_FOLDER)/%.c $(HEADER_FOLDER)/%.h
 	$(COMPILE_COMPILOR) $(COMPOBJ_FLAGS) $< -c -o $@
 

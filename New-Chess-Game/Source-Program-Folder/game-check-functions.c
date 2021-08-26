@@ -1,10 +1,8 @@
 
 #include "../Header-Program-Folder/game-check-functions.h"
 
-bool king_check_situation(Board board, Point point)
+bool king_check_situation(Board board, Point point, Color color)
 {
-	Color color = board_point_color(board, point);
-
 	Board copy = copy_chess_board(board);
 	append_board_piece(copy, point, (Piece) {KING, color});
 

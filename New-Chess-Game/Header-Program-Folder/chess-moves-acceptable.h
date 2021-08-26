@@ -18,6 +18,8 @@ bool rook_switch_able(Board, Move, Info*);
 
 bool rook_move_acceptable(Board, Move, Info*);
 
+bool check_check_situation(Board, Move, Info*);
+
 bool bishop_move_acceptable(Board, Point, Point);
 
 bool diagonal_move_acceptable(Board, Point, Point);

@@ -21,4 +21,12 @@ void append_moves_array(Move*, Move*);
 
 Move* create_moves_array(int);
 
+bool simulate_enemy_check(Board, Point, Point);
+
+bool current_move_better(Board, BestMove, BestMove);
+
+BestMove create_bestMove_data(Board, Move);
+
+void update_best_move(BestMove*, Board, Move);
+
 #endif

@@ -46,21 +46,6 @@ bool move_chess_piece(Board board, Move move, Info* info)
 	return false;
 }
 
-bool check_check_situation(Board board, Move move, Info* info)
-{
-	Point start = move.start, stop = move.stop;
-
-	Color color = board[start.height][start.width].color;
-
-	Point king = color_king_point(*info, color);
-
-	if(!king_check_situation(board, king)) return true;
-
-	if(move_prevent_check(board, move, info)) return true;
-	
-	return false;
-}
-
 bool pawn_move_handler(Board board, Move move, Info* info)
 {
 	Point start = move.start, stop = move.stop;

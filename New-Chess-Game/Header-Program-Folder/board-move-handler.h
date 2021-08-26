@@ -20,6 +20,4 @@ bool queen_move_handler(Board, Move, Info*);
 
 bool king_move_handler(Board, Move, Info*);
 
-bool check_check_situation(Board, Move, Info*);
-
 #endif
