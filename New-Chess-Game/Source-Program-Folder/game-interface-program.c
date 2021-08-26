@@ -32,6 +32,8 @@ void display_chess_board(Board board)
 void display_chess_info(Info info)
 {
 	printf("Current \t: (%s)\n", (info.current == WHITE) ? "RED" : "BLUE");
+	// printf("WhiteRKS\t: (%d-%d)\n", info.whiteRKS.left, info.whiteRKS.right);
+	// printf("BlackRKS\t: (%d-%d)\n", info.blackRKS.left, info.blackRKS.right);
 	printf("TURNS   \t: (%d)\n", info.turns);
 }
 

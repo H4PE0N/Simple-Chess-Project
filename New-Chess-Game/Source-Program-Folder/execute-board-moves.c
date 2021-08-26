@@ -18,6 +18,8 @@ void execute_rook_switch(Board board, Move move, Info* info)
 	Color color = board[start.height][start.width].color;
 	RKSwitch* RKS = (color == BLACK) ? &info->blackRKS : &info->whiteRKS;
 
+	update_king_point(info, color, start);
+
 	switch_chess_pieces(board, start, stop);
 
 	RKS->right = false;

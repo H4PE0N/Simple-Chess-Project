@@ -16,4 +16,6 @@ bool check_draw_situation(Board, Info*, Point);
 
 bool game_still_running(Color*, Board, Info*);
 
+bool update_kings_point(Board, Info*);
+
 #endif

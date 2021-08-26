@@ -48,8 +48,14 @@ bool single_player_chess(Color* winner, Board board, Info* info)
 
 		if(!move_chess_piece(board, move, info)) continue;
 		
-		info->current = BLACK;
+		if(!update_kings_point(board, info))
+		{
+			printf("One of the kings has died BNR!\n");
+			return false;
+		}
+
 		info->turns += 1;
+		info->current = BLACK;
 
 		if(!game_still_running(winner, board, info)) break;
 
@@ -64,6 +70,13 @@ bool single_player_chess(Color* winner, Board board, Info* info)
 			printf("The computer cant move!\n");
 			break;
 		}
+
+		if(!update_kings_point(board, info))
+		{
+			printf("One of the kings has died BNR!\n");
+			return false;
+		}
+
 		info->turns += 1;
 	}
 	return true;

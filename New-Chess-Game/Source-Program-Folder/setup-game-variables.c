@@ -4,7 +4,7 @@
 
 bool setup_game_variables(Board board, Info* info)
 {
-	char* filename = "Data-Files-Folder/starting-chess-board.txt";
+	char* filename = "Data-Files-Folder/default-chess-board.txt";
 
 	if(!create_chess_board(board, filename))
 	{

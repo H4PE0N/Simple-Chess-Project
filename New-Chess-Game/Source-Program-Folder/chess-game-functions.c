@@ -9,7 +9,6 @@ bool game_still_running(Color* winner, Board board, Info* info)
 		Point point = color_king_point(*info, color);
 
 		if(!point_inside_board(point)) return false;
-
 		if(board_point_empty(board, point)) return false;
 
 		if(check_mate_situation(board, info, point))
@@ -25,6 +24,22 @@ bool game_still_running(Color* winner, Board board, Info* info)
 			return false;
 		}
 	}
+
+	return true;
+}
+
+bool update_kings_point(Board board, Info* info)
+{
+	Point bKing, wKing;
+
+	if(!board_piece_point(&bKing, board, (Piece) {KING, BLACK})) 
+		return false;
+
+	if(!board_piece_point(&wKing, board, (Piece) {KING, WHITE})) 
+		return false;
+
+	info->bKing = bKing;
+	info->wKing = wKing;
 
 	return true;
 }
