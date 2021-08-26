@@ -29,4 +29,6 @@ BestMove create_bestMove_data(Board, Move);
 
 void update_best_move(BestMove*, Board, Move);
 
+bool piece_can_get_taken(Board, Point, Point);
+
 #endif

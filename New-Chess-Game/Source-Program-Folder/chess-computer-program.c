@@ -65,9 +65,7 @@ BestMove create_bestMove_data(Board board, Move move)
 
 	bool setsCheck = simulate_enemy_check(board, c_start, c_stop);
 	bool takeEnemy = board_points_enemy(board, c_start, c_stop);
-
-	// This is super risky! Edit this function!
-	bool getsTaken = !simulate_check_move(board, c_start, c_stop);
+	bool getsTaken = piece_can_get_taken(board, c_start, c_stop);
 
 	return (BestMove) {move, setsCheck, takeEnemy, getsTaken};
 }
@@ -77,6 +75,15 @@ void update_best_move(BestMove* bestMove, Board board, Move move)
 	BestMove current = create_bestMove_data(board, move);
 
 	if(current_move_better(board, *bestMove, current)) *bestMove = current;
+}
+
+bool piece_can_get_taken(Board board, Point start, Point stop)
+{
+	// This function should return if the piece can 
+	// get taken at the spot that its moving to
+
+	// This is super risky! Edit this function!
+	return !simulate_check_move(board, start, stop);
 }
 
 // setsCheck	takeEnemy	!getsTaken
@@ -89,8 +96,25 @@ void update_best_move(BestMove* bestMove, Board board, Move move)
 // setsCheck	!takeEnemy	getsTaken
 // !setsCheck	!takeEnemy	getsTaken
 
-// false		true		false
-// true			false		false
+// ==================================
+
+// setsCheck	takeEnemy	!getsTaken	exposed
+// !setsCheck	takeEnemy	!getsTaken	exposed
+// setsCheck	!takeEnemy	!getsTaken	exposed
+// !setsCheck	!takeEnemy	!getsTaken	exposed
+// setsCheck	takeEnemy	getsTaken	exposed
+// !setsCheck	takeEnemy	getsTaken	exposed
+// setsCheck	!takeEnemy	getsTaken	exposed
+// !setsCheck	!takeEnemy	getsTaken	exposed
+
+// setsCheck	takeEnemy	!getsTaken	!exposed
+// !setsCheck	takeEnemy	!getsTaken	!exposed
+// setsCheck	!takeEnemy	!getsTaken	!exposed
+// !setsCheck	!takeEnemy	!getsTaken	!exposed
+// setsCheck	takeEnemy	getsTaken	!exposed
+// !setsCheck	takeEnemy	getsTaken	!exposed
+// setsCheck	!takeEnemy	getsTaken	!exposed
+// !setsCheck	!takeEnemy	getsTaken	!exposed
 
 bool current_move_better(Board board, BestMove bestMove, BestMove current)
 {
