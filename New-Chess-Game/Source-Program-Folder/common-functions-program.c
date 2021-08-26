@@ -112,7 +112,7 @@ bool board_points_team(Board board, Point start, Point stop)
 	Color start_c = board_point_color(board, start);
 	Color stop_c = board_point_color(board, stop);
 
-	return (start_c == stop_c && start_c != NONE);
+	return (start_c == stop_c && start_c != NONE  && stop_c != NONE);
 }
 
 bool board_point_empty(Board board, Point point)
@@ -127,7 +127,7 @@ bool board_points_enemy(Board board, Point start, Point stop)
 	Color start_c = board_point_color(board, start);
 	Color stop_c = board_point_color(board, stop);
 
-	return (start_c != stop_c && start_c != NONE);
+	return (start_c != stop_c && start_c != NONE && stop_c != NONE);
 }
 
 bool clear_moving_path(Board board, Point start, Point stop)

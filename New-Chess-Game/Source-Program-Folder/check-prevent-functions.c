@@ -1,8 +1,5 @@
 
-#include "../Header-Program-Folder/global-include-header.h"
 #include "../Header-Program-Folder/check-prevent-functions.h"
-#include "../Header-Program-Folder/chess-moves-acceptable.h"
-#include "../Header-Program-Folder/chess-game-functions.h"
 
 bool team_prevent_check(Board board, Info* info, Color color)
 {
@@ -12,9 +9,9 @@ bool team_prevent_check(Board board, Info* info, Color color)
 		for(int width = 0; width < 8; width = width + 1)
 		{
 			point = (Point) {height, width};
-			piece = board[height][width];
+			Color currColor = board_point_color(board, point);
 
-			if(piece.color != color) continue;
+			if(currColor != color) continue;
 
 			if(piece_prevent_check(board, point, info)) return true;
 		}
@@ -55,7 +52,7 @@ bool piece_prevent_check(Board board, Point point, Info* info)
 			break;
 
 		case(KING):
-			return false;
+			return true;
 			break;
 	}
 
@@ -178,13 +175,16 @@ bool move_prevent_check(Board board, Move move, Info* info)
 {
 	Point start = move.start, stop = move.stop;
 
-	Color color = board_point_color(board, start);
-	if(color == NONE) return false;
+	Piece piece = board_point_piece(board, start);
 
-	Point king = color_king_point(*info, color);
+	if(piece.color == NONE) return false;
+
+	Point king = color_king_point(*info, piece.color);
 
 	Board copy = copy_chess_board(board);
 	move_board_piece(copy, start, stop);
+
+	if(piece.type == KING) king = stop;
 
 	if(!king_check_situation(copy, king))
 	{

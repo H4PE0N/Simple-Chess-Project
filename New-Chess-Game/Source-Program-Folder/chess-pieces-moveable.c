@@ -9,8 +9,6 @@ bool board_piece_moveable(Board board, Piece piece, Point point)
 
 	switch(piece.type)
 	{
-		case(EMPTY): return false;
-
 		case(PAWN):
 			if(board_pawn_moveable(board, point)) return true;
 			break;

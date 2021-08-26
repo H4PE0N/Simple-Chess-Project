@@ -9,14 +9,16 @@
 
 bool computer_chess_move(Board, Info*, Color);
 
-bool get_computer_move(Move*, Board, Info*, Color);
+bool find_computer_move(Move*, Board, Info*, Color);
 
 bool computer_suicide_move(Move*, Board, Info*, Color);
+bool piece_suicide_move(Move*, Board, Info*, Point);
 
 bool computer_offence_move(Move*, Board, Info*, Color);
 
 bool computer_defence_move(Move*, Board, Info*, Color);
 
 bool computer_regular_move(Move*, Board, Info*, Color);
+bool piece_regular_move(Move*, Board, Info*, Point);
 
 #endif

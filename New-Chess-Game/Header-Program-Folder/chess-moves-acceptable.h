@@ -26,4 +26,6 @@ bool straight_move_acceptable(Board, Point, Point);
 
 bool simulate_check_move(Board, Point, Point);
 
+bool piece_move_acceptable(Board, Move, Info*);
+
 #endif

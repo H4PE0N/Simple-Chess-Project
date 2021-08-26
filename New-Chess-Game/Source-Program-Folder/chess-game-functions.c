@@ -58,12 +58,18 @@ bool check_draw_situation(Board board, Point point)
 	return true;
 }
 
+#include "../Header-Program-Folder/game-interface-program.h"
+
 bool check_mate_situation(Board board, Point point, Info* info)
 {
 	Color color = board_point_color(board, point);
 
 	if(!king_check_situation(board, point)) return false;
 	printf("Its check for the king!\n");
+
+	printf("Point king = (%d %d)\n", point.height, point.width);
+
+	display_chess_board(board);
 
 	if(board_king_moveable(board, point)) return false;
 

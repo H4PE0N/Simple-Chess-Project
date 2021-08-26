@@ -50,6 +50,8 @@ bool single_player_chess(Color* winner, Board board, Info* info)
 		info->current = BLACK;
 		info->turns += 1;
 
+		printf("Now its time for the comuter!\n");
+
 		if(!game_still_running(winner, board, info)) break;
 
 		if(!computer_chess_move(board, info, BLACK))
@@ -58,6 +60,7 @@ bool single_player_chess(Color* winner, Board board, Info* info)
 			printf("The computer cant move!\n");
 			break;
 		}
+		info->turns += 1;
 	}
 	return true;
 }

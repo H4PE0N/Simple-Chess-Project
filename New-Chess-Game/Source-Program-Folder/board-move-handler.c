@@ -5,7 +5,10 @@ bool move_chess_piece(Board board, Move move, Info* info)
 {
 	Point start = move.start, stop = move.stop;
 
+	if(board_point_empty(board, start)) return false;
+
 	if(!points_inside_board(start, stop)) return false;
+
 	if(board_points_equal(start, stop)) return false;
 
 	Piece piece = board_point_piece(board, start);
@@ -15,7 +18,7 @@ bool move_chess_piece(Board board, Move move, Info* info)
 	switch(piece.type)
 	{
 		case(EMPTY): return false;
-
+	
 		case(PAWN):
 			if(pawn_move_handler(board, move, info)) return true;
 			break;

@@ -1,6 +1,45 @@
 
 #include "../Header-Program-Folder/chess-moves-acceptable.h"
 
+bool piece_move_acceptable(Board board, Move move, Info* info)
+{
+	Point start = move.start, stop = move.stop;
+
+	if(board_points_equal(start, stop)) return false;
+
+	Piece piece = board_point_piece(board, start);
+
+	switch(piece.type)
+	{
+		case(EMPTY): return false; break;
+	
+		case(PAWN):
+			if(pawn_move_acceptable(board, start, stop)) return true;
+			break;
+
+		case(ROOK):
+			if(rook_move_acceptable(board, move, info)) return true;
+			break;
+
+		case(KNIGHT):
+			if(knight_move_acceptable(board, start, stop)) return true;
+			break;
+
+		case(BISHOP):
+			if(bishop_move_acceptable(board, start, stop)) return true;
+			break;
+
+		case(QUEEN):
+			if(queen_move_acceptable(board, start, stop)) return true;
+			break;
+
+		case(KING):
+			if(king_move_acceptable(board, start, stop)) return true;
+			break;
+	}
+	return false;
+}
+
 bool queen_move_acceptable(Board board, Point start, Point stop)
 {
 	if(!moving_queen_valid(start, stop)) return false;
@@ -20,7 +59,7 @@ bool pawn_move_acceptable(Board board, Point start, Point stop)
 
 	if(start.width == stop.width)
 	{
-		if(board_point_empty(board, stop)) return true;
+		if(board_point_empty(board, stop)) return true; 
 	}
 	else if(board_points_enemy(board, start, stop)) return true;
 	
@@ -72,10 +111,12 @@ bool king_move_acceptable(Board board, Point start, Point stop)
 
 	if(board_points_team(board, start, stop)) return false;
 
-	if(simulate_check_move(board, start, stop)) 
-		return true;
+	if(!simulate_check_move(board, start, stop)) return false;
+	
+	printf("King move acceptable! (%d %d) (%d %d)\n",
+		start.height, start.width, stop.height, stop.width);
 
-	return false;
+	return true;
 }
 
 bool knight_move_acceptable(Board board, Point start, Point stop)
