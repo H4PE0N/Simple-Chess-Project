@@ -9,6 +9,8 @@ bool board_piece_moveable(Board board, Piece piece, Point point)
 
 	switch(piece.type)
 	{
+		case(EMPTY): return false; break;
+
 		case(PAWN):
 			if(board_pawn_moveable(board, point)) return true;
 			break;
@@ -138,7 +140,6 @@ bool diagonal_move_able(Board board, Point start)
 
 bool board_king_moveable(Board board, Point start)
 {
-	Color color = board[start.height][start.width].color;
 	Point stop;
 	for(int height = 0; height < 3; height = height + 1)
 	{

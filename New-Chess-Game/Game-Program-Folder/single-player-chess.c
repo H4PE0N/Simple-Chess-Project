@@ -51,8 +51,6 @@ bool single_player_chess(Color* winner, Board board, Info* info)
 		info->current = BLACK;
 		info->turns += 1;
 
-		printf("Now its time for the comuter!\n");
-
 		if(!game_still_running(winner, board, info)) break;
 
 		display_chess_board(board);

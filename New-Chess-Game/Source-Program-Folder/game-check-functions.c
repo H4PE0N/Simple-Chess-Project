@@ -8,27 +8,27 @@ bool king_check_situation(Board board, Point point)
 	Board copy = copy_chess_board(board);
 	append_board_piece(copy, point, (Piece) {KING, color});
 
-	if(check_knight_check(board, point, color))
+	if(check_knight_check(copy, point, color))
 	{
 		free(copy); return true;
 	}
 
-	if(check_pawn_check(board, point, color))
+	if(check_pawn_check(copy, point, color))
 	{
 		free(copy); return true;
 	}
 
-	if(check_diagonal_check(board, point, color))
+	if(check_diagonal_check(copy, point, color))
 	{
 		free(copy); return true;
 	}
 
-	if(check_straight_check(board, point, color))
+	if(check_straight_check(copy, point, color))
 	{
 		free(copy); return true;
 	}
 
-	if(check_king_check(board, point, color))
+	if(check_king_check(copy, point, color))
 	{
 		free(copy); return true;
 	}

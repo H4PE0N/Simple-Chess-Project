@@ -44,6 +44,8 @@ bool queen_move_acceptable(Board board, Point start, Point stop)
 {
 	if(!moving_queen_valid(start, stop)) return false;
 
+	if(board_point_piece(board, stop).type == KING) return false;
+
 	if(!clear_moving_path(board, start, stop)) return false;
 
 	if(board_points_team(board, start, stop)) return false;
@@ -54,6 +56,8 @@ bool queen_move_acceptable(Board board, Point start, Point stop)
 bool pawn_move_acceptable(Board board, Point start, Point stop)
 {
 	if(!moving_pawn_valid(board, start, stop)) return false;
+
+	if(board_point_piece(board, stop).type == KING) return false;
 
 	if(!clear_moving_path(board, start, stop)) return false;
 
@@ -89,6 +93,8 @@ bool rook_move_acceptable(Board board, Move move, Info* info)
 
 	if(rook_switch_able(board, move, info)) return true;
 	
+	if(board_point_piece(board, stop).type == KING) return false;
+
 	if(board_points_team(board, start, stop)) return false;
 
 	return true;
@@ -97,6 +103,8 @@ bool rook_move_acceptable(Board board, Move move, Info* info)
 bool bishop_move_acceptable(Board board, Point start, Point stop)
 {
 	if(!moving_bishop_valid(start, stop)) return false;
+
+	if(board_point_piece(board, stop).type == KING) return false;
 
 	if(!clear_moving_path(board, start, stop)) return false;
 
@@ -109,6 +117,8 @@ bool king_move_acceptable(Board board, Point start, Point stop)
 {
 	if(!moving_king_valid(start, stop)) return false;
 
+	if(board_point_piece(board, stop).type == KING) return false;
+
 	if(board_points_team(board, start, stop)) return false;
 
 	if(!simulate_check_move(board, start, stop)) return false;
@@ -120,6 +130,8 @@ bool knight_move_acceptable(Board board, Point start, Point stop)
 {
 	if(!moving_knight_valid(start, stop)) return false;
 
+	if(board_point_piece(board, stop).type == KING) return false;
+
 	if(board_points_team(board, start, stop)) return false;
 
 	return true;
@@ -128,6 +140,8 @@ bool knight_move_acceptable(Board board, Point start, Point stop)
 bool straight_move_acceptable(Board board, Point start, Point stop)
 {
 	if(!straight_move_valid(start, stop)) return false;
+
+	if(board_point_piece(board, stop).type == KING) return false;
 
 	if(!clear_moving_path(board, start, stop)) return false;
 
@@ -139,6 +153,8 @@ bool straight_move_acceptable(Board board, Point start, Point stop)
 bool diagonal_move_acceptable(Board board, Point start, Point stop)
 {
 	if(!diagonal_move_valid(start, stop)) return false;
+
+	if(board_point_piece(board, stop).type == KING) return false;
 
 	if(!clear_moving_path(board, start, stop)) return false;
 
