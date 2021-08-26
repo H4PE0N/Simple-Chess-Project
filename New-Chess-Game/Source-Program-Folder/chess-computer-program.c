@@ -79,6 +79,19 @@ void update_best_move(BestMove* bestMove, Board board, Move move)
 	if(current_move_better(board, *bestMove, current)) *bestMove = current;
 }
 
+// setsCheck	takeEnemy	!getsTaken
+// !setsCheck	takeEnemy	!getsTaken
+// setsCheck	!takeEnemy	!getsTaken
+// !setsCheck	!takeEnemy	!getsTaken
+
+// setsCheck	takeEnemy	getsTaken
+// !setsCheck	takeEnemy	getsTaken
+// setsCheck	!takeEnemy	getsTaken
+// !setsCheck	!takeEnemy	getsTaken
+
+// false		true		false
+// true			false		false
+
 bool current_move_better(Board board, BestMove bestMove, BestMove current)
 {
 	Type currType = board_point_type(board, current.move.stop);
