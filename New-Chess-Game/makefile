@@ -20,6 +20,8 @@ COMPILE_COMPILOR := gcc
 COMPEXE_FLAGS := -lm
 COMPOBJ_FLAGS :=
 
+default-target: multi-player-chess
+
 single-player-chess: $(SOURCE_OBJECTS) $(SINGLE_OBJECT)
 	$(COMPILE_COMPILOR) $(COMPILE_FLAGS) $^ -o $@
 
