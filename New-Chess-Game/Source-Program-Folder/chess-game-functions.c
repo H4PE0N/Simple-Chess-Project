@@ -12,13 +12,13 @@ bool game_still_running(Color* winner, Board board, Info* info)
 
 		if(board_point_empty(board, point)) return false;
 
-		if(check_mate_situation(board, point, info))
+		if(check_mate_situation(board, info, point))
 		{
 			printf("Check Mate!\n");
 			*winner = (color == WHITE) ? BLACK : WHITE;
 			return false;
 		}
-		if(check_draw_situation(board, point))
+		if(check_draw_situation(board, info, point))
 		{
 			printf("Draw!\n");
 			*winner = NONE;
@@ -29,7 +29,7 @@ bool game_still_running(Color* winner, Board board, Info* info)
 	return true;
 }
 
-bool other_pieces_moveable(Board board, Color color)
+bool other_pieces_moveable(Board board, Info* info, Color color)
 {
 	Piece piece; Point point;
 
@@ -42,32 +42,32 @@ bool other_pieces_moveable(Board board, Color color)
 
 			if(piece.color != color) continue;
 			
-			if(board_piece_moveable(board, piece, point)) return true;
+			if(board_piece_moveable(board, info, point)) return true;
 		}
 	}
 	return false;
 }
 
-bool check_draw_situation(Board board, Point point)
+bool check_draw_situation(Board board, Info* info, Point point)
 {
 	Color color = board_point_color(board, point);
 
 	if(king_check_situation(board, point)) return false;
 
-	if(board_king_moveable(board, point)) return false;
+	if(board_piece_moveable(board, info, point)) return false;
 
-	if(other_pieces_moveable(board, color)) return false;
+	if(other_pieces_moveable(board, info, color)) return false;
 
 	return true;
 }
 
-bool check_mate_situation(Board board, Point point, Info* info)
+bool check_mate_situation(Board board, Info* info, Point point)
 {
 	Color color = board_point_color(board, point);
 
 	if(!king_check_situation(board, point)) return false;
 
-	if(board_king_moveable(board, point)) return false;
+	if(board_piece_moveable(board, info, point)) return false;
 
 	if(team_prevent_check(board, info, color)) return false;
 

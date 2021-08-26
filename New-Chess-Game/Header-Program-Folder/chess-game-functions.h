@@ -8,11 +8,11 @@
 
 bool king_check_situation(Board, Point);
 
-bool other_pieces_moveable(Board, Color);
+bool other_pieces_moveable(Board, Info*, Color);
 
-bool check_mate_situation(Board, Point, Info*);
+bool check_mate_situation(Board, Info*, Point);
 
-bool check_draw_situation(Board, Point);
+bool check_draw_situation(Board, Info*, Point);
 
 bool game_still_running(Color*, Board, Info*);
 
