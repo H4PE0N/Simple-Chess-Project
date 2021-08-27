@@ -17,18 +17,21 @@ bool computer_chess_move(Board board, Info* info, Color color)
 	return true;
 }
 
-bool simulate_enemy_check(Board board, Point start, Point stop)
+bool simulate_enemy_check(Board board, Move move, Info info)
 {
+	Point start = move.start, stop = move.stop;
+
 	Color s_color = board_point_color(board, start);
 
 	if(s_color == NONE) return false;
 
 	Color color = (s_color == WHITE) ? BLACK : WHITE;
+	Point king = (s_color == WHITE) ? info.bKing : info.wKing;
 
 	Board copy = copy_chess_board(board);
 	move_board_piece(copy, start, stop);
 
-	if(!king_check_situation(copy, stop, color))
+	if(king_check_situation(copy, king, color))
 	{ 
 		free(copy); return true; 
 	}
@@ -47,43 +50,85 @@ bool find_computer_move(Move* move, Board board, Info* info, Color color)
 
 	int random = create_random_number(0, amount - 1);
 
-	BestMove bestMove = create_bestMove_data(board, moves[random]);
+	printf("[%d-%d] tp [%d-%d]\n",
+		moves[random].start.height,
+		moves[random].start.width,
+		moves[random].stop.height,
+		moves[random].stop.width);
+
+	BestMove bestMove = create_bestMove_data(board, moves[random], *info);
+
+	printf("setsCheck=%d\ntakeEnemy=%d\ngetsTaken=%d\nExposed=%d\nType=%d\nEnemy=%d\n",
+		bestMove.setsCheck, bestMove.takeEnemy, bestMove.getsTaken, bestMove.exposed, bestMove.type,
+		bestMove.enemy);
+
+
 	Move current;
 
 	for(int index = 0; index < amount; index += 1)
 	{
 		current = moves[index];
-		update_best_move(&bestMove, board, current);
+		update_best_move(&bestMove, board, current, *info);
 	}
+
+	printf("Best computable move out of [%d]: (%d-%d) to (%d-%d)\n",
+		amount, 
+		bestMove.move.start.height, 
+		bestMove.move.start.width, 
+		bestMove.move.stop.height, 
+		bestMove.move.stop.width);
+
+	printf("setsCheck=%d\ntakeEnemy=%d\ngetsTaken=%d\nExposed=%d\nType=%d\nEnemy=%d\n",
+		bestMove.setsCheck, bestMove.takeEnemy, bestMove.getsTaken, bestMove.exposed, bestMove.type,
+		bestMove.enemy);
 
 	*move = bestMove.move; free(moves); return true;
 }
 
-BestMove create_bestMove_data(Board board, Move move)
+BestMove create_bestMove_data(Board board, Move move, Info info)
 {
 	Point c_start = move.start, c_stop = move.stop;
 
-	bool setsCheck = simulate_enemy_check(board, c_start, c_stop);
-	bool takeEnemy = board_points_enemy(board, c_start, c_stop);
-	bool getsTaken = piece_can_get_taken(board, c_start, c_stop);
+	BestMove bestMove;
 
-	return (BestMove) {move, setsCheck, takeEnemy, getsTaken};
+	bestMove.move = move;
+
+	// This function is not working:
+	bestMove.setsCheck = simulate_enemy_check(board, move, info);
+
+	bestMove.takeEnemy = board_points_enemy(board, c_start, c_stop);
+
+	// This function is not working:
+	bestMove.getsTaken = piece_move_exposed(board, c_start, c_stop);
+
+	// This function is not working:
+	bestMove.exposed = board_piece_exposed(board, c_start);
+
+	bestMove.type = board_point_type(board, move.start);
+	bestMove.enemy = board_point_type(board, move.stop);
+
+	return bestMove;
 }
 
-void update_best_move(BestMove* bestMove, Board board, Move move)
+void update_best_move(BestMove* bestMove, Board board, Move move, Info info)
 {
-	BestMove current = create_bestMove_data(board, move);
+	BestMove current = create_bestMove_data(board, move, info);
 
 	if(current_move_better(board, *bestMove, current)) *bestMove = current;
 }
 
-bool piece_can_get_taken(Board board, Point start, Point stop)
+bool piece_move_exposed(Board board, Point start, Point stop)
 {
 	// This function should return if the piece can 
 	// get taken at the spot that its moving to
 
 	// This is super risky! Edit this function!
 	return !simulate_check_move(board, start, stop);
+}
+
+bool board_piece_exposed(Board board, Point point)
+{
+	return false;
 }
 
 // setsCheck	takeEnemy	!getsTaken
@@ -118,33 +163,58 @@ bool piece_can_get_taken(Board board, Point start, Point stop)
 
 bool current_move_better(Board board, BestMove bestMove, BestMove current)
 {
-	Type currType = board_point_type(board, current.move.stop);
-	Type bestType = board_point_type(board, bestMove.move.stop);
+	// This is the algorithm of the chess-bot.
+	// Change this logic to change how the bot is choosing its best move
+	// Now the bot is choosing by the following logic:
+	if(!current.exposed && bestMove.exposed) return false;
+	if(current.exposed && !bestMove.exposed) return true;
 
-	// Not get taken and best do get taken
+	// This makes that the piece should not get taken
+	// If you want the bot to go "suicide mode" edit this out
+	if(current.getsTaken && !bestMove.getsTaken) return false;
 	if(!current.getsTaken && bestMove.getsTaken) return true;
-	
-	// Not get taken and get enemy and best dont get enemy
-	else if(!current.getsTaken && current.takeEnemy && !bestMove.takeEnemy) return true;
-	
-	// not get taken and take enemy and sets check and best dont sets check
-	else if(!current.getsTaken && current.takeEnemy && current.setsCheck && !bestMove.setsCheck) return true;
-	
-	// not get taken and dont take enemy but sets check and best dont sets check
-	else if(!current.getsTaken && !current.takeEnemy && current.setsCheck && !bestMove.setsCheck) return true;
-	
-	// if get taken and take enemy and best dont take enemy
-	else if(current.getsTaken && current.takeEnemy && !bestMove.takeEnemy) return true;
-	
-	// it get taken and take enemy and sets check and best dont sets check
-	else if(current.getsTaken && current.takeEnemy && current.setsCheck && !bestMove.setsCheck) return true;
 
-	// it get taken and dont take enemy but sets check and best dont
-	else if(current.getsTaken && !current.takeEnemy && current.setsCheck && !bestMove.setsCheck) return true;
-	
-	else if(currType > bestType) return true;
+	// This makes the enemy want to take the move that takes out an enemy
+	if(!current.takeEnemy && bestMove.takeEnemy) return false;
+	if(current.takeEnemy && !bestMove.takeEnemy) return true;
+
+	// In first hand, the bot wants to make check to you
+	if(!current.setsCheck && bestMove.setsCheck) return false;
+	if(current.setsCheck && !bestMove.setsCheck) return true;
+
+	// The greater enemy it can take, the better:
+	if(current.enemy < bestMove.enemy) return false;
+	if(current.enemy > bestMove.enemy) return true;
+
+	// if(current.type < bestMove.type) return false;
+	// if(current.type > bestMove.type) return true;
 
 	return false;
+
+	// // Not get taken and best do get taken
+	// if(!current.getsTaken && bestMove.getsTaken) return true;
+	
+	// // Not get taken and get enemy and best dont get enemy
+	// else if(!current.getsTaken && current.takeEnemy && !bestMove.takeEnemy) return true;
+	
+	// // not get taken and take enemy and sets check and best dont sets check
+	// else if(!current.getsTaken && current.takeEnemy && current.setsCheck && !bestMove.setsCheck) return true;
+	
+	// // not get taken and dont take enemy but sets check and best dont sets check
+	// else if(!current.getsTaken && !current.takeEnemy && current.setsCheck && !bestMove.setsCheck) return true;
+	
+	// // if get taken and take enemy and best dont take enemy
+	// else if(current.getsTaken && current.takeEnemy && !bestMove.takeEnemy) return true;
+	
+	// // it get taken and take enemy and sets check and best dont sets check
+	// else if(current.getsTaken && current.takeEnemy && current.setsCheck && !bestMove.setsCheck) return true;
+
+	// // it get taken and dont take enemy but sets check and best dont
+	// else if(current.getsTaken && !current.takeEnemy && current.setsCheck && !bestMove.setsCheck) return true;
+	
+	// else if(currType > bestType) return true;
+
+	// return false;
 }
 
 Move* all_possible_moves(Board board, Info* info, Color color)

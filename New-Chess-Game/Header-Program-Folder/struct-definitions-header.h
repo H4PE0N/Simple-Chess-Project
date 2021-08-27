@@ -53,6 +53,9 @@ typedef struct BestMove
 	bool setsCheck;
 	bool takeEnemy;
 	bool getsTaken;
+	bool exposed;
+	Type type;
+	Type enemy;
 } BestMove;
 
 #define B_HEIGHT 8

@@ -21,14 +21,16 @@ void append_moves_array(Move*, Move*);
 
 Move* create_moves_array(int);
 
-bool simulate_enemy_check(Board, Point, Point);
+bool simulate_enemy_check(Board, Move, Info);
 
 bool current_move_better(Board, BestMove, BestMove);
 
-BestMove create_bestMove_data(Board, Move);
+BestMove create_bestMove_data(Board, Move, Info);
 
-void update_best_move(BestMove*, Board, Move);
+void update_best_move(BestMove*, Board, Move, Info);
 
-bool piece_can_get_taken(Board, Point, Point);
+bool piece_move_exposed(Board, Point, Point);
+
+bool board_piece_exposed(Board, Point);
 
 #endif
