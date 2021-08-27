@@ -6,6 +6,7 @@
 #include "chess-game-functions.h"
 #include "board-move-handler.h"
 #include "chess-computer-program.h"
+#include "chess-bot-algorithms.h"
 
 bool computer_chess_move(Board, Info*, Color);
 
@@ -24,8 +25,6 @@ void append_moves_array(Move*, Move*);
 Move* create_moves_array(int);
 
 bool simulate_enemy_check(Board, Move, Info);
-
-bool current_move_better(Board, BestMove, BestMove);
 
 BestMove create_bestMove_data(Board, Move, Info);
 

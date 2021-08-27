@@ -69,8 +69,6 @@ bool find_computer_move(Move* move, Board board, Info info, Color color)
 
 	if(amount == 0) { free(moves); return false; }
 
-	printf("[%d] random moves generated!\n", amount);
-
 	int random = create_random_number(0, amount - 1);
 
 	BestMove bestMove = create_bestMove_data(board, moves[random], info);
@@ -144,7 +142,7 @@ void update_best_move(BestMove* bestMove, Board board, Move move, Info info)
 			current.type,
 			current.enemy);
 
-	if(current_move_better(board, *bestMove, current)) 
+	if(default_bot_algorithm(board, *bestMove, current)) 
 	{
 		*bestMove = current;
 
@@ -194,57 +192,6 @@ bool board_piece_exposed(Board board, Info info, Point point)
 			if(piece_move_acceptable(board, move, info)) return true;
 		}
 	}
-	return false;
-}
-
-// setsCheck	takeEnemy	!getsTaken	exposed
-// !setsCheck	takeEnemy	!getsTaken	exposed
-// setsCheck	!takeEnemy	!getsTaken	exposed
-// !setsCheck	!takeEnemy	!getsTaken	exposed
-// setsCheck	takeEnemy	getsTaken	exposed
-// !setsCheck	takeEnemy	getsTaken	exposed
-// setsCheck	!takeEnemy	getsTaken	exposed
-// !setsCheck	!takeEnemy	getsTaken	exposed
-
-// setsCheck	takeEnemy	!getsTaken	!exposed
-// !setsCheck	takeEnemy	!getsTaken	!exposed
-// setsCheck	!takeEnemy	!getsTaken	!exposed
-// !setsCheck	!takeEnemy	!getsTaken	!exposed
-// setsCheck	takeEnemy	getsTaken	!exposed
-// !setsCheck	takeEnemy	getsTaken	!exposed
-// setsCheck	!takeEnemy	getsTaken	!exposed
-// !setsCheck	!takeEnemy	getsTaken	!exposed
-
-bool current_move_better(Board board, BestMove bestMove, BestMove current)
-{
-	// This is the algorithm of the chess-bot.
-	// Change this logic to change how the bot is choosing its best move
-
-	// If one move, makes check mate, the bot will take that move
-	if(!current.checkMate && bestMove.checkMate) return false;
-	if(current.checkMate) return true;
-
-	// The bot will choose a move that are exposed before a move that isn't exposed
-	if(!current.exposed && bestMove.exposed) return false;
-	if(current.exposed && !bestMove.exposed && !current.getsTaken) return true;
-
-	// This makes that the piece should not get taken
-	// If you want the bot to go "suicide mode" edit this out
-	if(current.getsTaken && !bestMove.getsTaken) return false;
-	if(!current.getsTaken && bestMove.getsTaken) return true;
-	
-	// This makes the enemy want to take the move that takes out an enemy
-	if(!current.takeEnemy && bestMove.takeEnemy) return false;
-	if(current.takeEnemy && !bestMove.takeEnemy) return true;
-
-	// In first hand, the bot wants to make check to you
-	if(!current.setsCheck && bestMove.setsCheck) return false;
-	if(current.setsCheck && !bestMove.setsCheck) return true;
-
-	// The greater enemy it can take, the better:
-	if(current.enemy < bestMove.enemy) return false;
-	if(current.enemy > bestMove.enemy) return true;
-
 	return false;
 }
 
