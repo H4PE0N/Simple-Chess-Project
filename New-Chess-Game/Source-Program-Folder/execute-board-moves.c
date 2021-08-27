@@ -1,7 +1,7 @@
 
 #include "../Header-Program-Folder/execute-board-moves.h"
 
-void execute_pawn_move(Board board, Move move, Info* info)
+void execute_pawn_move(Board board, Move move)
 {
 	Point start = move.start, stop = move.stop;
 	Color color = board[start.height][start.width].color;
@@ -39,17 +39,17 @@ void execute_rook_move(Board board, Move move, Info* info)
 	if(start.width == 7) RKS->right = false;
 }
 
-void execute_knight_move(Board board, Move move, Info* info)
+void execute_knight_move(Board board, Move move)
 {
 	move_board_piece(board, move.start, move.stop);
 }
 
-void execute_bishop_move(Board board, Move move, Info* info)
+void execute_bishop_move(Board board, Move move)
 {
 	move_board_piece(board, move.start, move.stop);
 }
 
-void execute_queen_move(Board board, Move move, Info* info)
+void execute_queen_move(Board board, Move move)
 {
 	move_board_piece(board, move.start, move.stop);
 }

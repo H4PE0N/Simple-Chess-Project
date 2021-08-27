@@ -1,7 +1,7 @@
 
 #include "../Header-Program-Folder/chess-pieces-moveable.h"
 
-bool board_piece_moveable(Board board, Info* info, Point start)
+bool board_piece_moveable(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
 	if(board_point_empty(board, start)) return false;

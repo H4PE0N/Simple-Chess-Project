@@ -1,12 +1,14 @@
 
 #include "../Header-Program-Folder/chess-game-functions.h"
 
-bool game_still_running(Color* winner, Board board, Info* info)
+bool game_still_running(Color* winner, Board board, Info info)
 {
 	for(int round = 0; round < 2; round = round + 1)
 	{
 		Color color = (round == 0) ? WHITE : BLACK;
-		Point point = color_king_point(*info, color);
+		Point point = color_king_point(info, color);
+
+		printf("King Point [%d] (%d-%d)\n", round, point.height, point.width);
 
 		if(!point_inside_board(point)) return false;
 		if(board_point_empty(board, point)) return false;
@@ -44,7 +46,7 @@ bool update_kings_point(Board board, Info* info)
 	return true;
 }
 
-bool other_pieces_moveable(Board board, Info* info, Color color)
+bool other_pieces_moveable(Board board, Info info, Color color)
 {
 	Piece piece; Point point;
 
@@ -63,7 +65,7 @@ bool other_pieces_moveable(Board board, Info* info, Color color)
 	return false;
 }
 
-bool check_draw_situation(Board board, Info* info, Point point)
+bool check_draw_situation(Board board, Info info, Point point)
 {
 	Color color = board_point_color(board, point);
 
@@ -76,7 +78,7 @@ bool check_draw_situation(Board board, Info* info, Point point)
 	return true;
 }
 
-bool check_mate_situation(Board board, Info* info, Point point)
+bool check_mate_situation(Board board, Info info, Point point)
 {
 	Color color = board_point_color(board, point);
 

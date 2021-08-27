@@ -1,7 +1,7 @@
 
 #include "../Header-Program-Folder/chess-moves-acceptable.h"
 
-bool piece_move_acceptable(Board board, Move move, Info* info)
+bool piece_move_acceptable(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
@@ -70,7 +70,7 @@ bool pawn_move_acceptable(Board board, Point start, Point stop)
 	return false;
 }
 
-bool rook_switch_able(Board board, Move move, Info* info)
+bool rook_switch_able(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
@@ -78,12 +78,12 @@ bool rook_switch_able(Board board, Move move, Info* info)
 
 	Color color = board[start.height][start.width].color;
 
-	RKSwitch* RKS = (color == BLACK) ? &info->blackRKS : &info->whiteRKS;
+	RKSwitch RKS = (color == BLACK) ? info.blackRKS : info.whiteRKS;
 
-	return (start.width == 0) ? RKS->left : RKS->right;
+	return (start.width == 0) ? RKS.left : RKS.right;
 }
 
-bool rook_move_acceptable(Board board, Move move, Info* info)
+bool rook_move_acceptable(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
@@ -178,12 +178,12 @@ bool simulate_check_move(Board board, Point start, Point stop)
 	free(copy); return false;
 }
 
-bool check_check_situation(Board board, Move move, Info* info)
+bool check_check_situation(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
 	Color color = board_point_color(board, start);
-	Point king = color_king_point(*info, color);
+	Point king = color_king_point(info, color);
 
 	if(!king_check_situation(board, king, color)) return true;
 

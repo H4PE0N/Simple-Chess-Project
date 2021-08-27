@@ -51,6 +51,7 @@ typedef struct BestMove
 {
 	Move move;
 	bool setsCheck;
+	bool checkMate;
 	bool takeEnemy;
 	bool getsTaken;
 	bool exposed;

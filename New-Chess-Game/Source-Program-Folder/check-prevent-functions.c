@@ -1,7 +1,7 @@
 
 #include "../Header-Program-Folder/check-prevent-functions.h"
 
-bool team_prevent_check(Board board, Info* info, Color color)
+bool team_prevent_check(Board board, Info info, Color color)
 {
 	if(color == NONE) return false;
 
@@ -21,7 +21,7 @@ bool team_prevent_check(Board board, Info* info, Color color)
 	return false;
 }
 
-bool piece_prevent_check(Board board, Point start, Info* info)
+bool piece_prevent_check(Board board, Point start, Info info)
 {
 	if(!point_inside_board(start)) return false;
 	if(board_point_empty(board, start)) return false;
@@ -43,14 +43,14 @@ bool piece_prevent_check(Board board, Point start, Info* info)
 	return false;
 }
 
-bool move_prevent_check(Board board, Move move, Info* info)
+bool move_prevent_check(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
 	Piece piece = board_point_piece(board, start);
 	if(board_point_empty(board, start)) return false;
 
-	Point king = color_king_point(*info, piece.color);
+	Point king = color_king_point(info, piece.color);
 
 	Board copy = copy_chess_board(board);
 	move_board_piece(copy, start, stop);

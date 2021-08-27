@@ -14,11 +14,11 @@ bool queen_move_acceptable(Board, Point, Point);
 
 bool king_move_acceptable(Board, Point, Point);
 
-bool rook_switch_able(Board, Move, Info*);
+bool rook_switch_able(Board, Move, Info);
 
-bool rook_move_acceptable(Board, Move, Info*);
+bool rook_move_acceptable(Board, Move, Info);
 
-bool check_check_situation(Board, Move, Info*);
+bool check_check_situation(Board, Move, Info);
 
 bool bishop_move_acceptable(Board, Point, Point);
 
@@ -28,6 +28,6 @@ bool straight_move_acceptable(Board, Point, Point);
 
 bool simulate_check_move(Board, Point, Point);
 
-bool piece_move_acceptable(Board, Move, Info*);
+bool piece_move_acceptable(Board, Move, Info);
 
 #endif

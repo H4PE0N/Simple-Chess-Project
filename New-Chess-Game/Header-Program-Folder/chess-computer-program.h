@@ -9,11 +9,13 @@
 
 bool computer_chess_move(Board, Info*, Color);
 
-bool find_computer_move(Move*, Board, Info*, Color);
+bool find_computer_move(Move*, Board, Info, Color);
 
-bool piece_possible_moves(Move*, Board, Info*, Point);
+bool piece_possible_moves(Move*, Board, Info, Point);
 
-Move* all_possible_moves(Board, Info*, Color);
+bool simulate_check_mate(Board, Move, Info);
+
+Move* all_possible_moves(Board, Info, Color);
 
 int moves_array_amount(Move*);
 
@@ -29,8 +31,8 @@ BestMove create_bestMove_data(Board, Move, Info);
 
 void update_best_move(BestMove*, Board, Move, Info);
 
-bool piece_move_exposed(Board, Point, Point);
+bool piece_move_exposed(Board, Move, Info);
 
-bool board_piece_exposed(Board, Point);
+bool board_piece_exposed(Board, Info, Point);
 
 #endif

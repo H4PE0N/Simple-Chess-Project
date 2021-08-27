@@ -47,7 +47,11 @@ bool input_current_move(char* string)
 
 bool input_string_variable(char* string)
 {
-	if(!scanf("%[^\n]%*c", string)) return false;
+	bool output = scanf("%[^\n]%*c", string);
+
+	fflush(stdin);
+
+	if(!output) return false;
 
 	if(strlen(string) == 0) return false;
 

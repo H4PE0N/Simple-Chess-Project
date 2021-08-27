@@ -20,7 +20,7 @@ bool move_chess_piece(Board board, Move move, Info* info)
 		case(EMPTY): return false;
 	
 		case(PAWN):
-			if(pawn_move_handler(board, move, info)) return true;
+			if(pawn_move_handler(board, move, *info)) return true;
 			break;
 
 		case(ROOK):
@@ -28,15 +28,15 @@ bool move_chess_piece(Board board, Move move, Info* info)
 			break;
 
 		case(KNIGHT):
-			if(knight_move_handler(board, move, info)) return true;
+			if(knight_move_handler(board, move, *info)) return true;
 			break;
 
 		case(BISHOP):
-			if(bishop_move_handler(board, move, info)) return true;
+			if(bishop_move_handler(board, move, *info)) return true;
 			break;
 
 		case(QUEEN):
-			if(queen_move_handler(board, move, info)) return true;
+			if(queen_move_handler(board, move, *info)) return true;
 			break;
 
 		case(KING):
@@ -46,7 +46,7 @@ bool move_chess_piece(Board board, Move move, Info* info)
 	return false;
 }
 
-bool pawn_move_handler(Board board, Move move, Info* info)
+bool pawn_move_handler(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
@@ -54,7 +54,7 @@ bool pawn_move_handler(Board board, Move move, Info* info)
 
 	if(!check_check_situation(board, move, info)) return false;
 
-	execute_pawn_move(board, move, info);
+	execute_pawn_move(board, move);
 
 	return true;
 }
@@ -63,11 +63,11 @@ bool rook_move_handler(Board board, Move move, Info* info)
 {
 	Point start = move.start, stop = move.stop;
 
-	if(!rook_move_acceptable(board, move, info)) return false;
+	if(!rook_move_acceptable(board, move, *info)) return false;
 
-	if(!check_check_situation(board, move, info)) return false;
+	if(!check_check_situation(board, move, *info)) return false;
 
-	if(rook_switch_able(board, move, info))
+	if(rook_switch_able(board, move, *info))
 	{
 		execute_rook_switch(board, move, info); return true;
 	}
@@ -77,7 +77,7 @@ bool rook_move_handler(Board board, Move move, Info* info)
 	return true;
 }
 
-bool knight_move_handler(Board board, Move move, Info* info)
+bool knight_move_handler(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
@@ -85,12 +85,12 @@ bool knight_move_handler(Board board, Move move, Info* info)
 
 	if(!check_check_situation(board, move, info)) return false;
 
-	execute_knight_move(board, move, info);
+	execute_knight_move(board, move);
 
 	return true;
 }
 
-bool bishop_move_handler(Board board, Move move, Info* info)
+bool bishop_move_handler(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
@@ -98,12 +98,12 @@ bool bishop_move_handler(Board board, Move move, Info* info)
 
 	if(!check_check_situation(board, move, info)) return false;
 
-	execute_bishop_move(board, move, info);
+	execute_bishop_move(board, move);
 
 	return true;
 }
 
-bool queen_move_handler(Board board, Move move, Info* info)
+bool queen_move_handler(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
@@ -111,7 +111,7 @@ bool queen_move_handler(Board board, Move move, Info* info)
 
 	if(!check_check_situation(board, move, info)) return false;
 
-	execute_queen_move(board, move, info);
+	execute_queen_move(board, move);
 
 	return true;
 }

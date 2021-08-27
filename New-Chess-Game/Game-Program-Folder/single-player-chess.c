@@ -35,7 +35,7 @@ int main(int argAmount, char* arguments[])
 bool single_player_chess(Color* winner, Board board, Info* info)
 {
 	Move move; char current[20];
-	while(game_still_running(winner, board, info))
+	while(game_still_running(winner, board, *info))
 	{
 		info->current = WHITE;
 
@@ -57,7 +57,7 @@ bool single_player_chess(Color* winner, Board board, Info* info)
 		info->turns += 1;
 		info->current = BLACK;
 
-		if(!game_still_running(winner, board, info)) break;
+		if(!game_still_running(winner, board, *info)) break;
 
 		display_chess_board(board);
 		display_chess_info(*info);
