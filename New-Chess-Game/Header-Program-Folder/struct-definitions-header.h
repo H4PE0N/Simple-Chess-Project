@@ -4,7 +4,7 @@
 
 typedef enum Type
 {
-	EMPTY = 0, PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING,
+	EMPTY = 0, PAWN, BISHOP, KNIGHT, ROOK, QUEEN, KING,
 } Type;
 
 typedef enum Color 

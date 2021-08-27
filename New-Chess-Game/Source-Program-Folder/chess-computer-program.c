@@ -55,7 +55,6 @@ bool simulate_check_mate(Board board, Move move, Info info)
 
 	if(check_mate_situation(copy, info, king))
 	{ 
-		printf("Its checkmate?\n");
 		free(copy); return true; 
 	}
 
@@ -142,7 +141,7 @@ void update_best_move(BestMove* bestMove, Board board, Move move, Info info)
 			current.type,
 			current.enemy);
 
-	if(default_bot_algorithm(board, *bestMove, current)) 
+	if(smart_bot_algorithm1(board, *bestMove, current)) 
 	{
 		*bestMove = current;
 

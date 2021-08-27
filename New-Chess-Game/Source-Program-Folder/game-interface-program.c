@@ -1,7 +1,7 @@
 
 #include "../Header-Program-Folder/game-interface-program.h"
 
-const char symbols[] = {'.', 'P', 'R', 'H', 'B', 'Q', 'K'};
+const char symbols[] = {'.', 'P', 'B', 'H', 'R', 'Q', 'K'};
 const char letters[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
 const char numbers[] = {'1', '2', '3', '4', '5', '6', '7', '8'};
 

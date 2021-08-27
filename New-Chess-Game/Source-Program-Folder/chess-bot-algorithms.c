@@ -186,18 +186,18 @@
 
 // setsCheck	takeEnemy	!getsTaken	exposed
 // !setsCheck	takeEnemy	!getsTaken	exposed
-// setsCheck	takeEnemy	getsTaken	exposed
-// !setsCheck	takeEnemy	getsTaken	exposed
-// setsCheck	!takeEnemy	!getsTaken	exposed
-// !setsCheck	!takeEnemy	!getsTaken	exposed
 // setsCheck	takeEnemy	!getsTaken	!exposed
 // !setsCheck	takeEnemy	!getsTaken	!exposed
+// setsCheck	takeEnemy	getsTaken	exposed
+// !setsCheck	takeEnemy	getsTaken	exposed
+// setsCheck	takeEnemy	getsTaken	!exposed
+// !setsCheck	takeEnemy	getsTaken	!exposed
+// setsCheck	!takeEnemy	!getsTaken	exposed
+// !setsCheck	!takeEnemy	!getsTaken	exposed
 // setsCheck	!takeEnemy	!getsTaken	!exposed
 // !setsCheck	!takeEnemy	!getsTaken	!exposed
 // setsCheck	!takeEnemy	getsTaken	exposed
 // !setsCheck	!takeEnemy	getsTaken	exposed
-// setsCheck	takeEnemy	getsTaken	!exposed
-// !setsCheck	takeEnemy	getsTaken	!exposed
 // setsCheck	!takeEnemy	getsTaken	!exposed
 // !setsCheck	!takeEnemy	getsTaken	!exposed
 
@@ -242,6 +242,10 @@ bool defensive_bot_algorithm(Board board, BestMove bestMove, BestMove current)
 	if(current.checkMate) return true;
 	if(bestMove.checkMate) return false;
 
+	// It prioritises if the piece is exposed to begin with
+	if(current.type != PAWN && current.exposed && !current.getsTaken && !bestMove.exposed) return true;
+	if(!current.exposed && bestMove.exposed) return false;
+
 	// It prioritises if the piece dont get taken after move
 	if(!current.getsTaken && bestMove.getsTaken) return true;
 	if(current.getsTaken && !bestMove.getsTaken) return false;
@@ -250,20 +254,12 @@ bool defensive_bot_algorithm(Board board, BestMove bestMove, BestMove current)
 	if(current.takeEnemy && !bestMove.takeEnemy) return true;
 	if(!current.takeEnemy && bestMove.takeEnemy) return false;
 
+	// It prioritises if the trade is better
 	bool cGoodTrade = current.type <= current.enemy;
 	bool bGoodTrade = bestMove.type <= bestMove.enemy;
 
-	// If the piece is going to take an enemy
-	// It prioritises if the trade is good
-
-	// These two lines of code can be places further down
-	// to change the prioritisement of the parameters.
 	if(current.takeEnemy && cGoodTrade && !bGoodTrade) return true;
 	if(current.takeEnemy && !cGoodTrade && bGoodTrade) return false;
-
-	// It prioritises if the piece is exposed to begin with
-	if(current.exposed && !bestMove.exposed) return true;
-	if(!current.exposed && bestMove.exposed) return false;
 
 	// It prioritises if the move makes check to the other team
 	if(current.setsCheck && !bestMove.setsCheck) return true;
@@ -278,32 +274,28 @@ bool defensive_bot_algorithm(Board board, BestMove bestMove, BestMove current)
 bool offensive_bot_algorithm(Board board, BestMove bestMove, BestMove current)
 {
 	// If one move, makes check mate, the bot will take that move
-	if(current.checkMate)
-	{
-		printf("this move thinks it does check mate!\n");
-		return true;
-	}
-
+	if(current.checkMate) return true;
 	if(bestMove.checkMate) return false;
+
+	// It prioritises if the piece is exposed to begin with
+	if(current.type != PAWN && current.exposed && !current.getsTaken && !bestMove.exposed) return true;
+	if(!current.exposed && bestMove.exposed) return false;
+
+	// It prioritises if the trade is better
+	bool cGoodTrade = (current.enemy <= current.type);
+	bool bGoodTrade = (bestMove.enemy <= bestMove.type);
 
 	int cTradeValue = (current.enemy - current.type);
 	int bTradeValue = (bestMove.enemy - bestMove.type);
+	bool betterTrade = (cTradeValue > bTradeValue);
 
-	// Better trade than the current best trade
-	if((cTradeValue >= 0) && cTradeValue > bTradeValue) return true;
-	if((cTradeValue >= 0) && bTradeValue > cTradeValue) return false;
+	if(current.takeEnemy && !current.getsTaken && betterTrade) return true;
+	if(current.takeEnemy && current.getsTaken && cGoodTrade && betterTrade) return true;
+	if(current.takeEnemy && bGoodTrade && bTradeValue > cTradeValue) return false;
 
 	// It prioritises if the piece dont get taken after move
 	if(!current.getsTaken && bestMove.getsTaken) return true;
 	if(current.getsTaken && !bestMove.getsTaken) return false;
-
-	// It prioritises if the piece take another piece
-	if(current.takeEnemy && !bestMove.takeEnemy) return true;
-	if(!current.takeEnemy && bestMove.takeEnemy) return false;
-
-	// It prioritises if the piece is exposed to begin with
-	if(current.exposed && !bestMove.exposed) return true;
-	if(!current.exposed && bestMove.exposed) return false;
 
 	// It prioritises if the move makes check to the other team
 	if(current.setsCheck && !bestMove.setsCheck) return true;
@@ -311,6 +303,7 @@ bool offensive_bot_algorithm(Board board, BestMove bestMove, BestMove current)
 
 	// The greater enemy that it gets killed, the better.
 	if(current.enemy > bestMove.enemy) return true;
+	//if(current.type < bestMove.type) return true;
 
 	return false;
 }
@@ -318,36 +311,35 @@ bool offensive_bot_algorithm(Board board, BestMove bestMove, BestMove current)
 bool smart_bot_algorithm1(Board board, BestMove bestMove, BestMove current)
 {
 	// If one move, makes check mate, the bot will take that move
-	if(current.checkMate)
-	{
-		printf("this move thinks it does check mate!\n");
-		return true;
-	}
-
+	if(current.checkMate) return true;
 	if(bestMove.checkMate) return false;
 
+	// It prioritises if the piece is exposed to begin with
+	if(current.type != PAWN && current.exposed && !current.getsTaken && !bestMove.exposed) return true;
+	if(!current.exposed && bestMove.exposed) return false;
+
+	
+	int cTradeValue = current.takeEnemy ? (current.type - current.enemy) : 8; 
+	int bTradeValue = bestMove.takeEnemy ? (bestMove.type - bestMove.enemy) : 8;
+
+	// The lowest value is the best trade.
+	bool betterTrade = (cTradeValue < bTradeValue);
+
+	// If the piece is safe after it has taken an enemy, 
+	// the only thing that matters, is the enemy rank
+	if(!current.getsTaken && betterTrade) return true;
+
+	// If the piece can be taken after it has taken an enemy,
+	// The trade must be with a higher or equal piece
+	if(current.getsTaken && cTradeValue <= 0 && betterTrade) return true;
+
+	// If the trade value of the best move is better, then it remains that way
+	if(bTradeValue < cTradeValue) return false;
+	
+	
 	// It prioritises if the piece dont get taken after move
 	if(!current.getsTaken && bestMove.getsTaken) return true;
 	if(current.getsTaken && !bestMove.getsTaken) return false;
-
-	// It prioritises if the piece take another piece
-	if(current.takeEnemy && !bestMove.takeEnemy) return true;
-	if(!current.takeEnemy && bestMove.takeEnemy) return false;
-
-	bool cGoodTrade = current.type <= current.enemy;
-	bool bGoodTrade = bestMove.type <= bestMove.enemy;
-
-	// If the piece is going to take an enemy
-	// It prioritises if the trade is good
-
-	// These two lines of code can be places further down
-	// to change the prioritisement of the parameters.
-	if(current.takeEnemy && cGoodTrade && !bGoodTrade) return true;
-	if(current.takeEnemy && !cGoodTrade && bGoodTrade) return false;
-
-	// It prioritises if the piece is exposed to begin with
-	if(current.type > PAWN && current.exposed && !bestMove.exposed) return true;
-	if(!current.exposed && bestMove.exposed) return false;
 
 	// It prioritises if the move makes check to the other team
 	if(current.setsCheck && !bestMove.setsCheck) return true;
@@ -355,6 +347,7 @@ bool smart_bot_algorithm1(Board board, BestMove bestMove, BestMove current)
 
 	// The greater enemy that it gets killed, the better.
 	if(current.enemy > bestMove.enemy) return true;
+	//if(current.type < bestMove.type) return true;
 
 	return false;
 }
