@@ -22,6 +22,10 @@ int moves_array_amount(Move*);
 
 void append_moves_array(Move*, Move*);
 
+void shuffle_moves_array(Move*, int);
+
+void switch_array_moves(Move*, int, int);
+
 Move* create_moves_array(int);
 
 bool simulate_enemy_check(Board, Move, Info);

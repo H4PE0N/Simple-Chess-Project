@@ -7,10 +7,15 @@ bool computer_chess_move(Board board, Info* info, Color color)
 
 	if(!find_computer_move(&move, board, *info, color)) return false;
 
+	printf("Found move! (%d-%d) to (%d-%d)\n",
+		move.start.height, move.start.width, move.stop.height, move.stop.width);
+
 	Piece piece = board_point_piece(board, move.start);
 	Point* king = (color == WHITE) ? &info->wKing : &info->bKing;
 
 	if(piece.type == KING) *king = move.stop;
+
+	printf("Moving piece soon...\n");
 
 	if(!move_chess_piece(board, move, info)) return false;
 
@@ -68,9 +73,9 @@ bool find_computer_move(Move* move, Board board, Info info, Color color)
 
 	if(amount == 0) { free(moves); return false; }
 
-	int random = create_random_number(0, amount - 1);
+	shuffle_moves_array(moves, amount);
 
-	BestMove bestMove = create_bestMove_data(board, moves[random], info);
+	BestMove bestMove = create_bestMove_data(board, moves[0], info);
 
 	Move current;
 
@@ -100,9 +105,27 @@ bool find_computer_move(Move* move, Board board, Info info, Color color)
 	*move = bestMove.move; free(moves); return true;
 }
 
+void shuffle_moves_array(Move* moves, int amount)
+{
+	for(int index = 0; index < amount; index += 1)
+	{
+		int random = create_random_number(0, amount - 1);
+		switch_array_moves(moves, index, random);
+	}
+}
+
+void switch_array_moves(Move* moves, int first, int second)
+{
+	Move firstMove = moves[first];
+	Move secondMove = moves[second];
+
+	moves[first] = secondMove;
+	moves[second] = firstMove;
+}
+
 BestMove create_bestMove_data(Board board, Move move, Info info)
 {
-	Point c_start = move.start, c_stop = move.stop;
+	Point currStart = move.start, currStop = move.stop;
 
 	BestMove bestMove;
 
@@ -114,13 +137,13 @@ BestMove create_bestMove_data(Board board, Move move, Info info)
 	// This function is not working:
 	bestMove.checkMate = simulate_check_mate(board, move, info);
 
-	bestMove.takeEnemy = board_points_enemy(board, c_start, c_stop);
+	bestMove.takeEnemy = board_points_enemy(board, currStart, currStop);
 
 	// This function is not working:
 	bestMove.getsTaken = piece_move_exposed(board, move, info);
 
 	// This function is not working:
-	bestMove.exposed = board_piece_exposed(board, info, c_start);
+	bestMove.exposed = board_piece_exposed(board, info, currStart);
 
 	bestMove.type = board_point_type(board, move.start);
 	bestMove.enemy = board_point_type(board, move.stop);

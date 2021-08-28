@@ -18,9 +18,21 @@ void execute_rook_switch(Board board, Move move, Info* info)
 	Color color = board[start.height][start.width].color;
 	RKSwitch* RKS = (color == BLACK) ? &info->blackRKS : &info->whiteRKS;
 
-	update_king_point(info, color, start);
+	int difference = (stop.width - start.width);
 
-	switch_chess_pieces(board, start, stop);
+	int kWidth = (difference < 0) ? 6 : 2;
+	int rWidth = (difference < 0) ? 5 : 3;
+	
+	Point rook = {start.height, rWidth};
+	Point king = {stop.height, kWidth};
+
+	printf("Difference = %d\n", difference);
+	printf("kWidth = %d\trWidth=%d\n", kWidth, rWidth);
+
+	move_board_piece(board, stop, king);
+	move_board_piece(board, start, rook);
+
+	update_king_point(info, color, king);
 
 	RKS->right = false;
 	RKS->left = false;
