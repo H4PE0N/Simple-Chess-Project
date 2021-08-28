@@ -8,20 +8,16 @@ bool game_still_running(Color* winner, Board board, Info info)
 		Color color = (round == 0) ? WHITE : BLACK;
 		Point point = color_king_point(info, color);
 
-		printf("King Point [%d] (%d-%d)\n", round, point.height, point.width);
-
 		if(!point_inside_board(point)) return false;
 		if(board_point_empty(board, point)) return false;
 
 		if(check_mate_situation(board, info, point))
 		{
-			printf("Check Mate!\n");
 			*winner = (color == WHITE) ? BLACK : WHITE;
 			return false;
 		}
 		if(check_draw_situation(board, info, point))
 		{
-			printf("Draw!\n");
 			*winner = NONE;
 			return false;
 		}

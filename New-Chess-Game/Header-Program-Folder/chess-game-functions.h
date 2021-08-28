@@ -2,9 +2,9 @@
 #ifndef CHESS_GAME_FUNCTIONS_H
 #define CHESS_GAME_FUNCTIONS_H
 
-#include "../Header-Program-Folder/global-include-header.h"
-#include "../Header-Program-Folder/check-prevent-functions.h"
-#include "../Header-Program-Folder/chess-pieces-moveable.h"
+#include "global-include-header.h"
+#include "check-prevent-functions.h"
+#include "chess-pieces-moveable.h"
 
 bool other_pieces_moveable(Board, Info, Color);
 

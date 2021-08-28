@@ -2,7 +2,7 @@
 #ifndef PIECES_MOVES_VALID_H
 #define PIECES_MOVES_VALID_H
 
-#include "../Header-Program-Folder/global-include-header.h"
+#include "global-include-header.h"
 
 bool moving_pawn_valid(Board, Point, Point);
 

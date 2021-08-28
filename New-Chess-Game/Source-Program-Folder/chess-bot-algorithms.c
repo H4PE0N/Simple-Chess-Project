@@ -206,7 +206,7 @@
 // 3. 
 // 4.
 
-bool default_bot_algorithm(Board board, BestMove bestMove, BestMove current)
+bool default_bot_algorithm(Board board, MoveInfo bestMove, MoveInfo current)
 {
 	// If one move, makes check mate, the bot will take that move
 	if(bestMove.checkMate) return false;
@@ -236,7 +236,7 @@ bool default_bot_algorithm(Board board, BestMove bestMove, BestMove current)
 	return false;
 }
 
-bool defensive_bot_algorithm(Board board, BestMove bestMove, BestMove current)
+bool defensive_bot_algorithm(Board board, MoveInfo bestMove, MoveInfo current)
 {
 	// If one move, makes check mate, the bot will take that move
 	if(current.checkMate) return true;
@@ -271,7 +271,7 @@ bool defensive_bot_algorithm(Board board, BestMove bestMove, BestMove current)
 	return false;
 }
 
-bool offensive_bot_algorithm(Board board, BestMove bestMove, BestMove current)
+bool offensive_bot_algorithm(Board board, MoveInfo bestMove, MoveInfo current)
 {
 	// If one move, makes check mate, the bot will take that move
 	if(current.checkMate) return true;
@@ -308,7 +308,7 @@ bool offensive_bot_algorithm(Board board, BestMove bestMove, BestMove current)
 	return false;
 }
 
-bool smart_bot_algorithm1(Board board, BestMove bestMove, BestMove current)
+bool smart_bot_algorithm1(Board board, MoveInfo bestMove, MoveInfo current)
 {
 	// If one move, makes check mate, the bot will take that move
 	if(current.checkMate) return true;

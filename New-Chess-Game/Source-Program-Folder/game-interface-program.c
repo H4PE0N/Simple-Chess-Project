@@ -29,12 +29,41 @@ void display_chess_board(Board board)
 	}
 }
 
+void display_move_info(MoveInfo moveInfo)
+{
+	printf("[ SC=%d CM=%d TE=%d GT=%d EX=%d TY=%d EN=%d ]\n",
+			moveInfo.setsCheck, 
+			moveInfo.checkMate, 
+			moveInfo.takeEnemy, 
+			moveInfo.getsTaken, 
+			moveInfo.exposed, 
+			moveInfo.type,
+			moveInfo.enemy);
+}
+
+void display_board_point(Point point)
+{
+	printf("Point=[%d-%d]\n", point.height, point.width);
+}
+
+void display_board_move(Move move)
+{
+	Point start = move.start, stop = move.stop;
+	printf("Move=[%d-%d] [%d-%d]\n", start.height, start.width, stop.height, stop.width);
+}
+
 void display_chess_result(Board board, Color winner)
 {
 	display_chess_board(board);
 
-	if(winner == NONE) printf("It's a draw!\n");
-	else printf("The winner is [%s]!\n", (winner == WHITE) ? "RED" : "BLUE");
+	if(winner == NONE)
+	{
+		printf("It's a draw!\n");
+	}
+	else 
+	{
+		printf("The winner is [%s]!\n", (winner == WHITE) ? "RED" : "BLUE");
+	}
 }
 
 void display_chess_info(Info info)

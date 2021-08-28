@@ -5,19 +5,17 @@ int main(int argAmount, char* arguments[])
 {
 	srand(time(NULL));
 
-	Board board = malloc(sizeof(Piece*) * B_HEIGHT);
-	Color winner = NONE;
-	Info info;
+	Board board; Color winner = NONE; Info info;
 
-	if(!setup_game_variables(board, &info))
+	if(!setup_game_variables(&board, &info))
 	{
-		printf("Game information error!\n");
+		setup_variables_error();
 		free(board); return false;
 	}
 
 	if(!single_player_chess(&winner, board, &info))
 	{
-		printf("The game has ended!\n");
+		chess_game_quitted(board, info);
 		free(board); return false;
 	}
 

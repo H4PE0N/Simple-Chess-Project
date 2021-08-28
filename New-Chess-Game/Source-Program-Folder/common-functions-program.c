@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/global-include-header.h"
+#include "../Header-Program-Folder/common-functions-program.h"
 
 bool number_inside_bounds(int number, int minimum, int maximum)
 {

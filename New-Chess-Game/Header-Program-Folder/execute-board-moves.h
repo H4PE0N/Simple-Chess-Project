@@ -2,7 +2,7 @@
 #ifndef EXECUTE_BOARD_MOVES_H
 #define EXECUTE_BOARD_MOVES_H
 
-#include "../Header-Program-Folder/global-include-header.h"
+#include "global-include-header.h"
 
 void execute_pawn_move(Board, Move);
 

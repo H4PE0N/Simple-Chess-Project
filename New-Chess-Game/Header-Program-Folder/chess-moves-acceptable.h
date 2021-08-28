@@ -2,9 +2,9 @@
 #ifndef CHESS_MOVE_ACCEPTABLE_H
 #define CHESS_MOVE_ACCEPTABLE_H
 
-#include "../Header-Program-Folder/global-include-header.h"
-#include "../Header-Program-Folder/pieces-moves-valid.h"
-#include "../Header-Program-Folder/chess-game-functions.h"
+#include "global-include-header.h"
+#include "pieces-moves-valid.h"
+#include "chess-game-functions.h"
 
 bool pawn_move_acceptable(Board, Move, Info);
 

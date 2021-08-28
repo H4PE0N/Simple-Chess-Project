@@ -2,9 +2,9 @@
 #ifndef BOARD_MOVE_HANDLER_H
 #define BOARD_MOVE_HANDLER_H
 
-#include "../Header-Program-Folder/global-include-header.h"
-#include "../Header-Program-Folder/chess-moves-acceptable.h"
-#include "../Header-Program-Folder/execute-board-moves.h"
+#include "global-include-header.h"
+#include "chess-moves-acceptable.h"
+#include "execute-board-moves.h"
 
 bool move_chess_piece(Board, Move, Info*);
 

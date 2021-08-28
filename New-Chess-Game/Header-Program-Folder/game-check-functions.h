@@ -2,7 +2,7 @@
 #ifndef GAME_CHECK_FUNCTIONS_H
 #define GAME_CHECK_FUNCTIONS_H
 
-#include "../Header-Program-Folder/global-include-header.h"
+#include "global-include-header.h"
 
 bool king_check_situation(Board, Point, Color);
 

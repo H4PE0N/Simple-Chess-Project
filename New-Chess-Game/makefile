@@ -17,7 +17,7 @@ MULTI_OBJECT := $(patsubst $(GAME_FOLDER)/%.c, $(GMEOBJ_FOLDER)/%.o, $(MULTI_PRO
 SINGLE_OBJECT := $(patsubst $(GAME_FOLDER)/%.c, $(GMEOBJ_FOLDER)/%.o, $(SINGLE_PROGRAM))
 
 COMPILE_COMPILOR := gcc
-COMPEXE_FLAGS := -lm  -Wall -Werror
+COMPEXE_FLAGS := -lm -Wall -Werror
 COMPOBJ_FLAGS := -Wall -Werror
 
 default-target: multi-player-chess

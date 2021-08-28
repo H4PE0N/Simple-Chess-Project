@@ -7,15 +7,10 @@ bool computer_chess_move(Board board, Info* info, Color color)
 
 	if(!find_computer_move(&move, board, *info, color)) return false;
 
-	printf("Found move! (%d-%d) to (%d-%d)\n",
-		move.start.height, move.start.width, move.stop.height, move.stop.width);
-
 	Piece piece = board_point_piece(board, move.start);
 	Point* king = (color == WHITE) ? &info->wKing : &info->bKing;
 
 	if(piece.type == KING) *king = move.stop;
-
-	printf("Moving piece soon...\n");
 
 	if(!move_chess_piece(board, move, info)) return false;
 
@@ -74,7 +69,7 @@ bool find_computer_move(Move* move, Board board, Info info, Color color)
 
 	shuffle_moves_array(moves, amount);
 
-	BestMove bestMove = create_bestMove_data(board, moves[0], info);
+	MoveInfo bestMove = create_move_info(board, moves[0], info);
 
 	Move current;
 
@@ -85,21 +80,11 @@ bool find_computer_move(Move* move, Board board, Info info, Color color)
 		update_best_move(&bestMove, board, current, info);
 	}
 
-	printf("Best computable move out of [%d]: (%d-%d) to (%d-%d)\n",
-		amount, 
-		bestMove.move.start.height, 
-		bestMove.move.start.width, 
-		bestMove.move.stop.height, 
-		bestMove.move.stop.width);
+	// printf("[+] === BEST MOVE OUT OF [%d] === [+]\n", amount);
+	// display_board_move(bestMove.move);
 
-	printf("setsCheck=%d\ncheckMate=%d\ntakeEnemy=%d\ngetsTaken=%d\nExposed=%d\nType=%d\nEnemy=%d\n",
-		bestMove.setsCheck, 
-		bestMove.checkMate, 
-		bestMove.takeEnemy, 
-		bestMove.getsTaken, 
-		bestMove.exposed, 
-		bestMove.type,
-		bestMove.enemy);
+	// printf("\n[+] === BEST MOVE INFORMATION === [+]\n");
+	// display_move_info(bestMove);
 
 	*move = bestMove.move; free(moves); return true;
 }
@@ -122,61 +107,40 @@ void switch_array_moves(Move* moves, int first, int second)
 	moves[second] = firstMove;
 }
 
-BestMove create_bestMove_data(Board board, Move move, Info info)
+MoveInfo create_move_info(Board board, Move move, Info info)
 {
-	Point currStart = move.start, currStop = move.stop;
+	Point start = move.start, stop = move.stop;
 
-	BestMove bestMove;
+	MoveInfo moveInfo;
 
-	bestMove.move = move;
+	moveInfo.move = move;
 
-	// This function is not working:
-	bestMove.setsCheck = simulate_enemy_check(board, move, info);
+	moveInfo.setsCheck = simulate_enemy_check(board, move, info);
 
-	// This function is not working:
-	bestMove.checkMate = simulate_check_mate(board, move, info);
+	moveInfo.checkMate = simulate_check_mate(board, move, info);
 
-	bestMove.takeEnemy = board_points_enemy(board, currStart, currStop);
+	moveInfo.takeEnemy = board_points_enemy(board, start, stop);
 
-	// This function is not working:
-	bestMove.getsTaken = piece_move_exposed(board, move, info);
+	moveInfo.getsTaken = piece_move_exposed(board, move, info);
 
-	// This function is not working:
-	bestMove.exposed = board_piece_exposed(board, info, currStart);
+	moveInfo.exposed = board_piece_exposed(board, info, start);
 
-	bestMove.type = board_point_type(board, move.start);
-	bestMove.enemy = board_point_type(board, move.stop);
+	moveInfo.type = board_point_type(board, start);
+	moveInfo.enemy = board_point_type(board, stop);
 
-	return bestMove;
+	return moveInfo;
 }
 
-void update_best_move(BestMove* bestMove, Board board, Move move, Info info)
+void update_best_move(MoveInfo* bestMove, Board board, Move move, Info info)
 {
-	BestMove current = create_bestMove_data(board, move, info);
-
-	printf("\nsetsCheck=%d\ncheckMate=%d\ntakeEnemy=%d\ngetsTaken=%d\nExposed=%d\nType=%d\nEnemy=%d\n",
-			current.setsCheck, 
-			current.checkMate, 
-			current.takeEnemy, 
-			current.getsTaken, 
-			current.exposed, 
-			current.type,
-			current.enemy);
+	MoveInfo current = create_move_info(board, move, info);
 
 	if(smart_bot_algorithm1(board, *bestMove, current)) 
 	{
 		*bestMove = current;
 
-		printf("\n=== NEW BEST MOVE ===\n");
-
-		printf("\nsetsCheck=%d\ncheckMate=%d\ntakeEnemy=%d\ngetsTaken=%d\nExposed=%d\nType=%d\nEnemy=%d\n",
-			bestMove->setsCheck, 
-			bestMove->checkMate, 
-			bestMove->takeEnemy, 
-			bestMove->getsTaken, 
-			bestMove->exposed, 
-			bestMove->type,
-			bestMove->enemy);
+		// printf("\n[+] === NEW BEST MOVE === [+]\n");
+		// display_move_info(*bestMove);
 	}
 }
 

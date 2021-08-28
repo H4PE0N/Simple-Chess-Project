@@ -1,23 +1,18 @@
 
-#include "../Header-Program-Folder/global-include-header.h"
 #include "../Header-Program-Folder/setup-game-variables.h"
 
-bool setup_game_variables(Board board, Info* info)
+bool setup_game_variables(Board* board, Info* info)
 {
 	char* filename = "Data-Files-Folder/default-chess-board.txt";
 
 	if(!create_chess_board(board, filename))
 	{
-		printf("Could not load board!\n");
-
-		return false;
+		create_board_error(filename); return false;
 	}
 
-	if(!setup_game_info(info, board))
+	if(!setup_game_info(info, *board))
 	{
-		printf("Could not create info!\n");
-
-		return false;
+		setup_info_error(*board); return false;
 	}
 
 	return true;
@@ -46,34 +41,35 @@ RKSwitch extract_rks_values(Board board, Color color)
 	return (RKSwitch) {true, true};
 }
 
-bool create_chess_board(Board board, char filename[])
+bool create_chess_board(Board* board, char filename[])
 {
 	FILE* filePointer = fopen(filename, "r");
 
 	if(filePointer == NULL)
 	{
-		printf("The file could not open\n");
+		file_pointer_error(filename);
 		fclose(filePointer); return false;
 	}
 
 	if(!allocate_file_values(board, filePointer))
 	{
-		printf("Could not allocate file values\n");
+		file_values_error(filename);
 		fclose(filePointer); return false;
 	}
 
 	fclose(filePointer); return true;
 }
 
-bool allocate_file_values(Board board, FILE* filePointer)
+bool allocate_file_values(Board* board, FILE* filePointer)
 {
+	(*board) = malloc(sizeof(Piece*) * B_HEIGHT);
 	char lineBuffer[20]; int height = 0;
 
 	while(fgets(lineBuffer, 20, filePointer) != NULL)
 	{
-		board[height] = malloc(sizeof(Piece) * B_WIDTH);
+		(*board)[height] = malloc(sizeof(Piece) * B_WIDTH);
 
-		if(!extract_file_line(board, lineBuffer, height)) return false;
+		if(!extract_file_line(*board, lineBuffer, height)) return false;
 	
 		height += 1;
 	}
@@ -97,14 +93,20 @@ bool extract_file_line(Board board, char lineBuffer[], int height)
 
 bool extract_file_value(Piece* piece, char lineBuffer[], int index)
 {
-	char type_c = lineBuffer[(index * 2) + 0];
-	char color_c = lineBuffer[(index * 2) + 1];
+	char typeChar = lineBuffer[(index * 2) + 0];
+	char colorChar = lineBuffer[(index * 2) + 1];
 
-	if(!number_inside_bounds(type_c, '0', '6')) return false;
-	if(!number_inside_bounds(color_c, '0', '6')) return false;
+	if(!number_inside_bounds(typeChar, '0', '6')) return false;
+	if(!number_inside_bounds(colorChar, '0', '2')) return false;
+
+	Type type = (Type) (typeChar - '0');
+	Color color = (Color) (colorChar - '0');
+
+	if(type != EMPTY && color == NONE) return false;
+	if(color != NONE && type == EMPTY) return false;
 	
-	piece->type = (int) (type_c - '0');
-	piece->color = (int) (color_c - '0');
+	piece->type = type;
+	piece->color = color;
 
 	return true;
 }
