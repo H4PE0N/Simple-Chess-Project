@@ -1,8 +1,11 @@
 
 #include "../Header-Program-Folder/game-interface-program.h"
 
-const char* colors[] = {"\033[0m", "\033[31m", "\033[34m"};
-const char symbols[] = {'.', 'P', 'B', 'H', 'R', 'Q', 'K'};
+const char* colors[] = {"\033[0m", "\033[37m", "\033[34m"};
+
+const char blackSymbols[] = {'.', 'P', 'B', 'H', 'R', 'Q', 'K'};
+const char whiteSymbols[] = {'.', 'p', 'b', 'h', 'r', 'q', 'k'};
+
 const char letters[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
 const char numbers[] = {'1', '2', '3', '4', '5', '6', '7', '8'};
 
@@ -30,7 +33,10 @@ void display_game_round(Board board, Info info)
 
 void display_board_symbol(Piece piece)
 {
-	char symbol = symbols[piece.type];
+	char blackSymbol = blackSymbols[piece.type];
+	char whiteSymbol = whiteSymbols[piece.type];
+
+	char symbol = (piece.color == WHITE) ? whiteSymbol : blackSymbol;
 	char* color = (char*) colors[piece.color];
 
 	printf("%s%c%s", color, symbol, "\033[0m");
@@ -38,7 +44,7 @@ void display_board_symbol(Piece piece)
 
 void display_move_info(MoveInfo moveInfo)
 {
-	printf("[ SC=%d CM=%d TE=%d GT=%d EX=%d TY=%d EN=%d ]\n",
+	printf("[SC-%d CM-%d TE-%d GT-%d EX-%d TY-%d EN-%d]\n",
 			moveInfo.setsCheck, 
 			moveInfo.checkMate, 
 			moveInfo.takeEnemy, 
@@ -65,25 +71,26 @@ void display_chess_result(Board board, Color winner)
 
 	if(winner == NONE)
 	{
-		printf("It's a draw!\n");
+		CLEAR_LINE; printf("[!] The game ended with a draw!\n");
 	}
 	else 
 	{
-		printf("The winner is [%s]!\n", (winner == WHITE) ? "RED" : "BLUE");
+		char* color = (winner == WHITE) ? "WHITE" : "BLACK";
+		CLEAR_LINE; printf("[!] The winner is [%s]!\n", color);
 	}
 }
 
 void display_chess_info(Info info)
 {
-	CLEAR_LINE; printf("Current \t: (%s)\n", (info.current == WHITE) ? "RED" : "BLUE");
-	// CLEAR_LINE; printf("WhiteRKS\t: (%d-%d)\n", info.whiteRKS.left, info.whiteRKS.right);
-	// CLEAR_LINE; printf("BlackRKS\t: (%d-%d)\n", info.blackRKS.left, info.blackRKS.right);
-	CLEAR_LINE; printf("TURNS   \t: (%d)\n", info.turns);
+	char* color = (info.current == WHITE) ? "WHITE" : "BLACK";
+
+	CLEAR_LINE; printf("[+] PLAYER : [%s]\n", color);
+	CLEAR_LINE; printf("[+] TURNS  : [%dst]\n", info.turns);
 }
 
 bool input_current_move(char* string)
 {
-	CLEAR_LINE; printf("INPUT POSITION: ");
+	CLEAR_LINE; printf("[?] INPUT MOVE : ");
 	if(!input_string_variable(string)) return false;
 
 	return true;

@@ -80,11 +80,9 @@ bool find_computer_move(Move* move, Board board, Info info, Color color)
 		update_best_move(&bestMove, board, current, info);
 	}
 
-	// printf("[+] === BEST MOVE OUT OF [%d] === [+]\n", amount);
-	// display_board_move(bestMove.move);
-
-	// printf("\n[+] === BEST MOVE INFORMATION === [+]\n");
-	// display_move_info(bestMove);
+	CLEAR_LINE; printf("[+] === BEST MOVE OUT OF [%d] === [+]\n", amount);
+	CLEAR_LINE; display_board_move(bestMove.move);
+	CLEAR_LINE; display_move_info(bestMove);
 
 	*move = bestMove.move; free(moves); return true;
 }
@@ -138,9 +136,6 @@ void update_best_move(MoveInfo* bestMove, Board board, Move move, Info info)
 	if(smart_bot_algorithm1(board, *bestMove, current)) 
 	{
 		*bestMove = current;
-
-		// printf("\n[+] === NEW BEST MOVE === [+]\n");
-		// display_move_info(*bestMove);
 	}
 }
 
