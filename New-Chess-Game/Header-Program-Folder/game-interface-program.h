@@ -16,6 +16,8 @@ bool parse_chess_move(Move*, char[]);
 
 bool parse_chess_position(Point*, char[]);
 
+void display_game_round(Board, Info);
+
 int string_letter_index(char[], int, char);
 
 void display_chess_result(Board, Color);
@@ -25,5 +27,7 @@ void display_move_info(MoveInfo);
 void display_board_move(Move);
 
 void display_board_point(Point);
+
+void display_board_symbol(Piece);
 
 #endif

@@ -128,6 +128,14 @@ bool board_point_empty(Board board, Point point)
 	return (type == EMPTY || color == NONE);
 }
 
+bool move_inside_board(Move move)
+{
+	if(!point_inside_board(move.start)) return false;
+	if(!point_inside_board(move.stop)) return false;
+
+	return true;
+}
+
 bool board_points_enemy(Board board, Point start, Point stop)
 {
 	Color start_c = board_point_color(board, start);

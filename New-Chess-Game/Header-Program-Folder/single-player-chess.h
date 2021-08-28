@@ -11,4 +11,8 @@
 
 bool single_player_chess(Color*, Board, Info*);
 
+bool computer_move_handler(Color*, Board, Info*);
+
+bool user_move_handler(Board, Info*);
+
 #endif

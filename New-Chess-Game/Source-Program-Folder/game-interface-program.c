@@ -1,32 +1,39 @@
 
 #include "../Header-Program-Folder/game-interface-program.h"
 
+const char* colors[] = {"\033[0m", "\033[31m", "\033[34m"};
 const char symbols[] = {'.', 'P', 'B', 'H', 'R', 'Q', 'K'};
 const char letters[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
 const char numbers[] = {'1', '2', '3', '4', '5', '6', '7', '8'};
 
 void display_chess_board(Board board)
 {
-	printf("  A B C D E F G H\n");
+	CLEAR_LINE; printf("  A B C D E F G H\n");
 	for(int height = 0; height < 8; height = height + 1)
 	{
-		printf("%d ", height + 1);
+		CLEAR_LINE; printf("%d ", height + 1);
 		for(int width = 0; width < 8; width = width + 1)
 		{
-			Type type = board[height][width].type;
-			Color color = board[height][width].color;
-
-			char symbol = symbols[type];
-			char ascii_c[20];
-
-			if(color == WHITE) strcpy(ascii_c, "\033[31m");
-			else if(color == BLACK) strcpy(ascii_c, "\033[34m");
-			else strcpy(ascii_c, "\033[0m");
-
-			printf("%s%c%s ", ascii_c, symbol, "\033[0m");
+			Piece piece = board[height][width];
+			display_board_symbol(piece); printf(" ");
 		}
 		printf("\n");
 	}
+}
+
+void display_game_round(Board board, Info info)
+{
+	display_chess_board(board);
+
+	display_chess_info(info);
+}
+
+void display_board_symbol(Piece piece)
+{
+	char symbol = symbols[piece.type];
+	char* color = (char*) colors[piece.color];
+
+	printf("%s%c%s", color, symbol, "\033[0m");
 }
 
 void display_move_info(MoveInfo moveInfo)
@@ -68,15 +75,15 @@ void display_chess_result(Board board, Color winner)
 
 void display_chess_info(Info info)
 {
-	printf("Current \t: (%s)\n", (info.current == WHITE) ? "RED" : "BLUE");
-	// printf("WhiteRKS\t: (%d-%d)\n", info.whiteRKS.left, info.whiteRKS.right);
-	// printf("BlackRKS\t: (%d-%d)\n", info.blackRKS.left, info.blackRKS.right);
-	printf("TURNS   \t: (%d)\n", info.turns);
+	CLEAR_LINE; printf("Current \t: (%s)\n", (info.current == WHITE) ? "RED" : "BLUE");
+	// CLEAR_LINE; printf("WhiteRKS\t: (%d-%d)\n", info.whiteRKS.left, info.whiteRKS.right);
+	// CLEAR_LINE; printf("BlackRKS\t: (%d-%d)\n", info.blackRKS.left, info.blackRKS.right);
+	CLEAR_LINE; printf("TURNS   \t: (%d)\n", info.turns);
 }
 
 bool input_current_move(char* string)
 {
-	printf("INPUT POSITION: ");
+	CLEAR_LINE; printf("INPUT POSITION: ");
 	if(!input_string_variable(string)) return false;
 
 	return true;

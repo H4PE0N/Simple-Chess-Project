@@ -26,50 +26,64 @@ int main(int argAmount, char* arguments[])
 
 bool single_player_chess(Color* winner, Board board, Info* info)
 {
-	Move move; char current[20];
 	while(game_still_running(winner, board, *info))
 	{
 		info->current = WHITE;
 
-		display_chess_board(board);
-		display_chess_info(*info);
-		
-		if(!input_current_move(current)) continue;
-		if(!strcmp(current, "stop")) return false;
-		if(!parse_chess_move(&move, current)) continue;
+		if(!user_move_handler(board, info)) return false;
 
-		if(!move_chess_piece(board, move, info)) continue;
-		
-		if(!update_kings_point(board, info))
-		{
-			printf("One of the kings has died BNR!\n");
-			return false;
-		}
+		if(!update_kings_point(board, info)) return false;
 
 		info->turns += 1;
 		info->current = BLACK;
 
 		if(!game_still_running(winner, board, *info)) break;
 
-		display_chess_board(board);
-		display_chess_info(*info);
+		if(!computer_move_handler(winner, board, info)) break;
 
-		sleep(1);
-
-		if(!computer_chess_move(board, info, BLACK))
-		{
-			*winner = WHITE;
-			printf("The computer cant move!\n");
-			break;
-		}
-
-		if(!update_kings_point(board, info))
-		{
-			printf("One of the kings has died BNR!\n");
-			return false;
-		}
+		if(!update_kings_point(board, info)) return false;
 
 		info->turns += 1;
 	}
+	return true;
+}
+
+bool user_move_handler(Board board, Info* info)
+{
+	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
+	char input[20];
+	while(!move_inside_board(move))
+	{
+		display_game_round(board, *info);
+
+		if(!input_current_move(input)) continue;
+
+		if(!strcmp(input, "stop")) return false;
+
+		if(!parse_chess_move(&move, input)) continue;
+
+		MOVE_UP(9); MOVE_UP(2); MOVE_UP(1);
+	}
+	
+	if(!move_chess_piece(board, move, info))
+		user_move_handler(board, info);
+
+	return true;
+}
+
+bool computer_move_handler(Color* winner, Board board, Info* info)
+{
+	display_game_round(board, *info);
+
+	MOVE_UP(9); MOVE_UP(2);
+
+	sleep(1);
+
+	if(!computer_chess_move(board, info, BLACK))
+	{
+		// The computer cant make a move and lets white (opponent) win
+		*winner = WHITE; return false;
+	}
+
 	return true;
 }

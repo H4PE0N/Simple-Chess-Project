@@ -14,6 +14,8 @@ Piece board_point_piece(Board, Point);
 
 void append_board_piece(Board, Point, Piece);
 
+bool move_inside_board(Move);
+
 void remove_board_piece(Board, Point);
 
 void move_board_piece(Board, Point, Point);

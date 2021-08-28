@@ -16,6 +16,9 @@
 
 #include <unistd.h>
 
+#define CLEAR_LINE printf("\033[2K");
+#define MOVE_UP(lines) printf("\033[%dA", lines);
+
 #include "struct-definitions-header.h"
 
 #include "common-functions-program.h"
