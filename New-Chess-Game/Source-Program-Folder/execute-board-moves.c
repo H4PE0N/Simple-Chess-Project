@@ -3,12 +3,9 @@
 
 void execute_pawn_move(Board board, Move move)
 {
-	Point start = move.start, stop = move.stop;
-	Color color = board[start.height][start.width].color;
+	move_board_piece(board, move.start, move.stop);
 
-	move_board_piece(board, start, stop);
-
-	make_pawn_queen(board, stop);
+	make_pawn_queen(board, move.stop);
 }
 
 void execute_rook_switch(Board board, Move move, Info* info)
@@ -40,7 +37,7 @@ void execute_rook_switch(Board board, Move move, Info* info)
 
 void execute_rook_move(Board board, Move move, Info* info)
 {
-	Point start = move.start, stop = move.stop;
+	Point start = move.start;
 
 	Color color = board[start.height][start.width].color;
 	RKSwitch* RKS = (color == BLACK) ? &info->blackRKS : &info->whiteRKS;

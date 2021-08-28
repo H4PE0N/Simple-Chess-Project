@@ -48,8 +48,6 @@ bool move_chess_piece(Board board, Move move, Info* info)
 
 bool pawn_move_handler(Board board, Move move, Info info)
 {
-	Point start = move.start, stop = move.stop;
-
 	if(!pawn_move_acceptable(board, move, info)) return false;
 
 	execute_pawn_move(board, move);
@@ -59,8 +57,6 @@ bool pawn_move_handler(Board board, Move move, Info info)
 
 bool rook_move_handler(Board board, Move move, Info* info)
 {
-	Point start = move.start, stop = move.stop;
-
 	if(!rook_move_acceptable(board, move, *info)) return false;
 
 	if(rook_switch_able(board, move, *info))
@@ -75,8 +71,6 @@ bool rook_move_handler(Board board, Move move, Info* info)
 
 bool knight_move_handler(Board board, Move move, Info info)
 {
-	Point start = move.start, stop = move.stop;
-
 	if(!knight_move_acceptable(board, move, info)) return false;
 
 	execute_knight_move(board, move);
@@ -86,8 +80,6 @@ bool knight_move_handler(Board board, Move move, Info info)
 
 bool bishop_move_handler(Board board, Move move, Info info)
 {
-	Point start = move.start, stop = move.stop;
-
 	if(!bishop_move_acceptable(board, move, info)) return false;
 
 	execute_bishop_move(board, move);
@@ -97,8 +89,6 @@ bool bishop_move_handler(Board board, Move move, Info info)
 
 bool queen_move_handler(Board board, Move move, Info info)
 {
-	Point start = move.start, stop = move.stop;
-
 	if(!queen_move_acceptable(board, move, info)) return false;
 
 	execute_queen_move(board, move);
@@ -108,8 +98,6 @@ bool queen_move_handler(Board board, Move move, Info info)
 
 bool king_move_handler(Board board, Move move, Info* info)
 {
-	Point start = move.start, stop = move.stop;
-
 	if(!king_move_acceptable(board, move, *info)) return false;
 
 	execute_king_move(board, move, info);

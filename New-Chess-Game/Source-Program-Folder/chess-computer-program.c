@@ -26,12 +26,12 @@ bool simulate_enemy_check(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
-	Color s_color = board_point_color(board, start);
+	Color sColor = board_point_color(board, start);
 
-	if(s_color == NONE) return false;
+	if(sColor == NONE) return false;
 
-	Color color = (s_color == WHITE) ? BLACK : WHITE;
-	Point king = (s_color == WHITE) ? info.bKing : info.wKing;
+	Color color = (sColor == WHITE) ? BLACK : WHITE;
+	Point king = (sColor == WHITE) ? info.bKing : info.wKing;
 
 	Board copy = copy_chess_board(board);
 	move_board_piece(copy, start, stop);
@@ -48,12 +48,11 @@ bool simulate_check_mate(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
-	Color s_color = board_point_color(board, start);
+	Color sColor = board_point_color(board, start);
 
-	if(s_color == NONE) return false;
+	if(sColor == NONE) return false;
 
-	Color color = (s_color == WHITE) ? BLACK : WHITE;
-	Point king = (s_color == WHITE) ? info.bKing : info.wKing;
+	Point king = (sColor == WHITE) ? info.bKing : info.wKing;
 
 	Board copy = copy_chess_board(board);
 	move_board_piece(copy, start, stop);
@@ -183,12 +182,7 @@ void update_best_move(BestMove* bestMove, Board board, Move move, Info info)
 
 bool piece_move_exposed(Board board, Move move, Info info)
 {
-	// This function should return if the piece can 
-	// get taken at the spot that its moving to
-
 	Point start = move.start, stop = move.stop;
-
-	Color color = board_point_color(board, start);
 
 	Board copy = copy_chess_board(board);
 	move_board_piece(copy, start, stop);
@@ -211,6 +205,7 @@ bool board_piece_exposed(Board board, Info info, Point point)
 			start = (Point) {height, width};
 			move = (Move) {start, point};
 
+			if(!board_points_enemy(board, point, start)) continue;
 			if(piece_move_acceptable(board, move, info)) return true;
 		}
 	}

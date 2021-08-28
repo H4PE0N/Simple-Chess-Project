@@ -5,7 +5,7 @@ bool team_prevent_check(Board board, Info info, Color color)
 {
 	if(color == NONE) return false;
 
-	Point point; Piece piece;
+	Point point;
 	for(int height = 0; height < 8; height = height + 1)
 	{
 		for(int width = 0; width < 8; width = width + 1)

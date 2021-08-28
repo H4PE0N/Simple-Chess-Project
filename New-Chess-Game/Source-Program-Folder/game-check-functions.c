@@ -1,6 +1,7 @@
 
 #include "../Header-Program-Folder/game-check-functions.h"
 
+// Remove color from this function!
 bool king_check_situation(Board board, Point point, Color color)
 {
 	Board copy = copy_chess_board(board);

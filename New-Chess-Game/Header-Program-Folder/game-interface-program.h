@@ -18,4 +18,6 @@ bool parse_chess_position(Point*, char[]);
 
 int string_letter_index(char[], int, char);
 
+void display_chess_result(Board, Color);
+
 #endif

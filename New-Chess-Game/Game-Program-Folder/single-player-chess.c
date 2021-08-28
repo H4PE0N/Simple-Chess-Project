@@ -4,19 +4,16 @@
 int main(int argAmount, char* arguments[])
 {
 	srand(time(NULL));
-	printf("Welcome to single-player-chess.c!\n");
 
 	Board board = malloc(sizeof(Piece*) * B_HEIGHT);
+	Color winner = NONE;
 	Info info;
 
 	if(!setup_game_variables(board, &info))
 	{
 		printf("Game information error!\n");
-
 		free(board); return false;
 	}
-
-	Color winner = NONE;
 
 	if(!single_player_chess(&winner, board, &info))
 	{
@@ -24,10 +21,7 @@ int main(int argAmount, char* arguments[])
 		free(board); return false;
 	}
 
-	display_chess_board(board);
-
-	if(winner == NONE) printf("It's a draw!\n");
-	else printf("The winner is [%s]!\n", (winner == WHITE) ? "RED" : "BLUE");
+	display_chess_result(board, winner);
 
 	free(board); return false;
 }

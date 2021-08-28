@@ -201,17 +201,16 @@ bool diagonal_move_acceptable(Board board, Move move, Info info)
 
 bool check_after_kingSwitch(Board board, Move move, Info info)
 {
-	Point start = move.start, stop = move.stop;
-
-	Color color = board_point_color(board, start);
-	Point king = color_king_point(info, color);
+	Color color = board_point_color(board, move.start);
 
 	Board copy = copy_chess_board(board);
 	Info infoDummy;
 
 	execute_rook_switch(copy, move, &infoDummy);
 
-	if(!king_check_situation(copy, stop, color))
+	Point king = color_king_point(info, color);
+
+	if(!king_check_situation(copy, king, color))
 	{ 
 		free(copy); return true; 
 	}
@@ -237,9 +236,7 @@ bool simulate_check_move(Board board, Point start, Point stop)
 
 bool check_check_situation(Board board, Move move, Info info)
 {
-	Point start = move.start, stop = move.stop;
-
-	Color color = board_point_color(board, start);
+	Color color = board_point_color(board, move.start);
 	Point king = color_king_point(info, color);
 
 	if(!king_check_situation(board, king, color)) return true;
