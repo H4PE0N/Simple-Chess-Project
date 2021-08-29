@@ -34,7 +34,10 @@ bool single_player_chess(Color* winner, Board board, Info* info)
 		}
 		else
 		{
-			if(!computer_move_handler(winner, board, info)) return true;
+			if(!computer_move_handler(board, info))
+			{
+				*winner = WHITE; break;
+			}
 		}
 		if(!update_kings_point(board, info)) return false;
 
@@ -65,12 +68,14 @@ bool user_move_handler(Board board, Info* info)
 		move.start.height, move.start.width, move.stop.height, move.stop.width);
 
 	if(!move_chess_piece(board, move, info))
+	{
 		user_move_handler(board, info);
+	}
 
 	return true;
 }
 
-bool computer_move_handler(Color* winner, Board board, Info* info)
+bool computer_move_handler(Board board, Info* info)
 {
 	display_game_round(board, *info); 
 
@@ -80,20 +85,12 @@ bool computer_move_handler(Color* winner, Board board, Info* info)
 
 	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
 
-	if(!find_computer_move(&move, board, *info, info->current)) 
-	{
-		// The computer cant make a move and lets white (opponent) win
-		*winner = WHITE; return false;
-	}
+	if(!find_computer_move(&move, board, *info, info->current)) return false;
 
 	printf("Computer moved [%d-%d] to [%d-%d]\n",
 		move.start.height, move.start.width, move.stop.height, move.stop.width);
 
-	if(!move_chess_piece(board, move, info))
-	{
-		// The computer cant make a move and lets white (opponent) win
-		*winner = WHITE; return false;
-	}
+	if(!move_chess_piece(board, move, info)) return false;
 
 	return true;
 }
