@@ -56,7 +56,7 @@ bool user_move_handler(Board board, Info* info)
 
 		MOVE_UP(12);
 
-		if(!strcmp(input, "stop")) return false;
+		if(!strcmp(input, "STOP")) return false;
 
 		if(!parse_chess_move(&move, board, *info, input)) continue;
 	}
@@ -72,7 +72,9 @@ bool user_move_handler(Board board, Info* info)
 
 bool computer_move_handler(Color* winner, Board board, Info* info)
 {
-	display_game_round(board, *info); MOVE_UP(11);
+	display_game_round(board, *info); 
+
+	MOVE_UP(11);
 
 	sleep(1);
 

@@ -168,3 +168,18 @@ bool board_points_equal(Point first, Point second)
 {
 	return (first.height == second.height && first.width == second.width);
 }
+
+void convert_string_upper(char* string, int length)
+{
+	for(int index = 0; index < length; index += 1)
+	{
+		string[index] = convert_char_upper(string[index]);
+	}
+}
+
+char convert_char_upper(char character)
+{
+	if(!number_inside_bounds(character, 97, 122)) return character;
+
+	return (character - 32);
+}

@@ -80,7 +80,10 @@ void display_chess_info(Info info)
 bool input_current_move(char* string)
 {
 	CLEAR_LINE; printf("[?] INPUT MOVE : ");
+
 	if(!input_string_variable(string)) return false;
+
+	convert_string_upper(string, strlen(string));
 
 	return true;
 }
@@ -100,7 +103,9 @@ bool input_string_variable(char* string)
 
 bool parse_chess_move(Move* move, Board board, Info info, char string[])
 {
-	if(!strcmp(string, "random"))
+	convert_string_upper(string, strlen(string));
+	
+	if(!strcmp(string, "RANDOM"))
 	{
 		return find_computer_move(move, board, info, info.current);
 	}
