@@ -23,9 +23,6 @@ void execute_rook_switch(Board board, Move move, Info* info)
 	Point rook = {start.height, rWidth};
 	Point king = {stop.height, kWidth};
 
-	printf("Difference = %d\n", difference);
-	printf("kWidth = %d\trWidth=%d\n", kWidth, rWidth);
-
 	move_board_piece(board, stop, king);
 	move_board_piece(board, start, rook);
 
@@ -74,9 +71,7 @@ void turn_off_rook_switch(Info* info, Color color)
 void update_king_point(Info* info, Color color, Point point)
 {
 	Point* kingP = (color == WHITE) ? &info->wKing : &info->bKing;
-
-	kingP->height = point.height;
-	kingP->width = point.width;
+	*kingP = (Point) {point.height, point.width};
 }
 
 void execute_king_move(Board board, Move move, Info* info)

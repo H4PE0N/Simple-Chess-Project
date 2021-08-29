@@ -9,8 +9,6 @@
 #include "chess-bot-algorithms.h"
 #include "game-interface-program.h"
 
-bool computer_chess_move(Board, Info*, Color);
-
 bool find_computer_move(Move*, Board, Info, Color);
 
 bool piece_possible_moves(Move*, Board, Info, Point);

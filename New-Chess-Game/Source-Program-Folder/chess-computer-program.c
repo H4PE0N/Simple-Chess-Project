@@ -1,22 +1,6 @@
 
 #include "../Header-Program-Folder/chess-computer-program.h"
 
-bool computer_chess_move(Board board, Info* info, Color color)
-{
-	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
-
-	if(!find_computer_move(&move, board, *info, color)) return false;
-
-	Piece piece = board_point_piece(board, move.start);
-	Point* king = (color == WHITE) ? &info->wKing : &info->bKing;
-
-	if(piece.type == KING) *king = move.stop;
-
-	if(!move_chess_piece(board, move, info)) return false;
-
-	return true;
-}
-
 bool simulate_enemy_check(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
@@ -81,7 +65,6 @@ bool find_computer_move(Move* move, Board board, Info info, Color color)
 	}
 
 	CLEAR_LINE; printf("[+] === BEST MOVE OUT OF [%d] === [+]\n", amount);
-	CLEAR_LINE; display_board_move(bestMove.move);
 	CLEAR_LINE; display_move_info(bestMove);
 
 	*move = bestMove.move; free(moves); return true;

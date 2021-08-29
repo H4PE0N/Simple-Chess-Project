@@ -54,17 +54,6 @@ void display_move_info(MoveInfo moveInfo)
 			moveInfo.enemy);
 }
 
-void display_board_point(Point point)
-{
-	printf("Point=[%d-%d]\n", point.height, point.width);
-}
-
-void display_board_move(Move move)
-{
-	Point start = move.start, stop = move.stop;
-	printf("Move=[%d-%d] [%d-%d]\n", start.height, start.width, stop.height, stop.width);
-}
-
 void display_chess_result(Board board, Color winner)
 {
 	display_chess_board(board);
@@ -109,8 +98,13 @@ bool input_string_variable(char* string)
 	return true;
 }
 
-bool parse_chess_move(Move* move, char string[])
+bool parse_chess_move(Move* move, Board board, Info info, char string[])
 {
+	if(!strcmp(string, "random"))
+	{
+		return find_computer_move(move, board, info, info.current);
+	}
+
 	char seperator[] = " ";
 	char* start = strtok(string, seperator);
 	char* stop = strtok(NULL, seperator);
@@ -132,8 +126,7 @@ bool parse_chess_position(Point* point, char string[])
 
 	if(width == -1 || height == -1) return false;
 
-	point->height = height;
-	point->width = width;
+	*point = (Point) {height, width};
 
 	return true;
 }
