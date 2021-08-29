@@ -24,6 +24,17 @@ bool points_inside_board(Point first, Point second)
 	return true;
 }
 
+char* extract_file_name(char* arguments[], int amount)
+{
+	char* filename = malloc(sizeof(char) * 200);
+	if(amount >= 2) strcpy(filename, arguments[1]);
+	
+	else strcpy(filename, "Data-Files-Folder/default-chess-board.txt");
+	
+	return filename;
+}
+
+
 int create_random_number(int minimum, int maximum)
 {
 	return (rand() % (maximum - minimum + 1) + minimum);

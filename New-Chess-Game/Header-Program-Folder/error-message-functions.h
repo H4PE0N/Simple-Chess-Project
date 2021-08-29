@@ -17,6 +17,8 @@ void setup_variables_error();
 
 void chess_game_quitted();
 
+void display_error_header(char[]);
+
 void display_error_message(char[]);
 
 #endif

@@ -1,10 +1,8 @@
 
 #include "../Header-Program-Folder/setup-game-variables.h"
 
-bool setup_game_variables(Board* board, Info* info)
+bool setup_game_variables(Board* board, Info* info, char filename[])
 {
-	char* filename = "Data-Files-Folder/default-chess-board.txt";
-
 	if(!create_chess_board(board, filename))
 	{
 		create_board_error(filename); return false;

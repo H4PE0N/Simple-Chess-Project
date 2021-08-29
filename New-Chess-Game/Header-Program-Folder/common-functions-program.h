@@ -24,6 +24,8 @@ int create_random_number(int, int);
 
 void switch_chess_pieces(Board, Point, Point);
 
+char* extract_file_name(char*[], int);
+
 bool board_piece_equal(Piece, Piece);
 
 bool board_piece_point(Point*, Board, Piece);
