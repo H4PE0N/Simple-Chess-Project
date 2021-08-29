@@ -310,6 +310,8 @@ bool offensive_bot_algorithm(Board board, MoveInfo bestMove, MoveInfo current)
 
 bool smart_bot_algorithm1(Board board, MoveInfo bestMove, MoveInfo current)
 {
+	Color color = board_point_color(board, current.move.start);
+
 	// If one move, makes check mate, the bot will take that move
 	if(current.checkMate) return true;
 	if(bestMove.checkMate) return false;
@@ -318,12 +320,29 @@ bool smart_bot_algorithm1(Board board, MoveInfo bestMove, MoveInfo current)
 	if(current.type != PAWN && current.exposed && !current.getsTaken && !bestMove.exposed) return true;
 	if(!current.exposed && bestMove.exposed) return false;
 
-	
+	//================================================================
+	int currHeight = current.move.start.height;
+	int bestHeight = bestMove.move.start.height;
+
+	int currHeightLeft = (color == WHITE) ? currHeight : (7 - currHeight);
+	int bestHeightLeft = (color == WHITE) ? bestHeight : (7 - bestHeight);
+
+	int pawnRushLeft= 3;
+
+	bool currPawnRush = (current.type == PAWN) && (currHeightLeft <= pawnRushLeft);
+	bool bestPawnRush = (bestMove.type == PAWN) && (bestHeightLeft <= pawnRushLeft);
+
+	if(currPawnRush && !bestPawnRush) return true;
+	if(!currPawnRush && bestPawnRush) return false;
+	//================================================================
+
 	int cTradeValue = current.takeEnemy ? (current.type - current.enemy) : 8; 
 	int bTradeValue = bestMove.takeEnemy ? (bestMove.type - bestMove.enemy) : 8;
 
 	// The lowest value is the best trade.
 	bool betterTrade = (cTradeValue < bTradeValue);
+
+	if(current.type == QUEEN && current.getsTaken && current.enemy != QUEEN) return false;
 
 	// If the piece is safe after it has taken an enemy, 
 	// the only thing that matters, is the enemy rank
@@ -335,7 +354,6 @@ bool smart_bot_algorithm1(Board board, MoveInfo bestMove, MoveInfo current)
 
 	// If the trade value of the best move is better, then it remains that way
 	if(bTradeValue < cTradeValue) return false;
-	
 	
 	// It prioritises if the piece dont get taken after move
 	if(!current.getsTaken && bestMove.getsTaken) return true;
