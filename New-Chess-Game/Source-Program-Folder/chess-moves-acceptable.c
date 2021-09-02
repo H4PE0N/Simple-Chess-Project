@@ -3,39 +3,21 @@
 
 bool piece_move_acceptable(Board board, Move move, Info info)
 {
-	Point start = move.start, stop = move.stop;
-
-	if(board_points_equal(start, stop)) return false;
-
-	Piece piece = board_point_piece(board, start);
-
-	switch(piece.type)
+	switch(board_point_type(board, move.start))
 	{
-		case(EMPTY): return false; break;
+		case(EMPTY): return false;
 	
-		case(PAWN):
-			if(pawn_move_acceptable(board, move, info)) return true;
-			break;
+		case(PAWN): return pawn_move_acceptable(board, move, info);
 
-		case(ROOK):
-			if(rook_move_acceptable(board, move, info)) return true;
-			break;
+		case(ROOK): return rook_move_acceptable(board, move, info);
 
-		case(KNIGHT):
-			if(knight_move_acceptable(board, move, info)) return true;
-			break;
+		case(KNIGHT): return knight_move_acceptable(board, move, info);
 
-		case(BISHOP):
-			if(bishop_move_acceptable(board, move, info)) return true;
-			break;
+		case(BISHOP): return bishop_move_acceptable(board, move, info);
 
-		case(QUEEN):
-			if(queen_move_acceptable(board, move, info)) return true;
-			break;
+		case(QUEEN): return queen_move_acceptable(board, move, info);
 
-		case(KING):
-			if(king_move_acceptable(board, move, info)) return true;
-			break;
+		case(KING): return king_move_acceptable(board, move, info);
 	}
 	return false;
 }
@@ -44,13 +26,19 @@ bool queen_move_acceptable(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
-	if(!moving_queen_valid(start, stop)) return false;
+	// These controls is the most obvious, and should be done first
+	if(!points_inside_board(start, stop)) return false;
 
-	if(!clear_moving_path(board, start, stop)) return false;
+	if(board_point_empty(board, start)) return false;
 
 	if(board_points_team(board, start, stop)) return false;
 
 	if(board_point_piece(board, stop).type == KING) return false;
+
+	// These controls are more specific, and should be done later
+	if(!moving_queen_valid(start, stop)) return false;
+
+	if(!clear_moving_path(board, start, stop)) return false;
 
 	if(!check_check_situation(board, move, info)) return false;
 
@@ -61,40 +49,26 @@ bool pawn_move_acceptable(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
+	// These controls is the most obvious, and should be done first
+	if(!points_inside_board(start, stop)) return false;
+
+	if(board_point_empty(board, start)) return false;
+
+	if(board_point_piece(board, stop).type == KING) return false;
+
+	// These controls are more specific, and should be done later
 	if(!moving_pawn_valid(board, start, stop)) return false;
 
 	if(!clear_moving_path(board, start, stop)) return false;
 
+	// These controls are vary specific, and should be done last
 	if(start.width == stop.width)
 	{
 		if(!board_point_empty(board, stop)) return false; 
 	}
 	else if(!board_points_enemy(board, start, stop)) return false;
-	
-	if(board_point_piece(board, stop).type == KING) return false;
 
 	if(!check_check_situation(board, move, info)) return false;
-
-	return true;
-}
-
-bool rook_switch_able(Board board, Move move, Info info)
-{
-	Point start = move.start, stop = move.stop;
-
-	Color color = board_point_color(board, start);
-	Point king = color_king_point(info, color);
-
-	if(king_check_situation(board, king, color)) return false;
-
-	if(!rook_king_switch(board, start, stop)) return false;
-
-	RKSwitch RKS = (color == BLACK) ? info.blackRKS : info.whiteRKS;
-
-	bool switchAble = (start.width == 0) ? RKS.left : RKS.right;
-	if(!switchAble) return false;
-
-	if(!check_after_kingSwitch(board, move, info)) return false;
 
 	return true;
 }
@@ -103,12 +77,20 @@ bool rook_move_acceptable(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
+	// These controls is the most obvious, and should be done first
+	if(!points_inside_board(start, stop)) return false;
+
+	if(board_point_empty(board, start)) return false;
+
+	// These controls are more specific, and should be done later
 	if(!moving_rook_valid(start, stop)) return false;
 
 	if(!clear_moving_path(board, start, stop)) return false;
 
+	// This is a special case, and will skip the following controls
 	if(rook_switch_able(board, move, info)) return true;
 
+	// These controls are more specific, and should be done later
 	if(board_points_team(board, start, stop)) return false;
 
 	if(board_point_piece(board, stop).type == KING) return false;
@@ -122,13 +104,19 @@ bool bishop_move_acceptable(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
-	if(!moving_bishop_valid(start, stop)) return false;
+	// These controls is the most obvious, and should be done first
+	if(!points_inside_board(start, stop)) return false;
 
-	if(!clear_moving_path(board, start, stop)) return false;
+	if(board_point_empty(board, start)) return false;
 
 	if(board_points_team(board, start, stop)) return false;
 
 	if(board_point_piece(board, stop).type == KING) return false;
+
+	// These controls are more specific, and should be done later
+	if(!moving_bishop_valid(start, stop)) return false;
+
+	if(!clear_moving_path(board, start, stop)) return false;
 
 	if(!check_check_situation(board, move, info)) return false;
 
@@ -139,11 +127,17 @@ bool king_move_acceptable(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
-	if(!moving_king_valid(start, stop)) return false;
+	// These controls is the most obvious, and should be done first
+	if(!points_inside_board(start, stop)) return false;
+
+	if(board_point_empty(board, start)) return false;
+
+	if(board_points_team(board, start, stop)) return false;
 
 	if(board_point_piece(board, stop).type == KING) return false;
 
-	if(board_points_team(board, start, stop)) return false;
+	// These controls are more specific, and should be done later
+	if(!moving_king_valid(start, stop)) return false;
 
 	if(!simulate_check_move(board, start, stop)) return false;
 	
@@ -154,50 +148,55 @@ bool knight_move_acceptable(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
+	// These controls is the most obvious, and should be done first
+	if(!points_inside_board(start, stop)) return false;
+	
+	if(board_point_empty(board, start)) return false;
+
+	if(board_points_team(board, start, stop)) return false;
+
+	if(board_point_piece(board, stop).type == KING) return false;
+
+	// These controls are more specific, and should be done later
 	if(!moving_knight_valid(start, stop)) return false;
 
-	if(board_points_team(board, start, stop)) return false;
-
-	if(board_point_piece(board, stop).type == KING) return false;
-
 	if(!check_check_situation(board, move, info)) return false;
 
 	return true;
 }
 
-bool straight_move_acceptable(Board board, Move move, Info info)
+bool switch_bool_valid(Point start, Info info, Color color)
+{
+	RKSwitch rookKingSwitch = {false, false};
+
+	if(color == WHITE) rookKingSwitch = info.whiteRKS;
+	if(color == BLACK) rookKingSwitch = info.blackRKS;
+
+	return (start.width == 0) ? rookKingSwitch.left : rookKingSwitch.right;
+}
+
+bool rook_switch_able(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
-	if(!straight_move_valid(start, stop)) return false;
+	Color color = board_point_color(board, start);
+	Point king = color_king_point(info, color);
 
-	if(!clear_moving_path(board, start, stop)) return false;
+	// This is a special case, you cant switch if the king is in check
+	if(king_check_situation(board, king, color)) return false;
 
-	if(board_points_team(board, start, stop)) return false;
+	// This checks if the rook and the king is on the right place
+	if(!rook_king_switch(board, start, stop)) return false;
 
-	if(board_point_piece(board, stop).type == KING) return false;
+	// This checks that the operation is clear to go (true)
+	if(!switch_bool_valid(start, info, color)) return false;
 
-	if(!check_check_situation(board, move, info)) return false;
-
-	return true;
-}
-
-bool diagonal_move_acceptable(Board board, Move move, Info info)
-{
-	Point start = move.start, stop = move.stop;
-
-	if(!diagonal_move_valid(start, stop)) return false;
-
-	if(!clear_moving_path(board, start, stop)) return false;
-
-	if(board_points_team(board, start, stop)) return false;
-
-	if(board_point_piece(board, stop).type == KING) return false;
-
-	if(!check_check_situation(board, move, info)) return false;
+	if(!check_after_kingSwitch(board, move, info)) return false;
 
 	return true;
 }
+
+// MOVE THESE FUNCTIONS INTO A FILE CALLED "simulations...c"
 
 bool check_after_kingSwitch(Board board, Move move, Info info)
 {

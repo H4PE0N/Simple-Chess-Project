@@ -18,8 +18,12 @@ bool moving_queen_valid(Point, Point);
 
 bool moving_king_valid(Point, Point);
 
-bool straight_move_valid(Point, Point);
+int pawn_height_offset(Point, Point, Color);
 
-bool diagonal_move_valid(Point, Point);
+bool pawn_starting_bool(Point, Color);
+
+bool rook_starting_bool(Point, Color);
+
+bool king_starting_bool(Point, Color);
 
 #endif

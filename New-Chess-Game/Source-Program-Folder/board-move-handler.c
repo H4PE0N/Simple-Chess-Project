@@ -3,45 +3,24 @@
 
 bool move_chess_piece(Board board, Move move, Info* info)
 {
-	Point start = move.start, stop = move.stop;
+	Color color = board_point_color(board, move.start);
+	if(color != info->current) return false;
 
-	if(board_point_empty(board, start)) return false;
-
-	if(!points_inside_board(start, stop)) return false;
-
-	if(board_points_equal(start, stop)) return false;
-
-	Piece piece = board_point_piece(board, start);
-
-	if(piece.color != info->current) return false;
-
-	switch(piece.type)
+	switch(board_point_type(board, move.start))
 	{
 		case(EMPTY): return false;
 	
-		case(PAWN):
-			if(pawn_move_handler(board, move, *info)) return true;
-			break;
+		case(PAWN): return pawn_move_handler(board, move, *info);
 
-		case(ROOK):
-			if(rook_move_handler(board, move, info)) return true;
-			break;
-
-		case(KNIGHT):
-			if(knight_move_handler(board, move, *info)) return true;
-			break;
-
-		case(BISHOP):
-			if(bishop_move_handler(board, move, *info)) return true;
-			break;
-
-		case(QUEEN):
-			if(queen_move_handler(board, move, *info)) return true;
-			break;
-
-		case(KING):
-			if(king_move_handler(board, move, info)) return true;
-			break;
+		case(ROOK): return rook_move_handler(board, move, info);
+		
+		case(KNIGHT): return knight_move_handler(board, move, *info);
+			
+		case(BISHOP): return bishop_move_handler(board, move, *info);
+			
+		case(QUEEN): return queen_move_handler(board, move, *info);
+			
+		case(KING): return king_move_handler(board, move, info);
 	}
 	return false;
 }
@@ -50,9 +29,7 @@ bool pawn_move_handler(Board board, Move move, Info info)
 {
 	if(!pawn_move_acceptable(board, move, info)) return false;
 
-	execute_pawn_move(board, move);
-
-	return true;
+	else execute_pawn_move(board, move); return true;
 }
 
 bool rook_move_handler(Board board, Move move, Info* info)
@@ -63,44 +40,33 @@ bool rook_move_handler(Board board, Move move, Info* info)
 	{
 		execute_rook_switch(board, move, info); return true;
 	}
-	
-	execute_rook_move(board, move, info);
-
-	return true;
+	else execute_rook_move(board, move, info); return true;
 }
 
 bool knight_move_handler(Board board, Move move, Info info)
 {
 	if(!knight_move_acceptable(board, move, info)) return false;
 
-	execute_knight_move(board, move);
-
-	return true;
+	else execute_knight_move(board, move); return true;
 }
 
 bool bishop_move_handler(Board board, Move move, Info info)
 {
 	if(!bishop_move_acceptable(board, move, info)) return false;
 
-	execute_bishop_move(board, move);
-
-	return true;
+	else execute_bishop_move(board, move); return true;
 }
 
 bool queen_move_handler(Board board, Move move, Info info)
 {
 	if(!queen_move_acceptable(board, move, info)) return false;
 
-	execute_queen_move(board, move);
-
-	return true;
+	else execute_queen_move(board, move); return true;
 }
 
 bool king_move_handler(Board board, Move move, Info* info)
 {
 	if(!king_move_acceptable(board, move, *info)) return false;
 
-	execute_king_move(board, move, info);
-
-	return true;
+	else execute_king_move(board, move, info); return true;
 }
