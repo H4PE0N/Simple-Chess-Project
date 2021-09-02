@@ -17,13 +17,11 @@ int main(int argAmount, char* arguments[])
 
 	free(filename); 
 
-	if(!zero_player_chess(&winner, board, &info))
+	if(zero_player_chess(&winner, board, &info))
 	{
-		chess_game_quitted(board, info);
-		free(board); return false;
+		display_chess_result(board, winner);
 	}
-
-	display_chess_result(board, winner);
+	else chess_game_quitted(board, info);
 
 	free(board); return false;
 }
@@ -59,10 +57,6 @@ bool zero_player_chess(Color* winner, Board board, Info* info)
 
 bool computer_move_handler(Board board, Info* info)
 {
-	display_game_round(board, *info); MOVE_UP(11);
-
-	//sleep(1);
-
 	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
 
 	if(!find_computer_move(&move, board, *info, info->current)) return false;

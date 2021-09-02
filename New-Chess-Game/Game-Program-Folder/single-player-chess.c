@@ -17,13 +17,11 @@ int main(int argAmount, char* arguments[])
 
 	free(filename); 
 
-	if(!single_player_chess(&winner, board, &info))
+	if(single_player_chess(&winner, board, &info))
 	{
-		chess_game_quitted(board, info);
-		free(board); return false;
+		display_chess_result(board, winner);
 	}
-
-	display_chess_result(board, winner);
+	else chess_game_quitted(board, info);
 
 	free(board); return false;
 }
@@ -36,13 +34,11 @@ bool single_player_chess(Color* winner, Board board, Info* info)
 		{
 			if(!user_move_handler(board, info)) return false;
 		}
-		else
+		else if(!computer_move_handler(board, info))
 		{
-			if(!computer_move_handler(board, info))
-			{
-				*winner = WHITE; break;
-			}
+			*winner = WHITE; break;
 		}
+		
 		if(!update_kings_point(board, info)) return false;
 
 		info->turns += 1;
@@ -55,6 +51,7 @@ bool user_move_handler(Board board, Info* info)
 {
 	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
 	char input[20];
+
 	while(!move_inside_board(move))
 	{
 		display_game_round(board, *info);
