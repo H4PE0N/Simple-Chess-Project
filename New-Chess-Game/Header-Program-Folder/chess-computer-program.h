@@ -8,12 +8,11 @@
 #include "chess-computer-program.h"
 #include "chess-bot-algorithms.h"
 #include "game-interface-program.h"
+#include "chess-simulations-program.h"
 
 bool find_computer_move(Move*, Board, Info, Color);
 
 bool piece_possible_moves(Move*, Board, Info, Point);
-
-bool simulate_check_mate(Board, Move, Info);
 
 Move* all_possible_moves(Board, Info, Color);
 
@@ -26,8 +25,6 @@ void shuffle_moves_array(Move*, int);
 void switch_array_moves(Move*, int, int);
 
 Move* create_moves_array(int);
-
-bool simulate_enemy_check(Board, Move, Info);
 
 MoveInfo create_move_info(Board, Move, Info);
 

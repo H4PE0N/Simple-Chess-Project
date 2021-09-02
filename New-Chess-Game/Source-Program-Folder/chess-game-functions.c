@@ -22,7 +22,6 @@ bool game_still_running(Color* winner, Board board, Info info)
 			return false;
 		}
 	}
-
 	return true;
 }
 

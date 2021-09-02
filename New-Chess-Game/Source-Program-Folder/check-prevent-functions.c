@@ -39,28 +39,5 @@ bool piece_prevent_check(Board board, Point start, Info info)
 			if(move_prevent_check(board, move, info)) return true;
 		}
 	}
-
 	return false;
-}
-
-bool move_prevent_check(Board board, Move move, Info info)
-{
-	Point start = move.start, stop = move.stop;
-
-	Piece piece = board_point_piece(board, start);
-	if(board_point_empty(board, start)) return false;
-
-	Point king = color_king_point(info, piece.color);
-
-	Board copy = copy_chess_board(board);
-	move_board_piece(copy, start, stop);
-
-	if(piece.type == KING) king = stop;
-
-	if(!king_check_situation(copy, king, piece.color))
-	{
-		free(copy); return true;
-	}
-
-	free(copy); return false;
 }

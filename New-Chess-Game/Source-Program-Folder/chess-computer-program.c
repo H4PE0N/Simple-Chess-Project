@@ -1,49 +1,6 @@
 
 #include "../Header-Program-Folder/chess-computer-program.h"
 
-bool simulate_enemy_check(Board board, Move move, Info info)
-{
-	Point start = move.start, stop = move.stop;
-
-	Color sColor = board_point_color(board, start);
-
-	if(sColor == NONE) return false;
-
-	Color color = (sColor == WHITE) ? BLACK : WHITE;
-	Point king = (sColor == WHITE) ? info.bKing : info.wKing;
-
-	Board copy = copy_chess_board(board);
-	move_board_piece(copy, start, stop);
-
-	if(king_check_situation(copy, king, color))
-	{ 
-		free(copy); return true; 
-	}
-
-	free(copy); return false;
-}
-
-bool simulate_check_mate(Board board, Move move, Info info)
-{
-	Point start = move.start, stop = move.stop;
-
-	Color sColor = board_point_color(board, start);
-
-	if(sColor == NONE) return false;
-
-	Point king = (sColor == WHITE) ? info.bKing : info.wKing;
-
-	Board copy = copy_chess_board(board);
-	move_board_piece(copy, start, stop);
-
-	if(check_mate_situation(copy, info, king))
-	{ 
-		free(copy); return true; 
-	}
-
-	free(copy); return false;
-}
-
 bool find_computer_move(Move* move, Board board, Info info, Color color)
 {
 	Move* moves = all_possible_moves(board, info, color);
