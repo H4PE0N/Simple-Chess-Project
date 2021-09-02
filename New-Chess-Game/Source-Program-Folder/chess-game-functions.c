@@ -60,26 +60,26 @@ bool other_pieces_moveable(Board board, Info info, Color color)
 	return false;
 }
 
-bool check_draw_situation(Board board, Info info, Point point)
+bool check_draw_situation(Board board, Info info, Point king)
 {
-	Color color = board_point_color(board, point);
+	Color color = board_point_color(board, king);
 
-	if(king_check_situation(board, point, color)) return false;
+	if(king_inside_check(board, king)) return false;
 
-	if(board_piece_moveable(board, info, point)) return false;
+	if(board_piece_moveable(board, info, king)) return false;
 
 	if(other_pieces_moveable(board, info, color)) return false;
 
 	return true;
 }
 
-bool check_mate_situation(Board board, Info info, Point point)
+bool check_mate_situation(Board board, Info info, Point king)
 {
-	Color color = board_point_color(board, point);
+	Color color = board_point_color(board, king);
 
-	if(!king_check_situation(board, point, color)) return false;
+	if(!king_inside_check(board, king)) return false;
 
-	if(board_piece_moveable(board, info, point)) return false;
+	if(board_piece_moveable(board, info, king)) return false;
 
 	if(team_prevent_check(board, info, color)) return false;
 

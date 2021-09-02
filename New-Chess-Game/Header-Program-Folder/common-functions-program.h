@@ -3,6 +3,7 @@
 #define COMMON_FUNCTIONS_PROGRAM_H
 
 #include "global-include-header.h"
+#include "pieces-moves-valid.h"
 
 bool number_inside_bounds(int, int, int);
 

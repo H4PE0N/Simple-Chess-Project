@@ -26,4 +26,6 @@ bool rook_starting_bool(Point, Color);
 
 bool king_starting_bool(Point, Color);
 
+bool moving_piece_valid(Board, Point, Point);
+
 #endif

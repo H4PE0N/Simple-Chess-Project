@@ -1,8 +1,34 @@
 
 #include "../Header-Program-Folder/game-check-functions.h"
 
+bool king_inside_check(Board board, Point king)
+{
+	Point piece;
+	for(int height = 0; height < B_HEIGHT; height += 1)
+	{
+		for(int width = 0; width < B_WIDTH; width += 1)
+		{
+			piece = (Point) {height, width};
+			
+			if(board_piece_check(board, piece, king)) return true;
+		}
+	}
+	return false;
+}
+
+bool board_piece_check(Board board, Point piece, Point king)
+{
+	if(!board_points_enemy(board, piece, king)) return false;
+
+	if(!moving_piece_valid(board, piece, king)) return false;
+
+	if(!clear_moving_path(board, piece, king)) return false;
+
+	return true;
+}
+
 // Remove color from this function!
-bool king_check_situation(Board board, Point point, Color color)
+/*bool king_check_situation(Board board, Point point, Color color)
 {
 	Board copy = copy_chess_board(board);
 	append_board_piece(copy, point, (Piece) {KING, color});
@@ -166,4 +192,4 @@ bool check_straight_check(Board board, Point point, Color color)
 		}
 	}
 	return false;
-}
+}*/

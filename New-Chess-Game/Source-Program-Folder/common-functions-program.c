@@ -160,6 +160,9 @@ bool clear_moving_path(Board board, Point start, Point stop)
 	int hOffset = stop.height - start.height;
 	int wOffset = stop.width - start.width;
 
+	// If the knight is moving, he dont need a clear moving path
+	if(moving_knight_valid(start, stop)) return true;
+ 
 	int steps = (abs(hOffset) > abs(wOffset)) ? abs(hOffset) : abs(wOffset);
 
 	int hAdder = (hOffset == 0) ? 0 : (hOffset / abs(hOffset));

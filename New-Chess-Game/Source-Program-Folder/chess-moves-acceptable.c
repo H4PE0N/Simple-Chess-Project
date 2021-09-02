@@ -183,7 +183,7 @@ bool rook_switch_able(Board board, Move move, Info info)
 	Point king = color_king_point(info, color);
 
 	// This is a special case, you cant switch if the king is in check
-	if(king_check_situation(board, king, color)) return false;
+	if(king_inside_check(board, king)) return false;
 
 	// This checks if the rook and the king is on the right place
 	if(!rook_king_switch(board, start, stop)) return false;

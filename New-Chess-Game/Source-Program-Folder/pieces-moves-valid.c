@@ -1,6 +1,29 @@
 
 #include "../Header-Program-Folder/pieces-moves-valid.h"
 
+// This is a function that JUST cover the regular moves
+// You can swap "board" for "color" if you want
+bool moving_piece_valid(Board board, Point start, Point stop)
+{
+	switch(board_point_type(board, start))
+	{
+		case(EMPTY): return false;
+
+		case(PAWN): return moving_pawn_valid(board, start, stop);
+
+		case(ROOK): return moving_rook_valid(start, stop);
+
+		case(KNIGHT): return moving_knight_valid(start, stop);
+
+		case(BISHOP): return moving_bishop_valid(start, stop);
+
+		case(QUEEN): return moving_queen_valid(start, stop);
+
+		case(KING): return moving_king_valid(start, stop);
+	}
+	return false;
+}
+
 int pawn_height_offset(Point start, Point stop, Color color)
 {
 	if(color == WHITE) return (start.height - stop.height);

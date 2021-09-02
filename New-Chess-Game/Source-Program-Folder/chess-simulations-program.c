@@ -12,7 +12,7 @@ bool check_after_kingSwitch(Board board, Move move, Info info)
 
 	Point king = color_king_point(info, color);
 
-	if(!king_check_situation(copy, king, color))
+	if(!king_inside_check(copy, king))
 	{ 
 		free(copy); return true; 
 	}
@@ -23,12 +23,10 @@ bool check_after_kingSwitch(Board board, Move move, Info info)
 // I think you can use "move_prevent_check" instead
 bool simulate_check_move(Board board, Point start, Point stop)
 {
-	Color color = board_point_color(board, start);
-
 	Board copy = copy_chess_board(board);
 	move_board_piece(copy, start, stop);
 
-	if(!king_check_situation(copy, stop, color))
+	if(!king_inside_check(copy, stop))
 	{ 
 		free(copy); return true; 
 	}
@@ -41,7 +39,7 @@ bool check_check_situation(Board board, Move move, Info info)
 	Color color = board_point_color(board, move.start);
 	Point king = color_king_point(info, color);
 
-	if(!king_check_situation(board, king, color)) return true;
+	if(!king_inside_check(board, king)) return true;
 
 	if(move_prevent_check(board, move, info)) return true;
 	
@@ -62,7 +60,7 @@ bool move_prevent_check(Board board, Move move, Info info)
 
 	if(piece.type == KING) king = stop;
 
-	if(!king_check_situation(copy, king, piece.color))
+	if(!king_inside_check(copy, king))
 	{
 		free(copy); return true;
 	}
@@ -78,13 +76,12 @@ bool simulate_enemy_check(Board board, Move move, Info info)
 
 	if(sColor == NONE) return false;
 
-	Color color = (sColor == WHITE) ? BLACK : WHITE;
 	Point king = (sColor == WHITE) ? info.bKing : info.wKing;
 
 	Board copy = copy_chess_board(board);
 	move_board_piece(copy, start, stop);
 
-	if(king_check_situation(copy, king, color))
+	if(king_inside_check(copy, king))
 	{ 
 		free(copy); return true; 
 	}
