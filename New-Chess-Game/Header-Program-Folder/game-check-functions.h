@@ -7,7 +7,7 @@
 
 bool king_inside_check(Board, Point);
 
-bool board_piece_check(Board, Point, Point);
+bool board_point_checking(Board, Point, Point);
 
 /*bool king_check_situation(Board, Point, Color);
 

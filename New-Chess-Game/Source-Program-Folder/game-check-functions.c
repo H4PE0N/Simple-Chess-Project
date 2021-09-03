@@ -3,26 +3,26 @@
 
 bool king_inside_check(Board board, Point king)
 {
-	Point piece;
+	Point point;
 	for(int height = 0; height < B_HEIGHT; height += 1)
 	{
 		for(int width = 0; width < B_WIDTH; width += 1)
 		{
-			piece = (Point) {height, width};
+			point = (Point) {height, width};
 			
-			if(board_piece_check(board, piece, king)) return true;
+			if(board_point_checking(board, point, king)) return true;
 		}
 	}
 	return false;
 }
 
-bool board_piece_check(Board board, Point piece, Point king)
+bool board_point_checking(Board board, Point point, Point king)
 {
-	if(!board_points_enemy(board, piece, king)) return false;
+	if(!board_points_enemy(board, point, king)) return false;
 
-	if(!moving_piece_valid(board, piece, king)) return false;
+	if(!moving_piece_valid(board, point, king)) return false;
 
-	if(!clear_moving_path(board, piece, king)) return false;
+	if(!clear_moving_path(board, point, king)) return false;
 
 	return true;
 }
