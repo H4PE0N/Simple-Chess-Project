@@ -1,41 +1,15 @@
-# Simple-Chess-Project
-This is going to be a simple chess game that I am going to make, very simple! I am going to do it in C, so it is going to be hard.
 
-=== PROGRAM IDEAS ===
-
-==============================
-
-  A B C D E F G H
-1 . . . . . . . .
-2 . . . . . . . .
-3 . . . . . . . .
-4 . . . . . . . .
-5 . . . . . . . .
-6 . . . . . . . .
-7 . . . . . . . .
-8 . . . . . . . .
-
-  A B C D E F G H
-1 R N B Q K B N R
-2 P P P P P P P P
-3 . . . . . . . .
-4 . . . . . . . .
-5 . . . . . . . .
-6 . . . . . . . .
-7 p p p p p p p p
-8 r n b q k b n r
-
-INPUT: D7 D5
-
-  A B C D E F G H
-1 R N B Q K B N R
-2 P P P P P P P P
-3 . . . . . . . .
-4 . . . . . . . .
-5 . . . p . . . .
-6 . . . . . . . .
-7 p p p . p p p p
-8 r n b q k b n r
-
-==============================
-
+# My Simple Chess Project
+## Information about the project
+This is my simple chess project. I wanted to create a simple chess program, that simulates a game of chess. I started with the rules of chess, and the implementation of the moves. Then I made a simple game, when you and your friend can play against each other. That would come to be the `multi-player-chess` program. Because I don't have any friends that wanted to play with me, I wanted to create a simple chess bot, that I could play against. I have still not created a good bot, because the algorithm is hard to create. The game when you play against a simple bot, was going to be called `single-player-chess`. Just for fun, I created another game, when you just watch two identical computers play against each other. The only thing that you as an user does, is to click the enter key, to execute the next move. That game program is now called `zero-player-game`.
+## Creating and running games
+To play any of the game in this project, you will have to locate yourself in the `Binary-Program-Folder`, where all the binary/executable files is. Then you have to create the executable files if they don't already exists. To get the executable file for any of the games, you will type `make <game-name>`. The game-name, is one of the game-modes that is mentioned in the beginning. Then an executable file is going to appear. To execute the file / play the game, you will type `./<game-name>`. For example, if you want to play the `single-player-game`, you will first type `make single-player-game`, then `./single-player-game`.
+## How to play the different games
+### How to move a chess piece
+To move a chess-piece, you can do one of two things. Either you just type the location of the piece you want to move, and the location you want to move the piece to. That could look like `E7 E5`. Or you can type the word `RANDOM`. That will activate a bot that plays one move for you. Because the bot is not so good yet, the code word is `RANDOM`. To stop the game at any point, you can type the word `STOP`. That will stop the game, and no player will win the game.
+### multi-player-chess:
+When you start the game `multi-player-chess`, you will start as **WHITE**. When **WHITE** does his move, the turn will go over to **BLACK**, who the does his move. And then I just goes around that way, until the game is over. This game-mode require you to have a friend to play against. Then you and your friend will play against each other.
+### single-player-chess:
+If you are like me and don't have any friends, you can try to play the game `single-player-chess`. You start as **WHITE** and you do your move. Then the turn goes over to **BLACK**, who is a dump computer that does his move. It is like you play with a friend, but his not your friend, and he isn't good either. When you think of it, this game-mode is kind of depressing. But that's the game, and you switch turns until one of you win, or it becomes a draw.
+### zero-player-chess:
+This is the dumbest and the least useful game-mode of them all. The game start with player **WHITE**, who is a dumb computer. When you click the **ENTER KEY**, the computer does his move, and the turn goes over to **BLACK**, who also is a equally dumb computer. You click again and the computer does his move. If you sometime enter the word `STOP`, game will stop and no one of the players win.
