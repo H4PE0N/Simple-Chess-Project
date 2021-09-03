@@ -1,4 +1,9 @@
 
+# Executables
+single-player-chess
+zero-player-chess
+multi-player-chess
+
 # Prerequisites
 *.d
 *.DS_Store
