@@ -9,16 +9,4 @@ bool king_inside_check(Board, Point);
 
 bool board_point_checking(Board, Point, Point);
 
-/*bool king_check_situation(Board, Point, Color);
-
-bool check_knight_check(Board, Point, Color);
-
-bool check_diagonal_check(Board, Point, Color);
-
-bool check_straight_check(Board, Point, Color);
-
-bool check_pawn_check(Board, Point, Color);	
-
-bool check_king_check(Board, Point, Color);*/
-
 #endif

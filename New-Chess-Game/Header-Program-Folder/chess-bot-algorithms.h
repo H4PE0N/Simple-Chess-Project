@@ -6,10 +6,4 @@
 
 bool default_bot_algorithm(Board, MoveInfo, MoveInfo);
 
-bool defensive_bot_algorithm(Board, MoveInfo, MoveInfo);
-
-bool offensive_bot_algorithm(Board, MoveInfo, MoveInfo);
-
-bool smart_bot_algorithm1(Board, MoveInfo, MoveInfo);
-
 #endif

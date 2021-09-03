@@ -73,7 +73,7 @@ void update_best_move(MoveInfo* bestMove, Board board, Move move, Info info)
 {
 	MoveInfo current = create_move_info(board, move, info);
 
-	if(smart_bot_algorithm1(board, *bestMove, current)) 
+	if(default_bot_algorithm(board, *bestMove, current)) 
 	{
 		*bestMove = current;
 	}
