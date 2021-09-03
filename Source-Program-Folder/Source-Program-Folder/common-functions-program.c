@@ -29,7 +29,7 @@ char* extract_file_name(char* arguments[], int amount)
 	char* filename = malloc(sizeof(char) * 200);
 	if(amount >= 2) strcpy(filename, arguments[1]);
 	
-	else strcpy(filename, "Data-Files-Folder/default-chess-board.txt");
+	else strcpy(filename, "../Source-Program-Folder/Data-Program-Folder/default-chess-board.txt");
 	
 	return filename;
 }
