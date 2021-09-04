@@ -1,6 +1,105 @@
 
 #include "../Header-Program-Folder/chess-computer-program.h"
 
+/*
+
+MIN MAX
+
+DEPTH = 2
+
+			0
+		   / \
+		  /   \
+		 /     \
+		/ 	    \
+	   1 		 1
+	  / \	    / \
+	 /   \     /   \
+	/     \   /     \
+   2   	   2 2       2
+
+calculate every possible move [depth 1]
+
+go through every move in [depth 1]->
+	calculate every possible move for enemy [depth 2]
+	
+	go throught every move for the enemy ->
+		value the state of the board [the algorithm]
+
+	pick the move that has the highest score,
+	and set the move at [depth 1] to that score
+
+PAWN 	= 10
+KNIGHT	= 30
+BISHOP	= 30
+ROOK	= 50
+QUEEN	= 90
+KING 	= 900
+
+ - all_possible_moves()
+
+ - best_possible_move(board, info color, depth) (recursive)
+ {
+	moves = all_possible_moves()
+
+	// The value is the total value difference between the teams;
+	value;
+
+	MoveValue bestMove = {moves[0], value};
+	// This struct has a move and the score with that move;
+
+	for move in moves
+	{
+		// Execute the current move (on a copy of the board);
+		move_piece(board, move);
+
+		// The depth is the grade of move you want to calculate
+		// The higher depth, the higher chans the move is better
+		value = value_of_board(board, color, depth);
+
+		// If this move is better
+		if(value > bestMove.value)
+		{
+			// Update the best move
+			bestMove = move;
+		}
+	}
+	return bestMove;
+ }
+
+ value_of_board(board, color, depth)
+ {
+	if(depth == 0) // Base case, should return the value
+	{
+		// The value is the total value difference between the teams;
+		return value;
+	}
+
+	moves = all_possible_moves()
+
+	best_value = 0;
+
+	for move in moves
+	{
+		// Execute the current move (on a copy of the board);
+		move_piece(board, move);
+
+		value = value_of_board(board, color, depth - 1);
+
+		if(value > best_value)
+		{
+			best_value = value;
+		}
+	}
+
+	// Now we have found the best move of this board
+	// We just return the best value
+
+	return best_value;
+ }
+
+*/
+
 bool find_computer_move(Move* move, Board board, Info info, Color color)
 {
 	Move* moves = all_possible_moves(board, info, color);
