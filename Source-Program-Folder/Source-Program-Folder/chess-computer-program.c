@@ -100,6 +100,203 @@ KING 	= 900
 
 */
 
+#define MIN_VAL -100000
+#define MAX_VAL +100000
+
+bool best_possible_move(Move* move, Board board, Info info, int depth, Color color)
+{
+	if(depth <= 0) return false;
+
+	Move* moves = all_possible_moves(board, info, color);
+	int amount = moves_array_amount(moves);
+
+	if(amount <= 0)
+	{
+		free(moves);
+
+		return false;
+	}
+
+	Move bestMove = moves[0];
+	int bestValue = 0;
+
+	Move currMove;
+
+	Info dummyInfo;
+
+	Board copy;
+
+	for(int index = 0; index < amount; index += 1)
+	{
+		currMove = moves[index];
+
+		dummyInfo = info;
+		dummyInfo.current = color;
+
+		copy = copy_chess_board(board);
+
+		if(!move_chess_piece(copy, currMove, &dummyInfo))
+		{
+			free(copy);
+
+			printf("Cant move Main move!\n");
+			continue;
+		}
+
+		Color next = (color == WHITE) ? BLACK : WHITE;
+		int value = board_depth_value(copy, dummyInfo, (depth - 1), MIN_VAL, MAX_VAL, color, next);
+
+		//printf("Current Value = %d\n", value);
+
+		free(copy);
+
+		if(value > bestValue)
+		{
+			bestMove = currMove;
+			bestValue = value;
+		}
+	}
+
+	free(moves);
+
+	*move = bestMove;
+
+	printf("Best move [%d %d -> %d %d] [%d]\n",
+		bestMove.start.height, bestMove.start.width, bestMove.stop.height, bestMove.stop.width, bestValue);
+
+	return true;
+}
+
+int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Color color, Color current)
+{
+	if(depth <= 0) // Base-case, Should return the value of the board
+	{
+		int value = color_state_value(board, info, color);
+		return value;
+	}
+
+	Info dummyInfo = info;
+	dummyInfo.current = current;
+
+	Move* moves = all_possible_moves(board, dummyInfo, current);
+	int amount = moves_array_amount(moves);
+
+	if(amount <= 0)
+	{
+		free(moves);
+
+		if(color == current) return MIN_VAL;
+		else return MAX_VAL;
+	}
+
+	int bestValue = 0;
+	if(current == color) bestValue = MIN_VAL;
+	else if(current != color) bestValue = MAX_VAL;
+
+	Move currMove;
+
+	Board copy;
+
+	for(int index = 0; index < amount; index += 1)
+	{
+		currMove = moves[index];
+
+		dummyInfo = info;
+		dummyInfo.current = current;
+
+		copy = copy_chess_board(board);
+
+		if(!move_chess_piece(copy, currMove, &dummyInfo))
+		{
+			free(copy);
+
+			printf("Cant move Depth move!\n");
+			continue;
+		}
+
+		Color next = (current == WHITE) ? BLACK : WHITE;
+		int value = board_depth_value(copy, dummyInfo, (depth - 1), alpha, beta, color, next);
+
+		free(copy);
+
+		// Update best value (own)
+		if(current == color && value > bestValue) bestValue = value;
+
+		else if(current != color && value < bestValue) bestValue = value;
+		
+
+		// alpha-beta pruning (copying from internet, I am not smart)
+		if(current == color && value > alpha) alpha = value;
+
+		else if(current != color && value < beta) beta = value;
+
+
+		if(beta <= alpha) break;
+	}
+
+	free(moves);
+
+	return bestValue;
+}
+
+int color_state_value(Board board, Info info, Color color)
+{
+	int enemy = (color == WHITE) ? BLACK : WHITE;
+
+	int enemyValue = board_state_value(board, info, enemy);
+	int teamValue = board_state_value(board, info, color);
+
+	return (teamValue - enemyValue);
+}
+
+typedef struct TypeValue
+{
+	Type type;
+	int value;
+} TypeValue;
+
+const TypeValue typeValues[] = { {EMPTY, 0}, {PAWN, 10}, {KNIGHT, 30}, 
+	{BISHOP, 30}, {ROOK, 50}, {QUEEN, 90}, {KING, 900} };
+
+int team_pieces_value(Board board, Color color)
+{
+	Point point; Piece piece;
+
+	int value = 0;
+
+	for(int height = 0; height < B_HEIGHT; height += 1)
+	{
+		for(int width = 0; width < B_WIDTH; width += 1)
+		{
+			point = (Point) {height, width};
+
+			piece = board_point_piece(board, point);
+
+			if(piece.color != color) continue;
+
+			value += typeValues[piece.type].value;
+		}
+	}
+	return value;
+}
+
+int board_state_value(Board board, Info info, Color color)
+{
+	int value = 0;
+
+	value += team_pieces_value(board, color);
+
+	Color enemy = (color == WHITE) ? BLACK : WHITE;
+
+	Point enemyKing = color_king_point(info, enemy);
+	Point teamKing = color_king_point(info, color);
+
+	if(check_mate_situation(board, info, teamKing)) 		value += MAX_VAL;
+	else if(check_mate_situation(board, info, enemyKing)) 	value += MIN_VAL;
+
+	return value;
+}
+
 bool find_computer_move(Move* move, Board board, Info info, Color color)
 {
 	Move* moves = all_possible_moves(board, info, color);

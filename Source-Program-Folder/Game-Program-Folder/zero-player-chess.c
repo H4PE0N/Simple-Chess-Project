@@ -59,7 +59,7 @@ bool computer_move_handler(Board board, Info* info)
 {
 	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
 
-	if(!find_computer_move(&move, board, *info, info->current)) return false;
+	if(!best_possible_move(&move, board, *info, 3, info->current)) return false;
 
 	printf("Computer moved [%d-%d] to [%d-%d]\n",
 		move.start.height, move.start.width, move.stop.height, move.stop.width);

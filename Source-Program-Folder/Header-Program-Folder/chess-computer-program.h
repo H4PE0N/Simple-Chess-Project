@@ -10,6 +10,18 @@
 #include "game-interface-program.h"
 #include "chess-simulations-program.h"
 
+bool best_possible_move(Move*, Board, Info, int, Color);
+
+int board_depth_value(Board, Info, int, int, int, Color, Color);
+
+int color_state_value(Board, Info, Color);
+
+int team_pieces_value(Board, Color);
+
+int board_state_value(Board, Info, Color);
+
+
+
 bool find_computer_move(Move*, Board, Info, Color);
 
 bool piece_possible_moves(Move*, Board, Info, Point);
