@@ -1,27 +1,45 @@
 
 #include "../Header-Program-Folder/game-interface-program.h"
 
-const char* colors[] = {"\033[0m", "\033[37m", "\033[34m"};
+const char* symbolColors[] = {FG_DEFAULT, FG_RED, FG_RED};
+const char* squareColors[] = {BG_DEFAULT, BG_WHITE, BG_BLACK};
 
-const char blackSymbols[] = {'.', 'P', 'B', 'H', 'R', 'Q', 'K'};
-const char whiteSymbols[] = {'.', 'p', 'b', 'h', 'r', 'q', 'k'};
+const char* blackSymbols[] = {" ", "♟", "♝", "♞", "♜", "♛", "♚"};
+const char* whiteSymbols[] = {" ", "♙", "♗", "♘", "♖", "♕", "♔"};
 
 const char letters[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
-const char numbers[] = {'1', '2', '3', '4', '5', '6', '7', '8'};
+const char numbers[] = {'8', '7', '6', '5', '4', '3', '2', '1'};
+
+#define DIS_LETS "  | A | B | C | D | E | F | G | H |"
+#define DIS_ROW "--+---+---+---+---+---+---+---+---+--"
 
 void display_chess_board(Board board)
 {
-	CLEAR_LINE; printf("  A B C D E F G H\n");
+	CLEAR_LINE; printf("%s\n", DIS_LETS);
+
 	for(int height = 0; height < 8; height = height + 1)
 	{
-		CLEAR_LINE; printf("%d ", height + 1);
+		CLEAR_LINE; printf("%s\n", DIS_ROW);
+
+		CLEAR_LINE; printf("%c", numbers[height]);
+
+		printf(" ");
+
 		for(int width = 0; width < 8; width = width + 1)
 		{
+			printf("|");
+
 			Piece piece = board[height][width];
-			display_board_symbol(piece); printf(" ");
+			display_board_symbol(height, width, piece);
 		}
-		printf("\n");
+
+		printf("|"); printf(" ");
+
+		printf("%c\n", numbers[height]);
 	}
+	CLEAR_LINE; printf("%s\n", DIS_ROW);
+
+	CLEAR_LINE; printf("%s\n", DIS_LETS);
 }
 
 void display_game_round(Board board, Info info)
@@ -31,15 +49,31 @@ void display_game_round(Board board, Info info)
 	display_chess_info(info);
 }
 
-void display_board_symbol(Piece piece)
+void display_board_symbol(int height, int width, Piece piece)
 {
-	char blackSymbol = blackSymbols[piece.type];
-	char whiteSymbol = whiteSymbols[piece.type];
+	const char* blackSymbol = blackSymbols[piece.type];
+	const char* whiteSymbol = whiteSymbols[piece.type];
 
-	char symbol = (piece.color == WHITE) ? whiteSymbol : blackSymbol;
-	char* color = (char*) colors[piece.color];
+	const char* symbol = (piece.color == WHITE) ? whiteSymbol : blackSymbol;
+	const char* symbolColor = symbolColors[piece.color];
 
-	printf("%s%c%s", color, symbol, "\033[0m");
+	const char* whiteSquare = squareColors[WHITE];
+	const char* blackSquare = squareColors[BLACK];
+
+	bool squareBool = (height % 2 == 0 && width % 2 == 0) ||
+					  (height % 2 != 0 && width % 2 != 0);
+
+	const char* squareColor = squareBool ? whiteSquare : blackSquare;
+
+	printf("%s%s", symbolColor, squareColor);
+
+	printf(" ");
+
+	printf("%s", symbol);
+
+	printf(" ");
+
+	printf("%s", "\033[0m");
 }
 
 void display_move_info(MoveInfo moveInfo)

@@ -5,6 +5,16 @@
 #include "global-include-header.h"
 #include "chess-computer-program.h"
 
+#define CLEAR_LINE printf("\033[2K")
+
+#define MOVE_UP_LINES(lines) printf("\033[%dA", lines)
+
+#define MOVE_UP_BOARD MOVE_UP_LINES(19);
+
+#define MOVE_UP_INFO MOVE_UP_LINES(2);
+
+#define MOVE_UP_INPUT MOVE_UP_LINES(1);
+
 void display_chess_board(Board);
 
 void display_chess_info(Info);
@@ -25,6 +35,6 @@ void display_chess_result(Board, Color);
 
 void display_move_info(MoveInfo);
 
-void display_board_symbol(Piece);
+void display_board_symbol(int, int, Piece);
 
 #endif

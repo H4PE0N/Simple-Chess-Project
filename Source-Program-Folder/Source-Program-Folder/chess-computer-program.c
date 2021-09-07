@@ -139,7 +139,8 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Color col
 		{
 			free(copy);
 
-			printf("Cant move Main move!\n");
+			CLEAR_LINE; printf("Cant move Main move!\n");
+			
 			continue;
 		}
 
@@ -161,7 +162,7 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Color col
 
 	*move = bestMove;
 
-	printf("Best move [%d %d -> %d %d] [%d]\n",
+	CLEAR_LINE; printf("Best move [%d %d -> %d %d] [%d]\n",
 		bestMove.start.height, bestMove.start.width, bestMove.stop.height, bestMove.stop.width, bestValue);
 
 	return true;
@@ -210,7 +211,7 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Co
 		{
 			free(copy);
 
-			printf("Cant move Depth move!\n");
+			CLEAR_LINE; printf("Cant move Depth move!\n");
 			continue;
 		}
 

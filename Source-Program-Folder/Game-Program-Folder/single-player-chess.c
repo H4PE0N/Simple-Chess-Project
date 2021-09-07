@@ -58,14 +58,14 @@ bool user_move_handler(Board board, Info* info)
 
 		if(!input_current_move(input)) continue;
 
-		MOVE_UP(12);
+		MOVE_UP_BOARD; MOVE_UP_INFO; MOVE_UP_INPUT;
 
 		if(!strcmp(input, "STOP")) return false;
 
 		if(!parse_chess_move(&move, board, *info, input)) continue;
 	}
 	
-	printf("User moved [%d-%d] to [%d-%d]\n",
+	CLEAR_LINE; printf("User moved [%d-%d] to [%d-%d]\n",
 		move.start.height, move.start.width, move.stop.height, move.stop.width);
 
 	if(!move_chess_piece(board, move, info))
@@ -80,15 +80,15 @@ bool computer_move_handler(Board board, Info* info)
 {
 	display_game_round(board, *info); 
 
-	MOVE_UP(11);
+	MOVE_UP_BOARD; MOVE_UP_INFO;
 
 	sleep(1);
 
 	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
 
-	if(!find_computer_move(&move, board, *info, info->current)) return false;
+	if(!best_possible_move(&move, board, *info, 3, info->current)) return false;
 
-	printf("Computer moved [%d-%d] to [%d-%d]\n",
+	CLEAR_LINE; printf("Computer moved [%d-%d] to [%d-%d]\n",
 		move.start.height, move.start.width, move.stop.height, move.stop.width);
 
 	if(!move_chess_piece(board, move, info)) return false;

@@ -39,7 +39,7 @@ bool zero_player_chess(Color* winner, Board board, Info* info)
 		convert_string_upper(input, strlen(input));
 		if(!strcmp(input, "STOP")) return false;
 
-		MOVE_UP(12);
+		MOVE_UP_BOARD; MOVE_UP_INFO; MOVE_UP_INPUT;
 
 		if(!computer_move_handler(board, info))
 		{
@@ -61,7 +61,7 @@ bool computer_move_handler(Board board, Info* info)
 
 	if(!best_possible_move(&move, board, *info, 3, info->current)) return false;
 
-	printf("Computer moved [%d-%d] to [%d-%d]\n",
+	CLEAR_LINE; printf("Computer moved [%d-%d] to [%d-%d]\n",
 		move.start.height, move.start.width, move.stop.height, move.stop.width);
 
 	if(!move_chess_piece(board, move, info)) return false;
