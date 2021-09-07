@@ -94,12 +94,12 @@ void display_chess_result(Board board, Color winner)
 
 	if(winner == NONE)
 	{
-		CLEAR_LINE; printf("[!] The game ended with a draw!\n");
+		CLEAR_LINE; printf("[!] THE GAME ENDED WITH A DRAW!\n");
 	}
 	else 
 	{
 		char* color = (winner == WHITE) ? "WHITE" : "BLACK";
-		CLEAR_LINE; printf("[!] The winner is [%s]!\n", color);
+		CLEAR_LINE; printf("[!] THE WINNER IS [%s]!\n", color);
 	}
 }
 
@@ -107,13 +107,13 @@ void display_chess_info(Info info)
 {
 	char* color = (info.current == WHITE) ? "WHITE" : "BLACK";
 
-	CLEAR_LINE; printf("[+] PLAYER : [%s]\n", color);
-	CLEAR_LINE; printf("[+] TURNS  : [%dst]\n", info.turns);
+	CLEAR_LINE; printf("[+] CURRENT PLAYER\t: [%s]\n", color);
+	CLEAR_LINE; printf("[+] NUMBER OF TURNS\t: [%dst]\n", info.turns);
 }
 
 bool input_current_move(char* string)
 {
-	CLEAR_LINE; printf("[?] INPUT MOVE : ");
+	CLEAR_LINE; printf("[?] INPUT CURRENT MOVE\t: ");
 
 	if(!input_string_variable(string)) return false;
 
