@@ -82,8 +82,6 @@ bool computer_move_handler(Board board, Info* info)
 
 	//MOVE_UP_BOARD; MOVE_UP_INFO;
 
-	//sleep(1);
-
 	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
 
 	if(!best_possible_move(&move, board, *info, 3, info->current)) return false;

@@ -20,6 +20,8 @@ int team_pieces_value(Board, Color);
 
 int board_state_value(Board, Info, Color);
 
+int check_mate_value(Board, Info, Color);
+
 
 void sort_pruning_moves(Move*, int, Board, Info);
 

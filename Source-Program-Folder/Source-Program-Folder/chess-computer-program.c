@@ -155,9 +155,7 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Color col
 
 		free(copy);
 
-		printf("Checking [%d %d] -> [%d %d] = [%d] Best = [%d]\n",
-			currMove.start.height, currMove.start.width, currMove.stop.height, currMove.stop.width,
-			value, bestValue);
+		printf("Checking [%d %d] -> [%d %d] = [%d] Best = [%d]\n", currMove.start.height, currMove.start.width, currMove.stop.height, currMove.stop.width, value, bestValue);
 
 		if(value > bestValue)
 		{
@@ -194,15 +192,12 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Co
 	{
 		free(moves);
 
-		if(color == current) return MIN_VAL;
-		else return MAX_VAL;
+		return (color == current) ? MIN_VAL : MAX_VAL;
 	}
 
 	sort_pruning_moves(moves, amount, board, info);
 
-	int bestValue = 0;
-	if(current == color) bestValue = MIN_VAL;
-	else if(current != color) bestValue = MAX_VAL;
+	int bestValue = (current == color) ? MIN_VAL : MAX_VAL;
 
 	Move currMove;
 
@@ -291,8 +286,7 @@ int move_state_value(Board board, Info info, Move move, Color color)
 	{
 		free(copy);
 
-		if(color == current) return MIN_VAL;
-		else return MAX_VAL;
+		return (color == current) ? MIN_VAL : MAX_VAL;
 	}
 
 	free(copy);
@@ -341,11 +335,9 @@ int team_pieces_value(Board board, Color color)
 	return value;
 }
 
-int board_state_value(Board board, Info info, Color color)
+int check_mate_value(Board board, Info info, Color color)
 {
 	int value = 0;
-
-	value += team_pieces_value(board, color);
 
 	Color enemy = (color == WHITE) ? BLACK : WHITE;
 
@@ -354,6 +346,19 @@ int board_state_value(Board board, Info info, Color color)
 
 	if(check_mate_situation(board, info, teamKing)) 		value += MAX_VAL;
 	else if(check_mate_situation(board, info, enemyKing)) 	value += MIN_VAL;
+
+	return value;
+}
+
+int board_state_value(Board board, Info info, Color color)
+{
+	int value = 0;
+
+	value += team_pieces_value(board, color);
+
+	value += check_mate_value(board, info, color);
+
+	// Add more parameters
 
 	return value;
 }
