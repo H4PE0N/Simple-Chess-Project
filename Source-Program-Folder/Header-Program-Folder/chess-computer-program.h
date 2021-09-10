@@ -21,6 +21,10 @@ int team_pieces_value(Board, Color);
 int board_state_value(Board, Info, Color);
 
 
+void sort_pruning_moves(Move*, int, Board, Info);
+
+int move_state_value(Board, Info, Move, Color);
+
 
 bool find_computer_move(Move*, Board, Info, Color);
 

@@ -8,10 +8,6 @@
 
 bool move_prevent_check(Board, Move, Info);
 
-bool check_check_situation(Board, Move, Info);
-
-bool simulate_check_move(Board, Point, Point);
-
 bool check_after_kingSwitch(Board, Move, Info);
 
 bool simulate_enemy_check(Board, Move, Info);

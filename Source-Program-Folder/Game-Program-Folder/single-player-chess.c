@@ -58,7 +58,7 @@ bool user_move_handler(Board board, Info* info)
 
 		if(!input_current_move(input)) continue;
 
-		MOVE_UP_BOARD; MOVE_UP_INFO; MOVE_UP_INPUT;
+		//MOVE_UP_BOARD; MOVE_UP_INFO; MOVE_UP_INPUT;
 
 		if(!strcmp(input, "STOP")) return false;
 
@@ -80,9 +80,9 @@ bool computer_move_handler(Board board, Info* info)
 {
 	display_game_round(board, *info); 
 
-	MOVE_UP_BOARD; MOVE_UP_INFO;
+	//MOVE_UP_BOARD; MOVE_UP_INFO;
 
-	sleep(1);
+	//sleep(1);
 
 	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
 

@@ -20,32 +20,6 @@ bool check_after_kingSwitch(Board board, Move move, Info info)
 	free(copy); return false;
 }
 
-// I think you can use "move_prevent_check" instead
-bool simulate_check_move(Board board, Point start, Point stop)
-{
-	Board copy = copy_chess_board(board);
-	move_board_piece(copy, start, stop);
-
-	if(!king_inside_check(copy, stop))
-	{ 
-		free(copy); return true; 
-	}
-
-	free(copy); return false;
-}
-
-bool check_check_situation(Board board, Move move, Info info)
-{
-	Color color = board_point_color(board, move.start);
-	Point king = color_king_point(info, color);
-
-	if(!king_inside_check(board, king)) return true;
-
-	if(move_prevent_check(board, move, info)) return true;
-	
-	return false;
-}
-
 bool move_prevent_check(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;

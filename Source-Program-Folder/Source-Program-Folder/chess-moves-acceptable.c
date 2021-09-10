@@ -40,7 +40,7 @@ bool queen_move_acceptable(Board board, Move move, Info info)
 
 	if(!clear_moving_path(board, start, stop)) return false;
 
-	if(!check_check_situation(board, move, info)) return false;
+	if(!move_prevent_check(board, move, info)) return false;
 
 	return true;
 }
@@ -68,7 +68,7 @@ bool pawn_move_acceptable(Board board, Move move, Info info)
 	}
 	else if(!board_points_enemy(board, start, stop)) return false;
 
-	if(!check_check_situation(board, move, info)) return false;
+	if(!move_prevent_check(board, move, info)) return false;
 
 	return true;
 }
@@ -95,7 +95,7 @@ bool rook_move_acceptable(Board board, Move move, Info info)
 
 	if(board_point_piece(board, stop).type == KING) return false;
 
-	if(!check_check_situation(board, move, info)) return false;
+	if(!move_prevent_check(board, move, info)) return false;
 
 	return true;
 }
@@ -118,7 +118,7 @@ bool bishop_move_acceptable(Board board, Move move, Info info)
 
 	if(!clear_moving_path(board, start, stop)) return false;
 
-	if(!check_check_situation(board, move, info)) return false;
+	if(!move_prevent_check(board, move, info)) return false;
 
 	return true;
 }
@@ -139,7 +139,7 @@ bool king_move_acceptable(Board board, Move move, Info info)
 	// These controls are more specific, and should be done later
 	if(!moving_king_valid(start, stop)) return false;
 
-	if(!simulate_check_move(board, start, stop)) return false;
+	if(!move_prevent_check(board, move, info)) return false;
 	
 	return true;
 }
@@ -160,7 +160,7 @@ bool knight_move_acceptable(Board board, Move move, Info info)
 	// These controls are more specific, and should be done later
 	if(!moving_knight_valid(start, stop)) return false;
 
-	if(!check_check_situation(board, move, info)) return false;
+	if(!move_prevent_check(board, move, info)) return false;
 
 	return true;
 }

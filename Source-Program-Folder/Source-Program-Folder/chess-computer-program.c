@@ -117,14 +117,20 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Color col
 		return false;
 	}
 
+	sort_pruning_moves(moves, amount, board, info);
+
 	Move bestMove = moves[0];
-	int bestValue = 0;
+	int bestValue = MIN_VAL;
 
 	Move currMove;
 
 	Info dummyInfo;
 
 	Board copy;
+
+	Color next;
+
+	int value;
 
 	for(int index = 0; index < amount; index += 1)
 	{
@@ -144,12 +150,14 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Color col
 			continue;
 		}
 
-		Color next = (color == WHITE) ? BLACK : WHITE;
-		int value = board_depth_value(copy, dummyInfo, (depth - 1), MIN_VAL, MAX_VAL, color, next);
-
-		//printf("Current Value = %d\n", value);
+		next = (color == WHITE) ? BLACK : WHITE;
+		value = board_depth_value(copy, dummyInfo, (depth - 1), MIN_VAL, MAX_VAL, color, next);
 
 		free(copy);
+
+		printf("Checking [%d %d] -> [%d %d] = [%d] Best = [%d]\n",
+			currMove.start.height, currMove.start.width, currMove.stop.height, currMove.stop.width,
+			value, bestValue);
 
 		if(value > bestValue)
 		{
@@ -190,6 +198,8 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Co
 		else return MAX_VAL;
 	}
 
+	sort_pruning_moves(moves, amount, board, info);
+
 	int bestValue = 0;
 	if(current == color) bestValue = MIN_VAL;
 	else if(current != color) bestValue = MAX_VAL;
@@ -197,6 +207,10 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Co
 	Move currMove;
 
 	Board copy;
+
+	Color next;
+
+	int value;
 
 	for(int index = 0; index < amount; index += 1)
 	{
@@ -215,8 +229,8 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Co
 			continue;
 		}
 
-		Color next = (current == WHITE) ? BLACK : WHITE;
-		int value = board_depth_value(copy, dummyInfo, (depth - 1), alpha, beta, color, next);
+		next = (current == WHITE) ? BLACK : WHITE;
+		value = board_depth_value(copy, dummyInfo, (depth - 1), alpha, beta, color, next);
 
 		free(copy);
 
@@ -238,6 +252,52 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Co
 	free(moves);
 
 	return bestValue;
+}
+
+void sort_pruning_moves(Move* moves, int amount, Board board, Info info)
+{
+	// Scetchy!
+	Color color = board_point_color(board, moves[0].start);
+
+	Move first, second;
+	int firstValue, secondValue;
+
+	for(int iteration = 0; iteration < amount; iteration += 1)
+	{
+		for(int index = 0; index < (amount - iteration - 1); index += 1)
+		{
+			first = moves[index];
+			second = moves[index + 1];
+
+			firstValue = move_state_value(board, info, first, color);
+			secondValue = move_state_value(board, info, second, color);
+
+			if(firstValue > secondValue)
+			{
+				switch_array_moves(moves, index, (index + 1) );
+			}
+		}
+	}
+}
+
+int move_state_value(Board board, Info info, Move move, Color color)
+{
+	Color current = board_point_color(board, move.start);
+
+	Info dummyInfo = info;
+	Board copy = copy_chess_board(board);
+
+	if(!move_chess_piece(copy, move, &dummyInfo))
+	{
+		free(copy);
+
+		if(color == current) return MIN_VAL;
+		else return MAX_VAL;
+	}
+
+	free(copy);
+
+	return board_state_value(board, dummyInfo, color);
 }
 
 int color_state_value(Board board, Info info, Color color)
