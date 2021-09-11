@@ -18,13 +18,13 @@ bool moving_queen_valid(Point, Point);
 
 bool moving_king_valid(Point, Point);
 
-int pawn_height_offset(Point, Point, Color);
+int pawn_height_offset(Point, Point, Team);
 
-bool pawn_starting_bool(Point, Color);
+bool pawn_starting_bool(Point, Team);
 
-bool rook_starting_bool(Point, Color);
+bool rook_starting_bool(Point, Team);
 
-bool king_starting_bool(Point, Color);
+bool king_starting_bool(Point, Team);
 
 bool moving_piece_valid(Board, Point, Point);
 

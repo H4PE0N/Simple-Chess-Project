@@ -3,23 +3,23 @@
 
 bool move_chess_piece(Board board, Move move, Info* info)
 {
-	Color color = board_point_color(board, move.start);
-	if(color != info->current) return false;
+	Team team = board_point_team(board, move.start);
+	if(team != info->currTeam) return false;
 
 	switch(board_point_type(board, move.start))
 	{
 		case(EMPTY): return false;
-	
+
 		case(PAWN): return pawn_move_handler(board, move, *info);
 
 		case(ROOK): return rook_move_handler(board, move, info);
-		
+
 		case(KNIGHT): return knight_move_handler(board, move, *info);
-			
+
 		case(BISHOP): return bishop_move_handler(board, move, *info);
-			
+
 		case(QUEEN): return queen_move_handler(board, move, *info);
-			
+
 		case(KING): return king_move_handler(board, move, info);
 	}
 	return false;

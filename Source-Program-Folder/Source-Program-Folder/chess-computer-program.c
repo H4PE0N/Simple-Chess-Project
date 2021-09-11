@@ -1,113 +1,11 @@
 
 #include "../Header-Program-Folder/chess-computer-program.h"
 
-/*
-
-MIN MAX
-
-DEPTH = 2
-
-			0
-		   / \
-		  /   \
-		 /     \
-		/ 	    \
-	   1 		 1
-	  / \	    / \
-	 /   \     /   \
-	/     \   /     \
-   2   	   2 2       2
-
-calculate every possible move [depth 1]
-
-go through every move in [depth 1]->
-	calculate every possible move for enemy [depth 2]
-	
-	go throught every move for the enemy ->
-		value the state of the board [the algorithm]
-
-	pick the move that has the highest score,
-	and set the move at [depth 1] to that score
-
-PAWN 	= 10
-KNIGHT	= 30
-BISHOP	= 30
-ROOK	= 50
-QUEEN	= 90
-KING 	= 900
-
- - all_possible_moves()
-
- - best_possible_move(board, info color, depth) (recursive)
- {
-	moves = all_possible_moves()
-
-	// The value is the total value difference between the teams;
-	value;
-
-	MoveValue bestMove = {moves[0], value};
-	// This struct has a move and the score with that move;
-
-	for move in moves
-	{
-		// Execute the current move (on a copy of the board);
-		move_piece(board, move);
-
-		// The depth is the grade of move you want to calculate
-		// The higher depth, the higher chans the move is better
-		value = value_of_board(board, color, depth);
-
-		// If this move is better
-		if(value > bestMove.value)
-		{
-			// Update the best move
-			bestMove = move;
-		}
-	}
-	return bestMove;
- }
-
- value_of_board(board, color, depth)
- {
-	if(depth == 0) // Base case, should return the value
-	{
-		// The value is the total value difference between the teams;
-		return value;
-	}
-
-	moves = all_possible_moves()
-
-	best_value = 0;
-
-	for move in moves
-	{
-		// Execute the current move (on a copy of the board);
-		move_piece(board, move);
-
-		value = value_of_board(board, color, depth - 1);
-
-		if(value > best_value)
-		{
-			best_value = value;
-		}
-	}
-
-	// Now we have found the best move of this board
-	// We just return the best value
-
-	return best_value;
- }
-
-*/
-
-#define MIN_VAL -100000
-#define MAX_VAL +100000
-
-bool best_possible_move(Move* move, Board board, Info info, int depth, Color color)
+bool best_possible_move(Move* move, Board board, Info info, int depth, Team team)
 {
 	if(depth <= 0) return false;
 
-	Move* moves = all_possible_moves(board, info, color);
+	Move* moves = all_possible_moves(board, info, team);
 	int amount = moves_array_amount(moves);
 
 	if(amount <= 0)
@@ -117,50 +15,44 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Color col
 		return false;
 	}
 
-	sort_pruning_moves(moves, amount, board, info);
-
-	Move bestMove = moves[0];
-	int bestValue = MIN_VAL;
-
-	Move currMove;
+	Move bestMove = moves[0], currMove;
+	int bestValue = MIN_VAL, currValue;
 
 	Info dummyInfo;
 
-	Board copy;
+	Board copyBoard;
 
-	Color next;
-
-	int value;
+	Team nextTeam;
 
 	for(int index = 0; index < amount; index += 1)
 	{
 		currMove = moves[index];
 
 		dummyInfo = info;
-		dummyInfo.current = color;
+		dummyInfo.currTeam = team;
 
-		copy = copy_chess_board(board);
+		copyBoard = copy_chess_board(board);
 
-		if(!move_chess_piece(copy, currMove, &dummyInfo))
+		if(!move_chess_piece(copyBoard, currMove, &dummyInfo))
 		{
-			free(copy);
+			free(copyBoard);
 
 			CLEAR_LINE; printf("Cant move Main move!\n");
-			
+
 			continue;
 		}
 
-		next = (color == WHITE) ? BLACK : WHITE;
-		value = board_depth_value(copy, dummyInfo, (depth - 1), MIN_VAL, MAX_VAL, color, next);
+		nextTeam = (team == WHITE) ? BLACK : WHITE;
+		currValue = board_depth_value(copyBoard, dummyInfo, (depth - 1), MIN_VAL, MAX_VAL, team, nextTeam);
 
-		free(copy);
+		free(copyBoard);
 
-		printf("Checking [%d %d] -> [%d %d] = [%d] Best = [%d]\n", currMove.start.height, currMove.start.width, currMove.stop.height, currMove.stop.width, value, bestValue);
+		printf("Checking [%d %d] -> [%d %d] = [%d] Best = [%d]\n", currMove.start.height, currMove.start.width, currMove.stop.height, currMove.stop.width, currValue, bestValue);
 
-		if(value > bestValue)
+		if(currValue > bestValue)
 		{
 			bestMove = currMove;
-			bestValue = value;
+			bestValue = currValue;
 		}
 	}
 
@@ -174,71 +66,70 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Color col
 	return true;
 }
 
-int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Color color, Color current)
+int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Team team, Team currTeam)
 {
 	if(depth <= 0) // Base-case, Should return the value of the board
 	{
-		int value = color_state_value(board, info, color);
-		return value;
+		return team_state_value(board, info, team);
 	}
 
 	Info dummyInfo = info;
-	dummyInfo.current = current;
+	dummyInfo.currTeam = currTeam;
 
-	Move* moves = all_possible_moves(board, dummyInfo, current);
+	int bestValue = (currTeam == team) ? MIN_VAL : MAX_VAL;
+
+	Move* moves = all_possible_moves(board, dummyInfo, currTeam);
 	int amount = moves_array_amount(moves);
 
 	if(amount <= 0)
 	{
 		free(moves);
 
-		return (color == current) ? MIN_VAL : MAX_VAL;
+		return bestValue;
 	}
 
-	sort_pruning_moves(moves, amount, board, info);
-
-	int bestValue = (current == color) ? MIN_VAL : MAX_VAL;
+	sort_pruning_moves(moves, amount, board, info, currTeam);
 
 	Move currMove;
 
-	Board copy;
+	Board copyBoard;
 
-	Color next;
+	Team nextTeam;
 
-	int value;
+	int currValue;
 
 	for(int index = 0; index < amount; index += 1)
 	{
 		currMove = moves[index];
 
 		dummyInfo = info;
-		dummyInfo.current = current;
+		dummyInfo.currTeam = currTeam;
 
-		copy = copy_chess_board(board);
+		copyBoard = copy_chess_board(board);
 
-		if(!move_chess_piece(copy, currMove, &dummyInfo))
+		if(!move_chess_piece(copyBoard, currMove, &dummyInfo))
 		{
-			free(copy);
+			free(copyBoard);
 
 			CLEAR_LINE; printf("Cant move Depth move!\n");
 			continue;
 		}
 
-		next = (current == WHITE) ? BLACK : WHITE;
-		value = board_depth_value(copy, dummyInfo, (depth - 1), alpha, beta, color, next);
+		nextTeam = (currTeam == WHITE) ? BLACK : WHITE;
+		currValue = board_depth_value(copyBoard, dummyInfo, (depth - 1), alpha, beta, team, nextTeam);
 
-		free(copy);
+		free(copyBoard);
 
 		// Update best value (own)
-		if(current == color && value > bestValue) bestValue = value;
+		if(currTeam == team && currValue > bestValue) bestValue = currValue;
 
-		else if(current != color && value < bestValue) bestValue = value;
-		
+		else if(currTeam != team && currValue < bestValue) bestValue = currValue;
+
 
 		// alpha-beta pruning (copying from internet, I am not smart)
-		if(current == color && value > alpha) alpha = value;
+		if(currTeam == team && currValue > alpha) alpha = currValue;
 
-		else if(current != color && value < beta) beta = value;
+		else if(currTeam != team && currValue < beta) beta = currValue;
 
 
 		if(beta <= alpha) break;
@@ -249,11 +140,8 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Co
 	return bestValue;
 }
 
-void sort_pruning_moves(Move* moves, int amount, Board board, Info info)
+void sort_pruning_moves(Move* moves, int amount, Board board, Info info, Team team)
 {
-	// Scetchy!
-	Color color = board_point_color(board, moves[0].start);
-
 	Move first, second;
 	int firstValue, secondValue;
 
@@ -264,8 +152,8 @@ void sort_pruning_moves(Move* moves, int amount, Board board, Info info)
 			first = moves[index];
 			second = moves[index + 1];
 
-			firstValue = move_state_value(board, info, first, color);
-			secondValue = move_state_value(board, info, second, color);
+			firstValue = move_state_value(board, info, first, team);
+			secondValue = move_state_value(board, info, second, team);
 
 			if(firstValue > secondValue)
 			{
@@ -275,9 +163,9 @@ void sort_pruning_moves(Move* moves, int amount, Board board, Info info)
 	}
 }
 
-int move_state_value(Board board, Info info, Move move, Color color)
+int move_state_value(Board board, Info info, Move move, Team team)
 {
-	Color current = board_point_color(board, move.start);
+	Team currTeam = board_point_team(board, move.start);
 
 	Info dummyInfo = info;
 	Board copy = copy_chess_board(board);
@@ -286,34 +174,28 @@ int move_state_value(Board board, Info info, Move move, Color color)
 	{
 		free(copy);
 
-		return (color == current) ? MIN_VAL : MAX_VAL;
+		return (team == currTeam) ? MIN_VAL : MAX_VAL;
 	}
 
 	free(copy);
 
-	return board_state_value(board, dummyInfo, color);
+	return board_state_value(board, dummyInfo, team);
 }
 
-int color_state_value(Board board, Info info, Color color)
+int team_state_value(Board board, Info info, Team team)
 {
-	int enemy = (color == WHITE) ? BLACK : WHITE;
+	int enemy = (team == WHITE) ? BLACK : WHITE;
 
 	int enemyValue = board_state_value(board, info, enemy);
-	int teamValue = board_state_value(board, info, color);
+	int teamValue = board_state_value(board, info, team);
 
 	return (teamValue - enemyValue);
 }
 
-typedef struct TypeValue
-{
-	Type type;
-	int value;
-} TypeValue;
-
-const TypeValue typeValues[] = { {EMPTY, 0}, {PAWN, 10}, {KNIGHT, 30}, 
+const TypeValue typeValues[] = { {EMPTY, 0}, {PAWN, 10}, {KNIGHT, 30},
 	{BISHOP, 30}, {ROOK, 50}, {QUEEN, 90}, {KING, 900} };
 
-int team_pieces_value(Board board, Color color)
+int team_pieces_value(Board board, Team team)
 {
 	Point point; Piece piece;
 
@@ -327,7 +209,7 @@ int team_pieces_value(Board board, Color color)
 
 			piece = board_point_piece(board, point);
 
-			if(piece.color != color) continue;
+			if(piece.team != team) continue;
 
 			value += typeValues[piece.type].value;
 		}
@@ -335,14 +217,14 @@ int team_pieces_value(Board board, Color color)
 	return value;
 }
 
-int check_mate_value(Board board, Info info, Color color)
+int check_mate_value(Board board, Info info, Team team)
 {
 	int value = 0;
 
-	Color enemy = (color == WHITE) ? BLACK : WHITE;
+	Team enemy = (team == WHITE) ? BLACK : WHITE;
 
-	Point enemyKing = color_king_point(info, enemy);
-	Point teamKing = color_king_point(info, color);
+	Point enemyKing = team_king_point(info, enemy);
+	Point teamKing = team_king_point(info, team);
 
 	if(check_mate_situation(board, info, teamKing)) 		value += MAX_VAL;
 	else if(check_mate_situation(board, info, enemyKing)) 	value += MIN_VAL;
@@ -350,52 +232,17 @@ int check_mate_value(Board board, Info info, Color color)
 	return value;
 }
 
-int board_state_value(Board board, Info info, Color color)
+int board_state_value(Board board, Info info, Team team)
 {
 	int value = 0;
 
-	value += team_pieces_value(board, color);
+	value += team_pieces_value(board, team);
 
-	value += check_mate_value(board, info, color);
+	value += check_mate_value(board, info, team);
 
 	// Add more parameters
 
 	return value;
-}
-
-bool find_computer_move(Move* move, Board board, Info info, Color color)
-{
-	Move* moves = all_possible_moves(board, info, color);
-	int amount = moves_array_amount(moves);
-
-	if(amount == 0) { free(moves); return false; }
-
-	shuffle_moves_array(moves, amount);
-
-	MoveInfo bestMove = create_move_info(board, moves[0], info);
-
-	Move current;
-
-	for(int index = 0; index < amount; index += 1)
-	{
-		current = moves[index];
-
-		update_best_move(&bestMove, board, current, info);
-	}
-
-	CLEAR_LINE; printf("[+] === BEST MOVE OUT OF [%d] === [+]\n", amount);
-	CLEAR_LINE; display_move_info(bestMove);
-
-	*move = bestMove.move; free(moves); return true;
-}
-
-void shuffle_moves_array(Move* moves, int amount)
-{
-	for(int index = 0; index < amount; index += 1)
-	{
-		int random = create_random_number(0, amount - 1);
-		switch_array_moves(moves, index, random);
-	}
 }
 
 void switch_array_moves(Move* moves, int first, int second)
@@ -405,55 +252,6 @@ void switch_array_moves(Move* moves, int first, int second)
 
 	moves[first] = secondMove;
 	moves[second] = firstMove;
-}
-
-MoveInfo create_move_info(Board board, Move move, Info info)
-{
-	Point start = move.start, stop = move.stop;
-
-	MoveInfo moveInfo;
-
-	moveInfo.move = move;
-
-	moveInfo.setsCheck = simulate_enemy_check(board, move, info);
-
-	moveInfo.checkMate = simulate_check_mate(board, move, info);
-
-	moveInfo.takeEnemy = board_points_enemy(board, start, stop);
-
-	moveInfo.getsTaken = piece_move_exposed(board, move, info);
-
-	moveInfo.exposed = board_piece_exposed(board, info, start);
-
-	moveInfo.type = board_point_type(board, start);
-	moveInfo.enemy = board_point_type(board, stop);
-
-	return moveInfo;
-}
-
-void update_best_move(MoveInfo* bestMove, Board board, Move move, Info info)
-{
-	MoveInfo current = create_move_info(board, move, info);
-
-	if(default_bot_algorithm(board, *bestMove, current)) 
-	{
-		*bestMove = current;
-	}
-}
-
-bool piece_move_exposed(Board board, Move move, Info info)
-{
-	Point start = move.start, stop = move.stop;
-
-	Board copy = copy_chess_board(board);
-	move_board_piece(copy, start, stop);
-
-	if(board_piece_exposed(copy, info, stop))
-	{ 
-		free(copy); return true; 
-	}
-
-	free(copy); return false;
 }
 
 bool board_piece_exposed(Board board, Info info, Point point)
@@ -473,7 +271,7 @@ bool board_piece_exposed(Board board, Info info, Point point)
 	return false;
 }
 
-Move* all_possible_moves(Board board, Info info, Color color)
+Move* all_possible_moves(Board board, Info info, Team team)
 {
 	Move* moves = create_moves_array(1024);
 	Move* adding;
@@ -483,8 +281,8 @@ Move* all_possible_moves(Board board, Info info, Color color)
 		for(int width = 0; width < B_WIDTH; width += 1)
 		{
 			Point point = {height, width};
-			Color currColor = board_point_color(board, point);
-			if(currColor != color) continue;
+			Team currTeam = board_point_team(board, point);
+			if(currTeam != team) continue;
 
 			adding = create_moves_array(40);
 
@@ -544,7 +342,7 @@ bool piece_possible_moves(Move* moves, Board board, Info info, Point start)
 			if(!piece_move_acceptable(board, currMove, info)) continue;
 			if(!move_prevent_check(board, currMove, info)) continue;
 
-			moves[amount] = currMove; 
+			moves[amount] = currMove;
 			amount += 1;
 		}
 	}

@@ -1,9 +1,9 @@
 
 #include "../Header-Program-Folder/check-prevent-functions.h"
 
-bool team_prevent_check(Board board, Info info, Color color)
+bool team_prevent_check(Board board, Info info, Team team)
 {
-	if(color == NONE) return false;
+	if(team == NONE) return false;
 
 	Point point;
 	for(int height = 0; height < 8; height = height + 1)
@@ -11,9 +11,9 @@ bool team_prevent_check(Board board, Info info, Color color)
 		for(int width = 0; width < 8; width = width + 1)
 		{
 			point = (Point) {height, width};
-			Color currColor = board_point_color(board, point);
+			Team currTeam = board_point_team(board, point);
 
-			if(currColor != color) continue;
+			if(currTeam != team) continue;
 
 			if(piece_prevent_check(board, point, info)) return true;
 		}

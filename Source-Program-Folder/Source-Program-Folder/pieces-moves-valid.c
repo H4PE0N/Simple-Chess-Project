@@ -2,7 +2,7 @@
 #include "../Header-Program-Folder/pieces-moves-valid.h"
 
 // This is a function that JUST cover the regular moves
-// You can swap "board" for "color" if you want
+// You can swap "board" for "team" if you want
 bool moving_piece_valid(Board board, Point start, Point stop)
 {
 	switch(board_point_type(board, start))
@@ -24,31 +24,31 @@ bool moving_piece_valid(Board board, Point start, Point stop)
 	return false;
 }
 
-int pawn_height_offset(Point start, Point stop, Color color)
+int pawn_height_offset(Point start, Point stop, Team team)
 {
-	if(color == WHITE) return (start.height - stop.height);
-	if(color == BLACK) return (stop.height - start.height);
+	if(team == WHITE) return (start.height - stop.height);
+	if(team == BLACK) return (stop.height - start.height);
 
 	return -1; // This is an invalid move for the pawn.
 }
 
-bool pawn_starting_bool(Point start, Color color)
+bool pawn_starting_bool(Point start, Team team)
 {
-	if(color == WHITE && start.height == 6) return true;
-	if(color == BLACK && start.height == 1) return true;
+	if(team == WHITE && start.height == 6) return true;
+	if(team == BLACK && start.height == 1) return true;
 
 	return false;
 }
 
 bool moving_pawn_valid(Board board, Point start, Point stop)
 {
-	Color color = board_point_color(board, start);
+	Team team = board_point_team(board, start);
 
-	int hOffset = pawn_height_offset(start, stop, color);
+	int hOffset = pawn_height_offset(start, stop, team);
 	int wOffset = abs(start.width - stop.width);
 
 	bool straight = (start.width == stop.width);
-	bool starting = pawn_starting_bool(start, color);
+	bool starting = pawn_starting_bool(start, team);
 
 	if(straight && hOffset == 1) return true;
 	if(straight && starting && hOffset == 2) return true;
@@ -57,18 +57,18 @@ bool moving_pawn_valid(Board board, Point start, Point stop)
 	return false;
 }
 
-bool rook_starting_bool(Point point, Color color)
+bool rook_starting_bool(Point point, Team team)
 {
-	if(color == WHITE && point.height != 7) return false;
-	if(color == BLACK && point.height != 0) return false;
+	if(team == WHITE && point.height != 7) return false;
+	if(team == BLACK && point.height != 0) return false;
 
 	return (point.width == 0 || point.width == 7);
 }
 
-bool king_starting_bool(Point point, Color color)
+bool king_starting_bool(Point point, Team team)
 {
-	if(color == WHITE && point.height != 7) return false;
-	if(color == BLACK && point.height != 0) return false;
+	if(team == WHITE && point.height != 7) return false;
+	if(team == BLACK && point.height != 0) return false;
 
 	return (point.width == 4);
 }
@@ -77,11 +77,11 @@ bool rook_king_switch(Board board, Point start, Point stop)
 {
 	if(!board_points_team(board, start, stop)) return false;
 
-	Color color = board_point_color(board, start);
+	Team team = board_point_team(board, start);
 
-	if(!rook_starting_bool(start, color)) return false;
+	if(!rook_starting_bool(start, team)) return false;
 
-	if(!king_starting_bool(stop, color)) return false;
+	if(!king_starting_bool(stop, team)) return false;
 
 	return true;
 }

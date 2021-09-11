@@ -35,11 +35,11 @@ char convert_char_upper(char);
 
 void convert_string_upper(char*, int);
 
-Color board_point_color(Board, Point);
+Team board_point_team(Board, Point);
 
 Board copy_chess_board(Board);
 
-Point color_king_point(Info, Color);
+Point team_king_point(Info, Team);
 
 bool clear_moving_path(Board, Point, Point);
 

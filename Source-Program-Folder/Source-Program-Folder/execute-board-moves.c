@@ -12,21 +12,21 @@ void execute_rook_switch(Board board, Move move, Info* info)
 {
 	Point start = move.start, stop = move.stop;
 
-	Color color = board[start.height][start.width].color;
-	RKSwitch* RKS = (color == BLACK) ? &info->blackRKS : &info->whiteRKS;
+	Team team = board[start.height][start.width].team;
+	RKSwitch* RKS = (team == BLACK) ? &info->blackRKS : &info->whiteRKS;
 
 	int difference = (stop.width - start.width);
 
 	int kWidth = (difference < 0) ? 6 : 2;
 	int rWidth = (difference < 0) ? 5 : 3;
-	
+
 	Point rook = {start.height, rWidth};
 	Point king = {stop.height, kWidth};
 
 	move_board_piece(board, stop, king);
 	move_board_piece(board, start, rook);
 
-	update_king_point(info, color, king);
+	update_king_point(info, team, king);
 
 	RKS->right = false;
 	RKS->left = false;
@@ -36,8 +36,8 @@ void execute_rook_move(Board board, Move move, Info* info)
 {
 	Point start = move.start;
 
-	Color color = board[start.height][start.width].color;
-	RKSwitch* RKS = (color == BLACK) ? &info->blackRKS : &info->whiteRKS;
+	Team team = board[start.height][start.width].team;
+	RKSwitch* RKS = (team == BLACK) ? &info->blackRKS : &info->whiteRKS;
 
 	move_board_piece(board, move.start, move.stop);
 
@@ -60,37 +60,37 @@ void execute_queen_move(Board board, Move move)
 	move_board_piece(board, move.start, move.stop);
 }
 
-void turn_off_rook_switch(Info* info, Color color)
+void turn_off_rook_switch(Info* info, Team team)
 {
-	RKSwitch* RKS = (color == WHITE) ? &info->whiteRKS : &info->blackRKS;
-	
+	RKSwitch* RKS = (team == WHITE) ? &info->whiteRKS : &info->blackRKS;
+
 	RKS->left = false;
 	RKS->right = false;
 }
 
-void update_king_point(Info* info, Color color, Point point)
+void update_king_point(Info* info, Team team, Point point)
 {
-	Point* kingP = (color == WHITE) ? &info->wKing : &info->bKing;
+	Point* kingP = (team == WHITE) ? &info->wKing : &info->bKing;
 	*kingP = (Point) {point.height, point.width};
 }
 
 void execute_king_move(Board board, Move move, Info* info)
 {
 	Point start = move.start, stop = move.stop;
-	Color color = board[start.height][start.width].color;
+	Team team = board[start.height][start.width].team;
 
-	turn_off_rook_switch(info, color);
-	update_king_point(info, color, stop);
+	turn_off_rook_switch(info, team);
+	update_king_point(info, team, stop);
 
 	move_board_piece(board, start, stop);
 }
 
 void make_pawn_queen(Board board, Point point)
 {
-	Color color = board_point_color(board, point);
+	Team team = board_point_team(board, point);
 
-	bool whiteQueen = (color == WHITE && point.height == 0);
-	bool blackQueen = (color == BLACK && point.height == 7);
+	bool whiteQueen = (team == WHITE && point.height == 0);
+	bool blackQueen = (team == BLACK && point.height == 7);
 
 	if(whiteQueen || blackQueen)
 	{

@@ -9,7 +9,7 @@
 #include "game-check-functions.h"
 #include "chess-simulations-program.h"
 
-bool team_prevent_check(Board, Info, Color);
+bool team_prevent_check(Board, Info, Team);
 
 bool piece_prevent_check(Board, Point, Info);
 

@@ -1,8 +1,8 @@
 
 #include "../Header-Program-Folder/game-interface-program.h"
 
-const char* symbolColors[] = {FG_DEFAULT, FG_RED, FG_RED};
-const char* squareColors[] = {BG_DEFAULT, BG_WHITE, BG_BLACK};
+const char* symbolTeams[] = {FG_DEFAULT, FG_RED, FG_RED};
+const char* squareTeams[] = {BG_DEFAULT, BG_WHITE, BG_BLACK};
 
 const char* blackSymbols[] = {" ", "P", "B", "H", "R", "Q", "K"};
 const char* whiteSymbols[] = {" ", "p", "b", "h", "r", "q", "k"};
@@ -54,18 +54,18 @@ void display_board_symbol(int height, int width, Piece piece)
 	const char* blackSymbol = blackSymbols[piece.type];
 	const char* whiteSymbol = whiteSymbols[piece.type];
 
-	const char* symbol = (piece.color == WHITE) ? whiteSymbol : blackSymbol;
-	const char* symbolColor = symbolColors[piece.color];
+	const char* symbol = (piece.team == WHITE) ? whiteSymbol : blackSymbol;
+	const char* symbolTeam = symbolTeams[piece.team];
 
-	const char* whiteSquare = squareColors[WHITE];
-	const char* blackSquare = squareColors[BLACK];
+	const char* whiteSquare = squareTeams[WHITE];
+	const char* blackSquare = squareTeams[BLACK];
 
 	bool squareBool = (height % 2 == 0 && width % 2 == 0) ||
 					  (height % 2 != 0 && width % 2 != 0);
 
-	const char* squareColor = squareBool ? whiteSquare : blackSquare;
+	const char* squareTeam = squareBool ? whiteSquare : blackSquare;
 
-	printf("%s%s", symbolColor, squareColor);
+	printf("%s%s", symbolTeam, squareTeam);
 
 	printf(" ");
 
@@ -79,16 +79,16 @@ void display_board_symbol(int height, int width, Piece piece)
 void display_move_info(MoveInfo moveInfo)
 {
 	printf("[SC-%d CM-%d TE-%d GT-%d EX-%d TY-%d EN-%d]\n",
-			moveInfo.setsCheck, 
-			moveInfo.checkMate, 
-			moveInfo.takeEnemy, 
-			moveInfo.getsTaken, 
-			moveInfo.exposed, 
+			moveInfo.setsCheck,
+			moveInfo.checkMate,
+			moveInfo.takeEnemy,
+			moveInfo.getsTaken,
+			moveInfo.exposed,
 			moveInfo.type,
 			moveInfo.enemy);
 }
 
-void display_chess_result(Board board, Color winner)
+void display_chess_result(Board board, Team winner)
 {
 	display_chess_board(board);
 
@@ -96,18 +96,18 @@ void display_chess_result(Board board, Color winner)
 	{
 		CLEAR_LINE; printf("[!] THE GAME ENDED WITH A DRAW!\n");
 	}
-	else 
+	else
 	{
-		char* color = (winner == WHITE) ? "WHITE" : "BLACK";
-		CLEAR_LINE; printf("[!] THE WINNER IS [%s]!\n", color);
+		char* team = (winner == WHITE) ? "WHITE" : "BLACK";
+		CLEAR_LINE; printf("[!] THE WINNER IS [%s]!\n", team);
 	}
 }
 
 void display_chess_info(Info info)
 {
-	char* color = (info.current == WHITE) ? "WHITE" : "BLACK";
+	char* team = (info.currTeam == WHITE) ? "WHITE" : "BLACK";
 
-	CLEAR_LINE; printf("[+] CURRENT PLAYER\t: [%s]\n", color);
+	CLEAR_LINE; printf("[+] CURRENT PLAYER\t: [%s]\n", team);
 	CLEAR_LINE; printf("[+] NUMBER OF TURNS\t: [%dst]\n", info.turns);
 }
 
@@ -138,10 +138,10 @@ bool input_string_variable(char* string)
 bool parse_chess_move(Move* move, Board board, Info info, char string[])
 {
 	convert_string_upper(string, strlen(string));
-	
+
 	if(!strcmp(string, "RANDOM"))
 	{
-		return find_computer_move(move, board, info, info.current);
+		return best_possible_move(move, board, info, 3, info.currTeam);
 	}
 
 	char seperator[] = " ";
@@ -173,7 +173,7 @@ bool parse_chess_position(Point* point, char string[])
 int string_letter_index(char string[], int length, char letter)
 {
 	for(int index = 0; index < length; index += 1)
-	{	
+	{
 		if(letter == string[index]) return index;
 	}
 	return -1;

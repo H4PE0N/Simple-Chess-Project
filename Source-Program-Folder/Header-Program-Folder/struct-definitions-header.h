@@ -7,15 +7,15 @@ typedef enum Type
 	EMPTY = 0, PAWN, BISHOP, KNIGHT, ROOK, QUEEN, KING,
 } Type;
 
-typedef enum Color 
+typedef enum Team
 {
 	NONE = 0, WHITE, BLACK,
-} Color;
+} Team;
 
 typedef struct Piece
 {
 	Type type;
-	Color color;
+	Team team;
 } Piece;
 
 typedef struct Point
@@ -39,7 +39,7 @@ typedef struct RKSwitch
 
 typedef struct Info
 {
-	Color current;
+	Team currTeam;
 	RKSwitch whiteRKS;
 	RKSwitch blackRKS;
 	Point wKing;
@@ -59,7 +59,16 @@ typedef struct MoveInfo
 	Type enemy;
 } MoveInfo;
 
+typedef struct TypeValue
+{
+	Type type;
+	int value;
+} TypeValue;
+
 #define B_HEIGHT 8
 #define B_WIDTH 8
+
+#define MIN_VAL -100000
+#define MAX_VAL +100000
 
 #endif

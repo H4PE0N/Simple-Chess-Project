@@ -28,9 +28,9 @@ char* extract_file_name(char* arguments[], int amount)
 {
 	char* filename = malloc(sizeof(char) * 200);
 	if(amount >= 2) strcpy(filename, arguments[1]);
-	
+
 	else strcpy(filename, "../Source-Program-Folder/Data-Program-Folder/default-chess-board.txt");
-	
+
 	return filename;
 }
 
@@ -52,7 +52,7 @@ void append_board_piece(Board board, Point point, Piece piece)
 
 void remove_board_piece(Board board, Point point)
 {
-	board[point.height][point.width] = (Piece) {EMPTY, NONE}; 
+	board[point.height][point.width] = (Piece) {EMPTY, NONE};
 }
 
 void move_board_piece(Board board, Point start, Point stop)
@@ -72,29 +72,29 @@ void switch_chess_pieces(Board board, Point first, Point second)
 
 bool board_piece_equal(Piece first, Piece second)
 {
-	return (first.type == second.type && first.color == second.color);
+	return (first.type == second.type && first.team == second.team);
 }
 
 bool board_piece_point(Point* point, Board board, Piece piece)
 {
-	Piece current;
+	Piece currPiece;
 	for(int height = 0; height < 8; height = height + 1)
 	{
 		for(int width = 0; width < 8; width = width + 1)
 		{
-			current = board_point_piece(board, (Point) {height, width});
+			currPiece = board_point_piece(board, (Point) {height, width});
 
-			if(board_piece_equal(piece, current))
+			if(board_piece_equal(piece, currPiece))
 			{ *point = (Point) {height, width}; return true; }
 		}
 	}
 	return false;
 }
 
-Color board_point_color(Board board, Point point)
+Team board_point_team(Board board, Point point)
 {
 	Piece piece = board_point_piece(board, point);
-	return piece.color;
+	return piece.team;
 }
 
 Type board_point_type(Board board, Point point)
@@ -112,22 +112,22 @@ Board copy_chess_board(Board board)
 		for(int width = 0; width < B_WIDTH; width = width + 1)
 		{
 			copy[height][width].type = board[height][width].type;
-			copy[height][width].color = board[height][width].color;
+			copy[height][width].team = board[height][width].team;
 		}
 	}
 	return copy;
 }
 
-Point color_king_point(Info info, Color color)
+Point team_king_point(Info info, Team team)
 {
-	if(color == NONE) return (Point) {-1, -1};
-	return (color == WHITE) ? info.wKing : info.bKing;
+	if(team == NONE) return (Point) {-1, -1};
+	return (team == WHITE) ? info.wKing : info.bKing;
 }
 
 bool board_points_team(Board board, Point start, Point stop)
 {
-	Color start_c = board_point_color(board, start);
-	Color stop_c = board_point_color(board, stop);
+	Team start_c = board_point_team(board, start);
+	Team stop_c = board_point_team(board, stop);
 
 	return (start_c == stop_c && start_c != NONE  && stop_c != NONE);
 }
@@ -135,8 +135,8 @@ bool board_points_team(Board board, Point start, Point stop)
 bool board_point_empty(Board board, Point point)
 {
 	Type type = board_point_type(board, point);
-	Color color = board_point_color(board, point);
-	return (type == EMPTY || color == NONE);
+	Team team = board_point_team(board, point);
+	return (type == EMPTY || team == NONE);
 }
 
 bool move_inside_board(Move move)
@@ -149,8 +149,8 @@ bool move_inside_board(Move move)
 
 bool board_points_enemy(Board board, Point start, Point stop)
 {
-	Color start_c = board_point_color(board, start);
-	Color stop_c = board_point_color(board, stop);
+	Team start_c = board_point_team(board, start);
+	Team stop_c = board_point_team(board, stop);
 
 	return (start_c != stop_c && start_c != NONE && stop_c != NONE);
 }
@@ -162,7 +162,7 @@ bool clear_moving_path(Board board, Point start, Point stop)
 
 	// If the knight is moving, he dont need a clear moving path
 	if(moving_knight_valid(start, stop)) return true;
- 
+
 	int steps = (abs(hOffset) > abs(wOffset)) ? abs(hOffset) : abs(wOffset);
 
 	int hAdder = (hOffset == 0) ? 0 : (hOffset / abs(hOffset));

@@ -31,7 +31,7 @@ void display_game_round(Board, Info);
 
 int string_letter_index(char[], int, char);
 
-void display_chess_result(Board, Color);
+void display_chess_result(Board, Team);
 
 void display_move_info(MoveInfo);
 

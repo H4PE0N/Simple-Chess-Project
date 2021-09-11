@@ -7,7 +7,7 @@ int main(int argAmount, char* arguments[])
 
 	char* filename = extract_file_name(arguments, argAmount);
 
-	Board board; Color winner = NONE; Info info;
+	Board board; Team winner = NONE; Info info;
 
 	if(!setup_game_variables(&board, &info, filename))
 	{
@@ -15,7 +15,7 @@ int main(int argAmount, char* arguments[])
 		free(board); free(filename); return false;
 	}
 
-	free(filename); 
+	free(filename);
 
 	if(single_player_chess(&winner, board, &info))
 	{
@@ -26,11 +26,11 @@ int main(int argAmount, char* arguments[])
 	free(board); return false;
 }
 
-bool single_player_chess(Color* winner, Board board, Info* info)
+bool single_player_chess(Team* winner, Board board, Info* info)
 {
 	while(game_still_running(winner, board, *info))
-	{	
-		if(info->current == WHITE)
+	{
+		if(info->currTeam == WHITE)
 		{
 			if(!user_move_handler(board, info)) return false;
 		}
@@ -38,11 +38,11 @@ bool single_player_chess(Color* winner, Board board, Info* info)
 		{
 			*winner = WHITE; break;
 		}
-		
+
 		if(!update_kings_point(board, info)) return false;
 
 		info->turns += 1;
-		info->current = (info->current == WHITE) ? BLACK : WHITE;
+		info->currTeam = (info->currTeam == WHITE) ? BLACK : WHITE;
 	}
 	return true;
 }
@@ -64,7 +64,7 @@ bool user_move_handler(Board board, Info* info)
 
 		if(!parse_chess_move(&move, board, *info, input)) continue;
 	}
-	
+
 	CLEAR_LINE; printf("User moved [%d-%d] to [%d-%d]\n",
 		move.start.height, move.start.width, move.stop.height, move.stop.width);
 
@@ -78,13 +78,13 @@ bool user_move_handler(Board board, Info* info)
 
 bool computer_move_handler(Board board, Info* info)
 {
-	display_game_round(board, *info); 
+	display_game_round(board, *info);
 
 	//MOVE_UP_BOARD; MOVE_UP_INFO;
 
 	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
 
-	if(!best_possible_move(&move, board, *info, 3, info->current)) return false;
+	if(!best_possible_move(&move, board, *info, 3, info->currTeam)) return false;
 
 	CLEAR_LINE; printf("Computer moved [%d-%d] to [%d-%d]\n",
 		move.start.height, move.start.width, move.stop.height, move.stop.width);

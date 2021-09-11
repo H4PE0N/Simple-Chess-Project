@@ -9,7 +9,7 @@
 #include "board-move-handler.h"
 #include "chess-computer-program.h"
 
-bool zero_player_chess(Color*, Board, Info*);
+bool zero_player_chess(Team*, Board, Info*);
 
 bool computer_move_handler(Board, Info*);
 

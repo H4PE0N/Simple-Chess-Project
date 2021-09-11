@@ -15,7 +15,7 @@ bool create_chess_board(Board*, char[]);
 
 bool setup_game_info(Info*, Board);
 
-RKSwitch extract_rks_values(Board, Color);
+RKSwitch extract_rks_values(Board, Team);
 
 bool setup_game_variables(Board*, Info*, char[]);
 

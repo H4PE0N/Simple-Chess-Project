@@ -6,33 +6,32 @@
 #include "chess-game-functions.h"
 #include "board-move-handler.h"
 #include "chess-computer-program.h"
-#include "chess-bot-algorithms.h"
 #include "game-interface-program.h"
 #include "chess-simulations-program.h"
 
-bool best_possible_move(Move*, Board, Info, int, Color);
+bool best_possible_move(Move*, Board, Info, int, Team);
 
-int board_depth_value(Board, Info, int, int, int, Color, Color);
+int board_depth_value(Board, Info, int, int, int, Team, Team);
 
-int color_state_value(Board, Info, Color);
+int team_state_value(Board, Info, Team);
 
-int team_pieces_value(Board, Color);
+int team_pieces_value(Board, Team);
 
-int board_state_value(Board, Info, Color);
+int board_state_value(Board, Info, Team);
 
-int check_mate_value(Board, Info, Color);
-
-
-void sort_pruning_moves(Move*, int, Board, Info);
-
-int move_state_value(Board, Info, Move, Color);
+int check_mate_value(Board, Info, Team);
 
 
-bool find_computer_move(Move*, Board, Info, Color);
+void sort_pruning_moves(Move*, int, Board, Info, Team);
+
+int move_state_value(Board, Info, Move, Team);
+
+
+bool find_computer_move(Move*, Board, Info, Team);
 
 bool piece_possible_moves(Move*, Board, Info, Point);
 
-Move* all_possible_moves(Board, Info, Color);
+Move* all_possible_moves(Board, Info, Team);
 
 int moves_array_amount(Move*);
 

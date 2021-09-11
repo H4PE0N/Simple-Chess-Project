@@ -8,6 +8,6 @@
 #include "game-interface-program.h"
 #include "board-move-handler.h"
 
-bool multi_player_chess(Color*, Board, Info*);
+bool multi_player_chess(Team*, Board, Info*);
 
 #endif

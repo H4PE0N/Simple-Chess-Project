@@ -24,6 +24,6 @@ bool rook_move_acceptable(Board, Move, Info);
 
 bool rook_switch_able(Board, Move, Info);
 
-bool switch_bool_valid(Point, Info, Color);
+bool switch_bool_valid(Point, Info, Team);
 
 #endif

@@ -1,19 +1,19 @@
 
 #include "../Header-Program-Folder/chess-game-functions.h"
 
-bool game_still_running(Color* winner, Board board, Info info)
+bool game_still_running(Team* winner, Board board, Info info)
 {
 	for(int round = 0; round < 2; round = round + 1)
 	{
-		Color color = (round == 0) ? WHITE : BLACK;
-		Point point = color_king_point(info, color);
+		Team team = (round == 0) ? WHITE : BLACK;
+		Point point = team_king_point(info, team);
 
 		if(!point_inside_board(point)) return false;
 		if(board_point_empty(board, point)) return false;
 
 		if(check_mate_situation(board, info, point))
 		{
-			*winner = (color == WHITE) ? BLACK : WHITE;
+			*winner = (team == WHITE) ? BLACK : WHITE;
 			return false;
 		}
 		if(check_draw_situation(board, info, point))
@@ -29,10 +29,10 @@ bool update_kings_point(Board board, Info* info)
 {
 	Point bKing, wKing;
 
-	if(!board_piece_point(&bKing, board, (Piece) {KING, BLACK})) 
+	if(!board_piece_point(&bKing, board, (Piece) {KING, BLACK}))
 		return false;
 
-	if(!board_piece_point(&wKing, board, (Piece) {KING, WHITE})) 
+	if(!board_piece_point(&wKing, board, (Piece) {KING, WHITE}))
 		return false;
 
 	info->bKing = bKing;
@@ -41,7 +41,7 @@ bool update_kings_point(Board board, Info* info)
 	return true;
 }
 
-bool other_pieces_moveable(Board board, Info info, Color color)
+bool other_pieces_moveable(Board board, Info info, Team team)
 {
 	Piece piece; Point point;
 
@@ -52,8 +52,8 @@ bool other_pieces_moveable(Board board, Info info, Color color)
 			piece = board[height][width];
 			point = (Point) {height, width};
 
-			if(piece.color != color) continue;
-			
+			if(piece.team != team) continue;
+
 			if(board_piece_moveable(board, info, point)) return true;
 		}
 	}
@@ -62,26 +62,26 @@ bool other_pieces_moveable(Board board, Info info, Color color)
 
 bool check_draw_situation(Board board, Info info, Point king)
 {
-	Color color = board_point_color(board, king);
+	Team team = board_point_team(board, king);
 
 	if(king_inside_check(board, king)) return false;
 
 	if(board_piece_moveable(board, info, king)) return false;
 
-	if(other_pieces_moveable(board, info, color)) return false;
+	if(other_pieces_moveable(board, info, team)) return false;
 
 	return true;
 }
 
 bool check_mate_situation(Board board, Info info, Point king)
 {
-	Color color = board_point_color(board, king);
+	Team team = board_point_team(board, king);
 
 	if(!king_inside_check(board, king)) return false;
 
 	if(board_piece_moveable(board, info, king)) return false;
 
-	if(team_prevent_check(board, info, color)) return false;
+	if(team_prevent_check(board, info, team)) return false;
 
 	return true;
 }

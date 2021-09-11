@@ -23,10 +23,10 @@ bool setup_game_info(Info* info, Board board)
 
 	Point bKing, wKing;
 
-	if(!board_piece_point(&bKing, board, (Piece) {KING, BLACK})) 
+	if(!board_piece_point(&bKing, board, (Piece) {KING, BLACK}))
 		return false;
 
-	if(!board_piece_point(&wKing, board, (Piece) {KING, WHITE})) 
+	if(!board_piece_point(&wKing, board, (Piece) {KING, WHITE}))
 		return false;
 
 	*info = (Info) {WHITE, whiteRKS, blackRKS, wKing, bKing, 0};
@@ -34,7 +34,7 @@ bool setup_game_info(Info* info, Board board)
 	return true;
 }
 
-RKSwitch extract_rks_values(Board board, Color color)
+RKSwitch extract_rks_values(Board board, Team team)
 {
 	return (RKSwitch) {true, true};
 }
@@ -68,7 +68,7 @@ bool allocate_file_values(Board* board, FILE* filePointer)
 		(*board)[height] = malloc(sizeof(Piece) * B_WIDTH);
 
 		if(!extract_file_line(*board, lineBuffer, height)) return false;
-	
+
 		height += 1;
 	}
 	return true;
@@ -92,19 +92,19 @@ bool extract_file_line(Board board, char lineBuffer[], int height)
 bool extract_file_value(Piece* piece, char lineBuffer[], int index)
 {
 	char typeChar = lineBuffer[(index * 2) + 0];
-	char colorChar = lineBuffer[(index * 2) + 1];
+	char teamChar = lineBuffer[(index * 2) + 1];
 
 	if(!number_inside_bounds(typeChar, '0', '6')) return false;
-	if(!number_inside_bounds(colorChar, '0', '2')) return false;
+	if(!number_inside_bounds(teamChar, '0', '2')) return false;
 
 	Type type = (Type) (typeChar - '0');
-	Color color = (Color) (colorChar - '0');
+	Team team = (Team) (teamChar - '0');
 
-	if(type != EMPTY && color == NONE) return false;
-	if(color != NONE && type == EMPTY) return false;
-	
+	if(type != EMPTY && team == NONE) return false;
+	if(team != NONE && type == EMPTY) return false;
+
 	piece->type = type;
-	piece->color = color;
+	piece->team = team;
 
 	return true;
 }

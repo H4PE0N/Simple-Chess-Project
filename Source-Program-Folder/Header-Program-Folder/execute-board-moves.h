@@ -10,9 +10,9 @@ void execute_rook_move(Board, Move, Info*);
 
 void execute_rook_switch(Board, Move, Info*);
 
-void update_king_point(Info*, Color, Point);
+void update_king_point(Info*, Team, Point);
 
-void turn_off_rook_switch(Info*, Color);
+void turn_off_rook_switch(Info*, Team);
 
 void execute_knight_move(Board, Move);
 
