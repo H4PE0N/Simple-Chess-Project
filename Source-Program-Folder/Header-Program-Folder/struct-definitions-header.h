@@ -47,18 +47,6 @@ typedef struct Info
 	int turns;
 } Info;
 
-typedef struct MoveInfo
-{
-	Move move;
-	bool setsCheck;
-	bool checkMate;
-	bool takeEnemy;
-	bool getsTaken;
-	bool exposed;
-	Type type;
-	Type enemy;
-} MoveInfo;
-
 typedef struct TypeValue
 {
 	Type type;

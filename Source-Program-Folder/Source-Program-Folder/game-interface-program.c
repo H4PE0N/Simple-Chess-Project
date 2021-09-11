@@ -76,18 +76,6 @@ void display_board_symbol(int height, int width, Piece piece)
 	printf("%s", "\033[0m");
 }
 
-void display_move_info(MoveInfo moveInfo)
-{
-	printf("[SC-%d CM-%d TE-%d GT-%d EX-%d TY-%d EN-%d]\n",
-			moveInfo.setsCheck,
-			moveInfo.checkMate,
-			moveInfo.takeEnemy,
-			moveInfo.getsTaken,
-			moveInfo.exposed,
-			moveInfo.type,
-			moveInfo.enemy);
-}
-
 void display_chess_result(Board board, Team winner)
 {
 	display_chess_board(board);

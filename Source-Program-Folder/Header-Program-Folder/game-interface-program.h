@@ -33,8 +33,6 @@ int string_letter_index(char[], int, char);
 
 void display_chess_result(Board, Team);
 
-void display_move_info(MoveInfo);
-
 void display_board_symbol(int, int, Piece);
 
 #endif
