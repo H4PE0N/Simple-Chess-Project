@@ -13,7 +13,10 @@ bool best_possible_move(Move*, Board, Info, int, Team);
 
 int board_depth_value(Board, Info, int, int, int, Team, Team);
 
+
 int team_state_value(Board, Info, Team);
+
+int piece_matrix_value(Piece, Point);
 
 int team_pieces_value(Board, Team);
 

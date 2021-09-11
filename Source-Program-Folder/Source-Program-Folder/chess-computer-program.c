@@ -1,6 +1,80 @@
 
 #include "../Header-Program-Folder/chess-computer-program.h"
 
+const int pieceMatrix[7][8][8] =
+{
+	{ // Matrix for "EMPTY"
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0}
+	},
+	{ // Matrix for "PAWN"
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{50, 50, 50, 50, 50, 50, 50, 50},
+		{10, 10, 20, 30, 30, 20, 10, 10},
+		{5, 5, 10, 27, 27, 10, 5, 5},
+		{0, 0, 0, 25, 25, 0, 0, 0},
+		{5, -5, -10, 0, 0, -10, -5, 5},
+		{5, 10, 10, -25, -25, 10, 10, 5},
+		{0, 0, 0, 0, 0, 0, 0, 0}
+	},
+	{ // Matrix for "BISHOP"
+		{-20, -10, -10, -10, -10, -10, -10, -20},
+		{-10, 0, 0, 0, 0, 0, 0, -10},
+		{-10, 0, 5, 10, 10, 5, 0, -10},
+		{-10, 5, 5, 10, 10, 5, 5, -10},
+		{-10, 0, 10, 10, 10, 10, 0, -10},
+		{-10, 10, 10, 10, 10, 10, 10, -10},
+		{-10, 5, 0, 0, 0, 0, 5, -10},
+		{-20, -10, -10, -10, -10, -10, -10, -20}
+	},
+	{ // Matrix for "KNIGHT"
+		{-50, -40, -30, -30, -30, -30, -40, -50},
+		{-40, -20, 0, 0, 0, 0, -20, -40},
+		{-30, 0, 10, 15, 15, 10, 0, -30},
+		{-30, 5, 15, 20, 20, 15, 5, -30},
+		{-30, 0, 15, 20, 20, 15, 0, -30},
+		{-30, 5, 10, 15, 15, 10, 5, -30},
+		{-40, -20, 0, 5, 5, 0, -20, -40},
+		{-50, -40, -30, -30, -30, -30, -40, -50}
+	},
+	{ // Matrix for "ROOK"
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0}
+	},
+	{ // Matrix for "QUEEN"
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0}
+	},
+	{ // Matrix for "KING"
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0}
+	}
+};
+
 bool best_possible_move(Move* move, Board board, Info info, int depth, Team team)
 {
 	// If the depth is lower or equal to 0, no move can be caluclated
@@ -35,6 +109,8 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 
 		nextTeam = (team == WHITE) ? BLACK : WHITE;
 		currValue = board_depth_value(copyBoard, dummyInfo, (depth - 1), MIN_VAL, MAX_VAL, team, nextTeam);
+
+		printf("[%d %d] -> [%d %d] Move Value = %d\n", currMove.start.height, currMove.start.width, currMove.stop.height, currMove.stop.width, currValue);
 
 		free(copyBoard);
 
@@ -172,15 +248,28 @@ int team_pieces_value(Board board, Team team)
 		for(int width = 0; width < B_WIDTH; width += 1)
 		{
 			point = (Point) {height, width};
-
 			piece = board_point_piece(board, point);
 
 			if(piece.team != team) continue;
 
+			// Adding the value of the piece
 			value += typeValues[piece.type].value;
+
+			// Adding extra value for the piece location
+			int matrixValue = piece_matrix_value(piece, point);
+			value += (matrixValue / 10);
 		}
 	}
 	return value;
+}
+
+int piece_matrix_value(Piece piece, Point point)
+{
+	if(piece.team == WHITE) return pieceMatrix[piece.type][point.height][point.width];
+
+	if(piece.team == BLACK) return pieceMatrix[piece.type][B_HEIGHT - point.height - 1][point.width];
+
+	return 0;
 }
 
 int check_mate_value(Board board, Info info, Team team)
@@ -205,8 +294,6 @@ int board_state_value(Board board, Info info, Team team)
 	value += team_pieces_value(board, team);
 
 	value += check_mate_value(board, info, team);
-
-	// Add more parameters
 
 	return value;
 }
