@@ -121,8 +121,7 @@ void display_chess_info(Info info)
 {
 	char* teamString = (info.currTeam == WHITE) ? "WHITE" : "BLACK";
 
-	char moveString[20] = "\0";
-	if(!chess_move_string(moveString, info.lastMove));
+	char moveString[20] = "\0"; chess_move_string(moveString, info.lastMove);
 
 	CLEAR_LINE; printf("[+] LAST MADE MOVE  : [%s]\n", moveString);
 	CLEAR_LINE; printf("[+] CURRENT PLAYER  : [%s]\n", teamString);

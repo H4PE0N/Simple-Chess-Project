@@ -14,10 +14,10 @@ bool check_after_kingSwitch(Board board, Move move, Info info)
 
 	if(!king_inside_check(copy, king))
 	{
-		free(copy); return true;
+		free_chess_board(copy); return true;
 	}
 
-	free(copy); return false;
+	free_chess_board(copy); return false;
 }
 
 bool move_prevent_check(Board board, Move move, Info info)
@@ -36,10 +36,10 @@ bool move_prevent_check(Board board, Move move, Info info)
 
 	if(!king_inside_check(copy, king))
 	{
-		free(copy); return true;
+		free_chess_board(copy); return true;
 	}
 
-	free(copy); return false;
+	free_chess_board(copy); return false;
 }
 
 bool simulate_enemy_check(Board board, Move move, Info info)
@@ -57,10 +57,10 @@ bool simulate_enemy_check(Board board, Move move, Info info)
 
 	if(king_inside_check(copy, king))
 	{
-		free(copy); return true;
+		free_chess_board(copy); return true;
 	}
 
-	free(copy); return false;
+	free_chess_board(copy); return false;
 }
 
 bool simulate_check_mate(Board board, Move move, Info info)
@@ -78,8 +78,8 @@ bool simulate_check_mate(Board board, Move move, Info info)
 
 	if(check_mate_situation(copy, info, king))
 	{
-		free(copy); return true;
+		free_chess_board(copy); return true;
 	}
 
-	free(copy); return false;
+	free_chess_board(copy); return false;
 }

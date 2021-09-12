@@ -24,14 +24,22 @@ bool points_inside_board(Point first, Point second)
 	return true;
 }
 
-char* extract_file_name(char* arguments[], int amount)
+void free_chess_board(Board board)
 {
-	char* filename = malloc(sizeof(char) * 200);
+	for(int height = 0; height < B_HEIGHT; height += 1)
+	{
+		free(board[height]);
+	}
+	free(board);
+}
+
+#define BOARD_FILE "../Source-Program-Folder/Data-Program-Folder/default-chess-board.txt"
+
+void extract_file_name(char* filename, char* arguments[], int amount)
+{
 	if(amount >= 2) strcpy(filename, arguments[1]);
 
-	else strcpy(filename, "../Source-Program-Folder/Data-Program-Folder/default-chess-board.txt");
-
-	return filename;
+	else strcpy(filename, BOARD_FILE);
 }
 
 

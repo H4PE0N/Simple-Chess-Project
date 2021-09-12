@@ -29,7 +29,7 @@ bool setup_game_info(Info* info, Board board)
 	if(!board_piece_point(&wKing, board, (Piece) {KING, WHITE}))
 		return false;
 
-	Move lastMove = {(Point) {-1, -1}, (Point) {-1, -1}};	
+	Move lastMove = {(Point) {-1, -1}, (Point) {-1, -1}};
 	*info = (Info) {WHITE, whiteRKS, blackRKS, wKing, bKing, 0, lastMove};
 
 	return true;
@@ -64,13 +64,13 @@ bool allocate_file_values(Board* board, FILE* filePointer)
 	(*board) = malloc(sizeof(Piece*) * B_HEIGHT);
 	char lineBuffer[20]; int height = 0;
 
-	while(fgets(lineBuffer, 20, filePointer) != NULL)
+	for(int height = 0; height < B_HEIGHT; height += 1)
 	{
+		if(fgets(lineBuffer, 20, filePointer) == NULL) return false;
+
 		(*board)[height] = malloc(sizeof(Piece) * B_WIDTH);
 
 		if(!extract_file_line(*board, lineBuffer, height)) return false;
-
-		height += 1;
 	}
 	return true;
 }

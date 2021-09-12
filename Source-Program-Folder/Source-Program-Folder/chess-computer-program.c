@@ -75,16 +75,25 @@ const int pieceMatrix[7][8][8] =
 	}
 };
 
+int checked = 0;
+int total = 0;
+
 bool best_possible_move(Move* move, Board board, Info info, int depth, Team team)
 {
 	// If the depth is lower or equal to 0, no move can be caluclated
 	if(depth <= 0) return false;
 
+	time_t startTime = time(NULL);
+
 	Move* moves = all_possible_moves(board, info, team);
 	int amount = moves_array_amount(moves);
 
 	// No moves can be calculated, the computer cant move!
-	if(amount <= 0) { free(moves); return false; }
+	if(amount <= 0)
+	{
+		free(moves);
+		return false;
+	}
 
 	Move bestMove = moves[0], currMove;
 	int bestValue = MIN_VAL, currValue;
@@ -102,7 +111,7 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 		if(!move_chess_piece(copyBoard, currMove, &dummyInfo))
 		{
 			// For some reson, the computer cant move!
-			free(copyBoard);
+			free_chess_board(copyBoard);
 
 			CLEAR_LINE; printf("Cant move Main move!\n"); continue;
 		}
@@ -110,18 +119,25 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 		nextTeam = (team == WHITE) ? BLACK : WHITE;
 		currValue = board_depth_value(copyBoard, dummyInfo, (depth - 1), MIN_VAL, MAX_VAL, team, nextTeam);
 
-		free(copyBoard);
+		free_chess_board(copyBoard);
 
 		// If the value is greater, the move is better. BestMove will then be updated
 		if(currValue > bestValue) { bestMove = currMove; bestValue = currValue; }
 	}
 
-	char moveString[20] = "\0";
-	if(!chess_move_string(moveString, bestMove));
-	printf("Best move: [%s] Value = %d\n", moveString, bestValue);
-	
+	free(moves);
+
+	time_t stopTime = time(NULL);
+
+	int time = difftime(stopTime, startTime);
+
+	char moveString[20] = "\0"; chess_move_string(moveString, bestMove);
+	printf("Best move: [%s] Value = %d Time = %d\n", moveString, bestValue, time);
+
+	printf("Checked %d moves out of %d!\n", checked, total);
+
 	// The move was found, and we return a positive (true) result
-	free(moves); *move = bestMove; return true;
+	*move = bestMove; return true;
 }
 
 int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Team team, Team currTeam)
@@ -137,10 +153,16 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 	Move* moves = all_possible_moves(board, dummyInfo, currTeam);
 	int amount = moves_array_amount(moves);
 
+	total += amount;
+
 	int bestValue = (currTeam == team) ? MIN_VAL : MAX_VAL;
 
 	// If the computer cant move, it will return the worst score
-	if(amount <= 0) { free(moves); return bestValue; }
+	if(amount <= 0)
+	{
+		free(moves);
+		return bestValue;
+	}
 
 	sort_pruning_moves(moves, amount, board, info, currTeam);
 
@@ -156,7 +178,7 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 
 		if(!move_chess_piece(copyBoard, currMove, &dummyInfo))
 		{
-			free(copyBoard);
+			free_chess_board(copyBoard);
 
 			CLEAR_LINE; printf("Cant move Depth move!\n"); continue;
 		}
@@ -164,24 +186,22 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 		nextTeam = (currTeam == WHITE) ? BLACK : WHITE;
 		currValue = board_depth_value(copyBoard, dummyInfo, (depth - 1), alpha, beta, team, nextTeam);
 
-		free(copyBoard);
+		free_chess_board(copyBoard);
 
-		// Update best value (own)
-		if(currTeam == team && currValue > bestValue) bestValue = currValue;
+		if(currTeam == team && currValue > bestValue) 	bestValue = currValue;
+		if(currTeam != team && currValue < bestValue) 	bestValue = currValue;
 
-		else if(currTeam != team && currValue < bestValue) bestValue = currValue;
+		if(currTeam == team && currValue > alpha) 		alpha = currValue;
+		if(currTeam != team && currValue < beta) 		beta = currValue;
 
-
-		// alpha-beta pruning (copying from internet, I am not smart)
-		if(currTeam == team && currValue > alpha) alpha = currValue;
-
-		else if(currTeam != team && currValue < beta) beta = currValue;
-
+		checked++;
 
 		if(beta <= alpha) break;
 	}
 
-	free(moves); return bestValue;
+	free(moves);
+
+	return bestValue;
 }
 
 void sort_pruning_moves(Move* moves, int amount, Board board, Info info, Team team)
@@ -216,12 +236,12 @@ int move_state_value(Board board, Info info, Move move, Team team)
 
 	if(!move_chess_piece(copy, move, &dummyInfo))
 	{
-		free(copy);
+		free_chess_board(copy);
 
 		return (team == currTeam) ? MIN_VAL : MAX_VAL;
 	}
 
-	free(copy);
+	free_chess_board(copy);
 
 	return board_state_value(board, dummyInfo, team);
 }
@@ -341,7 +361,12 @@ Move* all_possible_moves(Board board, Info info, Team team)
 
 			adding = create_moves_array(40);
 
-			if(!piece_possible_moves(adding, board, info, point)) continue;
+			if(!piece_possible_moves(adding, board, info, point))
+			{
+				free(adding);
+
+				continue;
+			}
 
 			append_moves_array(moves, adding);
 

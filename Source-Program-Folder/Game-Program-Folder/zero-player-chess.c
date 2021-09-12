@@ -5,17 +5,15 @@ int main(int argAmount, char* arguments[])
 {
 	srand(time(NULL));
 
-	char* filename = extract_file_name(arguments, argAmount);
+	char filename[200]; extract_file_name(filename, arguments, argAmount);
 
 	Board board; Team winner = NONE; Info info;
 
 	if(!setup_game_variables(&board, &info, filename))
 	{
 		setup_variables_error();
-		free(board); free(filename); return false;
+		free_chess_board(board); return false;
 	}
-
-	free(filename);
 
 	if(zero_player_chess(&winner, board, &info))
 	{
@@ -23,7 +21,7 @@ int main(int argAmount, char* arguments[])
 	}
 	else chess_game_quitted(board, info);
 
-	free(board); return false;
+	free_chess_board(board); return false;
 }
 
 bool zero_player_chess(Team* winner, Board board, Info* info)
