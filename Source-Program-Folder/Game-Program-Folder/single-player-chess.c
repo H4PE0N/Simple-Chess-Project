@@ -81,7 +81,7 @@ bool computer_move_handler(Board board, Info* info)
 
 	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
 
-	if(!best_possible_move(&move, board, *info, 4, info->currTeam)) return false;
+	if(!best_possible_move(&move, board, *info, 3, info->currTeam)) return false;
 
 	if(!move_chess_piece(board, move, info)) return false;
 

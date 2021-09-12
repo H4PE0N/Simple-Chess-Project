@@ -113,17 +113,16 @@ Type board_point_type(Board board, Point point)
 
 Board copy_chess_board(Board board)
 {
-	Board copy = malloc(sizeof(Piece*) * B_HEIGHT);
+	Board boardCopy = malloc(sizeof(Piece*) * B_HEIGHT);
 	for(int height = 0; height < B_HEIGHT; height = height + 1)
 	{
-		copy[height] = malloc(sizeof(Piece) * B_WIDTH);
+		boardCopy[height] = malloc(sizeof(Piece) * B_WIDTH);
 		for(int width = 0; width < B_WIDTH; width = width + 1)
 		{
-			copy[height][width].type = board[height][width].type;
-			copy[height][width].team = board[height][width].team;
+			boardCopy[height][width] = board[height][width];
 		}
 	}
-	return copy;
+	return boardCopy;
 }
 
 Point team_king_point(Info info, Team team)

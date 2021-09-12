@@ -75,15 +75,15 @@ const int pieceMatrix[7][8][8] =
 	}
 };
 
-int checked = 0;
-int total = 0;
+int checked = 0; // Remove this: Just for debug
+int total = 0;   // Remove this: Just for debug
 
 bool best_possible_move(Move* move, Board board, Info info, int depth, Team team)
 {
 	// If the depth is lower or equal to 0, no move can be caluclated
 	if(depth <= 0) return false;
 
-	time_t startTime = time(NULL);
+	time_t startTime = time(NULL); // Remove this: Just for debug
 
 	Move* moves = all_possible_moves(board, info, team);
 	int amount = moves_array_amount(moves);
@@ -98,7 +98,7 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 	Move bestMove = moves[0], currMove;
 	int bestValue = MIN_VAL, currValue;
 
-	Info dummyInfo; Board copyBoard; Team nextTeam;
+	Info dummyInfo; Board boardCopy; Team nextTeam;
 
 	for(int index = 0; index < amount; index += 1)
 	{
@@ -106,20 +106,20 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 
 		currMove = moves[index];
 
-		copyBoard = copy_chess_board(board);
+		boardCopy = copy_chess_board(board);
 
-		if(!move_chess_piece(copyBoard, currMove, &dummyInfo))
+		if(!move_chess_piece(boardCopy, currMove, &dummyInfo))
 		{
 			// For some reson, the computer cant move!
-			free_chess_board(copyBoard);
+			free_chess_board(boardCopy);
 
 			CLEAR_LINE; printf("Cant move Main move!\n"); continue;
 		}
 
 		nextTeam = (team == WHITE) ? BLACK : WHITE;
-		currValue = board_depth_value(copyBoard, dummyInfo, (depth - 1), MIN_VAL, MAX_VAL, team, nextTeam);
+		currValue = board_depth_value(boardCopy, dummyInfo, (depth - 1), MIN_VAL, MAX_VAL, team, nextTeam);
 
-		free_chess_board(copyBoard);
+		free_chess_board(boardCopy);
 
 		// If the value is greater, the move is better. BestMove will then be updated
 		if(currValue > bestValue) { bestMove = currMove; bestValue = currValue; }
@@ -127,14 +127,14 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 
 	free(moves);
 
-	time_t stopTime = time(NULL);
+	time_t stopTime = time(NULL); // Remove this: Just for debug
 
-	int time = difftime(stopTime, startTime);
+	int time = difftime(stopTime, startTime); // Remove this: Just for debug
 
-	char moveString[20] = "\0"; chess_move_string(moveString, bestMove);
-	printf("Best move: [%s] Value = %d Time = %d\n", moveString, bestValue, time);
+	char moveString[20] = "\0"; chess_move_string(moveString, bestMove); // Remove this: Just for debug
+	printf("Best move: [%s] Value = %d Time = %d\n", moveString, bestValue, time); // Remove this: Just for debug
 
-	printf("Checked %d moves out of %d!\n", checked, total);
+	printf("Checked %d moves out of %d!\n", checked, total); // Remove this: Just for debug
 
 	// The move was found, and we return a positive (true) result
 	*move = bestMove; return true;
@@ -153,7 +153,7 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 	Move* moves = all_possible_moves(board, dummyInfo, currTeam);
 	int amount = moves_array_amount(moves);
 
-	total += amount;
+	total += amount; // Remove this: Just for debug
 
 	int bestValue = (currTeam == team) ? MIN_VAL : MAX_VAL;
 
@@ -166,7 +166,7 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 
 	sort_pruning_moves(moves, amount, board, info, currTeam);
 
-	Move currMove; int currValue; Board copyBoard; Team nextTeam;
+	Move currMove; int currValue; Board boardCopy; Team nextTeam;
 
 	for(int index = 0; index < amount; index += 1)
 	{
@@ -174,19 +174,19 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 
 		dummyInfo = info; dummyInfo.currTeam = currTeam;
 
-		copyBoard = copy_chess_board(board);
+		boardCopy = copy_chess_board(board);
 
-		if(!move_chess_piece(copyBoard, currMove, &dummyInfo))
+		if(!move_chess_piece(boardCopy, currMove, &dummyInfo))
 		{
-			free_chess_board(copyBoard);
+			free_chess_board(boardCopy);
 
 			CLEAR_LINE; printf("Cant move Depth move!\n"); continue;
 		}
 
 		nextTeam = (currTeam == WHITE) ? BLACK : WHITE;
-		currValue = board_depth_value(copyBoard, dummyInfo, (depth - 1), alpha, beta, team, nextTeam);
+		currValue = board_depth_value(boardCopy, dummyInfo, (depth - 1), alpha, beta, team, nextTeam);
 
-		free_chess_board(copyBoard);
+		free_chess_board(boardCopy);
 
 		if(currTeam == team && currValue > bestValue) 	bestValue = currValue;
 		if(currTeam != team && currValue < bestValue) 	bestValue = currValue;
@@ -194,7 +194,7 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 		if(currTeam == team && currValue > alpha) 		alpha = currValue;
 		if(currTeam != team && currValue < beta) 		beta = currValue;
 
-		checked++;
+		checked++; // Remove this: Just for debug
 
 		if(beta <= alpha) break;
 	}
