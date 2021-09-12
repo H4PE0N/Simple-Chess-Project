@@ -45,23 +45,23 @@ const int pieceMatrix[7][8][8] =
 	},
 	{ // Matrix for "ROOK"
 		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0}
+		{5, 10, 10, 10, 10, 10, 10, 5},
+		{-5, 0, 0, 0, 0, 0, 0, -5},
+		{-5, 0, 0, 0, 0, 0, 0, -5},
+		{-5, 0, 0, 0, 0, 0, 0, -5},
+		{-5, 0, 0, 0, 0, 0, 0, -5},
+		{-5, 0, 0, 0, 0, 0, 0, -5},
+		{0, 0, 0, 5, 5, 0, 0, 0}
 	},
 	{ // Matrix for "QUEEN"
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0}
+		{-20, -10, -10, -5, -5, -10, -10, -20},
+		{-10, 0, 0, 0, 0, 0, 0, -10},
+		{-10, 0, 5, 5, 5, 5, 0, -10},
+		{-5, 0, 5, 5, 5, 5, 0, -5},
+		{0, 0, 5, 5, 5, 5, 0, -5},
+		{-10, 5, 5, 5, 5, 5, 0, -10},
+		{-10, 0, 5, 0, 0, 0, 0, -10},
+		{-20, -10, -10, -5, -5, -10, -10, -20}
 	},
 	{ // Matrix for "KING"
 		{0, 0, 0, 0, 0, 0, 0, 0},
@@ -110,14 +110,16 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 		nextTeam = (team == WHITE) ? BLACK : WHITE;
 		currValue = board_depth_value(copyBoard, dummyInfo, (depth - 1), MIN_VAL, MAX_VAL, team, nextTeam);
 
-		printf("[%d %d] -> [%d %d] Move Value = %d\n", currMove.start.height, currMove.start.width, currMove.stop.height, currMove.stop.width, currValue);
-
 		free(copyBoard);
 
 		// If the value is greater, the move is better. BestMove will then be updated
 		if(currValue > bestValue) { bestMove = currMove; bestValue = currValue; }
 	}
 
+	char moveString[20] = "\0";
+	if(!chess_move_string(moveString, bestMove));
+	printf("Best move: [%s] Value = %d\n", moveString, bestValue);
+	
 	// The move was found, and we return a positive (true) result
 	free(moves); *move = bestMove; return true;
 }

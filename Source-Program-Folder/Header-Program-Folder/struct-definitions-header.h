@@ -45,6 +45,7 @@ typedef struct Info
 	Point wKing;
 	Point bKing;
 	int turns;
+	Move lastMove;
 } Info;
 
 typedef struct TypeValue

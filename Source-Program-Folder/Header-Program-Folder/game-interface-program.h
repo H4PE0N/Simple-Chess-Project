@@ -17,6 +17,10 @@
 
 void display_chess_board(Board);
 
+bool board_point_string(char*, Point);
+
+bool chess_move_string(char*, Move);
+
 void display_chess_info(Info);
 
 bool input_current_move(char*);

@@ -13,6 +13,32 @@ const char numbers[] = {'8', '7', '6', '5', '4', '3', '2', '1'};
 #define DIS_LETS "  | A | B | C | D | E | F | G | H |"
 #define DIS_ROW "--+---+---+---+---+---+---+---+---+--"
 
+bool board_point_string(char* string, Point point)
+{
+	int height = point.height, width = point.width;
+
+	if(!number_inside_bounds(height, 0, 7)) return false;
+	if(!number_inside_bounds(width, 0, 7)) return false;
+
+	sprintf(string, "%c%c", letters[width], numbers[height]);
+
+	return true;
+}
+
+bool chess_move_string(char* string, Move move)
+{
+	Point start = move.start, stop = move.stop;
+
+	char startString[10], stopString[10];
+
+	if(!board_point_string(startString, start)) return false;
+	if(!board_point_string(stopString, stop)) return false;
+
+	sprintf(string, "%s -> %s", startString, stopString);
+
+	return true;
+}
+
 void display_chess_board(Board board)
 {
 	CLEAR_LINE; printf("%s\n", DIS_LETS);
@@ -93,10 +119,14 @@ void display_chess_result(Board board, Team winner)
 
 void display_chess_info(Info info)
 {
-	char* team = (info.currTeam == WHITE) ? "WHITE" : "BLACK";
+	char* teamString = (info.currTeam == WHITE) ? "WHITE" : "BLACK";
 
-	CLEAR_LINE; printf("[+] CURRENT PLAYER\t: [%s]\n", team);
-	CLEAR_LINE; printf("[+] NUMBER OF TURNS\t: [%dst]\n", info.turns);
+	char moveString[20] = "\0";
+	if(!chess_move_string(moveString, info.lastMove));
+
+	CLEAR_LINE; printf("[+] LAST MADE MOVE  : [%s]\n", moveString);
+	CLEAR_LINE; printf("[+] CURRENT PLAYER  : [%s]\n", teamString);
+	CLEAR_LINE; printf("[+] NUMBER OF TURNS : [%dst]\n", info.turns);
 }
 
 bool input_current_move(char* string)

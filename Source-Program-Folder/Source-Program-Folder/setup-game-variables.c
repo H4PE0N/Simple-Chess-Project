@@ -29,7 +29,8 @@ bool setup_game_info(Info* info, Board board)
 	if(!board_piece_point(&wKing, board, (Piece) {KING, WHITE}))
 		return false;
 
-	*info = (Info) {WHITE, whiteRKS, blackRKS, wKing, bKing, 0};
+	Move lastMove = {(Point) {-1, -1}, (Point) {-1, -1}};	
+	*info = (Info) {WHITE, whiteRKS, blackRKS, wKing, bKing, 0, lastMove};
 
 	return true;
 }
