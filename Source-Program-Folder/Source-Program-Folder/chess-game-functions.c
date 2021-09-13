@@ -27,16 +27,13 @@ bool game_still_running(Team* winner, Board board, Info info)
 
 bool update_kings_point(Board board, Info* info)
 {
-	Point bKing, wKing;
+	Point blackKing, whiteKing;
 
-	if(!board_piece_point(&bKing, board, (Piece) {KING, BLACK}))
-		return false;
+	if(!board_piece_point(&blackKing, board, (Piece) {KING, BLACK})) return false;
+	if(!board_piece_point(&whiteKing, board, (Piece) {KING, WHITE})) return false;
 
-	if(!board_piece_point(&wKing, board, (Piece) {KING, WHITE}))
-		return false;
-
-	info->bKing = bKing;
-	info->wKing = wKing;
+	info->bKing = blackKing;
+	info->wKing = whiteKing;
 
 	return true;
 }
@@ -45,9 +42,9 @@ bool other_pieces_moveable(Board board, Info info, Team team)
 {
 	Piece piece; Point point;
 
-	for(int height = 0; height < 8; height = height + 1)
+	for(int height = 0; height < B_HEIGHT; height = height + 1)
 	{
-		for(int width = 0; width < 8; width = width + 1)
+		for(int width = 0; width < B_WIDTH; width = width + 1)
 		{
 			piece = board[height][width];
 			point = (Point) {height, width};

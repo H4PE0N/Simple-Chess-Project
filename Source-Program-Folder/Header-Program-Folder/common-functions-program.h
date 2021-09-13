@@ -27,9 +27,15 @@ void switch_chess_pieces(Board, Point, Point);
 
 void free_chess_board(Board);
 
+int point_array_amount(Point[]);
+
+Point* create_point_array(int);
+
 void extract_file_name(char*, char*[], int);
 
 bool board_piece_equal(Piece, Piece);
+
+bool board_piece_points(Point**, Board, Piece);
 
 bool board_piece_point(Point*, Board, Piece);
 

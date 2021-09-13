@@ -387,7 +387,7 @@ void append_moves_array(Move* moves, Move* adding)
 	}
 }
 
-int moves_array_amount(Move* moves)
+int moves_array_amount(Move moves[])
 {
 	int amount = 0;
 	while(points_inside_board(moves[amount].start, moves[amount].stop))

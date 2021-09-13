@@ -21,13 +21,13 @@ bool setup_game_info(Info* info, Board board)
 	RKSwitch whiteRKS = extract_rks_values(board, WHITE);
 	RKSwitch blackRKS = extract_rks_values(board, BLACK);
 
+	printf("Extracted Team=%d [%d %d]\n", WHITE, whiteRKS.left, whiteRKS.right);
+	printf("Extracted Team=%d [%d %d]\n", BLACK, blackRKS.left, blackRKS.right);
+
 	Point bKing, wKing;
 
-	if(!board_piece_point(&bKing, board, (Piece) {KING, BLACK}))
-		return false;
-
-	if(!board_piece_point(&wKing, board, (Piece) {KING, WHITE}))
-		return false;
+	if(!board_piece_point(&bKing, board, (Piece) {KING, BLACK})) return false;
+	if(!board_piece_point(&wKing, board, (Piece) {KING, WHITE})) return false;
 
 	Move lastMove = {(Point) {-1, -1}, (Point) {-1, -1}};
 	int turns = 0;
@@ -39,8 +39,47 @@ bool setup_game_info(Info* info, Board board)
 
 RKSwitch extract_rks_values(Board board, Team team)
 {
-	// Create this function
-	return (RKSwitch) {true, true};
+	RKSwitch rKSwitch = {false, false};
+	Point king;
+
+	int expectedHeight = (team == WHITE) ? 7 : 0;
+
+	if(!board_piece_point(&king, board, (Piece) {KING, team})) return (RKSwitch) {false, false};
+
+	if(!board_points_equal(king, (Point) {expectedHeight, 4})) return (RKSwitch) {false, false};
+
+	//Now the king exists and is in the right place
+
+	Point* rooks = create_point_array(64);
+
+	// If there is no rooks on the board;
+	if(!board_piece_points(&rooks, board, (Piece) {ROOK, team}))
+	{
+		free(rooks);
+
+		return (RKSwitch) {false, false};
+	}
+
+	int amount = point_array_amount(rooks);
+
+	Point currRook;
+
+	for(int index = 0; index < amount; index += 1)
+	{
+		currRook = rooks[index];
+
+		if(currRook.height != expectedHeight) continue;
+
+		// Now the height is right;
+
+		if(currRook.width == B_LEFT) rKSwitch.left = true;
+
+		if(currRook.width == B_RIGHT) rKSwitch.right = true;
+	}
+
+	free(rooks);
+
+	return rKSwitch;
 }
 
 bool create_chess_board(Board* board, char filename[])

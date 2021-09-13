@@ -60,4 +60,7 @@ typedef struct TypeValue
 #define MIN_VAL -100000
 #define MAX_VAL +100000
 
+#define B_RIGHT 7
+#define B_LEFT  0
+
 #endif

@@ -3,7 +3,9 @@ change the board design
 
 "int" and "char" is uninitialized values? By some reason
 
-extract_rks_values
+implement B_LEFT and B_RIGHT
+
+pointer to those variables that is going to get changed (array int* -> int** );
 
 
 "update kings point", move that somewhere else

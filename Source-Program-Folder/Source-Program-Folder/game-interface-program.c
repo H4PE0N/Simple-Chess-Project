@@ -17,8 +17,8 @@ bool board_point_string(char* string, Point point)
 {
 	int height = point.height, width = point.width;
 
-	if(!number_inside_bounds(height, 0, 7)) return false;
-	if(!number_inside_bounds(width, 0, 7)) return false;
+	if(!number_inside_bounds(height, 0, B_HEIGHT-1)) return false;
+	if(!number_inside_bounds(width, 0, B_WIDTH-1)) return false;
 
 	sprintf(string, "%c%c", letters[width], numbers[height]);
 
@@ -88,8 +88,7 @@ void display_board_symbol(int height, int width, Piece piece)
 	const char* whiteSquare = squareTeams[WHITE];
 	const char* blackSquare = squareTeams[BLACK];
 
-	bool squareBool = (height % 2 == 0 && width % 2 == 0) ||
-					  (height % 2 != 0 && width % 2 != 0);
+	bool squareBool = (height % 2 == 0 && width % 2 == 0) || (height % 2 != 0 && width % 2 != 0);
 
 	const char* squareTeam = squareBool ? whiteSquare : blackSquare;
 
@@ -160,7 +159,7 @@ bool parse_chess_move(Move* move, Board board, Info info, char string[])
 
 	if(!strcmp(string, "RANDOM"))
 	{
-		return best_possible_move(move, board, info, 3, info.currTeam);
+		return best_possible_move(move, board, info, 2, info.currTeam);
 	}
 
 	char seperator[] = " ";

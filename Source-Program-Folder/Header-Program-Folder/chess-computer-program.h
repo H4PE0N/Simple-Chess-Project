@@ -35,8 +35,9 @@ bool piece_possible_moves(Move*, Board, Info, Point);
 
 Move* all_possible_moves(Board, Info, Team);
 
-int moves_array_amount(Move*);
+int moves_array_amount(Move[]);
 
+// Change Move* to Move[]
 void append_moves_array(Move*, Move*);
 
 void switch_array_moves(Move*, int, int);

@@ -83,20 +83,73 @@ bool board_piece_equal(Piece first, Piece second)
 	return (first.type == second.type && first.team == second.team);
 }
 
-bool board_piece_point(Point* point, Board board, Piece piece)
+bool board_piece_points(Point** points, Board board, Piece piece)
 {
-	Piece currPiece;
-	for(int height = 0; height < 8; height = height + 1)
+	Piece currPiece; int index = 0;
+	for(int height = 0; height < B_HEIGHT; height = height + 1)
 	{
-		for(int width = 0; width < 8; width = width + 1)
+		for(int width = 0; width < B_WIDTH; width = width + 1)
 		{
 			currPiece = board_point_piece(board, (Point) {height, width});
 
 			if(board_piece_equal(piece, currPiece))
-			{ *point = (Point) {height, width}; return true; }
+			{
+				(*points)[index] = (Point) {height, width};
+				index += 1;
+			}
 		}
 	}
-	return false;
+	return (index > 0);
+}
+
+Point* create_point_array(int length)
+{
+	Point* points = malloc(sizeof(Point) * (length + 1));
+
+	for(int index = 0; index <= length; index += 1)
+	{
+		points[index] = (Point) {-1, -1};
+	}
+	return points;
+}
+
+bool board_piece_point(Point* point, Board board, Piece piece)
+{
+	Point* piecePoints = create_point_array(64);
+
+	if(!board_piece_points(&piecePoints, board, piece))
+	{
+		printf("There was no pieces Team=%d Type=%d\n", piece.team, piece.type);
+
+		free(piecePoints);
+
+		return false;
+	}
+
+	if(point_array_amount(piecePoints) != 1)
+	{
+		printf("The amount was not 1: %d\n", point_array_amount(piecePoints));
+
+		free(piecePoints);
+
+		return false;
+	}
+
+	*point = piecePoints[0];
+
+	free(piecePoints);
+
+	return true;
+}
+
+int point_array_amount(Point points[])
+{
+	int amount = 0;
+	while(point_inside_board(points[amount]))
+	{
+		amount += 1;
+	}
+	return amount;
 }
 
 Team board_point_team(Board board, Point point)

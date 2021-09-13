@@ -6,9 +6,9 @@ bool team_prevent_check(Board board, Info info, Team team)
 	if(team == NONE) return false;
 
 	Point point;
-	for(int height = 0; height < 8; height = height + 1)
+	for(int height = 0; height < B_HEIGHT; height = height + 1)
 	{
-		for(int width = 0; width < 8; width = width + 1)
+		for(int width = 0; width < B_WIDTH; width = width + 1)
 		{
 			point = (Point) {height, width};
 			Team currTeam = board_point_team(board, point);
