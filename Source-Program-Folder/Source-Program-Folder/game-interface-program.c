@@ -43,7 +43,7 @@ void display_chess_board(Board board)
 {
 	CLEAR_LINE; printf("%s\n", DIS_LETS);
 
-	for(int height = 0; height < 8; height = height + 1)
+	for(int height = 0; height < B_HEIGHT; height = height + 1)
 	{
 		CLEAR_LINE; printf("%s\n", DIS_ROW);
 
@@ -51,7 +51,7 @@ void display_chess_board(Board board)
 
 		printf(" ");
 
-		for(int width = 0; width < 8; width = width + 1)
+		for(int width = 0; width < B_WIDTH; width = width + 1)
 		{
 			printf("|");
 
@@ -61,7 +61,9 @@ void display_chess_board(Board board)
 
 		printf("|"); printf(" ");
 
-		printf("%c\n", numbers[height]);
+		printf("%c", numbers[height]);
+
+		printf("\n");
 	}
 	CLEAR_LINE; printf("%s\n", DIS_ROW);
 
@@ -177,8 +179,8 @@ bool parse_chess_position(Point* point, char string[])
 {
 	if(strlen(string) < 2 || strlen(string) > 2) return false;
 
-	int width = string_letter_index((char*) letters, 8, string[0]);
-	int height = string_letter_index((char*) numbers, 8, string[1]);
+	int width = string_letter_index((char*) letters, B_WIDTH, string[0]);
+	int height = string_letter_index((char*) numbers, B_HEIGHT, string[1]);
 
 	if(width == -1 || height == -1) return false;
 

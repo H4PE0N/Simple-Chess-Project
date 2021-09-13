@@ -1,6 +1,10 @@
 
 change the board design
 
+"int" and "char" is uninitialized values? By some reason
+
+extract_rks_values
+
 
 "update kings point", move that somewhere else
 

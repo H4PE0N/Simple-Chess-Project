@@ -30,13 +30,16 @@ bool setup_game_info(Info* info, Board board)
 		return false;
 
 	Move lastMove = {(Point) {-1, -1}, (Point) {-1, -1}};
-	*info = (Info) {WHITE, whiteRKS, blackRKS, wKing, bKing, 0, lastMove};
+	int turns = 0;
+
+	*info = (Info) {WHITE, whiteRKS, blackRKS, wKing, bKing, turns, lastMove};
 
 	return true;
 }
 
 RKSwitch extract_rks_values(Board board, Team team)
 {
+	// Create this function
 	return (RKSwitch) {true, true};
 }
 
@@ -62,11 +65,11 @@ bool create_chess_board(Board* board, char filename[])
 bool allocate_file_values(Board* board, FILE* filePointer)
 {
 	(*board) = malloc(sizeof(Piece*) * B_HEIGHT);
-	char lineBuffer[20]; int height = 0;
+	char lineBuffer[1024];
 
 	for(int height = 0; height < B_HEIGHT; height += 1)
 	{
-		if(fgets(lineBuffer, 20, filePointer) == NULL) return false;
+		if(fgets(lineBuffer, 1024, filePointer) == NULL) return false;
 
 		(*board)[height] = malloc(sizeof(Piece) * B_WIDTH);
 
