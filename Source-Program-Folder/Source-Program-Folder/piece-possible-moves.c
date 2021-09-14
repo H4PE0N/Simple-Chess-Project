@@ -361,6 +361,9 @@ bool king_possible_moves(Move* moves, Board board, Info info, Point start)
 
 	int realHeight, realWidth;
 
+	// This is just to add the moves in the right place
+	clear_moves_array(moves);
+
 	for(int height = 0; height < 3; height += 1)
 	{
 		for(int width = 0; width < 3; width += 1)
