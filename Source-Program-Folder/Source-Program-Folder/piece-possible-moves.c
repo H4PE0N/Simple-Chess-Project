@@ -372,6 +372,9 @@ bool king_possible_moves(Move* moves, Board board, Info info, Point start)
 			realWidth = (start.width - 1) + width;
 
 			stop = (Point) {realHeight, realWidth};
+
+			if(!point_inside_board(stop)) continue;
+			
 			currMove = (Move) {start, stop};
 
 			if(!king_move_acceptable(board, currMove, info)) continue;

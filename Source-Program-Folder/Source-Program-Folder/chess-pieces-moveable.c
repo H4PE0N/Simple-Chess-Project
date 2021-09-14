@@ -246,6 +246,10 @@ bool board_bishop_moveable(Board board, Info info, Point start)
 
 bool board_queen_moveable(Board board, Info info, Point start)
 {
+	if(!point_inside_board(start)) return false;
+
+	if(board_point_empty(board, start)) return false;
+	
 	if(board_diagonal_moveable(board, info, start)) return true;
 
 	if(board_straight_moveable(board, info, start)) return true;
@@ -271,6 +275,9 @@ bool board_king_moveable(Board board, Info info, Point start)
 			realWidth = (start.width - 1) + width;
 
 			stop = (Point) {realHeight, realWidth};
+
+			if(!point_inside_board(stop)) continue;
+			
 			currMove = (Move) {start, stop};
 
 			if(king_move_acceptable(board, currMove, info)) return true;
