@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/zero-player-chess.h"
+#include "../Header-Program-Folder/global-include-header.h"
 
 int main(int argAmount, char* arguments[])
 {

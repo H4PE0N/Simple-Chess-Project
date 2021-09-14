@@ -3,8 +3,6 @@
 #define BOARD_MOVE_HANDLER_H
 
 #include "global-include-header.h"
-#include "chess-moves-acceptable.h"
-#include "execute-board-moves.h"
 
 bool move_chess_piece(Board, Move, Info*);
 

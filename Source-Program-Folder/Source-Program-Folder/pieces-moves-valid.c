@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/pieces-moves-valid.h"
+#include "../Header-Program-Folder/global-include-header.h"
 
 // This is a function that JUST cover the regular moves; not RKS
 bool moving_piece_valid(Board board, Point start, Point stop)
@@ -137,4 +137,24 @@ bool moving_king_valid(Point start, Point stop)
 	int wOffset = abs(start.width - stop.width);
 
 	return (hOffset <= 1) && (wOffset <= 1);
+}
+
+bool moving_straight_valid(Point start, Point stop)
+{
+	if(board_points_equal(start, stop)) return false;
+
+	int hOffset = abs(start.height - stop.height);
+	int wOffset = abs(start.width - stop.width);
+
+	return (hOffset == 0) || (wOffset == 0);
+}
+
+bool moving_diagonal_valid(Point start, Point stop)
+{
+	if(board_points_equal(start, stop)) return false;
+
+	int hOffset = abs(start.height - stop.height);
+	int wOffset = abs(start.width - stop.width);
+
+	return (hOffset == wOffset);
 }

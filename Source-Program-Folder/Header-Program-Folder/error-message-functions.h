@@ -3,7 +3,6 @@
 #define ERROR_MESSAGE_FUNCTIONS_H
 
 #include "global-include-header.h"
-#include "game-interface-program.h"
 
 void create_board_error(char[]);
 

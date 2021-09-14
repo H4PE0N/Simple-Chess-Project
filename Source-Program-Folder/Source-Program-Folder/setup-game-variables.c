@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/setup-game-variables.h"
+#include "../Header-Program-Folder/global-include-header.h"
 
 bool setup_game_variables(Board* board, Info* info, char filename[])
 {
@@ -51,10 +51,11 @@ RKSwitch extract_rks_values(Board board, Team team)
 
 	//Now the king exists and is in the right place
 
+	// It could be 64 rooks in the same team in the board
 	Point* rooks = create_point_array(64);
 
 	// If there is no rooks on the board;
-	if(!board_piece_points(&rooks, board, (Piece) {ROOK, team}))
+	if(!board_piece_points(rooks, board, (Piece) {ROOK, team}))
 	{
 		free(rooks);
 

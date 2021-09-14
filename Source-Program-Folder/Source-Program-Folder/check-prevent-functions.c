@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/check-prevent-functions.h"
+#include "../Header-Program-Folder/global-include-header.h"
 
 bool team_prevent_check(Board board, Info info, Team team)
 {

@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/chess-game-functions.h"
+#include "../Header-Program-Folder/global-include-header.h"
 
 bool game_still_running(Team* winner, Board board, Info info)
 {

@@ -3,8 +3,6 @@
 #define CHESS_GAME_FUNCTIONS_H
 
 #include "global-include-header.h"
-#include "check-prevent-functions.h"
-#include "chess-pieces-moveable.h"
 
 bool other_pieces_moveable(Board, Info, Team);
 

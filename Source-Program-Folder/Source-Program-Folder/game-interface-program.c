@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/game-interface-program.h"
+#include "../Header-Program-Folder/global-include-header.h"
 
 const char* symbolTeams[] = {FG_DEFAULT, FG_RED, FG_RED};
 const char* squareTeams[] = {BG_DEFAULT, BG_WHITE, BG_BLACK};

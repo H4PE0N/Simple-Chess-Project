@@ -3,7 +3,6 @@
 #define SETUP_GAME_VARIABLES_H
 
 #include "global-include-header.h"
-#include "error-message-functions.h"
 
 bool extract_file_line(Board, char[], int);
 

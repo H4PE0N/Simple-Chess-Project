@@ -1,5 +1,5 @@
  
-#include "../Header-Program-Folder/chess-computer-program.h"
+#include "../Header-Program-Folder/global-include-header.h"
 
 const int pieceMatrix[7][8][8] =
 {
@@ -373,20 +373,29 @@ bool board_piece_exposed(Board board, Info info, Point point)
 	return false;
 }
 
+/*
+This function goes through all pieces in the inputted team.
+You may can store every piece position in the info struct
+and then go through that array, but I dont know.
+*/
 Move* all_possible_moves(Board board, Info info, Team team)
 {
 	Move* moves = create_moves_array(1024);
-	Move* adding;
+	Move* adding = NULL;
+
+	Point point; Team currTeam;
 
 	for(int height = 0; height < B_HEIGHT; height += 1)
 	{
 		for(int width = 0; width < B_WIDTH; width += 1)
 		{
-			Point point = {height, width};
-			Team currTeam = board_point_team(board, point);
+			point = (Point) {height, width};
+			currTeam = board_point_team(board, point);
+
 			if(currTeam != team) continue;
 
-			adding = create_moves_array(40);
+			// The queen can do the most moves, and she can do 32 moves
+			adding = create_moves_array(32);
 
 			if(!piece_possible_moves(adding, board, info, point))
 			{
@@ -403,7 +412,7 @@ Move* all_possible_moves(Board board, Info info, Team team)
 	return moves;
 }
 
-void append_moves_array(Move* moves, Move* adding)
+void append_moves_array(Move* moves, Move adding[])
 {
 	int amount = moves_array_amount(moves);
 	int addAmount = moves_array_amount(adding);
@@ -424,6 +433,16 @@ int moves_array_amount(Move moves[])
 	return amount;
 }
 
+void clear_moves_array(Move* moves)
+{
+	int amount = moves_array_amount(moves);
+
+	for(int index = 0; index < amount; index += 1)
+	{
+		moves[index] = (Move) {(Point) {-1, -1}, (Point) {-1, -1}};
+	}
+}
+
 Move* create_moves_array(int amount)
 {
 	Move* moves = malloc(sizeof(Move) * amount);
@@ -434,24 +453,4 @@ Move* create_moves_array(int amount)
 		moves[index] = (Move) {start, stop};
 	}
 	return moves;
-}
-
-bool piece_possible_moves(Move* moves, Board board, Info info, Point start)
-{
-	Point stop; Move currMove; int amount = 0;
-	for(int height = 0; height < B_HEIGHT; height += 1)
-	{
-		for(int width = 0; width < B_WIDTH; width += 1)
-		{
-			stop = (Point) {height, width};
-			currMove = (Move) {start, stop};
-
-			if(!piece_move_acceptable(board, currMove, info)) continue;
-			if(!move_prevent_check(board, currMove, info)) continue;
-
-			moves[amount] = currMove;
-			amount += 1;
-		}
-	}
-	return (amount != 0);
 }

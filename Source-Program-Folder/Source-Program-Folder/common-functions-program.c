@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/common-functions-program.h"
+#include "../Header-Program-Folder/global-include-header.h"
 
 bool number_inside_bounds(int number, int minimum, int maximum)
 {
@@ -87,7 +87,7 @@ bool board_piece_equal(Piece first, Piece second)
 	return (typeEqual && teamEqual);
 }
 
-bool board_piece_points(Point** points, Board board, Piece piece)
+bool board_piece_points(Point* points, Board board, Piece piece)
 {
 	Piece currPiece; int index = 0;
 	for(int height = 0; height < B_HEIGHT; height = height + 1)
@@ -96,11 +96,10 @@ bool board_piece_points(Point** points, Board board, Piece piece)
 		{
 			currPiece = board_point_piece(board, (Point) {height, width});
 
-			if(board_piece_equal(piece, currPiece))
-			{
-				(*points)[index] = (Point) {height, width};
-				index += 1;
-			}
+			if(!board_piece_equal(piece, currPiece)) continue;
+			
+			points[index] = (Point) {height, width};
+			index += 1;
 		}
 	}
 	return (index > 0);
@@ -121,7 +120,7 @@ bool board_piece_point(Point* point, Board board, Piece piece)
 {
 	Point* piecePoints = create_point_array(64);
 
-	if(!board_piece_points(&piecePoints, board, piece))
+	if(!board_piece_points(piecePoints, board, piece))
 	{
 		printf("There was no pieces Team=%d Type=%d\n", piece.team, piece.type);
 
@@ -204,6 +203,22 @@ bool board_point_empty(Board board, Point point)
 	return (type == EMPTY || team == NONE);
 }
 
+bool board_point_clear(Board board, Point point)
+{
+	Type type = board_point_type(board, point);
+	Team team = board_point_team(board, point);
+
+	return (type == EMPTY && team == NONE);
+}
+
+bool board_point_exists(Board board, Point point)
+{
+	Type type = board_point_type(board, point);
+	Team team = board_point_team(board, point);
+
+	return (type != EMPTY && team != NONE);
+}
+
 bool move_inside_board(Move move)
 {
 	bool startValid = point_inside_board(move.start);
@@ -222,23 +237,29 @@ bool board_points_enemy(Board board, Point start, Point stop)
 
 bool clear_moving_path(Board board, Point start, Point stop)
 {
-	int hOffset = stop.height - start.height;
-	int wOffset = stop.width - start.width;
+	int heightOffset = (stop.height - start.height);
+	int widthOffset = (stop.width - start.width);
 
 	// If the knight is moving, he dont need a clear moving path
 	if(moving_knight_valid(start, stop)) return true;
 
-	int steps = (abs(hOffset) > abs(wOffset)) ? abs(hOffset) : abs(wOffset);
+	int steps = (abs(heightOffset) > abs(widthOffset)) ? abs(heightOffset) : abs(widthOffset);
 
-	int hAdder = (hOffset == 0) ? 0 : (hOffset / abs(hOffset));
-	int wAdder = (wOffset == 0) ? 0 : (wOffset / abs(wOffset));
+	int heightAdder = (heightOffset == 0) ? 0 : (heightOffset / abs(heightOffset));
+	int widthAdder = (widthOffset == 0) ? 0 : (widthOffset / abs(widthOffset));
+
+	int height, width;
+
+	Point point;
 
 	for(int index = 1; index < steps; index = index + 1)
 	{
-		int hIndex = start.height + (index * hAdder);
-		int wIndex = start.width + (index * wAdder);
+		height = start.height + (index * heightAdder);
+		width = start.width + (index * widthAdder);
 
-		if(board[hIndex][wIndex].type != EMPTY) return false;
+		point = (Point) {height, width};
+
+		if(!board_point_clear(board, point)) return false;
 	}
 	return true;
 }

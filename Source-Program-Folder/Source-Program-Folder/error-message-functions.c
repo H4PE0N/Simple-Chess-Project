@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/error-message-functions.h"
+#include "../Header-Program-Folder/global-include-header.h"
 
 void create_board_error(char filename[])
 {

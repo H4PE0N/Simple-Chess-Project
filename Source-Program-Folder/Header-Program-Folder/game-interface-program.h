@@ -3,7 +3,6 @@
 #define INTERFACE_INPUT_PROGRAM_H
 
 #include "global-include-header.h"
-#include "chess-computer-program.h"
 
 #define CLEAR_LINE printf("\033[2K")
 

@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/chess-moves-acceptable.h"
+#include "../Header-Program-Folder/global-include-header.h"
 
 bool piece_move_acceptable(Board board, Move move, Info info)
 {
@@ -138,6 +138,56 @@ bool king_move_acceptable(Board board, Move move, Info info)
 
 	// These controls are more specific, and should be done later
 	if(!moving_king_valid(start, stop)) return false;
+
+	if(!move_prevent_check(board, move, info)) return false;
+
+	return true;
+}
+
+bool diagonal_move_acceptable(Board board, Move move, Info info)
+{
+	Point start = move.start, stop = move.stop;
+
+	// These controls is the most obvious, and should be done first
+	if(!points_inside_board(start, stop)) return false;
+
+	if(board_point_empty(board, start)) return false;
+
+	if(board_points_team(board, start, stop)) return false;
+
+	if(board_point_piece(board, stop).type == KING) return false;
+
+	// These controls are more specific, and should be done later
+	if(!moving_diagonal_valid(start, stop)) return false;
+
+	if(!clear_moving_path(board, start, stop)) return false;
+
+	if(!move_prevent_check(board, move, info)) return false;
+
+	return true;
+}
+
+bool straight_move_acceptable(Board board, Move move, Info info)
+{
+	Point start = move.start, stop = move.stop;
+
+	// These controls is the most obvious, and should be done first
+	if(!points_inside_board(start, stop)) return false;
+
+	if(board_point_empty(board, start)) return false;
+
+	// These controls are more specific, and should be done later
+	if(!moving_straight_valid(start, stop)) return false;
+
+	if(!clear_moving_path(board, start, stop)) return false;
+
+	// This is a special case, and will skip the following controls
+	if(rook_switch_able(board, move, info)) return true;
+
+	// These controls are more specific, and should be done later
+	if(board_points_team(board, start, stop)) return false;
+
+	if(board_point_piece(board, stop).type == KING) return false;
 
 	if(!move_prevent_check(board, move, info)) return false;
 

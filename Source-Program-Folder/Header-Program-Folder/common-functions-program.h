@@ -3,7 +3,6 @@
 #define COMMON_FUNCTIONS_PROGRAM_H
 
 #include "global-include-header.h"
-#include "pieces-moves-valid.h"
 
 bool number_inside_bounds(int, int, int);
 
@@ -25,7 +24,11 @@ int create_random_number(int, int);
 
 void switch_chess_pieces(Board, Point, Point);
 
+bool board_point_exists(Board, Point);
+
 void free_chess_board(Board);
+
+bool board_point_clear(Board, Point);
 
 int point_array_amount(Point[]);
 
@@ -35,7 +38,7 @@ void extract_file_name(char*, char*[], int);
 
 bool board_piece_equal(Piece, Piece);
 
-bool board_piece_points(Point**, Board, Piece);
+bool board_piece_points(Point*, Board, Piece);
 
 bool board_piece_point(Point*, Board, Piece);
 

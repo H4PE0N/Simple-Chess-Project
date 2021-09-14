@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/game-check-functions.h"
+#include "../Header-Program-Folder/global-include-header.h"
 
 bool king_inside_check(Board board, Point king)
 {
