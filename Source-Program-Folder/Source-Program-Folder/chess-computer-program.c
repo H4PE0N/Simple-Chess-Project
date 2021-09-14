@@ -183,7 +183,8 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 		return bestValue;
 	}
 
-	sort_pruning_moves(moves, amount, board, info, currTeam);
+	// This is very slow, and makes the program run MUCH SLOWER (3s vs 73s)
+	//sort_pruning_moves(moves, amount, board, info, currTeam);
 
 	Move currMove; int currValue; Board boardCopy; Team nextTeam;
 
@@ -231,13 +232,16 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 	return bestValue;
 }
 
+// This is very slow, and makes the program run MUCH SLOWER (3s vs 73s)
+
+// This function MUST CHANGE if the program is going to run fast.
 void sort_pruning_moves(Move* moves, int amount, Board board, Info info, Team team)
 {
 	Move firstMove, secondMove; int firstValue, secondValue;
 
-	for(int iteration = 0; iteration < amount; iteration += 1)
+	for(int iteration = amount; iteration >= 0; iteration -= 1)
 	{
-		for(int index = 0; index < (amount - iteration - 1); index += 1)
+		for(int index = 0; index < (iteration - 1); index += 1)
 		{
 			firstMove = moves[index];
 			secondMove = moves[index + 1];
