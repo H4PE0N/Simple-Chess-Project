@@ -5,7 +5,6 @@
 #include "global-include-header.h"
 #include "pieces-moves-valid.h"
 #include "chess-game-functions.h"
-#include "chess-simulations-program.h"
 
 bool piece_move_acceptable(Board, Move, Info);
 
@@ -25,5 +24,7 @@ bool rook_move_acceptable(Board, Move, Info);
 bool rook_switch_able(Board, Move, Info);
 
 bool switch_bool_valid(Point, Info, Team);
+
+bool check_after_kingSwitch(Board, Move, Info);
 
 #endif

@@ -195,3 +195,24 @@ bool rook_switch_able(Board board, Move move, Info info)
 
 	return true;
 }
+
+bool check_after_kingSwitch(Board board, Move move, Info info)
+{
+	if(!move_inside_board(move)) return false;
+
+	Team team = board_point_team(board, move.start);
+
+	Board boardCopy = copy_chess_board(board);
+	Info infoDummy = info;
+
+	execute_rook_switch(boardCopy, move, &infoDummy);
+
+	Point king = team_king_point(infoDummy, team);
+
+	if(!king_inside_check(boardCopy, king))
+	{
+		free_chess_board(boardCopy); return true;
+	}
+
+	free_chess_board(boardCopy); return false;
+}

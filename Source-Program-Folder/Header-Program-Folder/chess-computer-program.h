@@ -7,7 +7,6 @@
 #include "board-move-handler.h"
 #include "chess-computer-program.h"
 #include "game-interface-program.h"
-#include "chess-simulations-program.h"
 #include "game-interface-program.h"
 
 bool best_possible_move(Move*, Board, Info, int, Team);

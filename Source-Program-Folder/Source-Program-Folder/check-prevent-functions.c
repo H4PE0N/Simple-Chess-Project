@@ -52,3 +52,26 @@ bool piece_prevent_check(Board board, Point start, Info info)
 	}
 	return false;
 }
+
+bool move_prevent_check(Board board, Move move, Info info)
+{
+	Point start = move.start, stop = move.stop;
+
+	if(!move_inside_board(move)) return false;
+
+	Piece piece = board_point_piece(board, start);
+	if(board_point_empty(board, start)) return false;
+
+	Board boardCopy = copy_chess_board(board);
+	move_board_piece(boardCopy, start, stop);
+
+	Point king = team_king_point(info, piece.team);
+	if(piece.type == KING) king = stop;
+
+	if(!king_inside_check(boardCopy, king))
+	{
+		free_chess_board(boardCopy); return true;
+	}
+
+	free_chess_board(boardCopy); return false;
+}
