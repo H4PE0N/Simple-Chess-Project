@@ -162,7 +162,7 @@ bool parse_chess_move(Move* move, Board board, Info info, char string[])
 
 	if(!strcmp(string, "RANDOM"))
 	{
-		return best_possible_move(move, board, info, 2, info.currTeam);
+		return best_possible_move(move, board, info, STD_DEPTH, info.currTeam);
 	}
 
 	char seperator[] = " ";

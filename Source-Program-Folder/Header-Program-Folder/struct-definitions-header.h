@@ -63,4 +63,6 @@ typedef struct TypeValue
 #define B_RIGHT 7
 #define B_LEFT  0
 
+#define STD_DEPTH 4
+
 #endif

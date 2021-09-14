@@ -1,4 +1,4 @@
- 
+
 #include "../Header-Program-Folder/global-include-header.h"
 
 const int pieceMatrix[7][8][8] =
@@ -123,9 +123,6 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 			// For some reson, the computer cant move!
 			free_chess_board(boardCopy);
 
-			// Make this into an error function
-			CLEAR_LINE; printf("Cant move Main move!\n"); 
-
 			continue;
 		}
 
@@ -175,9 +172,6 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 	// If the computer cant move, it will return the worst score
 	if(amount <= 0)
 	{
-		// Make this into an error function
-		CLEAR_LINE; printf("Depth valuing cant find moves!\n");
-
 		free(moves);
 
 		return bestValue;
@@ -201,9 +195,6 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 		if(!move_chess_piece(boardCopy, currMove, &dummyInfo))
 		{
 			free_chess_board(boardCopy);
-
-			// Make this into an error function
-			CLEAR_LINE; printf("Cant move Depth move!\n"); 
 
 			continue;
 		}
