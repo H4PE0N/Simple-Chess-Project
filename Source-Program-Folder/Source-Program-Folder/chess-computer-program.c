@@ -1,4 +1,4 @@
-
+ 
 #include "../Header-Program-Folder/chess-computer-program.h"
 
 const int pieceMatrix[7][8][8] =
@@ -77,13 +77,19 @@ const int pieceMatrix[7][8][8] =
 
 int checked = 0; // Remove this: Just for debug
 int total = 0;   // Remove this: Just for debug
+int pruned = 0;	 // Remove this: Just for debug
+int ones = 0; 	 // Remove this: Just for debug
 
 bool best_possible_move(Move* move, Board board, Info info, int depth, Team team)
 {
 	// If the depth is lower or equal to 0, no move can be caluclated
 	if(depth <= 0) return false;
 
-	time_t startTime = time(NULL); // Remove this: Just for debug
+	time_t startTime = time(NULL);  // Remove this: Just for debug
+	checked = 0;					// Remove this: Just for debug
+	total = 0;						// Remove this: Just for debug
+	pruned = 0;						// Remove this: Just for debug	
+	ones = 0;						// Remove this: Just for debug
 
 	Move* moves = all_possible_moves(board, info, team);
 	int amount = moves_array_amount(moves);
@@ -134,14 +140,15 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 
 	free(moves);
 
-	time_t stopTime = time(NULL); // Remove this: Just for debug
+	time_t stopTime = time(NULL); 																// Remove this: Just for debug
 
-	int time = difftime(stopTime, startTime); // Remove this: Just for debug
+	int time = difftime(stopTime, startTime); 													// Remove this: Just for debug
 
-	char moveString[20] = "\0"; chess_move_string(moveString, bestMove); // Remove this: Just for debug
-	CLEAR_LINE; printf("Best move: [%s] Value = %d Time = %d\n", moveString, bestValue, time); // Remove this: Just for debug
+	char moveString[20] = "\0"; 																// Remove this: Just for debug
+	chess_move_string(moveString, bestMove); 													// Remove this: Just for debug
+	CLEAR_LINE; printf("Best move: [%s] Value = %d Time = %d\n", moveString, bestValue, time); 	// Remove this: Just for debug
 
-	CLEAR_LINE; printf("Checked %d moves out of %d!\n", checked, total); // Remove this: Just for debug
+	CLEAR_LINE; printf("Checked %d moves out of %d! Pruned %d Ones %d\n", checked, total, pruned, ones); 		// Remove this: Just for debug
 
 	// The move was found, and we return a positive (true) result
 	*move = bestMove; return true;
@@ -160,7 +167,8 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 	Move* moves = all_possible_moves(board, dummyInfo, currTeam);
 	int amount = moves_array_amount(moves);
 
-	total += amount; // Remove this: Just for debug
+	total += amount; 			   // Remove this: Just for debug
+	if(depth == 1) ones += amount; // Remove this: Just for debug
 
 	int bestValue = (currTeam == team) ? MIN_VAL : MAX_VAL;
 
@@ -181,6 +189,8 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 
 	for(int index = 0; index < amount; index += 1)
 	{
+		checked++; // Remove this: Just for debug
+
 		currMove = moves[index];
 
 		dummyInfo = info; dummyInfo.currTeam = currTeam;
@@ -208,9 +218,12 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 		if(currTeam == team && currValue > alpha) 		alpha = currValue;
 		if(currTeam != team && currValue < beta) 		beta = currValue;
 
-		checked++; // Remove this: Just for debug
+		if(beta <= alpha)
+		{
+			pruned++; // Remove this: Just for debug
 
-		if(beta <= alpha) break;
+			break;
+		}
 	}
 
 	free(moves);
