@@ -1,8 +1,7 @@
 
 #include "../Header-Program-Folder/pieces-moves-valid.h"
 
-// This is a function that JUST cover the regular moves
-// You can swap "board" for "team" if you want
+// This is a function that JUST cover the regular moves; not RKS
 bool moving_piece_valid(Board board, Point start, Point stop)
 {
 	switch(board_point_type(board, start))

@@ -5,12 +5,16 @@ bool setup_game_variables(Board* board, Info* info, char filename[])
 {
 	if(!create_chess_board(board, filename))
 	{
-		create_board_error(filename); return false;
+		create_board_error(filename); 
+
+		return false;
 	}
 
 	if(!setup_game_info(info, *board))
 	{
-		setup_info_error(*board); return false;
+		setup_info_error(*board); 
+
+		return false;
 	}
 
 	return true;
@@ -20,9 +24,6 @@ bool setup_game_info(Info* info, Board board)
 {
 	RKSwitch whiteRKS = extract_rks_values(board, WHITE);
 	RKSwitch blackRKS = extract_rks_values(board, BLACK);
-
-	printf("Extracted Team=%d [%d %d]\n", WHITE, whiteRKS.left, whiteRKS.right);
-	printf("Extracted Team=%d [%d %d]\n", BLACK, blackRKS.left, blackRKS.right);
 
 	Point bKing, wKing;
 
@@ -89,12 +90,14 @@ bool create_chess_board(Board* board, char filename[])
 	if(filePointer == NULL)
 	{
 		file_pointer_error(filename);
+
 		fclose(filePointer); return false;
 	}
 
 	if(!allocate_file_values(board, filePointer))
 	{
 		file_values_error(filename);
+		
 		fclose(filePointer); return false;
 	}
 

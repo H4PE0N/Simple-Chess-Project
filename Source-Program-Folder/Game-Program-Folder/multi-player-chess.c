@@ -40,7 +40,7 @@ bool multi_player_chess(Team* winner, Board board, Info* info)
 
 		if(!input_current_move(input)) continue;
 
-		// MOVE_UP_BOARD; MOVE_UP_INFO; MOVE_UP_INPUT;
+		MOVE_UP_BOARD; MOVE_UP_INFO; MOVE_UP_INPUT;
 
 		if(!strcmp(input, "STOP")) return false;
 

@@ -37,7 +37,7 @@ bool zero_player_chess(Team* winner, Board board, Info* info)
 		convert_string_upper(input, strlen(input));
 		if(!strcmp(input, "STOP")) return false;
 
-		// MOVE_UP_BOARD; MOVE_UP_INFO; MOVE_UP_INPUT;
+		MOVE_UP_BOARD; MOVE_UP_INFO; MOVE_UP_INPUT;
 
 		if(!computer_move_handler(board, info))
 		{

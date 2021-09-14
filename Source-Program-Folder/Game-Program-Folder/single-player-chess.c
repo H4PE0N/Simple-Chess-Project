@@ -56,7 +56,7 @@ bool user_move_handler(Board board, Info* info)
 
 		if(!input_current_move(input)) continue;
 
-		//MOVE_UP_BOARD; MOVE_UP_INFO; MOVE_UP_INPUT;
+		MOVE_UP_BOARD; MOVE_UP_INFO; MOVE_UP_INPUT;
 
 		if(!strcmp(input, "STOP")) return false;
 
@@ -77,11 +77,11 @@ bool computer_move_handler(Board board, Info* info)
 {
 	display_game_round(board, *info);
 
-	//MOVE_UP_BOARD; MOVE_UP_INFO;
+	MOVE_UP_BOARD; MOVE_UP_INFO;
 
 	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
 
-	if(!best_possible_move(&move, board, *info, 2, info->currTeam)) return false;
+	if(!best_possible_move(&move, board, *info, 3, info->currTeam)) return false;
 
 	if(!move_chess_piece(board, move, info)) return false;
 

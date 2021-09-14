@@ -124,8 +124,8 @@ void display_chess_info(Info info)
 
 	char moveString[20] = "\0"; chess_move_string(moveString, info.lastMove);
 
-	CLEAR_LINE; printf("WHITE RKS (%d %d)\n", info.whiteRKS.left, info.whiteRKS.right);
-	CLEAR_LINE; printf("BLACK RKS (%d %d)\n", info.blackRKS.left, info.blackRKS.right);
+	// CLEAR_LINE; printf("WHITE RKS (%d %d)\n", info.whiteRKS.left, info.whiteRKS.right);
+	// CLEAR_LINE; printf("BLACK RKS (%d %d)\n", info.blackRKS.left, info.blackRKS.right);
 
 	CLEAR_LINE; printf("[+] LAST MADE MOVE  : [%s]\n", moveString);
 	CLEAR_LINE; printf("[+] CURRENT PLAYER  : [%s]\n", teamString);
