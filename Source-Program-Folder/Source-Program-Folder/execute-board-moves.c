@@ -28,8 +28,7 @@ void execute_rook_switch(Board board, Move move, Info* info)
 
 	update_king_point(info, team, king);
 
-	RKS->right = false;
-	RKS->left = false;
+	*RKS = (RKSwitch) {false, false};
 }
 
 void execute_rook_move(Board board, Move move, Info* info)
@@ -63,9 +62,7 @@ void execute_queen_move(Board board, Move move)
 void turn_off_rook_switch(Info* info, Team team)
 {
 	RKSwitch* RKS = (team == WHITE) ? &info->whiteRKS : &info->blackRKS;
-
-	RKS->left = false;
-	RKS->right = false;
+	*RKS = (RKSwitch) {false, false};
 }
 
 void update_king_point(Info* info, Team team, Point point)

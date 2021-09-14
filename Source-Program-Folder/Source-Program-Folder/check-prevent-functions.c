@@ -5,15 +5,19 @@ bool team_prevent_check(Board board, Info info, Team team)
 {
 	if(team == NONE) return false;
 
-	Point point;
+	Point point; Team currTeam;
 	for(int height = 0; height < B_HEIGHT; height = height + 1)
 	{
 		for(int width = 0; width < B_WIDTH; width = width + 1)
 		{
 			point = (Point) {height, width};
-			Team currTeam = board_point_team(board, point);
+			currTeam = board_point_team(board, point);
 
+			// This function is only going to check for
+			// the team that is inputted
 			if(currTeam != team) continue;
+
+			// The code after this is the actual check-code:
 
 			if(piece_prevent_check(board, point, info)) return true;
 		}
@@ -21,10 +25,17 @@ bool team_prevent_check(Board board, Info info, Team team)
 	return false;
 }
 
+/*
+Optimize this function so that it only checks the squares that
+the piece is accepted to be on: one function for every piece
+with a switch case in this function.
+*/
 bool piece_prevent_check(Board board, Point start, Info info)
 {
 	if(!point_inside_board(start)) return false;
 	if(board_point_empty(board, start)) return false;
+
+	// The code after this is going to be replaced:
 
 	Point stop; Move move;
 	for(int height = 0; height < B_HEIGHT; height += 1)

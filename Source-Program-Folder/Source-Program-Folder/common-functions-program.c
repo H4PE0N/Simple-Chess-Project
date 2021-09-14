@@ -3,25 +3,26 @@
 
 bool number_inside_bounds(int number, int minimum, int maximum)
 {
-	return (number <= maximum) && (number >= minimum);
+	bool minimumValid = (number >= minimum);
+	bool maximumValid = (number <= maximum);
+
+	return (minimumValid && maximumValid);
 }
 
 bool point_inside_board(Point point)
 {
-	if(!number_inside_bounds(point.height, 0, 7)) return false;
+	bool heightValid = number_inside_bounds(point.height, 0, B_HEIGHT-1);
+	bool widthValid = number_inside_bounds(point.width, 0, B_WIDTH-1);
 
-	if(!number_inside_bounds(point.width, 0, 7)) return false;
-
-	return true;
+	return (heightValid && widthValid);
 }
 
 bool points_inside_board(Point first, Point second)
 {
-	if(!point_inside_board(first)) return false;
+	bool firstValid = point_inside_board(first);
+	bool secondValid = point_inside_board(second);
 
-	if(!point_inside_board(second)) return false;
-
-	return true;
+	return (firstValid && secondValid);
 }
 
 void free_chess_board(Board board)
@@ -80,7 +81,10 @@ void switch_chess_pieces(Board board, Point first, Point second)
 
 bool board_piece_equal(Piece first, Piece second)
 {
-	return (first.type == second.type && first.team == second.team);
+	bool typeEqual = (first.type == second.type);
+	bool teamEqual = (first.team == second.team);
+
+	return (typeEqual && teamEqual);
 }
 
 bool board_piece_points(Point** points, Board board, Piece piece)
@@ -196,15 +200,16 @@ bool board_point_empty(Board board, Point point)
 {
 	Type type = board_point_type(board, point);
 	Team team = board_point_team(board, point);
+
 	return (type == EMPTY || team == NONE);
 }
 
 bool move_inside_board(Move move)
 {
-	if(!point_inside_board(move.start)) return false;
-	if(!point_inside_board(move.stop)) return false;
+	bool startValid = point_inside_board(move.start);
+	bool stopValid = point_inside_board(move.stop);
 
-	return true;
+	return (startValid && stopValid);
 }
 
 bool board_points_enemy(Board board, Point start, Point stop)
@@ -240,7 +245,10 @@ bool clear_moving_path(Board board, Point start, Point stop)
 
 bool board_points_equal(Point first, Point second)
 {
-	return (first.height == second.height && first.width == second.width);
+	bool heightEqual = (first.height == second.height);
+	bool widthEqual = (first.width == second.width);
+
+	return (heightEqual && widthEqual);
 }
 
 void convert_string_upper(char* string, int length)
@@ -253,7 +261,9 @@ void convert_string_upper(char* string, int length)
 
 char convert_char_upper(char character)
 {
+	// If the letter is not lowercase, it cant be converted
 	if(!number_inside_bounds(character, 97, 122)) return character;
 
-	return (character - 32);
+	// If the letter is lowercase, it will be converted.
+	else return (character - 32);
 }
