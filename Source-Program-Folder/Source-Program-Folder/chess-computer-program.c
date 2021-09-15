@@ -146,15 +146,15 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 	Move* moves = all_possible_moves(board, dummyInfo, currTeam);
 	int amount = moves_array_amount(moves);
 
-	int bestValue = (currTeam == team) ? MIN_VAL : MAX_VAL;
-
 	// If the computer cant move, it will return the worst score
 	if(amount <= 0)
 	{
 		free(moves);
 
-		return bestValue;
+		return team_state_value(board, info, team);
 	}
+
+	int bestValue = (currTeam == team) ? MIN_VAL : MAX_VAL;
 
 	// This is very slow, and makes the program run MUCH SLOWER (3s vs 73s)
 	//sort_pruning_moves(moves, amount, board, info, currTeam);
@@ -297,8 +297,29 @@ int check_mate_value(Board board, Info info, Team team)
 	Point enemyKing = team_king_point(info, enemy);
 	Point teamKing = team_king_point(info, team);
 
-	if(check_mate_situation(board, info, teamKing)) 		value += MAX_VAL;
-	else if(check_mate_situation(board, info, enemyKing)) 	value += MIN_VAL;
+	// If the teamKing (own king) is in check mate
+	if(check_mate_situation(board, info, teamKing)) value += MIN_VAL;
+
+	// If the enemyKing (opponent) is in check mate
+	else if(check_mate_situation(board, info, enemyKing)) value += MAX_VAL;
+
+	return value;
+}
+
+int game_draw_value(Board board, Info info, Team team)
+{
+	int value = 0;
+
+	Team enemy = (team == WHITE) ? BLACK : WHITE;
+
+	Point enemyKing = team_king_point(info, enemy);
+	Point teamKing = team_king_point(info, team);
+
+	// If the own king cant move (oppenent did draw)
+	if(check_draw_situation(board, info, teamKing)) 		value += MAX_VAL;
+
+	// If the opponent cant move (you did draw)
+	else if(check_draw_situation(board, info, enemyKing)) 	value += MIN_VAL;
 
 	return value;
 }
@@ -310,6 +331,8 @@ int board_state_value(Board board, Info info, Team team)
 	value += team_pieces_value(board, team);
 
 	value += check_mate_value(board, info, team);
+
+	value += game_draw_value(board, info, team);
 
 	return value;
 }
