@@ -1,6 +1,7 @@
 
 #include "../Header-Program-Folder/global-include-header.h"
 
+// This function should only check one team, so that the draw gets right
 bool game_still_running(Team* winner, Board board, Info info)
 {
 	for(int round = 0; round < 2; round = round + 1)

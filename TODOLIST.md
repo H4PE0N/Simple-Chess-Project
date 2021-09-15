@@ -21,10 +21,5 @@ make every function more efficient
 
 Create Check-Indicator
 
-Old:
-Checked 2863 moves out of 13733! Pruned 536 Ones 13134
-total heap usage: 5,727,593 allocs, 5,727,593 frees, 382,402,360 bytes allocated
-
-New:
-Checked 2930 moves out of 13733! Pruned 533 Ones 13134
-total heap usage: 5,606,262 allocs, 5,606,262 frees, 375,351,416 bytes allocated
+As a move, you should have the options [help, hint]
+You should also have the option to save the game [save]

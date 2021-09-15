@@ -28,7 +28,7 @@ int pawn_height_offset(Point start, Point stop, Team team)
 	if(team == WHITE) return (start.height - stop.height);
 	if(team == BLACK) return (stop.height - start.height);
 
-	return -1; // This is an invalid move for the pawn.
+	return MIN_VAL; // This is an invalid move for the pawn.
 }
 
 bool pawn_starting_bool(Point start, Team team)

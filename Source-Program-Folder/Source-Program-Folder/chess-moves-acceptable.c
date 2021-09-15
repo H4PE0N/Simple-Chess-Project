@@ -33,7 +33,7 @@ bool queen_move_acceptable(Board board, Move move, Info info)
 
 	if(board_points_team(board, start, stop)) return false;
 
-	if(board_point_piece(board, stop).type == KING) return false;
+	if(board_point_type(board, stop) == KING) return false;
 
 	// These controls are more specific, and should be done later
 	if(!moving_queen_valid(start, stop)) return false;
@@ -54,7 +54,7 @@ bool pawn_move_acceptable(Board board, Move move, Info info)
 
 	if(board_point_empty(board, start)) return false;
 
-	if(board_point_piece(board, stop).type == KING) return false;
+	if(board_point_type(board, stop) == KING) return false;
 
 	// These controls are more specific, and should be done later
 	if(!moving_pawn_valid(board, start, stop)) return false;
@@ -62,7 +62,7 @@ bool pawn_move_acceptable(Board board, Move move, Info info)
 	if(!clear_moving_path(board, start, stop)) return false;
 
 	// These controls are vary specific, and should be done last
-	if(start.width == stop.width)
+	if(start.width == stop.width) // Going straight
 	{
 		if(!board_point_empty(board, stop)) return false;
 	}
@@ -93,7 +93,7 @@ bool rook_move_acceptable(Board board, Move move, Info info)
 	// These controls are more specific, and should be done later
 	if(board_points_team(board, start, stop)) return false;
 
-	if(board_point_piece(board, stop).type == KING) return false;
+	if(board_point_type(board, stop) == KING) return false;
 
 	if(!move_prevent_check(board, move, info)) return false;
 
@@ -111,7 +111,7 @@ bool bishop_move_acceptable(Board board, Move move, Info info)
 
 	if(board_points_team(board, start, stop)) return false;
 
-	if(board_point_piece(board, stop).type == KING) return false;
+	if(board_point_type(board, stop) == KING) return false;
 
 	// These controls are more specific, and should be done later
 	if(!moving_bishop_valid(start, stop)) return false;
@@ -134,7 +134,7 @@ bool king_move_acceptable(Board board, Move move, Info info)
 
 	if(board_points_team(board, start, stop)) return false;
 
-	if(board_point_piece(board, stop).type == KING) return false;
+	if(board_point_type(board, stop) == KING) return false;
 
 	// These controls are more specific, and should be done later
 	if(!moving_king_valid(start, stop)) return false;
@@ -155,7 +155,7 @@ bool diagonal_move_acceptable(Board board, Move move, Info info)
 
 	if(board_points_team(board, start, stop)) return false;
 
-	if(board_point_piece(board, stop).type == KING) return false;
+	if(board_point_type(board, stop) == KING) return false;
 
 	// These controls are more specific, and should be done later
 	if(!moving_diagonal_valid(start, stop)) return false;
@@ -187,7 +187,7 @@ bool straight_move_acceptable(Board board, Move move, Info info)
 	// These controls are more specific, and should be done later
 	if(board_points_team(board, start, stop)) return false;
 
-	if(board_point_piece(board, stop).type == KING) return false;
+	if(board_point_type(board, stop) == KING) return false;
 
 	if(!move_prevent_check(board, move, info)) return false;
 
@@ -205,7 +205,7 @@ bool knight_move_acceptable(Board board, Move move, Info info)
 
 	if(board_points_team(board, start, stop)) return false;
 
-	if(board_point_piece(board, stop).type == KING) return false;
+	if(board_point_type(board, stop) == KING) return false;
 
 	// These controls are more specific, and should be done later
 	if(!moving_knight_valid(start, stop)) return false;
