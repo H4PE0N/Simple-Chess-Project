@@ -3,7 +3,7 @@
 
 bool team_prevent_check(Board board, Info info, Team team)
 {
-	if(team == NONE) return false;
+	if(!piece_team_exists(team)) return false;
 
 	Point point; Team currTeam;
 	for(int height = 0; height < B_HEIGHT; height = height + 1)
@@ -13,11 +13,7 @@ bool team_prevent_check(Board board, Info info, Team team)
 			point = (Point) {height, width};
 			currTeam = board_point_team(board, point);
 
-			// This function is only going to check for
-			// the team that is inputted
 			if(currTeam != team) continue;
-
-			// The code after this is the actual check-code:
 
 			if(piece_prevent_check(board, point, info)) return true;
 		}
@@ -25,16 +21,9 @@ bool team_prevent_check(Board board, Info info, Team team)
 	return false;
 }
 
-/*
-Optimize this function so that it only checks the squares that
-the piece is accepted to be on: one function for every piece
-with a switch case in this function.
-*/
 bool piece_prevent_check(Board board, Point start, Info info)
 {
 	if(!point_inside_board(start)) return false;
-
-	if(board_point_empty(board, start)) return false;
 
 	switch(board_point_type(board, start))
 	{
@@ -61,9 +50,10 @@ bool pawn_prevent_check(Board board, Info info, Point start)
 	
 	if(board_point_empty(board, start)) return false;
 
-	Team team = board_point_team(board, start);
+	if(board_point_type(board, start) != PAWN) return false;
 
-	if(team == NONE) return false;
+
+	Team team = board_point_team(board, start);
 
 	Point stop; Move currMove;
 
@@ -98,8 +88,11 @@ bool pawn_prevent_check(Board board, Info info, Point start)
 bool rook_prevent_check(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
-
+	
 	if(board_point_empty(board, start)) return false;
+
+	if(board_point_type(board, start) != ROOK) return false;
+
 
 	Point stop; Move currMove;
 
@@ -135,8 +128,11 @@ bool rook_prevent_check(Board board, Info info, Point start)
 bool knight_prevent_check(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
-
+	
 	if(board_point_empty(board, start)) return false;
+
+	if(board_point_type(board, start) != KNIGHT) return false;
+
 
 	Point stop; Move currMove;
 
@@ -172,8 +168,11 @@ bool knight_prevent_check(Board board, Info info, Point start)
 bool bishop_prevent_check(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
-
+	
 	if(board_point_empty(board, start)) return false;
+
+	if(board_point_type(board, start) != BISHOP) return false;
+
 
 	Point stop; Move currMove;
 
@@ -299,6 +298,9 @@ bool queen_prevent_check(Board board, Info info, Point start)
 	
 	if(board_point_empty(board, start)) return false;
 
+	if(board_point_type(board, start) != QUEEN) return false;
+
+
 	if(diagonal_prevent_check(board, info, start)) return true;
 
 	if(straight_prevent_check(board, info, start)) return true;
@@ -309,8 +311,11 @@ bool queen_prevent_check(Board board, Info info, Point start)
 bool king_prevent_check(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
-
+	
 	if(board_point_empty(board, start)) return false;
+
+	if(board_point_type(board, start) != KING) return false;
+
 
 	Point stop; Move currMove;
 
@@ -344,6 +349,7 @@ bool move_prevent_check(Board board, Move move, Info info)
 	if(!move_inside_board(move)) return false;
 
 	if(board_point_empty(board, start)) return false;
+
 
 	Piece piece = board_point_piece(board, start);
 

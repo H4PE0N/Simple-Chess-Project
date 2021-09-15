@@ -17,6 +17,11 @@ bool point_inside_board(Point point)
 	return (heightValid && widthValid);
 }
 
+bool piece_team_exists(Team team)
+{
+	return (team == WHITE || team == BLACK);
+}
+
 bool chess_team_string(char* string, Team team)
 {
 	switch(team)

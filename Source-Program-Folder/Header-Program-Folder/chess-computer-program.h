@@ -20,11 +20,6 @@ int board_state_value(Board, Info, Team);
 int check_mate_value(Board, Info, Team);
 
 
-void sort_pruning_moves(Move*, int, Board, Info, Team);
-
-int move_state_value(Board, Info, Move, Team);
-
-
 Move* all_possible_moves(Board, Info, Team);
 
 int moves_array_amount(Move[]);
@@ -37,7 +32,5 @@ void clear_moves_array(Move*);
 void switch_array_moves(Move*, int, int);
 
 Move* create_moves_array(int);
-
-bool board_piece_exposed(Board, Info, Point);
 
 #endif

@@ -41,6 +41,8 @@ bool update_kings_point(Board board, Info* info)
 
 bool other_pieces_moveable(Board board, Info info, Team team)
 {
+	if(!piece_team_exists(team)) return false;
+
 	Piece piece; Point point;
 
 	for(int height = 0; height < B_HEIGHT; height = height + 1)
@@ -60,6 +62,8 @@ bool other_pieces_moveable(Board board, Info info, Team team)
 
 bool check_draw_situation(Board board, Info info, Point king)
 {
+	if(!point_inside_board(king)) return false;
+
 	Team team = board_point_team(board, king);
 
 	if(king_inside_check(board, king)) return false;
@@ -73,6 +77,8 @@ bool check_draw_situation(Board board, Info info, Point king)
 
 bool check_mate_situation(Board board, Info info, Point king)
 {
+	if(!point_inside_board(king)) return false;
+	
 	Team team = board_point_team(board, king);
 
 	if(!king_inside_check(board, king)) return false;

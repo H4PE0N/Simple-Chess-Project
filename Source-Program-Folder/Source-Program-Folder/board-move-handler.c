@@ -3,6 +3,8 @@
 
 bool move_chess_piece(Board board, Move move, Info* info)
 {
+	if(!move_inside_board(move)) return false;
+	
 	Team team = board_point_team(board, move.start);
 	if(team != info->currTeam) return false;
 

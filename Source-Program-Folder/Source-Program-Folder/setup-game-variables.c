@@ -40,10 +40,12 @@ bool setup_game_info(Info* info, Board board)
 
 RKSwitch extract_rks_values(Board board, Team team)
 {
+	if(!piece_team_exists(team)) return (RKSwitch) {false, false};
+	
 	RKSwitch rKSwitch = {false, false};
 	Point king;
 
-	int expectedHeight = (team == WHITE) ? 7 : 0;
+	int expectedHeight = (team == WHITE) ? (B_HEIGHT - 1) : 0;
 
 	if(!board_piece_point(&king, board, (Piece) {KING, team})) return (RKSwitch) {false, false};
 

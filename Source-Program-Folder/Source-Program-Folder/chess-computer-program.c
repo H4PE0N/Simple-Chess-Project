@@ -77,6 +77,8 @@ const int pieceMatrix[7][8][8] =
 
 bool best_possible_move(Move* move, Board board, Info info, int depth, Team team)
 {
+	if(!piece_team_exists(team)) return false;
+
 	if(depth <= 0) return false;
 
 	time_t startTime = time(NULL);
@@ -195,51 +197,6 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 	return bestValue;
 }
 
-// This is very slow, and makes the program run MUCH SLOWER (3s vs 73s)
-
-// This function MUST CHANGE if the program is going to run fast.
-void sort_pruning_moves(Move* moves, int amount, Board board, Info info, Team team)
-{
-	Move firstMove, secondMove; int firstValue, secondValue;
-
-	for(int iteration = amount; iteration >= 0; iteration -= 1)
-	{
-		for(int index = 0; index < (iteration - 1); index += 1)
-		{
-			firstMove = moves[index];
-			secondMove = moves[index + 1];
-
-			firstValue = move_state_value(board, info, firstMove, team);
-			secondValue = move_state_value(board, info, secondMove, team);
-
-			if(firstValue > secondValue)
-			{
-				switch_array_moves(moves, index, (index + 1) );
-			}
-		}
-	}
-}
-
-int move_state_value(Board board, Info info, Move move, Team team)
-{
-	Team currTeam = board_point_team(board, move.start);
-
-	Info dummyInfo = info; dummyInfo.currTeam = currTeam;
-
-	Board copy = copy_chess_board(board);
-
-	if(!move_chess_piece(copy, move, &dummyInfo))
-	{
-		free_chess_board(copy);
-
-		return (team == currTeam) ? MIN_VAL : MAX_VAL;
-	}
-
-	free_chess_board(copy);
-
-	return board_state_value(board, dummyInfo, team);
-}
-
 int team_state_value(Board board, Info info, Team team)
 {
 	int enemy = (team == WHITE) ? BLACK : WHITE;
@@ -281,6 +238,9 @@ int team_pieces_value(Board board, Team team)
 
 int piece_matrix_value(Piece piece, Point point)
 {
+	// This is a error catcher. If the point insn't inside the board, segfault is going to happen next
+	if(!point_inside_board(point)) return MIN_VAL;
+
 	if(piece.team == WHITE) return pieceMatrix[piece.type][point.height][point.width];
 
 	if(piece.team == BLACK) return pieceMatrix[piece.type][B_HEIGHT - point.height - 1][point.width];
@@ -344,23 +304,6 @@ void switch_array_moves(Move* moves, int first, int second)
 
 	moves[first] = secondMove;
 	moves[second] = firstMove;
-}
-
-bool board_piece_exposed(Board board, Info info, Point point)
-{
-	Point start; Move move;
-	for(int height = 0; height < B_HEIGHT; height += 1)
-	{
-		for(int width = 0; width < B_WIDTH; width += 1)
-		{
-			start = (Point) {height, width};
-			move = (Move) {start, point};
-
-			if(!board_points_enemy(board, point, start)) continue;
-			if(piece_move_acceptable(board, move, info)) return true;
-		}
-	}
-	return false;
 }
 
 /*

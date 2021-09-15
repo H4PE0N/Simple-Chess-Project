@@ -5,8 +5,6 @@ bool piece_possible_moves(Move* moves, Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
 
-	if(board_point_empty(board, start)) return false;
-
 	switch(board_point_type(board, start))
 	{
 		case(EMPTY): return false;

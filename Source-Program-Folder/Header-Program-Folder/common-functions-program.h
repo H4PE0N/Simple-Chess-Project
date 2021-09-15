@@ -12,6 +12,8 @@ bool chess_team_string(char*, Team);
 
 bool points_inside_board(Point, Point);
 
+bool piece_team_exists(Team);
+
 Piece board_point_piece(Board, Point);
 
 void append_board_piece(Board, Point, Piece);

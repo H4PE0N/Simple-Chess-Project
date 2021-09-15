@@ -3,6 +3,8 @@
 
 bool king_inside_check(Board board, Point king)
 {
+	if(!point_inside_board(king)) return false;
+
 	// If it isn't a king, it cant be in check
 	if(board_point_type(board, king) != KING) return false;
 
