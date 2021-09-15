@@ -14,6 +14,7 @@
 
 #define MOVE_UP_INPUT MOVE_UP_LINES(1);
 
+
 void display_chess_board(Board);
 
 bool board_point_string(char*, Point);
