@@ -1,13 +1,7 @@
 
-change the board design
-
-"int" and "char" is uninitialized values? By some reason
-
-implement B_LEFT and B_RIGHT
+change the board design (SDL graphics)
 
 pointer to those variables that is going to get changed (array int* -> int** );
-
-change "move_board_piece" to "execute_..."
 
 "update kings point", move that somewhere else
 

@@ -1,6 +1,28 @@
 
 #include "../Header-Program-Folder/global-include-header.h"
 
+void execute_piece_move(Board board, Move move, Info* info)
+{
+	Team team = board_point_team(board, move.start);
+
+	switch(board_point_type(board, move.start))
+	{
+		case(EMPTY): break;
+
+		case(PAWN): execute_pawn_move(board, move); break;
+
+		case(ROOK): execute_rook_move(board, move, info); break;
+
+		case(KNIGHT): execute_knight_move(board, move); break;
+
+		case(BISHOP): execute_bishop_move(board, move); break;
+
+		case(QUEEN): execute_queen_move(board, move); break;
+
+		case(KING): execute_king_move(board, move, info); break;
+	}
+}
+
 void execute_pawn_move(Board board, Move move)
 {
 	move_board_piece(board, move.start, move.stop);
@@ -12,7 +34,7 @@ void execute_rook_switch(Board board, Move move, Info* info)
 {
 	Point start = move.start, stop = move.stop;
 
-	Team team = board[start.height][start.width].team;
+	Team team = board_point_team(board, start);
 	RKSwitch* RKS = (team == BLACK) ? &info->blackRKS : &info->whiteRKS;
 
 	int difference = (stop.width - start.width);
@@ -33,15 +55,15 @@ void execute_rook_switch(Board board, Move move, Info* info)
 
 void execute_rook_move(Board board, Move move, Info* info)
 {
-	Point start = move.start;
+	Point start = move.start, stop = move.stop;
 
-	Team team = board[start.height][start.width].team;
+	Team team = board_point_team(board, start);
 	RKSwitch* RKS = (team == BLACK) ? &info->blackRKS : &info->whiteRKS;
 
-	move_board_piece(board, move.start, move.stop);
+	move_board_piece(board, start, stop);
 
-	if(start.width == 0) RKS->left = false;
-	if(start.width == 7) RKS->right = false;
+	if(start.width == 0) 				RKS->left = false;
+	if(start.width == (B_WIDTH - 1))	RKS->right = false;
 }
 
 void execute_knight_move(Board board, Move move)
@@ -74,7 +96,8 @@ void update_king_point(Info* info, Team team, Point point)
 void execute_king_move(Board board, Move move, Info* info)
 {
 	Point start = move.start, stop = move.stop;
-	Team team = board[start.height][start.width].team;
+
+	Team team = board_point_team(board, start);
 
 	turn_off_rook_switch(info, team);
 	update_king_point(info, team, stop);
@@ -87,7 +110,7 @@ void make_pawn_queen(Board board, Point point)
 	Team team = board_point_team(board, point);
 
 	bool whiteQueen = (team == WHITE && point.height == 0);
-	bool blackQueen = (team == BLACK && point.height == 7);
+	bool blackQueen = (team == BLACK && point.height == (B_HEIGHT - 1));
 
 	if(whiteQueen || blackQueen)
 	{

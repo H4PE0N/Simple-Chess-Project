@@ -42,15 +42,15 @@ bool piece_prevent_check(Board board, Point start, Info info)
 
 		case(PAWN): return pawn_prevent_check(board, info, start);
 
-		case(ROOK): return pawn_prevent_check(board, info, start);
+		case(ROOK): return rook_prevent_check(board, info, start);
 
-		case(KNIGHT): return pawn_prevent_check(board, info, start);
+		case(KNIGHT): return knight_prevent_check(board, info, start);
 
-		case(BISHOP): return pawn_prevent_check(board, info, start);
+		case(BISHOP): return bishop_prevent_check(board, info, start);
 
-		case(QUEEN): return pawn_prevent_check(board, info, start);
+		case(QUEEN): return queen_prevent_check(board, info, start);
 
-		case(KING): return pawn_prevent_check(board, info, start);
+		case(KING): return king_prevent_check(board, info, start);
 	}
 	return false;
 }
@@ -343,13 +343,18 @@ bool move_prevent_check(Board board, Move move, Info info)
 
 	if(!move_inside_board(move)) return false;
 
-	Piece piece = board_point_piece(board, start);
 	if(board_point_empty(board, start)) return false;
 
-	Board boardCopy = copy_chess_board(board);
-	move_board_piece(boardCopy, start, stop);
+	Piece piece = board_point_piece(board, start);
 
-	Point king = team_king_point(info, piece.team);
+	Board boardCopy = copy_chess_board(board);	
+	Info dummyInfo = info;
+
+	execute_piece_move(boardCopy, move, &dummyInfo);
+
+	Point king = team_king_point(dummyInfo, piece.team);
+
+	// This is a fail-safe, if the king point dont update
 	if(piece.type == KING) king = stop;
 
 	if(!king_inside_check(boardCopy, king))

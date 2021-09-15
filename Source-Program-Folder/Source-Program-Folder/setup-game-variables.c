@@ -25,15 +25,15 @@ bool setup_game_info(Info* info, Board board)
 	RKSwitch whiteRKS = extract_rks_values(board, WHITE);
 	RKSwitch blackRKS = extract_rks_values(board, BLACK);
 
-	Point bKing, wKing;
+	Point blackKing, whiteKing;
 
-	if(!board_piece_point(&bKing, board, (Piece) {KING, BLACK})) return false;
-	if(!board_piece_point(&wKing, board, (Piece) {KING, WHITE})) return false;
+	if(!board_piece_point(&blackKing, board, (Piece) {KING, BLACK})) return false;
+	if(!board_piece_point(&whiteKing, board, (Piece) {KING, WHITE})) return false;
 
 	Move lastMove = {(Point) {-1, -1}, (Point) {-1, -1}};
 	int turns = 0;
 
-	*info = (Info) {WHITE, whiteRKS, blackRKS, wKing, bKing, turns, lastMove};
+	*info = (Info) {WHITE, whiteRKS, blackRKS, whiteKing, blackKing, turns, lastMove};
 
 	return true;
 }
@@ -74,9 +74,8 @@ RKSwitch extract_rks_values(Board board, Team team)
 
 		// Now the height is right;
 
-		if(currRook.width == B_LEFT) rKSwitch.left = true;
-
-		if(currRook.width == B_RIGHT) rKSwitch.right = true;
+		if(currRook.width == 0) 			rKSwitch.left = true;
+		if(currRook.width == (B_WIDTH - 1)) rKSwitch.right = true;
 	}
 
 	free(rooks);

@@ -4,6 +4,8 @@
 
 #include "global-include-header.h"
 
+void execute_piece_move(Board, Move, Info*);
+
 void execute_pawn_move(Board, Move);
 
 void execute_rook_move(Board, Move, Info*);

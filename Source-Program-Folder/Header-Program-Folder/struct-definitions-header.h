@@ -60,9 +60,6 @@ typedef struct TypeValue
 #define MIN_VAL -100000
 #define MAX_VAL +100000
 
-#define B_RIGHT 7
-#define B_LEFT  0
-
 #define STD_DEPTH 4
 
 #define SAVE_FILE	"../Source-Program-Folder/Data-Program-Folder/saved-chess-board.txt"
