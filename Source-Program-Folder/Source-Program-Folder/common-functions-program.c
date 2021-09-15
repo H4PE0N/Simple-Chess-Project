@@ -191,7 +191,7 @@ Board copy_chess_board(Board board)
 Point team_king_point(Info info, Team team)
 {
 	if(team == NONE) return (Point) {-1, -1};
-	return (team == WHITE) ? info.wKing : info.bKing;
+	return (team == WHITE) ? info.whiteKing : info.blackKing;
 }
 
 bool board_points_team(Board board, Point start, Point stop)

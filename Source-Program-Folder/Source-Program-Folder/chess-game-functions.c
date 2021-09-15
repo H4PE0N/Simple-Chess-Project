@@ -33,8 +33,8 @@ bool update_kings_point(Board board, Info* info)
 	if(!board_piece_point(&blackKing, board, (Piece) {KING, BLACK})) return false;
 	if(!board_piece_point(&whiteKing, board, (Piece) {KING, WHITE})) return false;
 
-	info->bKing = blackKing;
-	info->wKing = whiteKing;
+	info->blackKing = blackKing;
+	info->whiteKing = whiteKing;
 
 	return true;
 }

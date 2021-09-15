@@ -42,8 +42,8 @@ typedef struct Info
 	Team currTeam;
 	RKSwitch whiteRKS;
 	RKSwitch blackRKS;
-	Point wKing;
-	Point bKing;
+	Point whiteKing;
+	Point blackKing;
 	int turns;
 	Move lastMove;
 } Info;

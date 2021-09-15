@@ -67,7 +67,7 @@ void turn_off_rook_switch(Info* info, Team team)
 
 void update_king_point(Info* info, Team team, Point point)
 {
-	Point* kingP = (team == WHITE) ? &info->wKing : &info->bKing;
+	Point* kingP = (team == WHITE) ? &info->whiteKing : &info->blackKing;
 	*kingP = (Point) {point.height, point.width};
 }
 

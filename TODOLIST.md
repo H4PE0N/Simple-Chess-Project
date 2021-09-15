@@ -9,18 +9,8 @@ pointer to those variables that is going to get changed (array int* -> int** );
 
 change "move_board_piece" to "execute_..."
 
-change "wKing" to "whiteKing"
-
 "update kings point", move that somewhere else
 
 make good controls in functions (out-of-bounds ... etc)
 
-
-make every function more efficient
-- instead of 8x8 brute force; make it efficient
-
-
 Create Check-Indicator
-
-As a move, you should have the options [help, hint]
-You should also have the option to save the game [save]
