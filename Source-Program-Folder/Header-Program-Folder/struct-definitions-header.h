@@ -65,4 +65,7 @@ typedef struct TypeValue
 
 #define STD_DEPTH 4
 
+#define SAVE_FILE	"../Source-Program-Folder/Data-Program-Folder/saved-chess-board.txt"
+#define STD_FILE	"../Source-Program-Folder/Data-Program-Folder/default-chess-board.txt"
+
 #endif

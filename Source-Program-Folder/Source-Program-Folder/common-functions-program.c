@@ -17,6 +17,19 @@ bool point_inside_board(Point point)
 	return (heightValid && widthValid);
 }
 
+bool chess_team_string(char* string, Team team)
+{
+	switch(team)
+	{
+		case (NONE): strcpy(string, "NONE"); return true;
+
+		case(WHITE): strcpy(string, "WHITE"); return true;
+
+		case(BLACK): strcpy(string, "BLACK"); return true;
+	}
+	return false;
+}
+
 bool points_inside_board(Point first, Point second)
 {
 	bool firstValid = point_inside_board(first);
@@ -34,15 +47,12 @@ void free_chess_board(Board board)
 	free(board);
 }
 
-#define BOARD_FILE "../Source-Program-Folder/Data-Program-Folder/default-chess-board.txt"
-
 void extract_file_name(char* filename, char* arguments[], int amount)
 {
 	if(amount >= 2) strcpy(filename, arguments[1]);
 
-	else strcpy(filename, BOARD_FILE);
+	else strcpy(filename, STD_FILE);
 }
-
 
 int create_random_number(int minimum, int maximum)
 {
@@ -90,6 +100,7 @@ bool board_piece_equal(Piece first, Piece second)
 bool board_piece_points(Point* points, Board board, Piece piece)
 {
 	Piece currPiece; int index = 0;
+	
 	for(int height = 0; height < B_HEIGHT; height = height + 1)
 	{
 		for(int width = 0; width < B_WIDTH; width = width + 1)
@@ -122,8 +133,6 @@ bool board_piece_point(Point* point, Board board, Piece piece)
 
 	if(!board_piece_points(piecePoints, board, piece))
 	{
-		printf("There was no pieces Team=%d Type=%d\n", piece.team, piece.type);
-
 		free(piecePoints);
 
 		return false;
@@ -131,8 +140,6 @@ bool board_piece_point(Point* point, Board board, Piece piece)
 
 	if(point_array_amount(piecePoints) != 1)
 	{
-		printf("The amount was not 1: %d\n", point_array_amount(piecePoints));
-
 		free(piecePoints);
 
 		return false;

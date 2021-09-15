@@ -34,7 +34,7 @@ bool chess_move_string(char* string, Move move)
 	if(!board_point_string(startString, start)) return false;
 	if(!board_point_string(stopString, stop)) return false;
 
-	sprintf(string, "%s -> %s", startString, stopString);
+	sprintf(string, "%s->%s", startString, stopString);
 
 	return true;
 }
@@ -160,21 +160,101 @@ bool parse_chess_move(Move* move, Board board, Info info, char string[])
 {
 	convert_string_upper(string, strlen(string));
 
-	if(!strcmp(string, "RANDOM"))
+	if(!strcmp(string, "HELP"))
 	{
-		return best_possible_move(move, board, info, STD_DEPTH, info.currTeam);
+		return help_move_parser(move, board, info, string);
+	}
+	else if(!strcmp(string, "HINT"))
+	{
+		return hint_move_parser(move, board, info, string);
+	}
+	else if(!strcmp(string, "SAVE"))
+	{
+		return save_move_parser(move, board, info, string);
+	}
+	else
+	{
+		return default_move_parser(move, board, info, string);
+	}
+	return false;
+}
+
+bool help_move_parser(Move* move, Board board, Info info, char string[])
+{
+	return best_possible_move(move, board, info, STD_DEPTH, info.currTeam);
+}
+
+bool hint_move_parser(Move* move, Board board, Info info, char string[])
+{
+	Move hintMove;
+	if(!best_possible_move(&hintMove, board, info, STD_DEPTH, info.currTeam)) return false;
+
+	char moveString[20]; 
+	if(!chess_move_string(moveString, hintMove)) return false;
+
+	CLEAR_LINE; printf("[!] HINT OF GOOD MOVE: [%s]\n", moveString);
+
+	return false;
+}
+
+void display_found_move(Move move, int value, time_t time)
+{
+	char moveString[20]; chess_move_string(moveString, move);
+
+	CLEAR_LINE; printf("[!] BEST MOVE: [%s] VALUE: [%d] TIME: [%ds]\n", moveString, value, (int) time);
+}
+
+bool save_move_parser(Move* move, Board board, Info info, char string[])
+{
+	FILE* filePointer = fopen(SAVE_FILE, "w");
+
+	if(filePointer == NULL)
+	{
+		file_pointer_error(SAVE_FILE);
+
+		fclose(filePointer); return false;
 	}
 
+	Point point;
+
+	for(int height = 0; height < B_HEIGHT; height += 1)
+	{
+		char boardLine[20];
+
+		for(int width = 0; width < B_WIDTH; width += 1)
+		{
+			point = (Point) {height, width};
+			int type = board_point_type(board, point);
+			int team = board_point_team(board, point);
+
+			boardLine[width * 2]		= (type + '0');
+			boardLine[(width * 2) + 1]	= (team + '0');
+		}
+
+		boardLine[B_WIDTH * 2] = '\n';
+		fwrite(boardLine, sizeof(char), 17, filePointer);
+	}
+
+	CLEAR_LINE; printf("[!] SAVED THE CURRENT BOARD!\n");
+
+	fclose(filePointer); return true;
+}
+
+bool default_move_parser(Move* move, Board board, Info info, char string[])
+{
 	char seperator[] = " ";
-	char* start = strtok(string, seperator);
-	char* stop = strtok(NULL, seperator);
 
-	if(start == NULL || stop == NULL) return false;
+	char* startString = strtok(string, seperator);
+	char* stopString = strtok(NULL, seperator);
 
-	if(!parse_chess_position(&move->start, start)) return false;
-	if(!parse_chess_position(&move->stop, stop)) return false;
+	if(startString == NULL || stopString == NULL) return false;
 
-	return true;
+	Point start, stop;
+
+	if(!parse_chess_position(&start, startString)) return false;
+	if(!parse_chess_position(&stop, stopString)) return false;
+
+	*move = (Move) {start, stop}; return true;
 }
 
 bool parse_chess_position(Point* point, char string[])

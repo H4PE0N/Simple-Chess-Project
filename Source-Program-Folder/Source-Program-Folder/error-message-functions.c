@@ -17,6 +17,18 @@ void setup_info_error(Board board)
 	display_error_message("THE BOARD INFO COULD NOT BE EXTRACTED!");
 }
 
+void can_not_find_move(Board board, Info info, Team team)
+{
+	CLEAR_LINE; printf("\n");
+	display_error_header("COMPUTER MOVE ERROR");
+	display_chess_board(board);
+
+	char teamString[20]; chess_team_string(teamString, team);
+	CLEAR_LINE; printf("TEAM [%s] CANT FIND A MOVE ON THE BOARD!\n", teamString);
+
+	display_error_message("THE COMPUTER COULD NOT FIND A MOVE!");
+}
+
 void file_pointer_error(char filename[])
 {
 	CLEAR_LINE; printf("\n"); 

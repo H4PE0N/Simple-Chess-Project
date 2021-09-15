@@ -8,6 +8,8 @@ bool number_inside_bounds(int, int, int);
 
 bool point_inside_board(Point);
 
+bool chess_team_string(char*, Team);
+
 bool points_inside_board(Point, Point);
 
 Piece board_point_piece(Board, Point);

@@ -24,9 +24,19 @@ void display_chess_info(Info);
 
 bool input_current_move(char*);
 
+void display_found_move(Move, int, time_t);
+
 bool input_string_variable(char*);
 
 bool parse_chess_move(Move*, Board, Info, char[]);
+
+bool default_move_parser(Move*, Board, Info, char[]);
+
+bool help_move_parser(Move*, Board, Info, char[]);
+
+bool hint_move_parser(Move*, Board, Info, char[]);
+
+bool save_move_parser(Move*, Board, Info, char[]);
 
 bool parse_chess_position(Point*, char[]);
 

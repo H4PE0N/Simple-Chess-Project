@@ -9,6 +9,7 @@ pointer to those variables that is going to get changed (array int* -> int** );
 
 change "move_board_piece" to "execute_..."
 
+change "wKing" to "whiteKing"
 
 "update kings point", move that somewhere else
 
