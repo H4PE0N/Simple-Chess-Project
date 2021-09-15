@@ -58,16 +58,16 @@ bool moving_pawn_valid(Board board, Point start, Point stop)
 
 bool rook_starting_bool(Point point, Team team)
 {
-	if(team == WHITE && point.height != 7) return false;
-	if(team == BLACK && point.height != 0) return false;
+	if(team == WHITE && point.height != (B_HEIGHT - 1)) return false;
+	if(team == BLACK && point.height != 0) 				return false;
 
-	return (point.width == 0 || point.width == 7);
+	return (point.width == 0 || point.width == (B_WIDTH - 1));
 }
 
 bool king_starting_bool(Point point, Team team)
 {
-	if(team == WHITE && point.height != 7) return false;
-	if(team == BLACK && point.height != 0) return false;
+	if(team == WHITE && point.height != (B_HEIGHT - 1)) return false;
+	if(team == BLACK && point.height != 0) 				return false;
 
 	return (point.width == 4);
 }
