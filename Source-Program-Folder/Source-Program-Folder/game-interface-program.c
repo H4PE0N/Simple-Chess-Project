@@ -4,10 +4,10 @@
 const char* symbolTeams[] = {FG_DEFAULT, FG_RED, FG_RED};
 const char* squareTeams[] = {BG_DEFAULT, BG_WHITE, BG_BLACK};
 
-// const char* blackSymbols[] = {" ", "P", "B", "H", "R", "Q", "K"};
-// const char* whiteSymbols[] = {" ", "p", "b", "h", "r", "q", "k"};
-const char* blackSymbols[] = {" ", "♟", "♝", "♞", "♜", "♛", "♚"};
-const char* whiteSymbols[] = {" ", "♙", "♗", "♘", "♖", "♕", "♔"};
+const char* blackSymbols[] = {" ", "P", "B", "H", "R", "Q", "K"};
+const char* whiteSymbols[] = {" ", "p", "b", "h", "r", "q", "k"};
+// const char* blackSymbols[] = {" ", "♟", "♝", "♞", "♜", "♛", "♚"};
+// const char* whiteSymbols[] = {" ", "♙", "♗", "♘", "♖", "♕", "♔"};
 
 const char letters[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
 const char numbers[] = {'8', '7', '6', '5', '4', '3', '2', '1'};

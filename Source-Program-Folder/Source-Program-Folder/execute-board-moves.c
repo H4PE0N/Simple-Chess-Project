@@ -5,8 +5,6 @@ void execute_piece_move(Board board, Move move, Info* info)
 {
 	if(!move_inside_board(move)) return;
 
-	Team team = board_point_team(board, move.start);
-
 	switch(board_point_type(board, move.start))
 	{
 		case(EMPTY): break;

@@ -18,7 +18,7 @@
 
 // #include <iostream>
 
-#include <SDL2/SDL.h>
+#include "../SDL-Library-Programs/include/SDL2/SDL.h"
 
 // This is all header programs:
 
