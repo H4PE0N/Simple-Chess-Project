@@ -16,6 +16,10 @@
 
 #include <unistd.h>
 
+// #include <iostream>
+
+#include <SDL2/SDL.h>
+
 // This is all header programs:
 
 #include "struct-definitions-header.h"

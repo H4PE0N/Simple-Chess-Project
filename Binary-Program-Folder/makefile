@@ -11,8 +11,12 @@ HEADER_PROGRAMS := $(wildcard $(HEADER_FOLDER)/*.h)
 OBJECT_PROGRAMS := $(patsubst $(SOURCE_FOLDER)/%.c, $(OBJECT_FOLDER)/%.o, $(SOURCE_PROGRAMS))
 
 COMPILE_COMPILOR := gcc
-COMPEXE_FLAGS := -lm # -Wall -Werror
-COMPOBJ_FLAGS := # -Wall -Werror
+COMPILE_FLAGS := -Wall -Werror --std=c99
+
+SDL_FLAGS := -lSDL2_image `sdl2-config --libs --cflags`
+
+COMPEXE_FLAGS := $(COMPILE_FLAGS) $(SDL_FLAGS) -lm 
+COMPOBJ_FLAGS := $(COMPILE_FLAGS)
 
 .PRECIOUS: $(OBJECT_PROGRAMS)
 
