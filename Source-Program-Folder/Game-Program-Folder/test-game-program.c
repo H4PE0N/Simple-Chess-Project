@@ -82,6 +82,10 @@ int main(int argAmount, char* arguments[])
 		}
 	}
 
+	SDL_RenderPresent(renderer);
+
+	SDL_Delay(2000);
+
 	
 
 	rectangle = (SDL_Rect) {20, 20, 60, 60};

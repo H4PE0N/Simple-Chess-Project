@@ -16,8 +16,6 @@
 
 #include <unistd.h>
 
-// #include <iostream>
-
 #include "../SDL-Library-Programs/include/SDL2/SDL.h"
 
 // This is all header programs:
