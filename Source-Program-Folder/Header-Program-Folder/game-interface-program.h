@@ -15,6 +15,13 @@
 #define MOVE_UP_INPUT MOVE_UP_LINES(1);
 
 
+void render_chess_board(SDL_Renderer*);
+
+bool render_board_piece(SDL_Renderer*, Piece, Point);
+
+bool extract_piece_image(SDL_Surface*, Piece);
+
+
 void display_chess_board(Board);
 
 bool board_point_string(char*, Point);

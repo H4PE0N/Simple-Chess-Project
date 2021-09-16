@@ -65,4 +65,10 @@ typedef struct TypeValue
 #define SAVE_FILE	"../Source-Program-Folder/Data-Program-Folder/saved-chess-board.txt"
 #define STD_FILE	"../Source-Program-Folder/Data-Program-Folder/default-chess-board.txt"
 
+#define SCREEN_HEIGHT	800
+#define SCREEN_WIDTH	800
+
+#define SQUARE_HEIGHT 100
+#define SQUARE_WIDTH 100
+
 #endif

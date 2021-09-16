@@ -1,12 +1,6 @@
 
 #include "../Header-Program-Folder/global-include-header.h"
 
-#define SCREEN_HEIGHT	800
-#define SCREEN_WIDTH	800
-
-#define SQUARE_HEIGHT 100
-#define SQUARE_WIDTH 100
-
 // gcc ../Source-Program-Folder/Game-Program-Folder/test-game-program.c -ISDL2-64/include -LSDL2-64/lib -Wall -lmingw32 -lSDL2main -lSDL2 -o main
 
 int main(int argAmount, char* arguments[])
@@ -57,43 +51,18 @@ int main(int argAmount, char* arguments[])
 
 
 
-	SDL_Color white = {255, 255, 255};
-	SDL_Color black = {0, 0, 0};
-	SDL_Color currentColor;
-
-	SDL_Rect rectangle;
-
-	int realHeight, realWidth;
-
-	for(int height = 0; height < 8; height += 1)
-	{
-		for(int width = 0; width < 8; width += 1)
-		{
-			realHeight = (height * SQUARE_HEIGHT);
-			realWidth = (width * SQUARE_WIDTH);
-
-			rectangle = (SDL_Rect) {realWidth, realHeight, SQUARE_WIDTH, SQUARE_HEIGHT};
-
-			currentColor = (SDL_Color) (((height + width) % 2 == 0) ? white : black);
-
-			SDL_SetRenderDrawColor(renderer, currentColor.r, currentColor.b, currentColor.g, 255);
-
-			SDL_RenderFillRect(renderer, &rectangle);
-		}
-	}
-
-	SDL_RenderPresent(renderer);
+	render_chess_board(renderer);
 
 	SDL_Delay(2000);
 
 	
+	Piece piece = {KING, BLACK};
+	Point point = {2, 3};
 
-	rectangle = (SDL_Rect) {20, 20, 60, 60};
-
-	SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-
-	SDL_RenderFillRect(renderer, &rectangle);
-
+	if(!render_board_piece(renderer, piece, point))
+	{
+		printf("Could not render piece!\n");
+	}
 
 	SDL_RenderPresent(renderer);
 	// ================================================================================================

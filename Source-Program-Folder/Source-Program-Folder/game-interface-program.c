@@ -12,8 +12,100 @@ const char* whiteSymbols[] = {" ", "p", "b", "h", "r", "q", "k"};
 const char letters[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
 const char numbers[] = {'8', '7', '6', '5', '4', '3', '2', '1'};
 
+const SDL_Color whiteColor = {0, 255, 255};
+const SDL_Color blackColor = {0, 0, 255};
+
+
 #define DIS_LETS "  | A | B | C | D | E | F | G | H |"
 #define DIS_ROW "--+---+---+---+---+---+---+---+---+--"
+
+void render_chess_board(SDL_Renderer* renderer)
+{
+	SDL_Color white = {255, 255, 255};
+	SDL_Color black = {0, 0, 0};
+	SDL_Color currentColor;
+
+	SDL_Rect rectangle;
+
+	int realHeight, realWidth;
+
+	for(int height = 0; height < 8; height += 1)
+	{
+		for(int width = 0; width < 8; width += 1)
+		{
+			realHeight = (height * SQUARE_HEIGHT);
+			realWidth = (width * SQUARE_WIDTH);
+
+			rectangle = (SDL_Rect) {realWidth, realHeight, SQUARE_WIDTH, SQUARE_HEIGHT};
+
+			currentColor = (SDL_Color) (((height + width) % 2 == 0) ? white : black);
+
+			SDL_SetRenderDrawColor(renderer, currentColor.r, currentColor.b, currentColor.g, 255);
+
+			SDL_RenderFillRect(renderer, &rectangle);
+		}
+	}
+
+	SDL_RenderPresent(renderer);
+}
+
+bool render_board_piece(SDL_Renderer* renderer, Piece piece, Point point)
+{
+	if(!point_inside_board(point)) return false;
+	if(!piece_team_exists(piece.team)) return false;
+
+	int height = (point.height * SQUARE_HEIGHT);
+	int width = (point.width * SQUARE_WIDTH);
+
+	/*SDL_Surface* image;
+	if(!extract_piece_image(image, piece))
+	{
+		return false;
+	}
+
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
+	SDL_FreeSurface(image);
+
+	if(texture == NULL)
+	{
+		printf("Read image error %s\n", SDL_GetError());
+		return false;
+	}
+
+	SDL_RenderCopy(renderer, texture, NULL, NULL);
+	SDL_DestroyTexture(texture);*/
+
+	SDL_Rect rectangle = {width, height, SQUARE_WIDTH, SQUARE_HEIGHT};
+
+	SDL_Color color = (piece.team == WHITE) ? whiteColor : blackColor;
+
+
+	SDL_SetRenderDrawColor(renderer, color.r, color.b, color.g, 255);
+
+	SDL_RenderFillRect(renderer, &rectangle);
+
+
+	SDL_RenderPresent(renderer);
+
+	return true;
+}
+
+/*bool extract_piece_image(SDL_Surface* image, Piece piece)
+{
+	char filename[200] = "../Piece-Image-Folder/blackKing.png";
+
+	SDL_Surface* readImage = IMG_Load(filename);
+
+	if(readImage == NULL)
+	{
+		printf("Read image error %s\n", SDL_GetError());
+		return false;
+	}
+
+	*image = *readImage;
+
+	return true;
+}*/
 
 bool board_point_string(char* string, Point point)
 {

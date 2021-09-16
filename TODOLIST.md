@@ -1,6 +1,17 @@
 
 change the board design (SDL graphics)
 
+
+change the datatypes (they are to slow) to integers
+
+https://www.youtube.com/watch?v=kwQk5A26cis&t=246s
+
+
+start using FEN board.
+
+
+
+
 pointer to those variables that is going to get changed (array int* -> int** );
 
 Create Check-Indicator
