@@ -16,7 +16,8 @@ COMPILE_FLAGS := -Wall -Werror --std=c99
 SDL_INCLUDE_FLAG := -I../Source-Program-Folder/SDL-Library-Programs/include
 SDL_LIB_FLAG := -L../Source-Program-Folder/SDL-Library-Programs/lib
 
-SDL_FLAGS := $(SDL_INCLUDE_FLAG) $(SDL_LIB_FLAG) -lmingw32 -lSDL2main -lSDL2
+# SDL_FLAGS := $(SDL_INCLUDE_FLAG) $(SDL_LIB_FLAG) -lmingw32 -lSDL2main -lSDL2
+SDL_FLAGS := -lSDL2 -lSDL2main -lSDL2_image
 
 EXE_LINKERS := $(SDL_FLAGS) -lm
 

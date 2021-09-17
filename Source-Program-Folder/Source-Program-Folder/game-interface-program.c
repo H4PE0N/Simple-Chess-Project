@@ -21,8 +21,8 @@ const SDL_Color blackColor = {0, 0, 255};
 
 void render_chess_board(SDL_Renderer* renderer)
 {
-	SDL_Color white = {255, 255, 255};
-	SDL_Color black = {0, 0, 0};
+	SDL_Color white = {255, 247, 204};
+	SDL_Color black = {70, 50, 0};
 	SDL_Color currentColor;
 
 	SDL_Rect rectangle;
@@ -45,67 +45,98 @@ void render_chess_board(SDL_Renderer* renderer)
 			SDL_RenderFillRect(renderer, &rectangle);
 		}
 	}
+}
 
-	SDL_RenderPresent(renderer);
+bool render_full_board(SDL_Renderer* renderer, Board board)
+{
+	render_chess_board(renderer);
+
+	Piece piece; Point point;
+	
+	for(int height = 0; height < B_HEIGHT; height += 1)
+	{
+		for(int width = 0; width < B_WIDTH; width += 1)
+		{
+			point = (Point) {height, width};
+			piece = (Piece) board_point_piece(board, point);
+
+			//printf("Piece = [%d %d]\n", piece.type, piece.team);
+
+			if(!render_board_piece(renderer, piece, point))
+			{
+				printf("Could not render piece!\n");
+
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 bool render_board_piece(SDL_Renderer* renderer, Piece piece, Point point)
 {
 	if(!point_inside_board(point)) return false;
-	if(!piece_team_exists(piece.team)) return false;
+	if(piece.type == EMPTY || piece.team == NONE) return true;
 
 	int height = (point.height * SQUARE_HEIGHT);
 	int width = (point.width * SQUARE_WIDTH);
 
-	/*SDL_Surface* image;
-	if(!extract_piece_image(image, piece))
+	SDL_Rect position = {width, height, SQUARE_WIDTH, SQUARE_HEIGHT};
+
+	SDL_Surface* image = extract_piece_image(piece);
+
+	if(image == NULL)
 	{
+		printf("ErrorG, could not extract!\n");
 		return false;
 	}
 
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
-	SDL_FreeSurface(image);
-
+	
 	if(texture == NULL)
 	{
 		printf("Read image error %s\n", SDL_GetError());
 		return false;
 	}
 
-	SDL_RenderCopy(renderer, texture, NULL, NULL);
-	SDL_DestroyTexture(texture);*/
+	SDL_RenderCopy(renderer, texture, NULL, &position);
 
-	SDL_Rect rectangle = {width, height, SQUARE_WIDTH, SQUARE_HEIGHT};
-
-	SDL_Color color = (piece.team == WHITE) ? whiteColor : blackColor;
-
-
-	SDL_SetRenderDrawColor(renderer, color.r, color.b, color.g, 255);
-
-	SDL_RenderFillRect(renderer, &rectangle);
-
-
-	SDL_RenderPresent(renderer);
+	SDL_DestroyTexture(texture);
+	SDL_FreeSurface(image);
 
 	return true;
 }
 
-/*bool extract_piece_image(SDL_Surface* image, Piece piece)
+#define PIECE_FOLDER "../Source-Program-Folder/Piece-Image-Folder"
+
+SDL_Surface* extract_piece_image(Piece piece)
 {
-	char filename[200] = "../Piece-Image-Folder/blackKing.png";
+	char filename[200]; extract_piece_filename(filename, piece);
 
-	SDL_Surface* readImage = IMG_Load(filename);
+	return IMG_Load(filename);
+}
 
-	if(readImage == NULL)
-	{
-		printf("Read image error %s\n", SDL_GetError());
-		return false;
-	}
+const char* typeStrings[] = {"EMPTY", "PAWN", "BISHOP", "KNIGHT", "ROOK", "QUEEN", "KING"};
+const char* teamStrings[] = {"NONE", "WHITE", "BLACK"};
 
-	*image = *readImage;
+bool extract_piece_filename(char* filename, Piece piece)
+{
+	if(!number_inside_bounds(piece.type, 0, 6)) return false;
+	if(!number_inside_bounds(piece.team, 0, 2)) return false;
+
+	const char* typeString = typeStrings[piece.type];
+	const char* teamString = teamStrings[piece.team];
+
+	char file[200];
+
+	sprintf(file, "%s-%s.png", teamString, typeString);
+
+	sprintf(filename, "%s/%s", PIECE_FOLDER, file);
+
+	//printf("Filename: %s\n", filename);
 
 	return true;
-}*/
+}
 
 bool board_point_string(char* string, Point point)
 {

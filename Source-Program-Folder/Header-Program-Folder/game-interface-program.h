@@ -19,7 +19,11 @@ void render_chess_board(SDL_Renderer*);
 
 bool render_board_piece(SDL_Renderer*, Piece, Point);
 
-bool extract_piece_image(SDL_Surface*, Piece);
+SDL_Surface* extract_piece_image(Piece);
+
+bool extract_piece_filename(char*, Piece);
+
+bool render_full_board(SDL_Renderer*, Board);
 
 
 void display_chess_board(Board);

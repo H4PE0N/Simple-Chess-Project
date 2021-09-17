@@ -11,6 +11,13 @@ int main(int argAmount, char* arguments[])
 		return true;
 	}
 
+	if(IMG_Init(IMG_INIT_PNG) == 0) 
+	{
+		printf("Init Error: %s\n", SDL_GetError());
+		SDL_Quit();
+		return true;
+	}
+
 	char windowTitle[20] = "CHESS BOARD WINDOW";
 
 	//												SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED
@@ -23,75 +30,71 @@ int main(int argAmount, char* arguments[])
 		return true;
 	}
 
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	// ================================================================================================
+	SDL_Surface* screenSurface = SDL_GetWindowSurface( window );
 
+	// SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ) );
+	// ================================================================================================
+
+	SDL_Renderer* renderer = SDL_CreateSoftwareRenderer(screenSurface);
 	if(renderer == NULL)
 	{
 		printf("Renderer Error: %s\n", SDL_GetError());
+
+		SDL_FreeSurface(screenSurface);
+
 		SDL_DestroyWindow(window);
+
 		SDL_Quit();
+
 		return true;
 	}
 
+	SDL_RenderPresent(renderer);
+
+	SDL_UpdateWindowSurface(window);
+
+    SDL_Event event;
+    SDL_PollEvent(&event);
 
 	// ================================================================================================
-	/*SDL_Surface* screenSurface = SDL_GetWindowSurface( window );
-
-	SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ) );
-
-	SDL_UpdateWindowSurface( window );
-
-	SDL_FreeSurface(screenSurface);*/
-	// ================================================================================================
-
-
-	// ================================================================================================
-	SDL_RenderClear(renderer);
-
-
-
-
-	render_chess_board(renderer);
-
-	SDL_Delay(2000);
-
 	
-	Piece piece = {KING, BLACK};
-	Point point = {2, 3};
+	srand(time(NULL));
 
-	if(!render_board_piece(renderer, piece, point))
+	char filename[200]; extract_file_name(filename, arguments, argAmount);
+
+	Board board; Info info;
+
+	if(!setup_game_variables(&board, &info, filename))
 	{
-		printf("Could not render piece!\n");
+		setup_variables_error();
+
+		free_chess_board(board);
+
+		return false;
 	}
 
-	SDL_RenderPresent(renderer);
-	// ================================================================================================
 
 
-	// SDL_Surface* window_surface = SDL_GetWindowSurface(window);
-	 //    SDL_Surface* image_surface = SDL_LoadBMP("../../bot-against-chess-com.PNG");
 
-	 //    SDL_BlitSurface(image_surface, NULL, window_surface, NULL);
+	
+	if(!test_game_loop(board, &info, renderer, window))
+	{
+		printf("The game was ended!\n");
+	}
+	
 
-	 //    SDL_UpdateWindowSurface(window);
+	
 
 
-	bool running = 1;
-    while(running){
-        SDL_Event event;
-        while(SDL_PollEvent(&event)){
-            switch(event.type){
-                case SDL_QUIT:
-                    running = 0;
-                    break;
+	
 
-                default:
-                    break;
-            }
-        }
-    }
+	// free_chess_board(board);
+	
+	SDL_FreeSurface(screenSurface);
 
 	SDL_DestroyWindow(window);
+
 	SDL_Quit();
 
 	return false;
@@ -115,6 +118,40 @@ int main(int argAmount, char* arguments[])
 	free_chess_board(board);
 
 	return false;*/
+}
+
+bool test_game_loop(Board board, Info* info, SDL_Renderer* renderer, SDL_Window* window)
+{
+	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
+	char input[20];
+
+	Team* winner = NULL;
+
+	while(game_still_running(winner, board, *info))
+	{
+		if(!render_full_board(renderer, board)) return false;
+
+		SDL_RenderPresent(renderer);
+
+		SDL_UpdateWindowSurface(window);
+
+
+		if(!input_current_move(input)) continue;
+
+		if(!strcmp(input, "STOP")) return false;
+
+		if(!parse_chess_move(&move, board, *info, input)) continue;
+
+		if(!move_chess_piece(board, move, info)) continue;
+
+		if(!update_kings_point(board, info)) return false;
+
+		info->lastMove = move;
+
+		info->turns += 1;
+		info->currTeam = (info->currTeam == WHITE) ? BLACK : WHITE;
+	}
+	return true;
 }
 
 /*void test_game_program(Board board, Info info)
