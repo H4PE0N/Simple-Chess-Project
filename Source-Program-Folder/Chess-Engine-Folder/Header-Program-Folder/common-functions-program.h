@@ -2,8 +2,6 @@
 #ifndef COMMON_FUNCTIONS_PROGRAM_H
 #define COMMON_FUNCTIONS_PROGRAM_H
 
-#include "global-include-header.h"
-
 bool number_inside_bounds(int, int, int);
 
 bool point_inside_board(Point);

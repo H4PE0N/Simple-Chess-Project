@@ -1,7 +1,5 @@
 
-#include "../../Chess-Engine-Folder/Header-Program-Folder/global-include-header.h"
-#include "../Header-Program-Folder/multi-player-chess.h"
-#include "../../Interface-Program-Folder/Header-Program-Folder/game-interface-program.h"
+#include "../Header-Program-Folder/game-file-includer.h"
 
 int main(int argAmount, char* arguments[])
 {

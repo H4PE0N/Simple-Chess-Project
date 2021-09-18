@@ -1,18 +1,18 @@
 
-#include "../Header-Program-Folder/global-include-header.h"
+#include "../Header-Program-Folder/engine-file-includer.h"
 
 bool setup_game_variables(Board* board, Info* info, char filename[])
 {
 	if(!create_chess_board(board, filename))
 	{
-		create_board_error(filename); 
+		create_board_error(filename);
 
 		return false;
 	}
 
 	if(!setup_game_info(info, *board))
 	{
-		setup_info_error(*board); 
+		setup_info_error(*board);
 
 		return false;
 	}
@@ -41,7 +41,7 @@ bool setup_game_info(Info* info, Board board)
 RKSwitch extract_rks_values(Board board, Team team)
 {
 	if(!piece_team_exists(team)) return (RKSwitch) {false, false};
-	
+
 	RKSwitch rKSwitch = {false, false};
 	Point king;
 
@@ -99,7 +99,7 @@ bool create_chess_board(Board* board, char filename[])
 	if(!allocate_file_values(board, filePointer))
 	{
 		file_values_error(filename);
-		
+
 		fclose(filePointer); return false;
 	}
 

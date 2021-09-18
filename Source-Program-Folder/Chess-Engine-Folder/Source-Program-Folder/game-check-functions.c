@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/global-include-header.h"
+#include "../Header-Program-Folder/engine-file-includer.h"
 
 bool king_inside_check(Board board, Point king)
 {
@@ -14,7 +14,7 @@ bool king_inside_check(Board board, Point king)
 		for(int width = 0; width < B_WIDTH; width += 1)
 		{
 			point = (Point) {height, width};
-			
+
 			if(board_point_checking(board, point, king)) return true;
 		}
 	}

@@ -2,8 +2,6 @@
 #ifndef BOARD_MOVE_HANDLER_H
 #define BOARD_MOVE_HANDLER_H
 
-#include "global-include-header.h"
-
 bool move_chess_piece(Board, Move, Info*);
 
 bool pawn_move_handler(Board, Move, Info);

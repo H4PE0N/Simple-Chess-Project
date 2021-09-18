@@ -1,6 +1,6 @@
 
-#ifndef GLOBAL_INCLUDE_HEADER_H
-#define GLOBAL_INCLUDE_HEADER_H
+#ifndef ENGINE_FILE_INCLUDER_H
+#define ENGINE_FILE_INCLUDER_H
 
 #include <stdio.h>
 
@@ -15,21 +15,6 @@
 #include <time.h>
 
 #include <unistd.h>
-
-#define CLEAR_LINE printf("\033[2K")
-
-#define MOVE_UP_LINES(lines) printf("\033[%dA", lines)
-
-#define MOVE_UP_BOARD MOVE_UP_LINES(19);
-
-#define MOVE_UP_INFO MOVE_UP_LINES(3);
-
-#define MOVE_UP_INPUT MOVE_UP_LINES(1);
-
-// #include <SDL2/SDL.h>
-// #include <SDL2/SDL_image.h>
-
-// This is all header programs:
 
 #include "struct-definitions-header.h"
 
@@ -47,8 +32,6 @@
 
 #include "chess-pieces-moveable.h"
 
-#include "error-message-functions.h"
-
 #include "execute-board-moves.h"
 
 #include "game-check-functions.h"
@@ -61,6 +44,14 @@
 
 #include "output-message-functions.h"
 
-// This is the game program headers:
+#define CLEAR_LINE printf("\033[2K")
+
+#define MOVE_UP_LINES(lines) printf("\033[%dA", lines)
+
+#define MOVE_UP_BOARD MOVE_UP_LINES(19);
+
+#define MOVE_UP_INFO MOVE_UP_LINES(3);
+
+#define MOVE_UP_INPUT MOVE_UP_LINES(1);
 
 #endif

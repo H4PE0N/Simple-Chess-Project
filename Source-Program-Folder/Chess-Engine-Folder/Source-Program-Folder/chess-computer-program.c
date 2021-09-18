@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/global-include-header.h"
+#include "../Header-Program-Folder/engine-file-includer.h"
 
 const int pieceMatrix[7][8][8] =
 {
@@ -128,7 +128,7 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 	free(moves);
 
 	time_t stopTime = time(NULL);
-	time_t time = difftime(stopTime, startTime); 												
+	time_t time = difftime(stopTime, startTime);
 
 	display_found_move(bestMove, bestValue, time);
 

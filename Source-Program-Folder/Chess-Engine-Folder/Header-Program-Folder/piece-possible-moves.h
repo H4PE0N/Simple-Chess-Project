@@ -2,8 +2,6 @@
 #ifndef PIECE_POSSIBLE_MOVES_H
 #define PIECE_POSSIBLE_MOVES_H
 
-#include "global-include-header.h"
-
 bool piece_possible_moves(Move*, Board, Info, Point);
 
 bool pawn_possible_moves(Move*, Board, Info, Point);

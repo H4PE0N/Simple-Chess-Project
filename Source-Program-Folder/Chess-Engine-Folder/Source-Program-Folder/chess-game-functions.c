@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/global-include-header.h"
+#include "../Header-Program-Folder/engine-file-includer.h"
 
 // This function should only check one team, so that the draw gets right
 bool game_still_running(Team* winner, Board board, Info info)
@@ -78,7 +78,7 @@ bool check_draw_situation(Board board, Info info, Point king)
 bool check_mate_situation(Board board, Info info, Point king)
 {
 	if(!point_inside_board(king)) return false;
-	
+
 	Team team = board_point_team(board, king);
 
 	if(!king_inside_check(board, king)) return false;

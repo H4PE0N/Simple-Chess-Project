@@ -2,8 +2,6 @@
 #ifndef CHESS_MOVE_ACCEPTABLE_H
 #define CHESS_MOVE_ACCEPTABLE_H
 
-#include "global-include-header.h"
-
 bool piece_move_acceptable(Board, Move, Info);
 
 bool pawn_move_acceptable(Board, Move, Info);

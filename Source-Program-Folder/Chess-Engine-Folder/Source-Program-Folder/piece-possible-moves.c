@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/global-include-header.h"
+#include "../Header-Program-Folder/engine-file-includer.h"
 
 bool piece_possible_moves(Move* moves, Board board, Info info, Point start)
 {
@@ -372,7 +372,7 @@ bool king_possible_moves(Move* moves, Board board, Info info, Point start)
 			stop = (Point) {realHeight, realWidth};
 
 			if(!point_inside_board(stop)) continue;
-			
+
 			currMove = (Move) {start, stop};
 
 			if(!king_move_acceptable(board, currMove, info)) continue;

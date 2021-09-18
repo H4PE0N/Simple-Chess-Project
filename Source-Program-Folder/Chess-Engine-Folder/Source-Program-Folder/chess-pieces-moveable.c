@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/global-include-header.h"
+#include "../Header-Program-Folder/engine-file-includer.h"
 
 bool board_piece_moveable(Board board, Info info, Point start)
 {
@@ -247,7 +247,7 @@ bool board_queen_moveable(Board board, Info info, Point start)
 	if(!point_inside_board(start)) return false;
 
 	if(board_point_empty(board, start)) return false;
-	
+
 	if(board_diagonal_moveable(board, info, start)) return true;
 
 	if(board_straight_moveable(board, info, start)) return true;
@@ -275,7 +275,7 @@ bool board_king_moveable(Board board, Info info, Point start)
 			stop = (Point) {realHeight, realWidth};
 
 			if(!point_inside_board(stop)) continue;
-			
+
 			currMove = (Move) {start, stop};
 
 			if(king_move_acceptable(board, currMove, info)) return true;

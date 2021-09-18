@@ -2,8 +2,6 @@
 #ifndef PIECES_MOVES_VALID_H
 #define PIECES_MOVES_VALID_H
 
-#include "global-include-header.h"
-
 bool moving_pawn_valid(Board, Point, Point);
 
 bool rook_king_switch(Board, Point, Point);
@@ -30,6 +28,6 @@ bool moving_piece_valid(Board, Point, Point);
 
 bool moving_straight_valid(Point, Point);
 
-bool moving_diagonal_valid(Point, Point); 
+bool moving_diagonal_valid(Point, Point);
 
 #endif

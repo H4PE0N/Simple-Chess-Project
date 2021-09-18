@@ -2,8 +2,6 @@
 #ifndef SETUP_GAME_VARIABLES_H
 #define SETUP_GAME_VARIABLES_H
 
-#include "global-include-header.h"
-
 bool extract_file_line(Board, char[], int);
 
 bool extract_file_value(Piece*, char[], int);

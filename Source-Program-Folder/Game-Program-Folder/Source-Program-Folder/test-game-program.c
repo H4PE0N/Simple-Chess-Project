@@ -1,5 +1,5 @@
 
-#include "../../Chess-Engine-Folder/Header-Program-Folder/global-include-header.h"
+#include "../Header-Program-Folder/game-file-includer.h"
 
 // gcc ../Source-Program-Folder/Game-Program-Folder/test-game-program.c -ISDL2-64/include -LSDL2-64/lib -Wall -lmingw32 -lSDL2main -lSDL2 -o main
 

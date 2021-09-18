@@ -2,8 +2,6 @@
 #ifndef CHESS_GAME_FUNCTIONS_H
 #define CHESS_GAME_FUNCTIONS_H
 
-#include "global-include-header.h"
-
 bool other_pieces_moveable(Board, Info, Team);
 
 bool check_mate_situation(Board, Info, Point);

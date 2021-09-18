@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/global-include-header.h"
+#include "../Header-Program-Folder/engine-file-includer.h"
 
 bool team_prevent_check(Board board, Info info, Team team)
 {
@@ -47,7 +47,7 @@ bool piece_prevent_check(Board board, Point start, Info info)
 bool pawn_prevent_check(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
-	
+
 	if(board_point_empty(board, start)) return false;
 
 	if(board_point_type(board, start) != PAWN) return false;
@@ -88,7 +88,7 @@ bool pawn_prevent_check(Board board, Info info, Point start)
 bool rook_prevent_check(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
-	
+
 	if(board_point_empty(board, start)) return false;
 
 	if(board_point_type(board, start) != ROOK) return false;
@@ -128,7 +128,7 @@ bool rook_prevent_check(Board board, Info info, Point start)
 bool knight_prevent_check(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
-	
+
 	if(board_point_empty(board, start)) return false;
 
 	if(board_point_type(board, start) != KNIGHT) return false;
@@ -168,7 +168,7 @@ bool knight_prevent_check(Board board, Info info, Point start)
 bool bishop_prevent_check(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
-	
+
 	if(board_point_empty(board, start)) return false;
 
 	if(board_point_type(board, start) != BISHOP) return false;
@@ -295,7 +295,7 @@ bool straight_prevent_check(Board board, Info info, Point start)
 bool queen_prevent_check(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
-	
+
 	if(board_point_empty(board, start)) return false;
 
 	if(board_point_type(board, start) != QUEEN) return false;
@@ -311,7 +311,7 @@ bool queen_prevent_check(Board board, Info info, Point start)
 bool king_prevent_check(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
-	
+
 	if(board_point_empty(board, start)) return false;
 
 	if(board_point_type(board, start) != KING) return false;
@@ -353,7 +353,7 @@ bool move_prevent_check(Board board, Move move, Info info)
 
 	Piece piece = board_point_piece(board, start);
 
-	Board boardCopy = copy_chess_board(board);	
+	Board boardCopy = copy_chess_board(board);
 	Info dummyInfo = info;
 
 	execute_piece_move(boardCopy, move, &dummyInfo);
