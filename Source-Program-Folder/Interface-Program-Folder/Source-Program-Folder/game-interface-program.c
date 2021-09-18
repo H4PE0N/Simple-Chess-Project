@@ -51,9 +51,9 @@ void extract_file_name(char* filename, char* arguments[], int amount)
 
 // 	Piece piece; Point point;
 
-// 	for(int height = 0; height < B_HEIGHT; height += 1)
+// 	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 // 	{
-// 		for(int width = 0; width < B_WIDTH; width += 1)
+// 		for(int width = 0; width < BOARD_WIDTH; width += 1)
 // 		{
 // 			point = (Point) {height, width};
 // 			piece = (Piece) board_point_piece(board, point);
@@ -136,7 +136,7 @@ void display_chess_board(Board board)
 {
 	CLEAR_LINE; printf("%s\n", DIS_LETS);
 
-	for(int height = 0; height < B_HEIGHT; height = height + 1)
+	for(int height = 0; height < BOARD_HEIGHT; height = height + 1)
 	{
 		CLEAR_LINE; printf("%s\n", DIS_ROW);
 
@@ -144,7 +144,7 @@ void display_chess_board(Board board)
 
 		printf(" ");
 
-		for(int width = 0; width < B_WIDTH; width = width + 1)
+		for(int width = 0; width < BOARD_WIDTH; width = width + 1)
 		{
 			printf("|");
 
@@ -291,11 +291,11 @@ bool save_move_parser(Move* move, Board board, Info info, char string[])
 
 	Point point;
 
-	for(int height = 0; height < B_HEIGHT; height += 1)
+	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
 		char boardLine[20];
 
-		for(int width = 0; width < B_WIDTH; width += 1)
+		for(int width = 0; width < BOARD_WIDTH; width += 1)
 		{
 			point = (Point) {height, width};
 			int type = board_point_type(board, point);
@@ -305,7 +305,7 @@ bool save_move_parser(Move* move, Board board, Info info, char string[])
 			boardLine[(width * 2) + 1]	= (team + '0');
 		}
 
-		boardLine[B_WIDTH * 2] = '\n';
+		boardLine[BOARD_WIDTH * 2] = '\n';
 		fwrite(boardLine, sizeof(char), 17, filePointer);
 	}
 
@@ -335,8 +335,8 @@ bool parse_chess_position(Point* point, char string[])
 {
 	if(strlen(string) < 2 || strlen(string) > 2) return false;
 
-	int width = string_letter_index((char*) letters, B_WIDTH, string[0]);
-	int height = string_letter_index((char*) numbers, B_HEIGHT, string[1]);
+	int width = string_letter_index((char*) letters, BOARD_WIDTH, string[0]);
+	int height = string_letter_index((char*) numbers, BOARD_HEIGHT, string[1]);
 
 	if(width == -1 || height == -1) return false;
 

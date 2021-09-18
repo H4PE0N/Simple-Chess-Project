@@ -2,8 +2,8 @@
 #ifndef CHESS_ENGINE_DEFINES_H
 #define CHESS_ENGINE_DEFINES_H
 
-#define B_HEIGHT 8
-#define B_WIDTH 8
+#define BOARD_HEIGHT 8
+#define BOARD_WIDTH 8
 
 #define MIN_VAL -100000
 #define MAX_VAL +100000

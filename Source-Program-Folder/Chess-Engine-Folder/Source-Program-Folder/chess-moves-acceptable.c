@@ -217,7 +217,7 @@ bool knight_move_acceptable(Board board, Move move, Info info)
 
 bool switch_bool_valid(Point start, Info info, Team team)
 {
-	RKSwitch rookKingSwitch = {false, false};
+	Castle rookKingSwitch = {false, false};
 
 	if(team == WHITE) rookKingSwitch = info.whiteRKS;
 	if(team == BLACK) rookKingSwitch = info.blackRKS;

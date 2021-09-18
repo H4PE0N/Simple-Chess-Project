@@ -6,9 +6,9 @@ bool team_prevent_check(Board board, Info info, Team team)
 	if(!piece_team_exists(team)) return false;
 
 	Point point; Team currTeam;
-	for(int height = 0; height < B_HEIGHT; height = height + 1)
+	for(int height = 0; height < BOARD_HEIGHT; height = height + 1)
 	{
-		for(int width = 0; width < B_WIDTH; width = width + 1)
+		for(int width = 0; width < BOARD_WIDTH; width = width + 1)
 		{
 			point = (Point) {height, width};
 			currTeam = board_point_team(board, point);
@@ -96,7 +96,7 @@ bool rook_prevent_check(Board board, Info info, Point start)
 
 	Point stop; Move currMove;
 
-	for(int height = 0; height < B_HEIGHT; height += 1)
+	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
 		stop = (Point) {height, start.width};
 
@@ -109,7 +109,7 @@ bool rook_prevent_check(Board board, Info info, Point start)
 		if(move_prevent_check(board, currMove, info)) return true;
 	}
 
-	for(int width = 0; width < B_WIDTH; width += 1)
+	for(int width = 0; width < BOARD_WIDTH; width += 1)
 	{
 		stop = (Point) {start.height, width};
 
@@ -264,7 +264,7 @@ bool straight_prevent_check(Board board, Info info, Point start)
 
 	Point stop; Move currMove;
 
-	for(int height = 0; height < B_HEIGHT; height += 1)
+	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
 		stop = (Point) {height, start.width};
 
@@ -277,7 +277,7 @@ bool straight_prevent_check(Board board, Info info, Point start)
 		if(move_prevent_check(board, currMove, info)) return true;
 	}
 
-	for(int width = 0; width < B_WIDTH; width += 1)
+	for(int width = 0; width < BOARD_WIDTH; width += 1)
 	{
 		stop = (Point) {start.height, width};
 

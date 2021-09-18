@@ -11,8 +11,8 @@ bool number_inside_bounds(int number, int minimum, int maximum)
 
 bool point_inside_board(Point point)
 {
-	bool heightValid = number_inside_bounds(point.height, 0, B_HEIGHT-1);
-	bool widthValid = number_inside_bounds(point.width, 0, B_WIDTH-1);
+	bool heightValid = number_inside_bounds(point.height, 0, BOARD_HEIGHT-1);
+	bool widthValid = number_inside_bounds(point.width, 0, BOARD_WIDTH-1);
 
 	return (heightValid && widthValid);
 }
@@ -45,7 +45,7 @@ bool points_inside_board(Point first, Point second)
 
 void free_chess_board(Board board)
 {
-	for(int height = 0; height < B_HEIGHT; height += 1)
+	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
 		free(board[height]);
 	}
@@ -99,9 +99,9 @@ bool board_piece_points(Point* points, Board board, Piece piece)
 {
 	Piece currPiece; int index = 0;
 
-	for(int height = 0; height < B_HEIGHT; height = height + 1)
+	for(int height = 0; height < BOARD_HEIGHT; height = height + 1)
 	{
-		for(int width = 0; width < B_WIDTH; width = width + 1)
+		for(int width = 0; width < BOARD_WIDTH; width = width + 1)
 		{
 			currPiece = board_point_piece(board, (Point) {height, width});
 
@@ -174,11 +174,11 @@ Type board_point_type(Board board, Point point)
 
 Board copy_chess_board(Board board)
 {
-	Board boardCopy = malloc(sizeof(Piece*) * B_HEIGHT);
-	for(int height = 0; height < B_HEIGHT; height = height + 1)
+	Board boardCopy = malloc(sizeof(Piece*) * BOARD_HEIGHT);
+	for(int height = 0; height < BOARD_HEIGHT; height = height + 1)
 	{
-		boardCopy[height] = malloc(sizeof(Piece) * B_WIDTH);
-		for(int width = 0; width < B_WIDTH; width = width + 1)
+		boardCopy[height] = malloc(sizeof(Piece) * BOARD_WIDTH);
+		for(int width = 0; width < BOARD_WIDTH; width = width + 1)
 		{
 			boardCopy[height][width] = board[height][width];
 		}
@@ -301,8 +301,8 @@ bool board_point_string(char* string, Point point)
 {
 	int height = point.height, width = point.width;
 
-	if(!number_inside_bounds(height, 0, B_HEIGHT-1)) return false;
-	if(!number_inside_bounds(width, 0, B_WIDTH-1)) return false;
+	if(!number_inside_bounds(height, 0, BOARD_HEIGHT-1)) return false;
+	if(!number_inside_bounds(width, 0, BOARD_WIDTH-1)) return false;
 
 	sprintf(string, "%c%c", letters[width], numbers[height]);
 

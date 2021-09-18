@@ -45,9 +45,9 @@ bool other_pieces_moveable(Board board, Info info, Team team)
 
 	Piece piece; Point point;
 
-	for(int height = 0; height < B_HEIGHT; height = height + 1)
+	for(int height = 0; height < BOARD_HEIGHT; height = height + 1)
 	{
-		for(int width = 0; width < B_WIDTH; width = width + 1)
+		for(int width = 0; width < BOARD_WIDTH; width = width + 1)
 		{
 			piece = board[height][width];
 			point = (Point) {height, width};

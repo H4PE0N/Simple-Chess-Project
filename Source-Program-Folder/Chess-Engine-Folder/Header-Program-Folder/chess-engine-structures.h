@@ -4,13 +4,18 @@
 
 typedef enum Type
 {
-	EMPTY = 0, PAWN, BISHOP, KNIGHT, ROOK, QUEEN, KING,
+	EMPTY, PAWN, BISHOP, KNIGHT, ROOK, QUEEN, KING
 } Type;
 
 typedef enum Team
 {
-	NONE = 0, WHITE, BLACK,
+	NONE, WHITE, BLACK
 } Team;
+
+typedef enum Side
+{
+	STILL, LEFT, RIGHT
+} Side;
 
 typedef struct Piece
 {
@@ -20,7 +25,8 @@ typedef struct Piece
 
 typedef struct Point
 {
-	int height, width;
+	int height;
+	int width;
 } Point;
 
 typedef struct Move
@@ -29,17 +35,30 @@ typedef struct Move
 	Point stop;
 } Move;
 
-typedef struct RKSwitch
+typedef struct Castle
 {
+	// queenSide kingSide
 	bool left;
 	bool right;
-} RKSwitch;
+} Castle;
+
+typedef struct Castles
+{
+	Castle white;
+	Castle black;
+} Castles;
 
 typedef struct Info
 {
+	// Team current;
+  // Castles castles;
+	// Point passant;
+	// int counter;
+  // int turns;
+	// Move lastMove;
 	Team currTeam;
-	RKSwitch whiteRKS;
-	RKSwitch blackRKS;
+	Castle whiteRKS;
+	Castle blackRKS;
 	Point whiteKing;
 	Point blackKing;
 	int turns;

@@ -9,9 +9,9 @@ bool king_inside_check(Board board, Point king)
 	if(board_point_type(board, king) != KING) return false;
 
 	Point point;
-	for(int height = 0; height < B_HEIGHT; height += 1)
+	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
-		for(int width = 0; width < B_WIDTH; width += 1)
+		for(int width = 0; width < BOARD_WIDTH; width += 1)
 		{
 			point = (Point) {height, width};
 

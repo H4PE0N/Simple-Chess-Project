@@ -84,7 +84,7 @@ bool rook_possible_moves(Move* moves, Board board, Info info, Point start)
 	// This is just to add the moves in the right place
 	clear_moves_array(moves);
 
-	for(int height = 0; height < B_HEIGHT; height += 1)
+	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
 		stop = (Point) {height, start.width};
 
@@ -99,7 +99,7 @@ bool rook_possible_moves(Move* moves, Board board, Info info, Point start)
 		amount += 1;
 	}
 
-	for(int width = 0; width < B_WIDTH; width += 1)
+	for(int width = 0; width < BOARD_WIDTH; width += 1)
 	{
 		stop = (Point) {start.height, width};
 
@@ -282,7 +282,7 @@ bool straight_possible_moves(Move* moves, Board board, Info info, Point start)
 	// This is just to add the moves in the right place
 	clear_moves_array(moves);
 
-	for(int height = 0; height < B_HEIGHT; height += 1)
+	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
 		stop = (Point) {height, start.width};
 
@@ -297,7 +297,7 @@ bool straight_possible_moves(Move* moves, Board board, Info info, Point start)
 		amount += 1;
 	}
 
-	for(int width = 0; width < B_WIDTH; width += 1)
+	for(int width = 0; width < BOARD_WIDTH; width += 1)
 	{
 		stop = (Point) {start.height, width};
 

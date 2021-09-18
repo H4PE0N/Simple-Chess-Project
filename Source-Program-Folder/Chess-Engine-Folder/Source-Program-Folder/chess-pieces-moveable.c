@@ -70,7 +70,7 @@ bool board_rook_moveable(Board board, Info info, Point start)
 
 	Point stop; Move currMove;
 
-	for(int height = 0; height < B_HEIGHT; height += 1)
+	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
 		stop = (Point) {height, start.width};
 
@@ -81,7 +81,7 @@ bool board_rook_moveable(Board board, Info info, Point start)
 		if(rook_move_acceptable(board, currMove, info)) return true;
 	}
 
-	for(int width = 0; width < B_WIDTH; width += 1)
+	for(int width = 0; width < BOARD_WIDTH; width += 1)
 	{
 		stop = (Point) {start.height, width};
 
@@ -178,7 +178,7 @@ bool board_straight_moveable(Board board, Info info, Point start)
 
 	Point stop; Move currMove;
 
-	for(int height = 0; height < B_HEIGHT; height += 1)
+	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
 		stop = (Point) {height, start.width};
 
@@ -189,7 +189,7 @@ bool board_straight_moveable(Board board, Info info, Point start)
 		if(straight_move_acceptable(board, currMove, info)) return true;
 	}
 
-	for(int width = 0; width < B_WIDTH; width += 1)
+	for(int width = 0; width < BOARD_WIDTH; width += 1)
 	{
 		stop = (Point) {start.height, width};
 

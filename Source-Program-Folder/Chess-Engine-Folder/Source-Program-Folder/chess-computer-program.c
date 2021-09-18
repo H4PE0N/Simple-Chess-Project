@@ -216,9 +216,9 @@ int team_pieces_value(Board board, Team team)
 
 	int value = 0;
 
-	for(int height = 0; height < B_HEIGHT; height += 1)
+	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
-		for(int width = 0; width < B_WIDTH; width += 1)
+		for(int width = 0; width < BOARD_WIDTH; width += 1)
 		{
 			point = (Point) {height, width};
 			piece = board_point_piece(board, point);
@@ -243,7 +243,7 @@ int piece_matrix_value(Piece piece, Point point)
 
 	if(piece.team == WHITE) return pieceMatrix[piece.type][point.height][point.width];
 
-	if(piece.team == BLACK) return pieceMatrix[piece.type][B_HEIGHT - point.height - 1][point.width];
+	if(piece.team == BLACK) return pieceMatrix[piece.type][BOARD_HEIGHT - point.height - 1][point.width];
 
 	return 0;
 }
@@ -318,9 +318,9 @@ Move* all_possible_moves(Board board, Info info, Team team)
 
 	Point point; Team currTeam;
 
-	for(int height = 0; height < B_HEIGHT; height += 1)
+	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
-		for(int width = 0; width < B_WIDTH; width += 1)
+		for(int width = 0; width < BOARD_WIDTH; width += 1)
 		{
 			point = (Point) {height, width};
 			currTeam = board_point_team(board, point);

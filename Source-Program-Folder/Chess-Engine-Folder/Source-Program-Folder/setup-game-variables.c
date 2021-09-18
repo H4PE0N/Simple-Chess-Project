@@ -22,8 +22,8 @@ bool setup_game_variables(Board* board, Info* info, char filename[])
 
 bool setup_game_info(Info* info, Board board)
 {
-	RKSwitch whiteRKS = extract_rks_values(board, WHITE);
-	RKSwitch blackRKS = extract_rks_values(board, BLACK);
+	Castle whiteRKS = extract_rks_values(board, WHITE);
+	Castle blackRKS = extract_rks_values(board, BLACK);
 
 	Point blackKing, whiteKing;
 
@@ -38,18 +38,18 @@ bool setup_game_info(Info* info, Board board)
 	return true;
 }
 
-RKSwitch extract_rks_values(Board board, Team team)
+Castle extract_rks_values(Board board, Team team)
 {
-	if(!piece_team_exists(team)) return (RKSwitch) {false, false};
+	if(!piece_team_exists(team)) return (Castle) {false, false};
 
-	RKSwitch rKSwitch = {false, false};
+	Castle rKSwitch = {false, false};
 	Point king;
 
-	int expectedHeight = (team == WHITE) ? (B_HEIGHT - 1) : 0;
+	int expectedHeight = (team == WHITE) ? (BOARD_HEIGHT - 1) : 0;
 
-	if(!board_piece_point(&king, board, (Piece) {KING, team})) return (RKSwitch) {false, false};
+	if(!board_piece_point(&king, board, (Piece) {KING, team})) return (Castle) {false, false};
 
-	if(!board_points_equal(king, (Point) {expectedHeight, 4})) return (RKSwitch) {false, false};
+	if(!board_points_equal(king, (Point) {expectedHeight, 4})) return (Castle) {false, false};
 
 	//Now the king exists and is in the right place
 
@@ -61,7 +61,7 @@ RKSwitch extract_rks_values(Board board, Team team)
 	{
 		free(rooks);
 
-		return (RKSwitch) {false, false};
+		return (Castle) {false, false};
 	}
 
 	int amount = point_array_amount(rooks);
@@ -77,7 +77,7 @@ RKSwitch extract_rks_values(Board board, Team team)
 		// Now the height is right;
 
 		if(currRook.width == 0) 			rKSwitch.left = true;
-		if(currRook.width == (B_WIDTH - 1)) rKSwitch.right = true;
+		if(currRook.width == (BOARD_WIDTH - 1)) rKSwitch.right = true;
 	}
 
 	free(rooks);
@@ -108,14 +108,14 @@ bool create_chess_board(Board* board, char filename[])
 
 bool allocate_file_values(Board* board, FILE* filePointer)
 {
-	(*board) = malloc(sizeof(Piece*) * B_HEIGHT);
+	(*board) = malloc(sizeof(Piece*) * BOARD_HEIGHT);
 	char lineBuffer[1024];
 
-	for(int height = 0; height < B_HEIGHT; height += 1)
+	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
 		if(fgets(lineBuffer, 1024, filePointer) == NULL) return false;
 
-		(*board)[height] = malloc(sizeof(Piece) * B_WIDTH);
+		(*board)[height] = malloc(sizeof(Piece) * BOARD_WIDTH);
 
 		if(!extract_file_line(*board, lineBuffer, height)) return false;
 	}
@@ -124,11 +124,11 @@ bool allocate_file_values(Board* board, FILE* filePointer)
 
 bool extract_file_line(Board board, char lineBuffer[], int height)
 {
-	if(strlen(lineBuffer) < (B_WIDTH * 2)) return false;
+	if(strlen(lineBuffer) < (BOARD_WIDTH * 2)) return false;
 
 	Piece piece;
 
-	for(int index = 0; index < B_WIDTH; index += 1)
+	for(int index = 0; index < BOARD_WIDTH; index += 1)
 	{
 		if(!extract_file_value(&piece, lineBuffer, index)) return false;
 		append_board_piece(board, (Point) {height, index}, piece);
