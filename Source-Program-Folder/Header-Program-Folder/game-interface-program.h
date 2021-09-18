@@ -15,15 +15,15 @@
 #define MOVE_UP_INPUT MOVE_UP_LINES(1);
 
 
-void render_chess_board(SDL_Renderer*);
+// void render_chess_board(Render*);
 
-bool render_board_piece(SDL_Renderer*, Piece, Point);
+// bool render_board_piece(Render*, Piece, Point);
 
-SDL_Surface* extract_piece_image(Piece);
+// Surface* extract_piece_image(Piece);
 
-bool extract_piece_filename(char*, Piece);
+// bool extract_piece_filename(char*, Piece);
 
-bool render_full_board(SDL_Renderer*, Board);
+// bool render_full_board(Render*, Board);
 
 
 void display_chess_board(Board);

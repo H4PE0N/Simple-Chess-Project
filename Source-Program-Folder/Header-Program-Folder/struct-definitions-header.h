@@ -25,6 +25,18 @@ typedef struct Point
 
 typedef Piece** Board;
 
+// typedef SDL_Window Window;
+
+// typedef SDL_Renderer Render;
+
+// typedef SDL_Surface	Surface;
+
+// typedef SDL_Texture Texture;
+
+// typedef SDL_Rect Rect;
+
+// typedef SDL_Color Color;
+
 typedef struct Move
 {
 	Point start;
@@ -64,11 +76,12 @@ typedef struct TypeValue
 
 #define SAVE_FILE	"../Source-Program-Folder/Data-Program-Folder/saved-chess-board.txt"
 #define STD_FILE	"../Source-Program-Folder/Data-Program-Folder/default-chess-board.txt"
+#define PIECE_FOLDER "../Source-Program-Folder/Piece-Image-Folder"
 
 #define SCREEN_HEIGHT	800
 #define SCREEN_WIDTH	800
 
-#define SQUARE_HEIGHT 100
-#define SQUARE_WIDTH 100
+#define SQUARE_HEIGHT SCREEN_HEIGHT / B_HEIGHT
+#define SQUARE_WIDTH SCREEN_WIDTH / B_WIDTH
 
 #endif

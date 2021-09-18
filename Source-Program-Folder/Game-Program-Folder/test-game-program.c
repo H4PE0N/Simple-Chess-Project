@@ -5,97 +5,97 @@
 
 int main(int argAmount, char* arguments[])
 {
-	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
-	{
-		printf("Init Error: %s\n", SDL_GetError());
-		return true;
-	}
+	// if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
+	// {
+	// 	printf("Init Error: %s\n", SDL_GetError());
+	// 	return true;
+	// }
 
-	if(IMG_Init(IMG_INIT_PNG) == 0) 
-	{
-		printf("Init Error: %s\n", SDL_GetError());
-		SDL_Quit();
-		return true;
-	}
+	// if(IMG_Init(IMG_INIT_PNG) == 0) 
+	// {
+	// 	printf("Init Error: %s\n", SDL_GetError());
+	// 	SDL_Quit();
+	// 	return true;
+	// }
 
-	char windowTitle[20] = "CHESS BOARD WINDOW";
+	// char windowTitle[20] = "CHESS BOARD WINDOW";
 
-	//												SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED
-	SDL_Window* window = SDL_CreateWindow(windowTitle, 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	// //												SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED
+	// Window* window = SDL_CreateWindow(windowTitle, 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
-	if(window == NULL)
-	{
-		printf("Window Error: %s\n", SDL_GetError());
-		SDL_Quit();
-		return true;
-	}
+	// if(window == NULL)
+	// {
+	// 	printf("Window Error: %s\n", SDL_GetError());
+	// 	SDL_Quit();
+	// 	return true;
+	// }
 
-	// ================================================================================================
-	SDL_Surface* screenSurface = SDL_GetWindowSurface( window );
+	// // ================================================================================================
+	// Surface* screenSurface = SDL_GetWindowSurface( window );
 
-	// SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ) );
-	// ================================================================================================
+	// // SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ) );
+	// // ================================================================================================
 
-	SDL_Renderer* renderer = SDL_CreateSoftwareRenderer(screenSurface);
-	if(renderer == NULL)
-	{
-		printf("Renderer Error: %s\n", SDL_GetError());
+	// Render* renderer = SDL_CreateSoftwareRenderer(screenSurface);
+	// if(renderer == NULL)
+	// {
+	// 	printf("Renderer Error: %s\n", SDL_GetError());
 
-		SDL_FreeSurface(screenSurface);
+	// 	SDL_FreeSurface(screenSurface);
 
-		SDL_DestroyWindow(window);
+	// 	SDL_DestroyWindow(window);
 
-		SDL_Quit();
+	// 	SDL_Quit();
 
-		return true;
-	}
+	// 	return true;
+	// }
 
-	SDL_RenderPresent(renderer);
+	// SDL_RenderPresent(renderer);
 
-	SDL_UpdateWindowSurface(window);
+	// SDL_UpdateWindowSurface(window);
 
-    SDL_Event event;
-    SDL_PollEvent(&event);
+ //    SDL_Event event;
+ //    SDL_PollEvent(&event);
 
-	// ================================================================================================
+	// // ================================================================================================
 	
-	srand(time(NULL));
+	// srand(time(NULL));
 
-	char filename[200]; extract_file_name(filename, arguments, argAmount);
+	// char filename[200]; extract_file_name(filename, arguments, argAmount);
 
-	Board board; Info info;
+	// Board board; Info info;
 
-	if(!setup_game_variables(&board, &info, filename))
-	{
-		setup_variables_error();
+	// if(!setup_game_variables(&board, &info, filename))
+	// {
+	// 	setup_variables_error();
 
-		free_chess_board(board);
+	// 	free_chess_board(board);
 
-		return false;
-	}
-
-
+	// 	return false;
+	// }
 
 
-	
-	if(!test_game_loop(board, &info, renderer, window))
-	{
-		printf("The game was ended!\n");
-	}
-	
-
-	
 
 
 	
-
-	// free_chess_board(board);
+	// if(!test_game_loop(board, &info, renderer, window))
+	// {
+	// 	printf("The game was ended!\n");
+	// }
 	
-	SDL_FreeSurface(screenSurface);
 
-	SDL_DestroyWindow(window);
+	
 
-	SDL_Quit();
+
+	
+
+	// // free_chess_board(board);
+	
+	// SDL_FreeSurface(screenSurface);
+
+	// SDL_DestroyWindow(window);
+
+	// SDL_Quit();
 
 	return false;
 	/*srand(time(NULL));
@@ -120,39 +120,39 @@ int main(int argAmount, char* arguments[])
 	return false;*/
 }
 
-bool test_game_loop(Board board, Info* info, SDL_Renderer* renderer, SDL_Window* window)
-{
-	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
-	char input[20];
+// bool test_game_loop(Board board, Info* info, SDL_Renderer* renderer, SDL_Window* window)
+// {
+// 	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
+// 	char input[20];
 
-	Team* winner = NULL;
+// 	Team* winner = NULL;
 
-	while(game_still_running(winner, board, *info))
-	{
-		if(!render_full_board(renderer, board)) return false;
+// 	while(game_still_running(winner, board, *info))
+// 	{
+// 		if(!render_full_board(renderer, board)) return false;
 
-		SDL_RenderPresent(renderer);
+// 		SDL_RenderPresent(renderer);
 
-		SDL_UpdateWindowSurface(window);
+// 		SDL_UpdateWindowSurface(window);
 
 
-		if(!input_current_move(input)) continue;
+// 		if(!input_current_move(input)) continue;
 
-		if(!strcmp(input, "STOP")) return false;
+// 		if(!strcmp(input, "STOP")) return false;
 
-		if(!parse_chess_move(&move, board, *info, input)) continue;
+// 		if(!parse_chess_move(&move, board, *info, input)) continue;
 
-		if(!move_chess_piece(board, move, info)) continue;
+// 		if(!move_chess_piece(board, move, info)) continue;
 
-		if(!update_kings_point(board, info)) return false;
+// 		if(!update_kings_point(board, info)) return false;
 
-		info->lastMove = move;
+// 		info->lastMove = move;
 
-		info->turns += 1;
-		info->currTeam = (info->currTeam == WHITE) ? BLACK : WHITE;
-	}
-	return true;
-}
+// 		info->turns += 1;
+// 		info->currTeam = (info->currTeam == WHITE) ? BLACK : WHITE;
+// 	}
+// 	return true;
+// }
 
 /*void test_game_program(Board board, Info info)
 {
