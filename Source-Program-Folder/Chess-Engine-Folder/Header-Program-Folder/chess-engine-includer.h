@@ -1,6 +1,6 @@
 
-#ifndef ENGINE_FILE_INCLUDER_H
-#define ENGINE_FILE_INCLUDER_H
+#ifndef CHESS_ENGINE_INCLUDER_H
+#define CHESS_ENGINE_INCLUDER_H
 
 #include <stdio.h>
 
@@ -16,7 +16,7 @@
 
 #include <unistd.h>
 
-#include "struct-definitions-header.h"
+#include "chess-engine-structures.h"
 
 #include "common-functions-program.h"
 
@@ -43,6 +43,8 @@
 #include "setup-game-variables.h"
 
 #include "output-message-functions.h"
+
+#include "chess-engine-defines.h"
 
 #define CLEAR_LINE printf("\033[2K")
 

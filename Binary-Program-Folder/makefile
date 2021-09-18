@@ -51,6 +51,8 @@ SDL_FLAGS := #$(SDL_INCLUDE_FLAG) $(SDL_LIB_FLAG) -lmingw32 -lSDL2main -lSDL2
 # When creating an executable file, this is the linkers that is useful
 EXE_LINKERS := $(SDL_FLAGS) -lm
 
+default-targets: multi-player-chess single-player-chess zero-player-chess test-game-program
+
 .PRECIOUS: $(OBJECT_PROGRAMS)
 .PRECIOUS: $(GAME_OBJECT_PROGRAMS)
 

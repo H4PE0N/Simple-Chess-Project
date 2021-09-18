@@ -23,20 +23,6 @@ typedef struct Point
 	int height, width;
 } Point;
 
-typedef Piece** Board;
-
-// typedef SDL_Window Window;
-
-// typedef SDL_Renderer Render;
-
-// typedef SDL_Surface	Surface;
-
-// typedef SDL_Texture Texture;
-
-// typedef SDL_Rect Rect;
-
-// typedef SDL_Color Color;
-
 typedef struct Move
 {
 	Point start;
@@ -66,12 +52,6 @@ typedef struct TypeValue
 	int value;
 } TypeValue;
 
-#define B_HEIGHT 8
-#define B_WIDTH 8
-
-#define MIN_VAL -100000
-#define MAX_VAL +100000
-
-#define STD_DEPTH 3
+typedef Piece** Board;
 
 #endif

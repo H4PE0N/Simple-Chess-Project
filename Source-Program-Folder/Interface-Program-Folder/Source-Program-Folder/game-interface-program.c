@@ -1,6 +1,5 @@
 
-#include "../../Chess-Engine-Folder/Header-Program-Folder/engine-file-includer.h"
-#include "../Header-Program-Folder/game-interface-program.h"
+#include "../Header-Program-Folder/interface-files-includer.h"
 
 const char* blackSymbols[] = {" ", "P", "B", "H", "R", "Q", "K"};
 const char* whiteSymbols[] = {" ", "p", "b", "h", "r", "q", "k"};
