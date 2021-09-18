@@ -4,9 +4,9 @@
 
 bool other_pieces_moveable(Board, Info, Team);
 
-bool check_mate_situation(Board, Info, Point);
+bool check_mate_situation(Board, Info, Team);
 
-bool check_draw_situation(Board, Info, Point);
+bool check_draw_situation(Board, Info, Team);
 
 bool game_still_running(Team*, Board, Info);
 

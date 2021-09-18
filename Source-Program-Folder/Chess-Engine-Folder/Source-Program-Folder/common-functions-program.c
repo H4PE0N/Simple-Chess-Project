@@ -95,24 +95,24 @@ bool board_piece_equal(Piece first, Piece second)
 	return (typeEqual && teamEqual);
 }
 
-bool board_piece_points(Point* points, Board board, Piece piece)
-{
-	Piece currPiece; int index = 0;
-
-	for(int height = 0; height < BOARD_HEIGHT; height = height + 1)
-	{
-		for(int width = 0; width < BOARD_WIDTH; width = width + 1)
-		{
-			currPiece = board_point_piece(board, (Point) {height, width});
-
-			if(!board_piece_equal(piece, currPiece)) continue;
-
-			points[index] = (Point) {height, width};
-			index += 1;
-		}
-	}
-	return (index > 0);
-}
+// bool board_piece_points(Point* points, Board board, Piece piece)
+// {
+// 	Piece currPiece; int index = 0;
+//
+// 	for(int height = 0; height < BOARD_HEIGHT; height = height + 1)
+// 	{
+// 		for(int width = 0; width < BOARD_WIDTH; width = width + 1)
+// 		{
+// 			currPiece = board_point_piece(board, (Point) {height, width});
+//
+// 			if(!board_piece_equal(piece, currPiece)) continue;
+//
+// 			points[index] = (Point) {height, width};
+// 			index += 1;
+// 		}
+// 	}
+// 	return (index > 0);
+// }
 
 Point* create_point_array(int length)
 {
@@ -125,30 +125,30 @@ Point* create_point_array(int length)
 	return points;
 }
 
-bool board_piece_point(Point* point, Board board, Piece piece)
-{
-	Point* piecePoints = create_point_array(64);
-
-	if(!board_piece_points(piecePoints, board, piece))
-	{
-		free(piecePoints);
-
-		return false;
-	}
-
-	if(point_array_amount(piecePoints) != 1)
-	{
-		free(piecePoints);
-
-		return false;
-	}
-
-	*point = piecePoints[0];
-
-	free(piecePoints);
-
-	return true;
-}
+// bool board_piece_point(Point* point, Board board, Piece piece)
+// {
+// 	Point* piecePoints = create_point_array(64);
+//
+// 	if(!board_piece_points(piecePoints, board, piece))
+// 	{
+// 		free(piecePoints);
+//
+// 		return false;
+// 	}
+//
+// 	if(point_array_amount(piecePoints) != 1)
+// 	{
+// 		free(piecePoints);
+//
+// 		return false;
+// 	}
+//
+// 	*point = piecePoints[0];
+//
+// 	free(piecePoints);
+//
+// 	return true;
+// }
 
 int point_array_amount(Point points[])
 {

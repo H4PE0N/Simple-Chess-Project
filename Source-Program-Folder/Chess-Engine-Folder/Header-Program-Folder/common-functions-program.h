@@ -38,9 +38,9 @@ Point* create_point_array(int);
 
 bool board_piece_equal(Piece, Piece);
 
-bool board_piece_points(Point*, Board, Piece);
-
-bool board_piece_point(Point*, Board, Piece);
+// bool board_piece_points(Point*, Board, Piece);
+//
+// bool board_piece_point(Point*, Board, Piece);
 
 char convert_char_upper(char);
 

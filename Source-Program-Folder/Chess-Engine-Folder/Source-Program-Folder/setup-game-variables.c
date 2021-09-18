@@ -25,10 +25,11 @@ bool setup_game_info(Info* info, Board board)
 	Castle whiteRKS = extract_rks_values(board, WHITE);
 	Castle blackRKS = extract_rks_values(board, BLACK);
 
-	Point blackKing, whiteKing;
+	Point blackKing = board_piece_point(board, (Piece) {KING, BLACK});
+	if(!point_inside_board(blackKing)) return false;
 
-	if(!board_piece_point(&blackKing, board, (Piece) {KING, BLACK})) return false;
-	if(!board_piece_point(&whiteKing, board, (Piece) {KING, WHITE})) return false;
+	Point whiteKing = board_piece_point(board, (Piece) {KING, WHITE});
+	if(!point_inside_board(whiteKing)) return false;
 
 	Move lastMove = {(Point) {-1, -1}, (Point) {-1, -1}};
 	int turns = 0;
@@ -42,12 +43,15 @@ Castle extract_rks_values(Board board, Team team)
 {
 	if(!piece_team_exists(team)) return (Castle) {false, false};
 
-	Castle rKSwitch = {false, false};
-	Point king;
+	Castle castle = {false, false};
 
 	int expectedHeight = (team == WHITE) ? (BOARD_HEIGHT - 1) : 0;
 
-	if(!board_piece_point(&king, board, (Piece) {KING, team})) return (Castle) {false, false};
+
+	Point king = board_piece_point(board, (Piece) {KING, team});
+
+	if(!point_inside_board(king)) return (Castle) {false, false};
+
 
 	if(!board_points_equal(king, (Point) {expectedHeight, 4})) return (Castle) {false, false};
 
@@ -76,13 +80,13 @@ Castle extract_rks_values(Board board, Team team)
 
 		// Now the height is right;
 
-		if(currRook.width == 0) 			rKSwitch.queen = true;
-		if(currRook.width == (BOARD_WIDTH - 1)) rKSwitch.king = true;
+		if(currRook.width == 0) 			castle.queen = true;
+		if(currRook.width == (BOARD_WIDTH - 1)) castle.king = true;
 	}
 
 	free(rooks);
 
-	return rKSwitch;
+	return castle;
 }
 
 bool create_chess_board(Board* board, char filename[])

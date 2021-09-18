@@ -12,9 +12,9 @@ Type board_point_type(Board, Point);
 
 Team board_point_team(Board, Point);
 
-// bool board_piece_points(Point, Board, Piece);
-//
-// Point board_piece_point(Board, Piece);
+bool board_piece_points(Point*, Board, Piece);
+
+Point board_piece_point(Board, Piece);
 
 void update_castle_value(Castle*, Side, bool);
 

@@ -7,17 +7,13 @@ bool game_still_running(Team* winner, Board board, Info info)
 	for(int round = 0; round < 2; round = round + 1)
 	{
 		Team team = (round == 0) ? WHITE : BLACK;
-		Point point = team_king_point(info, team);
 
-		if(!point_inside_board(point)) return false;
-		if(board_point_empty(board, point)) return false;
-
-		if(check_mate_situation(board, info, point))
+		if(check_mate_situation(board, info, team))
 		{
 			*winner = (team == WHITE) ? BLACK : WHITE;
 			return false;
 		}
-		if(check_draw_situation(board, info, point))
+		if(check_draw_situation(board, info, team))
 		{
 			*winner = NONE;
 			return false;
@@ -28,10 +24,11 @@ bool game_still_running(Team* winner, Board board, Info info)
 
 bool update_kings_point(Board board, Info* info)
 {
-	Point blackKing, whiteKing;
+	Point blackKing = board_piece_point(board, (Piece) {KING, BLACK});
+	if(!point_inside_board(blackKing)) return false;
 
-	if(!board_piece_point(&blackKing, board, (Piece) {KING, BLACK})) return false;
-	if(!board_piece_point(&whiteKing, board, (Piece) {KING, WHITE})) return false;
+	Point whiteKing = board_piece_point(board, (Piece) {KING, WHITE});
+	if(!point_inside_board(whiteKing)) return false;
 
 	info->blackKing = blackKing;
 	info->whiteKing = whiteKing;
@@ -60,11 +57,11 @@ bool other_pieces_moveable(Board board, Info info, Team team)
 	return false;
 }
 
-bool check_draw_situation(Board board, Info info, Point king)
+bool check_draw_situation(Board board, Info info, Team team)
 {
-	if(!point_inside_board(king)) return false;
+	Point king = board_piece_point(board, (Piece) {KING, team});
 
-	Team team = board_point_team(board, king);
+	if(!point_inside_board(king)) return false;
 
 	if(king_inside_check(board, king)) return false;
 
@@ -75,11 +72,11 @@ bool check_draw_situation(Board board, Info info, Point king)
 	return true;
 }
 
-bool check_mate_situation(Board board, Info info, Point king)
+bool check_mate_situation(Board board, Info info, Team team)
 {
-	if(!point_inside_board(king)) return false;
+	Point king = board_piece_point(board, (Piece) {KING, team});
 
-	Team team = board_point_team(board, king);
+	if(!point_inside_board(king)) return false;
 
 	if(!king_inside_check(board, king)) return false;
 

@@ -131,14 +131,11 @@ int check_mate_value(Board board, Info info, Team team)
 
 	Team enemy = (team == WHITE) ? BLACK : WHITE;
 
-	Point enemyKing = team_king_point(info, enemy);
-	Point teamKing = team_king_point(info, team);
-
 	// If the teamKing (own king) is in check mate
-	if(check_mate_situation(board, info, teamKing)) value += MIN_VAL;
+	if(check_mate_situation(board, info, team)) value += MIN_VAL;
 
 	// If the enemyKing (opponent) is in check mate
-	else if(check_mate_situation(board, info, enemyKing)) value += MAX_VAL;
+	else if(check_mate_situation(board, info, enemy)) value += MAX_VAL;
 
 	return value;
 }
@@ -149,14 +146,11 @@ int game_draw_value(Board board, Info info, Team team)
 
 	Team enemy = (team == WHITE) ? BLACK : WHITE;
 
-	Point enemyKing = team_king_point(info, enemy);
-	Point teamKing = team_king_point(info, team);
-
 	// If the own king cant move (oppenent did draw)
-	if(check_draw_situation(board, info, teamKing)) 		value += MAX_VAL;
+	if(check_draw_situation(board, info, team)) 		value += MAX_VAL;
 
 	// If the opponent cant move (you did draw)
-	else if(check_draw_situation(board, info, enemyKing)) 	value += MIN_VAL;
+	else if(check_draw_situation(board, info, enemy)) 	value += MIN_VAL;
 
 	return value;
 }

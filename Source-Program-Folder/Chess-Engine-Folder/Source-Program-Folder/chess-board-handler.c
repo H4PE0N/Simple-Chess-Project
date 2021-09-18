@@ -39,43 +39,43 @@ Team board_point_team(Board board, Point point)
   return board_point_piece(board, point).team;
 }
 
-// Point board_piece_point(Board board, Piece piece)
-// {
-//   Point point = {-1, -1};
-//   Point* points = create_points_array(64);
-//
-//   if(board_piece_points(points, board, piece))
-//   {
-//     point = points[0];
-//   }
-//
-//   free(points);
-//
-//   return point;
-// }
-//
-// bool board_piece_points(Point* points, Board board, Piece piece)
-// {
-// 	Piece currentPiece;
-//   Point currentPoint;
-//
-//   int index = 0;
-//
-// 	for(int height = 0; height < BOARD_HEIGHT; height = height + 1)
-// 	{
-// 		for(int width = 0; width < BOARD_WIDTH; width = width + 1)
-// 		{
-//       currentPoint = (Point) {height, width};
-// 			currentPiece = board_point_piece(board, currentPoint);
-//
-// 			if(!board_pieces_equal(piece, currentPiece)) continue;
-//
-// 			points[index] = currentPoint;
-// 			index += 1;
-// 		}
-// 	}
-// 	return (index > 0);
-// }
+Point board_piece_point(Board board, Piece piece)
+{
+  Point point = {-1, -1};
+  Point* points = create_point_array(64);
+
+  if(board_piece_points(points, board, piece))
+  {
+    point = points[0];
+  }
+
+  free(points);
+
+  return point;
+}
+
+bool board_piece_points(Point* points, Board board, Piece piece)
+{
+	Piece currentPiece;
+  Point currentPoint;
+
+  int index = 0;
+
+	for(int height = 0; height < BOARD_HEIGHT; height = height + 1)
+	{
+		for(int width = 0; width < BOARD_WIDTH; width = width + 1)
+		{
+      currentPoint = (Point) {height, width};
+			currentPiece = board_point_piece(board, currentPoint);
+
+			if(!board_pieces_equal(piece, currentPiece)) continue;
+
+			points[index] = currentPoint;
+			index += 1;
+		}
+	}
+	return (index > 0);
+}
 
 void update_castle_value(Castle* castle, Side side, bool value)
 {
