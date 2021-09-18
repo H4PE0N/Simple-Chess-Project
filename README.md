@@ -15,3 +15,6 @@ When you start the game `multi-player-chess`, you will start as **WHITE**. When 
 If you are like me and don't have any friends, you can try to play the game `single-player-chess`. You start as **WHITE** and you do your move. Then the turn goes over to **BLACK**, who is a dump computer that does his move. It is like you play with a friend, but his not your friend, and he isn't good either. When you think of it, this game-mode is kind of depressing. But that's the game, and you switch turns until one of you win, or it becomes a draw.
 ### zero-player-chess:
 This is the dumbest and the least useful game-mode of them all. The game start with player **WHITE**, who is a dumb computer. When you click the **ENTER KEY**, the computer does his move, and the turn goes over to **BLACK**, who also is a equally dumb computer. You click again and the computer does his move. If you sometime enter the word `STOP`, game will stop and no one of the players win.
+
+## The Advanced Chess Engine
+https://github.com/H4PE0N/Advanced-Chess-Engine
