@@ -38,8 +38,8 @@ typedef struct Move
 typedef struct Castle
 {
 	// queenSide kingSide
-	bool left;
-	bool right;
+	bool queen;
+	bool king;
 } Castle;
 
 typedef struct Castles

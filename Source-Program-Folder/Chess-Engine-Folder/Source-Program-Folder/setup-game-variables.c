@@ -76,8 +76,8 @@ Castle extract_rks_values(Board board, Team team)
 
 		// Now the height is right;
 
-		if(currRook.width == 0) 			rKSwitch.left = true;
-		if(currRook.width == (BOARD_WIDTH - 1)) rKSwitch.right = true;
+		if(currRook.width == 0) 			rKSwitch.queen = true;
+		if(currRook.width == (BOARD_WIDTH - 1)) rKSwitch.king = true;
 	}
 
 	free(rooks);

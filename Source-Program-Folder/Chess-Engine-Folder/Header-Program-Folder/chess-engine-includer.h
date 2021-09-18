@@ -50,6 +50,8 @@
 
 #include "board-value-generator.h"
 
+#include "chess-board-handler.h"
+
 #define CLEAR_LINE printf("\033[2K")
 
 #define MOVE_UP_LINES(lines) printf("\033[%dA", lines)

@@ -62,8 +62,8 @@ void execute_rook_move(Board board, Move move, Info* info)
 
 	move_board_piece(board, start, stop);
 
-	if(start.width == 0) 				RKS->left = false;
-	if(start.width == (BOARD_WIDTH - 1))	RKS->right = false;
+	if(start.width == 0) 				RKS->queen = false;
+	if(start.width == (BOARD_WIDTH - 1))	RKS->king = false;
 }
 
 void execute_knight_move(Board board, Move move)

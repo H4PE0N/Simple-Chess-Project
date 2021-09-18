@@ -27,4 +27,7 @@ bool castle_bool_valid(Point, Info, Team);
 
 bool check_after_castling(Board, Move, Info);
 
+
+bool clear_moving_path(Board, Point, Point);
+
 #endif

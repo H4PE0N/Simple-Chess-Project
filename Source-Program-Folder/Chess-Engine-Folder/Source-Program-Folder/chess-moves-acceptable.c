@@ -222,7 +222,7 @@ bool castle_bool_valid(Point start, Info info, Team team)
 	if(team == WHITE) castle = info.whiteRKS;
 	if(team == BLACK) castle = info.blackRKS;
 
-	return (start.width == 0) ? castle.left : castle.right;
+	return (start.width == 0) ? castle.queen : castle.king;
 }
 
 bool team_castle_acceptable(Board board, Move move, Info info)
@@ -265,4 +265,33 @@ bool check_after_castling(Board board, Move move, Info info)
 	}
 
 	free_chess_board(boardCopy); return false;
+}
+
+bool clear_moving_path(Board board, Point start, Point stop)
+{
+	int heightOffset = (stop.height - start.height);
+	int widthOffset = (stop.width - start.width);
+
+	// If the knight is moving, he dont need a clear moving path
+	if(moving_knight_valid(start, stop)) return true;
+
+	int steps = (abs(heightOffset) > abs(widthOffset)) ? abs(heightOffset) : abs(widthOffset);
+
+	int heightAdder = (heightOffset == 0) ? 0 : (heightOffset / abs(heightOffset));
+	int widthAdder = (widthOffset == 0) ? 0 : (widthOffset / abs(widthOffset));
+
+	int height, width;
+
+	Point point;
+
+	for(int index = 1; index < steps; index = index + 1)
+	{
+		height = start.height + (index * heightAdder);
+		width = start.width + (index * widthAdder);
+
+		point = (Point) {height, width};
+
+		if(!board_point_clear(board, point)) return false;
+	}
+	return true;
 }

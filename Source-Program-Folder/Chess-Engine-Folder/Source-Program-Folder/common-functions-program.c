@@ -57,35 +57,35 @@ int create_random_number(int minimum, int maximum)
 	return (rand() % (maximum - minimum + 1) + minimum);
 }
 
-Piece board_point_piece(Board board, Point point)
-{
-	return board[point.height][point.width];
-}
+// Piece board_point_piece(Board board, Point point)
+// {
+// 	return board[point.height][point.width];
+// }
 
 void append_board_piece(Board board, Point point, Piece piece)
 {
 	board[point.height][point.width] = piece;
 }
 
-void remove_board_piece(Board board, Point point)
-{
-	board[point.height][point.width] = (Piece) {EMPTY, NONE};
-}
-
-void move_board_piece(Board board, Point start, Point stop)
-{
-	remove_board_piece(board, stop);
-	switch_chess_pieces(board, start, stop);
-}
-
-void switch_chess_pieces(Board board, Point first, Point second)
-{
-	Piece firPiece = board_point_piece(board, first);
-	Piece secPiece = board_point_piece(board, second);
-
-	append_board_piece(board, first, secPiece);
-	append_board_piece(board, second, firPiece);
-}
+// void remove_board_piece(Board board, Point point)
+// {
+// 	board[point.height][point.width] = (Piece) {EMPTY, NONE};
+// }
+//
+// void move_board_piece(Board board, Point start, Point stop)
+// {
+// 	remove_board_piece(board, stop);
+// 	switch_chess_pieces(board, start, stop);
+// }
+//
+// void switch_chess_pieces(Board board, Point first, Point second)
+// {
+// 	Piece firPiece = board_point_piece(board, first);
+// 	Piece secPiece = board_point_piece(board, second);
+//
+// 	append_board_piece(board, first, secPiece);
+// 	append_board_piece(board, second, firPiece);
+// }
 
 bool board_piece_equal(Piece first, Piece second)
 {
@@ -160,17 +160,17 @@ int point_array_amount(Point points[])
 	return amount;
 }
 
-Team board_point_team(Board board, Point point)
-{
-	Piece piece = board_point_piece(board, point);
-	return piece.team;
-}
-
-Type board_point_type(Board board, Point point)
-{
-	Piece piece = board_point_piece(board, point);
-	return piece.type;
-}
+// Team board_point_team(Board board, Point point)
+// {
+// 	Piece piece = board_point_piece(board, point);
+// 	return piece.team;
+// }
+//
+// Type board_point_type(Board board, Point point)
+// {
+// 	Piece piece = board_point_piece(board, point);
+// 	return piece.type;
+// }
 
 Board copy_chess_board(Board board)
 {
@@ -239,35 +239,6 @@ bool board_point_exists(Board board, Point point)
 //
 // 	return (start_c != stop_c && start_c != NONE && stop_c != NONE);
 // }
-
-bool clear_moving_path(Board board, Point start, Point stop)
-{
-	int heightOffset = (stop.height - start.height);
-	int widthOffset = (stop.width - start.width);
-
-	// If the knight is moving, he dont need a clear moving path
-	if(moving_knight_valid(start, stop)) return true;
-
-	int steps = (abs(heightOffset) > abs(widthOffset)) ? abs(heightOffset) : abs(widthOffset);
-
-	int heightAdder = (heightOffset == 0) ? 0 : (heightOffset / abs(heightOffset));
-	int widthAdder = (widthOffset == 0) ? 0 : (widthOffset / abs(widthOffset));
-
-	int height, width;
-
-	Point point;
-
-	for(int index = 1; index < steps; index = index + 1)
-	{
-		height = start.height + (index * heightAdder);
-		width = start.width + (index * widthAdder);
-
-		point = (Point) {height, width};
-
-		if(!board_point_clear(board, point)) return false;
-	}
-	return true;
-}
 
 // bool board_points_equal(Point first, Point second)
 // {
