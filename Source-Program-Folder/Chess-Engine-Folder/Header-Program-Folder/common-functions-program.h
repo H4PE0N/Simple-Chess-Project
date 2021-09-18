@@ -2,21 +2,21 @@
 #ifndef COMMON_FUNCTIONS_PROGRAM_H
 #define COMMON_FUNCTIONS_PROGRAM_H
 
-bool number_inside_bounds(int, int, int);
+// bool number_inside_bounds(int, int, int);
 
-bool point_inside_board(Point);
+// bool point_inside_board(Point);
 
 bool chess_team_string(char*, Team);
 
-bool points_inside_board(Point, Point);
+// bool points_inside_board(Point, Point);
 
-bool piece_team_exists(Team);
+// bool piece_team_exists(Team);
 
 Piece board_point_piece(Board, Point);
 
 void append_board_piece(Board, Point, Piece);
 
-bool move_inside_board(Move);
+// bool move_inside_board(Move);
 
 void remove_board_piece(Board, Point);
 
@@ -54,15 +54,15 @@ Point team_king_point(Info, Team);
 
 bool clear_moving_path(Board, Point, Point);
 
-bool board_points_enemy(Board, Point, Point);
+// bool board_points_enemy(Board, Point, Point);
 
-bool board_points_team(Board, Point, Point);
+// bool board_points_team(Board, Point, Point);
 
-bool board_point_empty(Board, Point);
+// bool board_point_empty(Board, Point);
 
 Type board_point_type(Board, Point);
 
-bool board_points_equal(Point, Point);
+// bool board_points_equal(Point, Point);
 
 bool board_point_string(char*, Point);
 

@@ -21,10 +21,10 @@ bool straight_move_acceptable(Board, Move, Info);
 bool diagonal_move_acceptable(Board, Move, Info);
 
 
-bool rook_switch_able(Board, Move, Info);
+bool team_castle_acceptable(Board, Move, Info);
 
-bool switch_bool_valid(Point, Info, Team);
+bool castle_bool_valid(Point, Info, Team);
 
-bool check_after_kingSwitch(Board, Move, Info);
+bool check_after_castling(Board, Move, Info);
 
 #endif

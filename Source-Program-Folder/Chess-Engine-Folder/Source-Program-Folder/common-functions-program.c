@@ -1,26 +1,26 @@
 
 #include "../Header-Program-Folder/chess-engine-includer.h"
 
-bool number_inside_bounds(int number, int minimum, int maximum)
-{
-	bool minimumValid = (number >= minimum);
-	bool maximumValid = (number <= maximum);
+// bool number_inside_bounds(int number, int minimum, int maximum)
+// {
+// 	bool minimumValid = (number >= minimum);
+// 	bool maximumValid = (number <= maximum);
+//
+// 	return (minimumValid && maximumValid);
+// }
 
-	return (minimumValid && maximumValid);
-}
+// bool point_inside_board(Point point)
+// {
+// 	bool heightValid = number_inside_bounds(point.height, 0, BOARD_HEIGHT-1);
+// 	bool widthValid = number_inside_bounds(point.width, 0, BOARD_WIDTH-1);
+//
+// 	return (heightValid && widthValid);
+// }
 
-bool point_inside_board(Point point)
-{
-	bool heightValid = number_inside_bounds(point.height, 0, BOARD_HEIGHT-1);
-	bool widthValid = number_inside_bounds(point.width, 0, BOARD_WIDTH-1);
-
-	return (heightValid && widthValid);
-}
-
-bool piece_team_exists(Team team)
-{
-	return (team == WHITE || team == BLACK);
-}
+// bool piece_team_exists(Team team)
+// {
+// 	return (team == WHITE || team == BLACK);
+// }
 
 bool chess_team_string(char* string, Team team)
 {
@@ -35,13 +35,13 @@ bool chess_team_string(char* string, Team team)
 	return false;
 }
 
-bool points_inside_board(Point first, Point second)
-{
-	bool firstValid = point_inside_board(first);
-	bool secondValid = point_inside_board(second);
-
-	return (firstValid && secondValid);
-}
+// bool points_inside_board(Point first, Point second)
+// {
+// 	bool firstValid = point_inside_board(first);
+// 	bool secondValid = point_inside_board(second);
+//
+// 	return (firstValid && secondValid);
+// }
 
 void free_chess_board(Board board)
 {
@@ -192,21 +192,21 @@ Point team_king_point(Info info, Team team)
 	return (team == WHITE) ? info.whiteKing : info.blackKing;
 }
 
-bool board_points_team(Board board, Point start, Point stop)
-{
-	Team start_c = board_point_team(board, start);
-	Team stop_c = board_point_team(board, stop);
+// bool board_points_team(Board board, Point start, Point stop)
+// {
+// 	Team start_c = board_point_team(board, start);
+// 	Team stop_c = board_point_team(board, stop);
+//
+// 	return (start_c == stop_c && start_c != NONE  && stop_c != NONE);
+// }
 
-	return (start_c == stop_c && start_c != NONE  && stop_c != NONE);
-}
-
-bool board_point_empty(Board board, Point point)
-{
-	Type type = board_point_type(board, point);
-	Team team = board_point_team(board, point);
-
-	return (type == EMPTY || team == NONE);
-}
+// bool board_point_empty(Board board, Point point)
+// {
+// 	Type type = board_point_type(board, point);
+// 	Team team = board_point_team(board, point);
+//
+// 	return (type == EMPTY || team == NONE);
+// }
 
 bool board_point_clear(Board board, Point point)
 {
@@ -224,21 +224,21 @@ bool board_point_exists(Board board, Point point)
 	return (type != EMPTY && team != NONE);
 }
 
-bool move_inside_board(Move move)
-{
-	bool startValid = point_inside_board(move.start);
-	bool stopValid = point_inside_board(move.stop);
+// bool move_inside_board(Move move)
+// {
+// 	bool startValid = point_inside_board(move.start);
+// 	bool stopValid = point_inside_board(move.stop);
+//
+// 	return (startValid && stopValid);
+// }
 
-	return (startValid && stopValid);
-}
-
-bool board_points_enemy(Board board, Point start, Point stop)
-{
-	Team start_c = board_point_team(board, start);
-	Team stop_c = board_point_team(board, stop);
-
-	return (start_c != stop_c && start_c != NONE && stop_c != NONE);
-}
+// bool board_points_enemy(Board board, Point start, Point stop)
+// {
+// 	Team start_c = board_point_team(board, start);
+// 	Team stop_c = board_point_team(board, stop);
+//
+// 	return (start_c != stop_c && start_c != NONE && stop_c != NONE);
+// }
 
 bool clear_moving_path(Board board, Point start, Point stop)
 {
@@ -269,13 +269,13 @@ bool clear_moving_path(Board board, Point start, Point stop)
 	return true;
 }
 
-bool board_points_equal(Point first, Point second)
-{
-	bool heightEqual = (first.height == second.height);
-	bool widthEqual = (first.width == second.width);
-
-	return (heightEqual && widthEqual);
-}
+// bool board_points_equal(Point first, Point second)
+// {
+// 	bool heightEqual = (first.height == second.height);
+// 	bool widthEqual = (first.width == second.width);
+//
+// 	return (heightEqual && widthEqual);
+// }
 
 void convert_string_upper(char* string, int length)
 {

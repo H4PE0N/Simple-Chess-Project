@@ -8,7 +8,7 @@ void execute_pawn_move(Board, Move);
 
 void execute_rook_move(Board, Move, Info*);
 
-void execute_rook_switch(Board, Move, Info*);
+void execute_team_castle(Board, Move, Info*);
 
 void update_king_point(Info*, Team, Point);
 

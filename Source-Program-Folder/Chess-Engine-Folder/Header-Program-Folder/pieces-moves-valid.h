@@ -4,7 +4,7 @@
 
 bool moving_pawn_valid(Board, Point, Point);
 
-bool rook_king_switch(Board, Point, Point);
+bool team_castle_valid(Board, Point, Point);
 
 bool moving_rook_valid(Point, Point);
 

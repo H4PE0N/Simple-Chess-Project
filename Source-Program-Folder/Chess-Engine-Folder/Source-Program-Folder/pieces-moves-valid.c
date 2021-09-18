@@ -72,7 +72,7 @@ bool king_starting_bool(Point point, Team team)
 	return (point.width == 4);
 }
 
-bool rook_king_switch(Board board, Point start, Point stop)
+bool team_castle_valid(Board board, Point start, Point stop)
 {
 	if(!board_points_team(board, start, stop)) return false;
 

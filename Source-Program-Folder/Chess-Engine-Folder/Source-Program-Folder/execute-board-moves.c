@@ -30,7 +30,7 @@ void execute_pawn_move(Board board, Move move)
 	make_pawn_queen(board, move.stop);
 }
 
-void execute_rook_switch(Board board, Move move, Info* info)
+void execute_team_castle(Board board, Move move, Info* info)
 {
 	Point start = move.start, stop = move.stop;
 

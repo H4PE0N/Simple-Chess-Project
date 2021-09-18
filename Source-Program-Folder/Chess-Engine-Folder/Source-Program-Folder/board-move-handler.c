@@ -38,9 +38,9 @@ bool rook_move_handler(Board board, Move move, Info* info)
 {
 	if(!rook_move_acceptable(board, move, *info)) return false;
 
-	if(rook_switch_able(board, move, *info))
+	if(team_castle_acceptable(board, move, *info))
 	{
-		execute_rook_switch(board, move, info); return true;
+		execute_team_castle(board, move, info); return true;
 	}
 	else execute_rook_move(board, move, info); return true;
 }

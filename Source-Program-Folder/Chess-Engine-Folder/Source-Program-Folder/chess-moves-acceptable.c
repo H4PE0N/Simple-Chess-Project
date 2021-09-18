@@ -66,7 +66,7 @@ bool pawn_move_acceptable(Board board, Move move, Info info)
 	{
 		if(!board_point_empty(board, stop)) return false;
 	}
-	else if(!board_points_enemy(board, start, stop)) return false;
+	else if(points_not_enemy(board, start, stop)) return false;
 
 	if(!move_prevent_check(board, move, info)) return false;
 
@@ -88,7 +88,7 @@ bool rook_move_acceptable(Board board, Move move, Info info)
 	if(!clear_moving_path(board, start, stop)) return false;
 
 	// This is a special case, and will skip the following controls
-	if(rook_switch_able(board, move, info)) return true;
+	if(team_castle_acceptable(board, move, info)) return true;
 
 	// These controls are more specific, and should be done later
 	if(board_points_team(board, start, stop)) return false;
@@ -182,7 +182,7 @@ bool straight_move_acceptable(Board board, Move move, Info info)
 	if(!clear_moving_path(board, start, stop)) return false;
 
 	// This is a special case, and will skip the following controls
-	if(rook_switch_able(board, move, info)) return true;
+	if(team_castle_acceptable(board, move, info)) return true;
 
 	// These controls are more specific, and should be done later
 	if(board_points_team(board, start, stop)) return false;
@@ -215,17 +215,17 @@ bool knight_move_acceptable(Board board, Move move, Info info)
 	return true;
 }
 
-bool switch_bool_valid(Point start, Info info, Team team)
+bool castle_bool_valid(Point start, Info info, Team team)
 {
-	Castle rookKingSwitch = {false, false};
+	Castle castle = {false, false};
 
-	if(team == WHITE) rookKingSwitch = info.whiteRKS;
-	if(team == BLACK) rookKingSwitch = info.blackRKS;
+	if(team == WHITE) castle = info.whiteRKS;
+	if(team == BLACK) castle = info.blackRKS;
 
-	return (start.width == 0) ? rookKingSwitch.left : rookKingSwitch.right;
+	return (start.width == 0) ? castle.left : castle.right;
 }
 
-bool rook_switch_able(Board board, Move move, Info info)
+bool team_castle_acceptable(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
@@ -236,17 +236,17 @@ bool rook_switch_able(Board board, Move move, Info info)
 	if(king_inside_check(board, king)) return false;
 
 	// This checks if the rook and the king is on the right place
-	if(!rook_king_switch(board, start, stop)) return false;
+	if(!team_castle_valid(board, start, stop)) return false;
 
 	// This checks that the operation is clear to go (true)
-	if(!switch_bool_valid(start, info, team)) return false;
+	if(!castle_bool_valid(start, info, team)) return false;
 
-	if(!check_after_kingSwitch(board, move, info)) return false;
+	if(!check_after_castling(board, move, info)) return false;
 
 	return true;
 }
 
-bool check_after_kingSwitch(Board board, Move move, Info info)
+bool check_after_castling(Board board, Move move, Info info)
 {
 	if(!move_inside_board(move)) return false;
 
@@ -255,7 +255,7 @@ bool check_after_kingSwitch(Board board, Move move, Info info)
 	Board boardCopy = copy_chess_board(board);
 	Info infoDummy = info;
 
-	execute_rook_switch(boardCopy, move, &infoDummy);
+	execute_team_castle(boardCopy, move, &infoDummy);
 
 	Point king = team_king_point(infoDummy, team);
 
