@@ -74,14 +74,4 @@ typedef struct TypeValue
 
 #define STD_DEPTH 3
 
-#define SAVE_FILE	"../Source-Program-Folder/Data-Program-Folder/saved-chess-board.txt"
-#define STD_FILE	"../Source-Program-Folder/Data-Program-Folder/default-chess-board.txt"
-#define PIECE_FOLDER "../Source-Program-Folder/Piece-Image-Folder"
-
-#define SCREEN_HEIGHT	800
-#define SCREEN_WIDTH	800
-
-#define SQUARE_HEIGHT SCREEN_HEIGHT / B_HEIGHT
-#define SQUARE_WIDTH SCREEN_WIDTH / B_WIDTH
-
 #endif

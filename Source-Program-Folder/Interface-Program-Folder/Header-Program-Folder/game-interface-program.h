@@ -2,18 +2,6 @@
 #ifndef INTERFACE_INPUT_PROGRAM_H
 #define INTERFACE_INPUT_PROGRAM_H
 
-#include "global-include-header.h"
-
-#define CLEAR_LINE printf("\033[2K")
-
-#define MOVE_UP_LINES(lines) printf("\033[%dA", lines)
-
-#define MOVE_UP_BOARD MOVE_UP_LINES(19);
-
-#define MOVE_UP_INFO MOVE_UP_LINES(3);
-
-#define MOVE_UP_INPUT MOVE_UP_LINES(1);
-
 
 // void render_chess_board(Render*);
 
@@ -25,18 +13,21 @@
 
 // bool render_full_board(Render*, Board);
 
+#define SAVE_FILE	"../Source-Program-Folder/Game-Program-Folder/Data-Program-Folder/saved-chess-board.txt"
+#define STD_FILE	"../Source-Program-Folder/Game-Program-Folder/Data-Program-Folder/default-chess-board.txt"
+#define PIECE_FOLDER "../Source-Program-Folder/Game-Program-Folder/Piece-Image-Folder"
+
+#define SCREEN_HEIGHT	800
+#define SCREEN_WIDTH	800
+
+#define SQUARE_HEIGHT SCREEN_HEIGHT / B_HEIGHT
+#define SQUARE_WIDTH SCREEN_WIDTH / B_WIDTH
 
 void display_chess_board(Board);
-
-bool board_point_string(char*, Point);
-
-bool chess_move_string(char*, Move);
 
 void display_chess_info(Info);
 
 bool input_current_move(char*);
-
-void display_found_move(Move, int, time_t);
 
 bool input_string_variable(char*);
 
@@ -59,5 +50,7 @@ int string_letter_index(char[], int, char);
 void display_chess_result(Board, Team);
 
 void display_board_symbol(int, int, Piece);
+
+void extract_file_name(char*, char*[], int);
 
 #endif

@@ -38,8 +38,6 @@ int point_array_amount(Point[]);
 
 Point* create_point_array(int);
 
-void extract_file_name(char*, char*[], int);
-
 bool board_piece_equal(Piece, Piece);
 
 bool board_piece_points(Point*, Board, Piece);
@@ -67,5 +65,12 @@ bool board_point_empty(Board, Point);
 Type board_point_type(Board, Point);
 
 bool board_points_equal(Point, Point);
+
+bool board_point_string(char*, Point);
+
+bool chess_move_string(char*, Move);
+
+extern const char letters[];
+extern const char numbers[];
 
 #endif

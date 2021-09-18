@@ -1,45 +1,71 @@
 
-SOURCE_FOLDER := ../Source-Program-Folder/Source-Program-Folder
-GAME_FOLDER := ../Source-Program-Folder/Game-Program-Folder
-HEADER_FOLDER := ../Source-Program-Folder/Header-Program-Folder
-
+# This is the base folders
+BINARY_FOLDER := ../Binary-Program-Folder
 OBJECT_FOLDER := ../Object-Program-Folder
+SOURCE_FOLDER := ../Source-Program-Folder
 
-SOURCE_PROGRAMS := $(wildcard $(SOURCE_FOLDER)/*.c)
-HEADER_PROGRAMS := $(wildcard $(HEADER_FOLDER)/*.h)
+# This is the base source folders
+ENGINE_FOLDER			:= $(SOURCE_FOLDER)/Chess-Engine-Folder
+GAME_FOLDER 			:= $(SOURCE_FOLDER)/Game-Program-Folder
+INTERFACE_FOLDER 	:= $(SOURCE_FOLDER)/Interface-Program-Folder
 
-OBJECT_PROGRAMS := $(patsubst $(SOURCE_FOLDER)/%.c, $(OBJECT_FOLDER)/%.o, $(SOURCE_PROGRAMS))
+# This is the source and header folder in the engine folder
+ENGINE_SOURCE_FOLDER := $(ENGINE_FOLDER)/Source-Program-Folder
+ENGINE_HEADER_FOLDER := $(ENGINE_FOLDER)/Header-Program-Folder
 
+# This is the source and header folder in the game folder
+GAME_SOURCE_FOLDER := $(GAME_FOLDER)/Source-Program-Folder
+GAME_HEADER_FOLDER := $(GAME_FOLDER)/Header-Program-Folder
+
+# This is the source and header folder in the interface folder
+INTERFACE_SOURCE_FOLDER := $(INTERFACE_FOLDER)/Source-Program-Folder
+INTERFACE_HEADER_FOLDER := $(INTERFACE_FOLDER)/Header-Program-Folder
+
+# This is the source and header programs in the engine folder
+ENGINE_SOURCE_PROGRAMS := $(wildcard $(ENGINE_SOURCE_FOLDER)/*.c)
+ENGINE_HEADER_PROGRAMS := $(wildcard $(ENGINE_HEADER_FOLDER)/*.h)
+
+# This is the source and header programs in the engine folder
+INTERFACE_SOURCE_PROGRAMS := $(wildcard $(INTERFACE_SOURCE_FOLDER)/*.c)
+INTERFACE_HEADER_PROGRAMS := $(wildcard $(INTERFACE_HEADER_FOLDER)/*.h)
+
+# This is all the object files in the entire project
+OBJECT_PROGRAMS := $(patsubst $(ENGINE_SOURCE_FOLDER)/%.c, $(OBJECT_FOLDER)/%.o, $(ENGINE_SOURCE_PROGRAMS)) \
+									$(patsubst $(INTERFACE_SOURCE_FOLDER)/%.c, $(OBJECT_FOLDER)/%.o, $(INTERFACE_SOURCE_PROGRAMS))
+
+# This is the object files and the executables of the game files
+GAME_OBJECT_PROGRAMS := $(patsubst $(GAME_SOURCE_FOLDER)/%.c, $(OBJECT_FOLDER)/%.o, $(ENGINE_SOURCE_PROGRAMS))
+GAME_BINARY_PROGRAMS := $(patsubst $(GAME_SOURCE_FOLDER)/%.c, $(BINARY_FOLDER)/%, $(ENGINE_SOURCE_PROGRAMS))
+
+# This is the compilor and the standard compile flags
 COMPILE_COMPILOR := gcc
 COMPILE_FLAGS := -Wall -Werror --std=c99
 
+# This is the SDL compile flags for the include and the lib folders
 SDL_INCLUDE_FLAG := -I../Source-Program-Folder/SDL-Library-Programs/include
 SDL_LIB_FLAG := -L../Source-Program-Folder/SDL-Library-Programs/lib
 
-# SDL_FLAGS := $(SDL_INCLUDE_FLAG) $(SDL_LIB_FLAG) -lmingw32 -lSDL2main -lSDL2
-SDL_FLAGS := -lSDL2 -lSDL2main -lSDL2_image
+# This is every SDL compile flag needed for the project
+SDL_FLAGS := #$(SDL_INCLUDE_FLAG) $(SDL_LIB_FLAG) -lmingw32 -lSDL2main -lSDL2
 
+# When creating an executable file, this is the linkers that is useful
 EXE_LINKERS := $(SDL_FLAGS) -lm
 
-#start:
-#	gcc ../Source-Program-Folder/Game-Program-Folder/test-game-program.c -ISDL2-64/include -LSDL2-64/lib -Wall -lmingw32 -lSDL2main -lSDL2 -o main
-
 .PRECIOUS: $(OBJECT_PROGRAMS)
+.PRECIOUS: $(GAME_OBJECT_PROGRAMS)
 
-default-target: multi-player-chess single-player-chess zero-player-chess test-game-program
-
-#test-game-program: ../Object-Program-Folder/test-game-program.o
-#	$(COMPILE_COMPILOR) ../Object-Program-Folder/test-game-program.o $(COMPEXE_FLAGS) -o main
-
-#../Object-Program-Folder/test-game-program.o:
-#	$(COMPILE_COMPILOR) ../Source-Program-Folder/Game-Program-Folder/test-game-program.c -c -o ../Object-Program-Folder/test-game-program.o
-
-%: $(OBJECT_PROGRAMS) $(OBJECT_FOLDER)/%.o $(SOURCE_PROGRAMS) $(HEADER_PROGRAMS) $(GAME_FOLDER)/%.c
+# This is the target for compiling the executable files
+%: $(GAME_SOURCE_FOLDER)/%.c $(GAME_HEADER_FOLDER)/%.h \
+	$(OBJECT_FOLDER)/%.o $(OBJECT_PROGRAMS) \
+	$(ENGINE_SOURCE_PROGRAMS) $(INTERFACE_SOURCE_PROGRAMS)
 	$(COMPILE_COMPILOR) $(OBJECT_PROGRAMS) $(OBJECT_FOLDER)/$@.o $(COMPILE_FLAGS) $(EXE_LINKERS) -o $@
 
-$(OBJECT_FOLDER)/%.o: $(SOURCE_FOLDER)/%.c $(HEADER_FOLDER)/%.h
+# This is the targets for the object files in the different folders
+$(OBJECT_FOLDER)/%.o: $(GAME_SOURCE_FOLDER)/%.c $(GAME_HEADER_FOLDER)/%.h
 	$(COMPILE_COMPILOR) $< -c $(COMPILE_FLAGS) -o $@
 
-$(OBJECT_FOLDER)/%.o: $(GAME_FOLDER)/%.c $(HEADER_FOLDER)/%.h
+$(OBJECT_FOLDER)/%.o: $(ENGINE_SOURCE_FOLDER)/%.c $(ENGINE_HEADER_FOLDER)/%.h
 	$(COMPILE_COMPILOR) $< -c $(COMPILE_FLAGS) -o $@
 
+$(OBJECT_FOLDER)/%.o: $(INTERFACE_SOURCE_FOLDER)/%.c $(INTERFACE_HEADER_FOLDER)/%.h
+	$(COMPILE_COMPILOR) $< -c $(COMPILE_FLAGS) -o $@

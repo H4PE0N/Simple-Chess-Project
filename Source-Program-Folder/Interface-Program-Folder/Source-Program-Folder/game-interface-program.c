@@ -1,14 +1,19 @@
 
-#include "../Header-Program-Folder/global-include-header.h"
+#include "../../Chess-Engine-Folder/Header-Program-Folder/global-include-header.h"
+#include "../Header-Program-Folder/game-interface-program.h"
 
 const char* blackSymbols[] = {" ", "P", "B", "H", "R", "Q", "K"};
 const char* whiteSymbols[] = {" ", "p", "b", "h", "r", "q", "k"};
 
-const char letters[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
-const char numbers[] = {'8', '7', '6', '5', '4', '3', '2', '1'};
-
 #define DIS_LETS "  | A | B | C | D | E | F | G | H |"
 #define DIS_ROW "--+---+---+---+---+---+---+---+---+--"
+
+void extract_file_name(char* filename, char* arguments[], int amount)
+{
+	if(amount >= 2) strcpy(filename, arguments[1]);
+
+	else strcpy(filename, STD_FILE);
+}
 
 // const Color whiteColor = {0, 255, 255};
 // const Color blackColor = {0, 0, 255};
@@ -46,7 +51,7 @@ const char numbers[] = {'8', '7', '6', '5', '4', '3', '2', '1'};
 // 	render_chess_board(renderer);
 
 // 	Piece piece; Point point;
-	
+
 // 	for(int height = 0; height < B_HEIGHT; height += 1)
 // 	{
 // 		for(int width = 0; width < B_WIDTH; width += 1)
@@ -84,7 +89,7 @@ const char numbers[] = {'8', '7', '6', '5', '4', '3', '2', '1'};
 // 	}
 
 // 	Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
-	
+
 // 	if(texture == NULL)
 // 	{
 // 		printf("Read image error %s\n", SDL_GetError());
@@ -127,32 +132,6 @@ const char numbers[] = {'8', '7', '6', '5', '4', '3', '2', '1'};
 
 // 	return true;
 // }
-
-bool board_point_string(char* string, Point point)
-{
-	int height = point.height, width = point.width;
-
-	if(!number_inside_bounds(height, 0, B_HEIGHT-1)) return false;
-	if(!number_inside_bounds(width, 0, B_WIDTH-1)) return false;
-
-	sprintf(string, "%c%c", letters[width], numbers[height]);
-
-	return true;
-}
-
-bool chess_move_string(char* string, Move move)
-{
-	Point start = move.start, stop = move.stop;
-
-	char startString[10], stopString[10];
-
-	if(!board_point_string(startString, start)) return false;
-	if(!board_point_string(stopString, stop)) return false;
-
-	sprintf(string, "%s->%s", startString, stopString);
-
-	return true;
-}
 
 void display_chess_board(Board board)
 {
@@ -292,19 +271,12 @@ bool hint_move_parser(Move* move, Board board, Info info, char string[])
 	Move hintMove;
 	if(!best_possible_move(&hintMove, board, info, STD_DEPTH, info.currTeam)) return false;
 
-	char moveString[20]; 
+	char moveString[20];
 	if(!chess_move_string(moveString, hintMove)) return false;
 
 	CLEAR_LINE; printf("[!] HINT OF GOOD MOVE: [%s]\n", moveString);
 
 	return false;
-}
-
-void display_found_move(Move move, int value, time_t time)
-{
-	char moveString[20]; chess_move_string(moveString, move);
-
-	CLEAR_LINE; printf("[!] BEST MOVE: [%s] VALUE: [%d] TIME: [%ds]\n", moveString, value, (int) time);
 }
 
 bool save_move_parser(Move* move, Board board, Info info, char string[])

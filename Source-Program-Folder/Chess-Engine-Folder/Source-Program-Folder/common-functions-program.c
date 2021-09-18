@@ -52,13 +52,6 @@ void free_chess_board(Board board)
 	free(board);
 }
 
-void extract_file_name(char* filename, char* arguments[], int amount)
-{
-	if(amount >= 2) strcpy(filename, arguments[1]);
-
-	else strcpy(filename, STD_FILE);
-}
-
 int create_random_number(int minimum, int maximum)
 {
 	return (rand() % (maximum - minimum + 1) + minimum);
@@ -105,7 +98,7 @@ bool board_piece_equal(Piece first, Piece second)
 bool board_piece_points(Point* points, Board board, Piece piece)
 {
 	Piece currPiece; int index = 0;
-	
+
 	for(int height = 0; height < B_HEIGHT; height = height + 1)
 	{
 		for(int width = 0; width < B_WIDTH; width = width + 1)
@@ -113,7 +106,7 @@ bool board_piece_points(Point* points, Board board, Piece piece)
 			currPiece = board_point_piece(board, (Point) {height, width});
 
 			if(!board_piece_equal(piece, currPiece)) continue;
-			
+
 			points[index] = (Point) {height, width};
 			index += 1;
 		}
@@ -299,4 +292,33 @@ char convert_char_upper(char character)
 
 	// If the letter is lowercase, it will be converted.
 	else return (character - 32);
+}
+
+const char letters[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
+const char numbers[] = {'8', '7', '6', '5', '4', '3', '2', '1'};
+
+bool board_point_string(char* string, Point point)
+{
+	int height = point.height, width = point.width;
+
+	if(!number_inside_bounds(height, 0, B_HEIGHT-1)) return false;
+	if(!number_inside_bounds(width, 0, B_WIDTH-1)) return false;
+
+	sprintf(string, "%c%c", letters[width], numbers[height]);
+
+	return true;
+}
+
+bool chess_move_string(char* string, Move move)
+{
+	Point start = move.start, stop = move.stop;
+
+	char startString[10], stopString[10];
+
+	if(!board_point_string(startString, start)) return false;
+	if(!board_point_string(stopString, stop)) return false;
+
+	sprintf(string, "%s->%s", startString, stopString);
+
+	return true;
 }

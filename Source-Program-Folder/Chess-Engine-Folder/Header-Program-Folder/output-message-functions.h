@@ -1,8 +1,6 @@
 
-#ifndef ERROR_MESSAGE_FUNCTIONS_H
-#define ERROR_MESSAGE_FUNCTIONS_H
-
-#include "global-include-header.h"
+#ifndef OUTPUT_MESSAGE_FUNCTOINS_H
+#define OUTPUT_MESSAGE_FUNCTOINS_H
 
 void create_board_error(char[]);
 
@@ -21,5 +19,7 @@ void chess_game_quitted();
 void display_error_header(char[]);
 
 void display_error_message(char[]);
+
+void display_found_move(Move, int, time_t);
 
 #endif

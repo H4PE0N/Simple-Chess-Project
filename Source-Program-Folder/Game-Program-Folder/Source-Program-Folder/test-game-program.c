@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/global-include-header.h"
+#include "../../Chess-Engine-Folder/Header-Program-Folder/global-include-header.h"
 
 // gcc ../Source-Program-Folder/Game-Program-Folder/test-game-program.c -ISDL2-64/include -LSDL2-64/lib -Wall -lmingw32 -lSDL2main -lSDL2 -o main
 
@@ -11,7 +11,7 @@ int main(int argAmount, char* arguments[])
 	// 	return true;
 	// }
 
-	// if(IMG_Init(IMG_INIT_PNG) == 0) 
+	// if(IMG_Init(IMG_INIT_PNG) == 0)
 	// {
 	// 	printf("Init Error: %s\n", SDL_GetError());
 	// 	SDL_Quit();
@@ -58,7 +58,7 @@ int main(int argAmount, char* arguments[])
  //    SDL_PollEvent(&event);
 
 	// // ================================================================================================
-	
+
 	// srand(time(NULL));
 
 	// char filename[200]; extract_file_name(filename, arguments, argAmount);
@@ -77,20 +77,20 @@ int main(int argAmount, char* arguments[])
 
 
 
-	
+
 	// if(!test_game_loop(board, &info, renderer, window))
 	// {
 	// 	printf("The game was ended!\n");
 	// }
-	
-
-	
 
 
-	
+
+
+
+
 
 	// // free_chess_board(board);
-	
+
 	// SDL_FreeSurface(screenSurface);
 
 	// SDL_DestroyWindow(window);
