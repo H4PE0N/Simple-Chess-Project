@@ -86,7 +86,7 @@ int main(int argAmount, char* arguments[])
 
 
 
-
+	printf("EMPTY_PIECE: %d %d\n", EMPTY_PIECE.type, EMPTY_PIECE.team);
 
 
 	// // free_chess_board(board);

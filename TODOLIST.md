@@ -6,6 +6,11 @@ https://www.youtube.com/watch?v=kwQk5A26cis&t=246s
 
 start using FEN board.
 
+implement passant rule
+
+
+change every curr.. to current and so on..
+
 
 change the matrix value for the rook. He should want to castle
 

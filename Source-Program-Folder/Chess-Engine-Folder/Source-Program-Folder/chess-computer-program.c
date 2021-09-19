@@ -3,9 +3,7 @@
 
 bool best_possible_move(Move* move, Board board, Info info, int depth, Team team)
 {
-	if(!piece_team_exists(team)) return false;
-
-	if(depth <= 0) return false;
+	if(depth <= 0 || !piece_team_exists(team)) return false;
 
 	time_t startTime = time(NULL);
 
@@ -19,10 +17,16 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 		return false;
 	}
 
-	Move bestMove = moves[0], currMove;
-	int bestValue = MIN_VAL, currValue;
+	Move bestMove = moves[0];
+	int bestValue = MIN_VAL;
 
-	Info dummyInfo; Board boardCopy; Team nextTeam;
+	Move currMove;
+	int currValue;
+
+	Info dummyInfo;
+	Board boardCopy;
+
+	Team nextTeam;
 
 	for(int index = 0; index < amount; index += 1)
 	{
@@ -41,12 +45,16 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 			continue;
 		}
 
-		nextTeam = (team == WHITE) ? BLACK : WHITE;
+		nextTeam = piece_team_enemy(team);
 		currValue = board_depth_value(boardCopy, dummyInfo, (depth - 1), MIN_VAL, MAX_VAL, team, nextTeam);
 
 		free_chess_board(boardCopy);
 
-		if(currValue > bestValue) { bestMove = currMove; bestValue = currValue; }
+		if(currValue > bestValue)
+		{
+			bestMove = currMove;
+			bestValue = currValue;
+		}
 	}
 
 	free(moves);
@@ -56,11 +64,17 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 
 	display_found_move(bestMove, bestValue, time);
 
-	*move = bestMove; return true;
+	*move = bestMove;
+
+	return true;
 }
 
 int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Team team, Team currTeam)
 {
+	if(!piece_team_exists(team) || !piece_team_exists(currTeam))
+	{
+		return 0;
+	}
 	// Base-case, Should return the value of the board
 	if(depth <= 0)
 	{
@@ -85,7 +99,12 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 	// This is very slow, and makes the program run MUCH SLOWER (3s vs 73s)
 	//sort_pruning_moves(moves, amount, board, info, currTeam);
 
-	Move currMove; int currValue; Board boardCopy; Team nextTeam;
+	Move currMove;
+	int currValue;
+
+	Board boardCopy;
+
+	Team nextTeam;
 
 	for(int index = 0; index < amount; index += 1)
 	{
@@ -102,7 +121,7 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 			continue;
 		}
 
-		nextTeam = (currTeam == WHITE) ? BLACK : WHITE;
+		nextTeam = piece_team_enemy(currTeam);
 		currValue = board_depth_value(boardCopy, dummyInfo, (depth - 1), alpha, beta, team, nextTeam);
 
 		free_chess_board(boardCopy);
@@ -128,10 +147,23 @@ and then go through that array, but I dont know.
 */
 Move* all_possible_moves(Board board, Info info, Team team)
 {
+	// I dont want to return NULL, because I want to return an empty array instead
+	// if(!piece_team_exists(team))
+	// {
+	// 	return NULL;
+	// }
+
 	Move* moves = create_moves_array(1024);
+
+	if(!piece_team_exists(team))
+	{
+		return moves;
+	}
+
 	Move* adding = NULL;
 
-	Point point; Team currTeam;
+	Point point;
+	Team currTeam;
 
 	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{

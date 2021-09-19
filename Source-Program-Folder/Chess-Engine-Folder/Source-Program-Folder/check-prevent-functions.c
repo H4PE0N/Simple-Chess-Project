@@ -5,7 +5,9 @@ bool team_prevent_check(Board board, Info info, Team team)
 {
 	if(!piece_team_exists(team)) return false;
 
-	Point point; Team currTeam;
+	Point point;
+	Team currTeam;
+
 	for(int height = 0; height < BOARD_HEIGHT; height = height + 1)
 	{
 		for(int width = 0; width < BOARD_WIDTH; width = width + 1)
@@ -40,6 +42,8 @@ bool piece_prevent_check(Board board, Point start, Info info)
 		case(QUEEN): return queen_prevent_check(board, info, start);
 
 		case(KING): return king_prevent_check(board, info, start);
+
+		default: return false;
 	}
 	return false;
 }
@@ -55,7 +59,8 @@ bool pawn_prevent_check(Board board, Info info, Point start)
 
 	Team team = board_point_team(board, start);
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	int realHeight, realWidth;
 
@@ -94,7 +99,8 @@ bool rook_prevent_check(Board board, Info info, Point start)
 	if(board_point_type(board, start) != ROOK) return false;
 
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
@@ -134,7 +140,8 @@ bool knight_prevent_check(Board board, Info info, Point start)
 	if(board_point_type(board, start) != KNIGHT) return false;
 
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	int realHeight, realWidth;
 
@@ -174,7 +181,8 @@ bool bishop_prevent_check(Board board, Info info, Point start)
 	if(board_point_type(board, start) != BISHOP) return false;
 
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	int height, width;
 
@@ -218,7 +226,8 @@ bool diagonal_prevent_check(Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	int height, width;
 
@@ -262,7 +271,8 @@ bool straight_prevent_check(Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
@@ -317,7 +327,8 @@ bool king_prevent_check(Board board, Info info, Point start)
 	if(board_point_type(board, start) != KING) return false;
 
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	int realHeight, realWidth;
 

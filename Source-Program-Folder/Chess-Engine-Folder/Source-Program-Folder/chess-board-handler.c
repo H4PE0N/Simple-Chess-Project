@@ -41,7 +41,7 @@ Team board_point_team(Board board, Point point)
 
 Point board_piece_point(Board board, Piece piece)
 {
-  Point point = {-1, -1};
+  Point point = EMPTY_POINT;
   Point* points = create_point_array(64);
 
   if(board_piece_points(points, board, piece))
@@ -118,7 +118,7 @@ void update_castles_values(Castles* castles, Team team, Castle castle)
 
 void remove_board_piece(Board board, Point point)
 {
-	board[point.height][point.width] = (Piece) {EMPTY, NONE};
+	board[point.height][point.width] = EMPTY_PIECE;
 }
 
 void move_board_piece(Board board, Point start, Point stop)
