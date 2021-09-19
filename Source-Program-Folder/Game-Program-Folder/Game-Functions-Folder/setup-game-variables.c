@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/chess-engine-includer.h"
+#include "../Header-Program-Folder/game-files-includer.h"
 
 bool setup_game_variables(Board* board, Info* info, char filename[])
 {
