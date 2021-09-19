@@ -4,5 +4,8 @@
 void display_found_move(Move move, int value, time_t time)
 {
 	char moveString[20]; chess_move_string(moveString, move);
-	CLEAR_LINE; printf("[!] BEST MOVE: [%s] VALUE: [%d] TIME: [%ds]\n", moveString, value, (int) time);
+
+	printf("\033[2K");
+
+	printf("[!] BEST MOVE: [%s] VALUE: [%d] TIME: [%ds]\n", moveString, value, (int) time);
 }

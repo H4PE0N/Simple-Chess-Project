@@ -36,4 +36,6 @@ void free_chess_board(Board);
 
 Board copy_chess_board(Board);
 
+Team piece_team_enemy(Team);
+
 #endif

@@ -7,9 +7,10 @@ https://www.youtube.com/watch?v=kwQk5A26cis&t=246s
 start using FEN board.
 
 
-check the bool values of the functions. I think that the bool values returned is wrong in some cases
+change the matrix value for the rook. He should want to castle
 
-remove output messages
+
+check the bool values of the functions. I think that the bool values returned is wrong in some cases
 
 when checking if the point or the move is inside the board, it should return the bad value.
 

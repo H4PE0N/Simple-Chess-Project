@@ -79,7 +79,14 @@ const int pieceValues[] = {0, 10, 30, 30, 50, 90, 900};
 
 int team_state_value(Board board, Info info, Team team)
 {
-	int enemy = (team == WHITE) ? BLACK : WHITE;
+	// This gets the enemy. If the team is NONE, the enemy is NONE
+	// And if the enemy is none. The return value should be nutural.
+	int enemy = piece_team_enemy(team);
+
+	if(!piece_team_exists(team) || !piece_team_exists(enemy))
+	{
+		return 0;
+	}
 
 	int enemyValue = board_state_value(board, info, enemy);
 	int teamValue = board_state_value(board, info, team);
@@ -89,7 +96,14 @@ int team_state_value(Board board, Info info, Team team)
 
 int team_pieces_value(Board board, Team team)
 {
-	Point point; Piece piece;
+	// If the team does not exist:
+	if(!piece_team_exists(team))
+	{
+		return 0;
+	}
+
+	Point point;
+	Piece piece;
 
 	int value = 0;
 
@@ -99,6 +113,12 @@ int team_pieces_value(Board board, Team team)
 		{
 			point = (Point) {height, width};
 			piece = board_point_piece(board, point);
+
+			// If the piece does not exist for some reason:
+			if(board_piece_empty(piece))
+			{
+				continue;
+			}
 
 			if(piece.team != team) continue;
 
@@ -116,7 +136,10 @@ int team_pieces_value(Board board, Team team)
 int piece_matrix_value(Piece piece, Point point)
 {
 	// This is a error catcher. If the point insn't inside the board, segfault is going to happen next
-	if(!point_inside_board(point)) return MIN_VAL;
+	if(!point_inside_board(point) || board_piece_empty(piece))
+	{
+		return 0;
+	}
 
 	if(piece.team == WHITE) return pieceMatrix[piece.type][point.height][point.width];
 
@@ -127,9 +150,14 @@ int piece_matrix_value(Piece piece, Point point)
 
 int check_mate_value(Board board, Info info, Team team)
 {
-	int value = 0;
+	Team enemy = piece_team_enemy(team);
 
-	Team enemy = (team == WHITE) ? BLACK : WHITE;
+	if(!piece_team_exists(team) || !piece_team_exists(enemy))
+	{
+		return 0;
+	}
+
+	int value = 0;
 
 	// If the teamKing (own king) is in check mate
 	if(check_mate_situation(board, info, team)) value += MIN_VAL;
@@ -142,9 +170,14 @@ int check_mate_value(Board board, Info info, Team team)
 
 int game_draw_value(Board board, Info info, Team team)
 {
-	int value = 0;
+	Team enemy = piece_team_enemy(team);
 
-	Team enemy = (team == WHITE) ? BLACK : WHITE;
+	if(!piece_team_exists(team) || !piece_team_exists(enemy))
+	{
+		return 0;
+	}
+
+	int value = 0;
 
 	// If the own king cant move (oppenent did draw)
 	if(check_draw_situation(board, info, team)) 		value += MAX_VAL;
@@ -157,6 +190,11 @@ int game_draw_value(Board board, Info info, Team team)
 
 int board_state_value(Board board, Info info, Team team)
 {
+	if(!piece_team_exists(team))
+	{
+		return 0;
+	}
+
 	int value = 0;
 
 	value += team_pieces_value(board, team);

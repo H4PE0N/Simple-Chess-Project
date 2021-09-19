@@ -158,3 +158,10 @@ void free_chess_board(Board board)
 	}
 	free(board);
 }
+
+Team piece_team_enemy(Team team)
+{
+  if(!piece_team_exists(team)) return NONE;
+
+  return (team == WHITE) ? BLACK : WHITE;
+}

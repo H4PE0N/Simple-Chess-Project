@@ -5,6 +5,7 @@ bool move_chess_piece(Board board, Move move, Info* info)
 {
 	if(!move_inside_board(move)) return false;
 
+	// It must be the current team that is moving the piece!
 	Team team = board_point_team(board, move.start);
 	if(team != info->current) return false;
 
@@ -23,6 +24,8 @@ bool move_chess_piece(Board board, Move move, Info* info)
 		case(QUEEN): return queen_move_handler(board, move, *info);
 
 		case(KING): return king_move_handler(board, move, info);
+
+		default: return false;
 	}
 	return false;
 }
@@ -31,7 +34,9 @@ bool pawn_move_handler(Board board, Move move, Info info)
 {
 	if(!pawn_move_acceptable(board, move, info)) return false;
 
-	else execute_pawn_move(board, move); return true;
+	execute_pawn_move(board, move);
+
+	return true;
 }
 
 bool rook_move_handler(Board board, Move move, Info* info)
@@ -40,35 +45,45 @@ bool rook_move_handler(Board board, Move move, Info* info)
 
 	if(team_castle_acceptable(board, move, *info))
 	{
-		execute_team_castle(board, move, info); return true;
+		execute_team_castle(board, move, info);
 	}
-	else execute_rook_move(board, move, info); return true;
+	else execute_rook_move(board, move, info);
+
+	return true;
 }
 
 bool knight_move_handler(Board board, Move move, Info info)
 {
 	if(!knight_move_acceptable(board, move, info)) return false;
 
-	else execute_knight_move(board, move); return true;
+	execute_knight_move(board, move);
+
+	return true;
 }
 
 bool bishop_move_handler(Board board, Move move, Info info)
 {
 	if(!bishop_move_acceptable(board, move, info)) return false;
 
-	else execute_bishop_move(board, move); return true;
+	execute_bishop_move(board, move);
+
+	return true;
 }
 
 bool queen_move_handler(Board board, Move move, Info info)
 {
 	if(!queen_move_acceptable(board, move, info)) return false;
 
-	else execute_queen_move(board, move); return true;
+	execute_queen_move(board, move);
+
+	return true;
 }
 
 bool king_move_handler(Board board, Move move, Info* info)
 {
 	if(!king_move_acceptable(board, move, *info)) return false;
 
-	else execute_king_move(board, move, info); return true;
+	execute_king_move(board, move, info);
+
+	return true;
 }

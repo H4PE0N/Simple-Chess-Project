@@ -10,4 +10,14 @@
 #define SQUARE_HEIGHT SCREEN_HEIGHT / B_HEIGHT
 #define SQUARE_WIDTH SCREEN_WIDTH / B_WIDTH
 
+#define CLEAR_LINE printf("\033[2K")
+
+#define MOVE_UP_LINES(lines) printf("\033[%dA", lines)
+
+#define MOVE_UP_BOARD MOVE_UP_LINES(19)
+
+#define MOVE_UP_INFO MOVE_UP_LINES(3)
+
+#define MOVE_UP_INPUT MOVE_UP_LINES(1)
+
 #endif

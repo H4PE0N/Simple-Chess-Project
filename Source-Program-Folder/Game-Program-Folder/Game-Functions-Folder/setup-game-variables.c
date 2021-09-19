@@ -28,7 +28,7 @@ bool setup_game_info(Info* info, Board board)
 	Point passant = {-1, -1};
 
 	int counter = 0;
-	int turns = 1;
+	int turns = 0;
 
 	*info = (Info) {WHITE, castles, passant, counter, turns, lastMove};
 
