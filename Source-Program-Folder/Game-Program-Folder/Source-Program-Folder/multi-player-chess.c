@@ -31,7 +31,7 @@ int main(int argAmount, char* arguments[])
 
 bool multi_player_chess(Team* winner, Board board, Info* info)
 {
-	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
+	Move move = EMPTY_MOVE;
 	char input[20];
 
 	while(game_still_running(winner, board, *info))
@@ -51,7 +51,7 @@ bool multi_player_chess(Team* winner, Board board, Info* info)
 		info->lastMove = move;
 
 		info->turns += 1;
-		info->current = (info->current == WHITE) ? BLACK : WHITE;
+		info->current = piece_team_enemy(info->current);
 	}
 	return true;
 }

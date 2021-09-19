@@ -74,18 +74,18 @@ Castle extract_castle_values(Board board, Team team)
 
 	int amount = point_array_amount(rooks);
 
-	Point currRook;
+	Point currentRook;
 
 	for(int index = 0; index < amount; index += 1)
 	{
-		currRook = rooks[index];
+		currentRook = rooks[index];
 
-		if(currRook.height != expectedHeight) continue;
+		if(currentRook.height != expectedHeight) continue;
 
 		// Now the height is right;
 
-		if(currRook.width == 0) 			castle.queen = true;
-		if(currRook.width == (BOARD_WIDTH - 1)) castle.king = true;
+		if(currentRook.width == 0) 			castle.queen = true;
+		if(currentRook.width == (BOARD_WIDTH - 1)) castle.king = true;
 	}
 
 	free(rooks);

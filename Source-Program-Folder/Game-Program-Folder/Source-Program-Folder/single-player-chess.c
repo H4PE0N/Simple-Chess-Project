@@ -13,7 +13,7 @@ int main(int argAmount, char* arguments[])
 	{
 		setup_variables_error();
 
-		//free_chess_board(board); 
+		//free_chess_board(board);
 
 		return false;
 	}
@@ -41,14 +41,14 @@ bool single_player_chess(Team* winner, Board board, Info* info)
 		}
 
 		info->turns += 1;
-		info->current = (info->current == WHITE) ? BLACK : WHITE;
+		info->current = piece_team_enemy(info->current);
 	}
 	return true;
 }
 
 bool user_move_handler(Board board, Info* info)
 {
-	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
+	Move move = EMPTY_MOVE;
 	char input[20];
 
 	while(!move_inside_board(move))
@@ -80,7 +80,7 @@ bool computer_move_handler(Board board, Info* info)
 
 	MOVE_UP_BOARD; MOVE_UP_INFO;
 
-	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
+	Move move = EMPTY_MOVE;
 
 	if(!best_possible_move(&move, board, *info, STD_DEPTH, info->current))
 	{

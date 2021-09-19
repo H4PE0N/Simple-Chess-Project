@@ -37,7 +37,7 @@ bool pawn_possible_moves(Move* moves, Board board, Info info, Point start)
 	if(!piece_team_exists(team)) return false;
 
 	Point stop;
-	Move currMove;
+	Move currentMove;
 
 	int amount = 0;
 
@@ -62,11 +62,11 @@ bool pawn_possible_moves(Move* moves, Board board, Info info, Point start)
 
 			if(!point_inside_board(stop)) continue;
 
-			currMove = (Move) {start, stop};
+			currentMove = (Move) {start, stop};
 
-			if(!pawn_move_acceptable(board, currMove, info)) continue;
+			if(!pawn_move_acceptable(board, currentMove, info)) continue;
 
-			moves[amount] = currMove;
+			moves[amount] = currentMove;
 
 			amount += 1;
 		}
@@ -81,7 +81,7 @@ bool rook_possible_moves(Move* moves, Board board, Info info, Point start)
 	if(board_point_empty(board, start)) return false;
 
 	Point stop;
-	Move currMove;
+	Move currentMove;
 
 	int amount = 0;
 
@@ -94,11 +94,11 @@ bool rook_possible_moves(Move* moves, Board board, Info info, Point start)
 
 		if(!point_inside_board(stop)) continue;
 
-		currMove = (Move) {start, stop};
+		currentMove = (Move) {start, stop};
 
-		if(!rook_move_acceptable(board, currMove, info)) continue;
+		if(!rook_move_acceptable(board, currentMove, info)) continue;
 
-		moves[amount] = currMove;
+		moves[amount] = currentMove;
 
 		amount += 1;
 	}
@@ -109,11 +109,11 @@ bool rook_possible_moves(Move* moves, Board board, Info info, Point start)
 
 		if(!point_inside_board(stop)) continue;
 
-		currMove = (Move) {start, stop};
+		currentMove = (Move) {start, stop};
 
-		if(!rook_move_acceptable(board, currMove, info)) continue;
+		if(!rook_move_acceptable(board, currentMove, info)) continue;
 
-		moves[amount] = currMove;
+		moves[amount] = currentMove;
 
 		amount += 1;
 	}
@@ -128,7 +128,7 @@ bool bishop_possible_moves(Move* moves, Board board, Info info, Point start)
 	if(board_point_empty(board, start)) return false;
 
 	Point stop;
-	Move currMove;
+	Move currentMove;
 
 	int amount = 0;
 
@@ -146,11 +146,11 @@ bool bishop_possible_moves(Move* moves, Board board, Info info, Point start)
 
 		if(!point_inside_board(stop)) continue;
 
-		currMove = (Move) {start, stop};
+		currentMove = (Move) {start, stop};
 
-		if(!bishop_move_acceptable(board, currMove, info)) continue;
+		if(!bishop_move_acceptable(board, currentMove, info)) continue;
 
-		moves[amount] = currMove;
+		moves[amount] = currentMove;
 
 		amount += 1;
 	}
@@ -164,11 +164,11 @@ bool bishop_possible_moves(Move* moves, Board board, Info info, Point start)
 
 		if(!point_inside_board(stop)) continue;
 
-		currMove = (Move) {start, stop};
+		currentMove = (Move) {start, stop};
 
-		if(!bishop_move_acceptable(board, currMove, info)) continue;
+		if(!bishop_move_acceptable(board, currentMove, info)) continue;
 
-		moves[amount] = currMove;
+		moves[amount] = currentMove;
 
 		amount += 1;
 	}
@@ -183,7 +183,7 @@ bool knight_possible_moves(Move* moves, Board board, Info info, Point start)
 	if(board_point_empty(board, start)) return false;
 
 	Point stop;
-	Move currMove;
+	Move currentMove;
 
 	int amount = 0;
 
@@ -209,11 +209,11 @@ bool knight_possible_moves(Move* moves, Board board, Info info, Point start)
 
 			if(!point_inside_board(stop)) continue;
 
-			currMove = (Move) {start, stop};
+			currentMove = (Move) {start, stop};
 
-			if(!knight_move_acceptable(board, currMove, info)) continue;
+			if(!knight_move_acceptable(board, currentMove, info)) continue;
 
-			moves[amount] = currMove;
+			moves[amount] = currentMove;
 
 			amount += 1;
 		}
@@ -228,7 +228,7 @@ bool diagonal_possible_moves(Move* moves, Board board, Info info, Point start)
 	if(board_point_empty(board, start)) return false;
 
 	Point stop;
-	Move currMove;
+	Move currentMove;
 
 	int amount = 0;
 
@@ -246,11 +246,11 @@ bool diagonal_possible_moves(Move* moves, Board board, Info info, Point start)
 
 		if(!point_inside_board(stop)) continue;
 
-		currMove = (Move) {start, stop};
+		currentMove = (Move) {start, stop};
 
-		if(!diagonal_move_acceptable(board, currMove, info)) continue;
+		if(!diagonal_move_acceptable(board, currentMove, info)) continue;
 
-		moves[amount] = currMove;
+		moves[amount] = currentMove;
 
 		amount += 1;
 	}
@@ -264,11 +264,11 @@ bool diagonal_possible_moves(Move* moves, Board board, Info info, Point start)
 
 		if(!point_inside_board(stop)) continue;
 
-		currMove = (Move) {start, stop};
+		currentMove = (Move) {start, stop};
 
-		if(!diagonal_move_acceptable(board, currMove, info)) continue;
+		if(!diagonal_move_acceptable(board, currentMove, info)) continue;
 
-		moves[amount] = currMove;
+		moves[amount] = currentMove;
 
 		amount += 1;
 	}
@@ -283,7 +283,7 @@ bool straight_possible_moves(Move* moves, Board board, Info info, Point start)
 	if(board_point_empty(board, start)) return false;
 
 	Point stop;
-	Move currMove;
+	Move currentMove;
 
 	int amount = 0;
 
@@ -296,11 +296,11 @@ bool straight_possible_moves(Move* moves, Board board, Info info, Point start)
 
 		if(!point_inside_board(stop)) continue;
 
-		currMove = (Move) {start, stop};
+		currentMove = (Move) {start, stop};
 
-		if(!straight_move_acceptable(board, currMove, info)) continue;
+		if(!straight_move_acceptable(board, currentMove, info)) continue;
 
-		moves[amount] = currMove;
+		moves[amount] = currentMove;
 
 		amount += 1;
 	}
@@ -311,11 +311,11 @@ bool straight_possible_moves(Move* moves, Board board, Info info, Point start)
 
 		if(!point_inside_board(stop)) continue;
 
-		currMove = (Move) {start, stop};
+		currentMove = (Move) {start, stop};
 
-		if(!straight_move_acceptable(board, currMove, info)) continue;
+		if(!straight_move_acceptable(board, currentMove, info)) continue;
 
-		moves[amount] = currMove;
+		moves[amount] = currentMove;
 
 		amount += 1;
 	}
@@ -362,7 +362,7 @@ bool king_possible_moves(Move* moves, Board board, Info info, Point start)
 	if(board_point_empty(board, start)) return false;
 
 	Point stop;
-	Move currMove;
+	Move currentMove;
 
 	int amount = 0;
 
@@ -382,11 +382,11 @@ bool king_possible_moves(Move* moves, Board board, Info info, Point start)
 
 			if(!point_inside_board(stop)) continue;
 
-			currMove = (Move) {start, stop};
+			currentMove = (Move) {start, stop};
 
-			if(!king_move_acceptable(board, currMove, info)) continue;
+			if(!king_move_acceptable(board, currentMove, info)) continue;
 
-			moves[amount] = currMove;
+			moves[amount] = currentMove;
 
 			amount += 1;
 		}

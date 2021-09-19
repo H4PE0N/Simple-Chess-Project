@@ -44,19 +44,19 @@ bool zero_player_chess(Team* winner, Board board, Info* info)
 
 		if(!computer_move_handler(board, info))
 		{
-			*winner = (info->current == WHITE) ? BLACK : WHITE;
+			*winner = piece_team_enemy(info->current);
 			break;
 		}
 
 		info->turns += 1;
-		info->current = (info->current == WHITE) ? BLACK : WHITE;
+		info->current = piece_team_enemy(info->current);
 	}
 	return true;
 }
 
 bool computer_move_handler(Board board, Info* info)
 {
-	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
+	Move move = EMPTY_MOVE;
 
 	if(!best_possible_move(&move, board, *info, STD_DEPTH, info->current))
 	{

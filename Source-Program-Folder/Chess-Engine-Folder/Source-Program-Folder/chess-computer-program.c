@@ -20,8 +20,8 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 	Move bestMove = moves[0];
 	int bestValue = MIN_VAL;
 
-	Move currMove;
-	int currValue;
+	Move currentMove;
+	int currentValue;
 
 	Info dummyInfo;
 	Board boardCopy;
@@ -32,11 +32,11 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 	{
 		dummyInfo = info; dummyInfo.current = team;
 
-		currMove = moves[index];
+		currentMove = moves[index];
 
 		boardCopy = copy_chess_board(board);
 
-		if(!move_chess_piece(boardCopy, currMove, &dummyInfo))
+		if(!move_chess_piece(boardCopy, currentMove, &dummyInfo))
 		{
 			// For some reson, the computer cant move!
 
@@ -46,14 +46,14 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 		}
 
 		nextTeam = piece_team_enemy(team);
-		currValue = board_depth_value(boardCopy, dummyInfo, (depth - 1), MIN_VAL, MAX_VAL, team, nextTeam);
+		currentValue = board_depth_value(boardCopy, dummyInfo, (depth - 1), MIN_VAL, MAX_VAL, team, nextTeam);
 
 		free_chess_board(boardCopy);
 
-		if(currValue > bestValue)
+		if(currentValue > bestValue)
 		{
-			bestMove = currMove;
-			bestValue = currValue;
+			bestMove = currentMove;
+			bestValue = currentValue;
 		}
 	}
 
@@ -69,9 +69,9 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 	return true;
 }
 
-int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Team team, Team currTeam)
+int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Team team, Team currentTeam)
 {
-	if(!piece_team_exists(team) || !piece_team_exists(currTeam))
+	if(!piece_team_exists(team) || !piece_team_exists(currentTeam))
 	{
 		return 0;
 	}
@@ -81,9 +81,9 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 		return team_state_value(board, info, team);
 	}
 
-	Info dummyInfo = info; dummyInfo.current = currTeam;
+	Info dummyInfo = info; dummyInfo.current = currentTeam;
 
-	Move* moves = all_possible_moves(board, dummyInfo, currTeam);
+	Move* moves = all_possible_moves(board, dummyInfo, currentTeam);
 	int amount = moves_array_amount(moves);
 
 	// If the computer cant move, it will return the worst score
@@ -94,13 +94,13 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 		return team_state_value(board, info, team);
 	}
 
-	int bestValue = (currTeam == team) ? MIN_VAL : MAX_VAL;
+	int bestValue = (currentTeam == team) ? MIN_VAL : MAX_VAL;
 
 	// This is very slow, and makes the program run MUCH SLOWER (3s vs 73s)
-	//sort_pruning_moves(moves, amount, board, info, currTeam);
+	//sort_pruning_moves(moves, amount, board, info, currentTeam);
 
-	Move currMove;
-	int currValue;
+	Move currentMove;
+	int currentValue;
 
 	Board boardCopy;
 
@@ -108,29 +108,29 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 
 	for(int index = 0; index < amount; index += 1)
 	{
-		currMove = moves[index];
+		currentMove = moves[index];
 
-		dummyInfo = info; dummyInfo.current = currTeam;
+		dummyInfo = info; dummyInfo.current = currentTeam;
 
 		boardCopy = copy_chess_board(board);
 
-		if(!move_chess_piece(boardCopy, currMove, &dummyInfo))
+		if(!move_chess_piece(boardCopy, currentMove, &dummyInfo))
 		{
 			free_chess_board(boardCopy);
 
 			continue;
 		}
 
-		nextTeam = piece_team_enemy(currTeam);
-		currValue = board_depth_value(boardCopy, dummyInfo, (depth - 1), alpha, beta, team, nextTeam);
+		nextTeam = piece_team_enemy(currentTeam);
+		currentValue = board_depth_value(boardCopy, dummyInfo, (depth - 1), alpha, beta, team, nextTeam);
 
 		free_chess_board(boardCopy);
 
-		if(currTeam == team && currValue > bestValue) 	bestValue = currValue;
-		if(currTeam != team && currValue < bestValue) 	bestValue = currValue;
+		if(currentTeam == team && currentValue > bestValue) 	bestValue = currentValue;
+		if(currentTeam != team && currentValue < bestValue) 	bestValue = currentValue;
 
-		if(currTeam == team && currValue > alpha) 		alpha = currValue;
-		if(currTeam != team && currValue < beta) 		beta = currValue;
+		if(currentTeam == team && currentValue > alpha) 		alpha = currentValue;
+		if(currentTeam != team && currentValue < beta) 		beta = currentValue;
 
 		if(beta <= alpha) break;
 	}
@@ -163,16 +163,16 @@ Move* all_possible_moves(Board board, Info info, Team team)
 	Move* adding = NULL;
 
 	Point point;
-	Team currTeam;
+	Team currentTeam;
 
 	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
 		for(int width = 0; width < BOARD_WIDTH; width += 1)
 		{
 			point = (Point) {height, width};
-			currTeam = board_point_team(board, point);
+			currentTeam = board_point_team(board, point);
 
-			if(currTeam != team) continue;
+			if(currentTeam != team) continue;
 
 			// The queen can do the most moves, and she can do 32 moves
 			adding = create_moves_array(32);

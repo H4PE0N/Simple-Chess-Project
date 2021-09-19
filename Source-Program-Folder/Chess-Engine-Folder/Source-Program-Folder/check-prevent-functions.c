@@ -6,16 +6,16 @@ bool team_prevent_check(Board board, Info info, Team team)
 	if(!piece_team_exists(team)) return false;
 
 	Point point;
-	Team currTeam;
+	Team currentTeam;
 
 	for(int height = 0; height < BOARD_HEIGHT; height = height + 1)
 	{
 		for(int width = 0; width < BOARD_WIDTH; width = width + 1)
 		{
 			point = (Point) {height, width};
-			currTeam = board_point_team(board, point);
+			currentTeam = board_point_team(board, point);
 
-			if(currTeam != team) continue;
+			if(currentTeam != team) continue;
 
 			if(piece_prevent_check(board, point, info)) return true;
 		}
@@ -60,7 +60,7 @@ bool pawn_prevent_check(Board board, Info info, Point start)
 	Team team = board_point_team(board, start);
 
 	Point stop;
-	Move currMove;
+	Move currentMove;
 
 	int realHeight, realWidth;
 
@@ -80,11 +80,11 @@ bool pawn_prevent_check(Board board, Info info, Point start)
 
 			if(!point_inside_board(stop)) continue;
 
-			currMove = (Move) {start, stop};
+			currentMove = (Move) {start, stop};
 
-			if(!pawn_move_acceptable(board, currMove, info)) continue;
+			if(!pawn_move_acceptable(board, currentMove, info)) continue;
 
-			if(move_prevent_check(board, currMove, info)) return true;
+			if(move_prevent_check(board, currentMove, info)) return true;
 		}
 	}
 	return false;
@@ -100,7 +100,7 @@ bool rook_prevent_check(Board board, Info info, Point start)
 
 
 	Point stop;
-	Move currMove;
+	Move currentMove;
 
 	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
@@ -108,11 +108,11 @@ bool rook_prevent_check(Board board, Info info, Point start)
 
 		if(!point_inside_board(stop)) continue;
 
-		currMove = (Move) {start, stop};
+		currentMove = (Move) {start, stop};
 
-		if(!rook_move_acceptable(board, currMove, info)) continue;
+		if(!rook_move_acceptable(board, currentMove, info)) continue;
 
-		if(move_prevent_check(board, currMove, info)) return true;
+		if(move_prevent_check(board, currentMove, info)) return true;
 	}
 
 	for(int width = 0; width < BOARD_WIDTH; width += 1)
@@ -121,11 +121,11 @@ bool rook_prevent_check(Board board, Info info, Point start)
 
 		if(!point_inside_board(stop)) continue;
 
-		currMove = (Move) {start, stop};
+		currentMove = (Move) {start, stop};
 
-		if(!rook_move_acceptable(board, currMove, info)) continue;
+		if(!rook_move_acceptable(board, currentMove, info)) continue;
 
-		if(move_prevent_check(board, currMove, info)) return true;
+		if(move_prevent_check(board, currentMove, info)) return true;
 	}
 
 	return false;
@@ -141,7 +141,7 @@ bool knight_prevent_check(Board board, Info info, Point start)
 
 
 	Point stop;
-	Move currMove;
+	Move currentMove;
 
 	int realHeight, realWidth;
 
@@ -162,11 +162,11 @@ bool knight_prevent_check(Board board, Info info, Point start)
 
 			if(!point_inside_board(stop)) continue;
 
-			currMove = (Move) {start, stop};
+			currentMove = (Move) {start, stop};
 
-			if(!knight_move_acceptable(board, currMove, info)) continue;
+			if(!knight_move_acceptable(board, currentMove, info)) continue;
 
-			if(move_prevent_check(board, currMove, info)) return true;
+			if(move_prevent_check(board, currentMove, info)) return true;
 		}
 	}
 	return false;
@@ -182,7 +182,7 @@ bool bishop_prevent_check(Board board, Info info, Point start)
 
 
 	Point stop;
-	Move currMove;
+	Move currentMove;
 
 	int height, width;
 
@@ -195,11 +195,11 @@ bool bishop_prevent_check(Board board, Info info, Point start)
 
 		if(!point_inside_board(stop)) continue;
 
-		currMove = (Move) {start, stop};
+		currentMove = (Move) {start, stop};
 
-		if(!bishop_move_acceptable(board, currMove, info)) continue;
+		if(!bishop_move_acceptable(board, currentMove, info)) continue;
 
-		if(move_prevent_check(board, currMove, info)) return true;
+		if(move_prevent_check(board, currentMove, info)) return true;
 	}
 
 	for(int index = -8; index <= 16; index = index + 1)
@@ -211,11 +211,11 @@ bool bishop_prevent_check(Board board, Info info, Point start)
 
 		if(!point_inside_board(stop)) continue;
 
-		currMove = (Move) {start, stop};
+		currentMove = (Move) {start, stop};
 
-		if(!bishop_move_acceptable(board, currMove, info)) continue;
+		if(!bishop_move_acceptable(board, currentMove, info)) continue;
 
-		if(move_prevent_check(board, currMove, info)) return true;
+		if(move_prevent_check(board, currentMove, info)) return true;
 	}
 	return false;
 }
@@ -227,7 +227,7 @@ bool diagonal_prevent_check(Board board, Info info, Point start)
 	if(board_point_empty(board, start)) return false;
 
 	Point stop;
-	Move currMove;
+	Move currentMove;
 
 	int height, width;
 
@@ -240,11 +240,11 @@ bool diagonal_prevent_check(Board board, Info info, Point start)
 
 		if(!point_inside_board(stop)) continue;
 
-		currMove = (Move) {start, stop};
+		currentMove = (Move) {start, stop};
 
-		if(!diagonal_move_acceptable(board, currMove, info)) continue;
+		if(!diagonal_move_acceptable(board, currentMove, info)) continue;
 
-		if(move_prevent_check(board, currMove, info)) return true;
+		if(move_prevent_check(board, currentMove, info)) return true;
 	}
 
 	for(int index = -8; index <= 16; index = index + 1)
@@ -256,11 +256,11 @@ bool diagonal_prevent_check(Board board, Info info, Point start)
 
 		if(!point_inside_board(stop)) continue;
 
-		currMove = (Move) {start, stop};
+		currentMove = (Move) {start, stop};
 
-		if(!diagonal_move_acceptable(board, currMove, info)) continue;
+		if(!diagonal_move_acceptable(board, currentMove, info)) continue;
 
-		if(move_prevent_check(board, currMove, info)) return true;
+		if(move_prevent_check(board, currentMove, info)) return true;
 	}
 	return false;
 }
@@ -272,7 +272,7 @@ bool straight_prevent_check(Board board, Info info, Point start)
 	if(board_point_empty(board, start)) return false;
 
 	Point stop;
-	Move currMove;
+	Move currentMove;
 
 	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
@@ -280,11 +280,11 @@ bool straight_prevent_check(Board board, Info info, Point start)
 
 		if(!point_inside_board(stop)) continue;
 
-		currMove = (Move) {start, stop};
+		currentMove = (Move) {start, stop};
 
-		if(!straight_move_acceptable(board, currMove, info)) continue;
+		if(!straight_move_acceptable(board, currentMove, info)) continue;
 
-		if(move_prevent_check(board, currMove, info)) return true;
+		if(move_prevent_check(board, currentMove, info)) return true;
 	}
 
 	for(int width = 0; width < BOARD_WIDTH; width += 1)
@@ -293,11 +293,11 @@ bool straight_prevent_check(Board board, Info info, Point start)
 
 		if(!point_inside_board(stop)) continue;
 
-		currMove = (Move) {start, stop};
+		currentMove = (Move) {start, stop};
 
-		if(!straight_move_acceptable(board, currMove, info)) continue;
+		if(!straight_move_acceptable(board, currentMove, info)) continue;
 
-		if(move_prevent_check(board, currMove, info)) return true;
+		if(move_prevent_check(board, currentMove, info)) return true;
 	}
 	return false;
 }
@@ -328,7 +328,7 @@ bool king_prevent_check(Board board, Info info, Point start)
 
 
 	Point stop;
-	Move currMove;
+	Move currentMove;
 
 	int realHeight, realWidth;
 
@@ -343,11 +343,11 @@ bool king_prevent_check(Board board, Info info, Point start)
 
 			if(!point_inside_board(stop)) continue;
 
-			currMove = (Move) {start, stop};
+			currentMove = (Move) {start, stop};
 
-			if(!king_move_acceptable(board, currMove, info)) continue;
+			if(!king_move_acceptable(board, currentMove, info)) continue;
 
-			if(move_prevent_check(board, currMove, info)) return true;
+			if(move_prevent_check(board, currentMove, info)) return true;
 		}
 	}
 	return false;
