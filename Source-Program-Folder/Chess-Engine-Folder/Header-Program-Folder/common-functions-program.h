@@ -34,6 +34,8 @@ int point_array_amount(Point[]);
 
 Point* create_point_array(int);
 
+int string_letter_index(char[], int, char);
+
 // bool board_piece_equal(Piece, Piece);
 
 // bool board_piece_points(Point*, Board, Piece);

@@ -4,6 +4,8 @@
 
 #include "../../Chess-Engine-Folder/Header-Program-Folder/chess-engine-includer.h"
 
+#include "interface-defines-file.h"
+
 #include "interface-data-structures.h"
 
 #include "game-interface-program.h"

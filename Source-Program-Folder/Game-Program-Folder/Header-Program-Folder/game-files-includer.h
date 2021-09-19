@@ -7,6 +7,13 @@
 
 #include "setup-game-variables.h"
 
+#include "setup-error-functions.h"
+
+#include "move-parser-functions.h"
+
+#include "game-setup-defines.h"
+
+
 #include "test-game-program.h"
 
 #include "multi-player-chess.h"

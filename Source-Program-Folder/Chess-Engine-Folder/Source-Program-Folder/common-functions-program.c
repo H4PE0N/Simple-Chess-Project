@@ -322,3 +322,12 @@ Move* create_moves_array(int amount)
 	}
 	return moves;
 }
+
+int string_letter_index(char string[], int length, char letter)
+{
+	for(int index = 0; index < length; index += 1)
+	{
+		if(letter == string[index]) return index;
+	}
+	return -1;
+}

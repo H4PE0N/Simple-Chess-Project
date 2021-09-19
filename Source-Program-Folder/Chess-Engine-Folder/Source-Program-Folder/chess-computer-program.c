@@ -14,8 +14,6 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 
 	if(amount <= 0)
 	{
-		can_not_find_move(board, info, team);
-
 		free(moves);
 
 		return false;

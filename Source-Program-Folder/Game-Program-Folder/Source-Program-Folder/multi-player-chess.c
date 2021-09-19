@@ -13,7 +13,7 @@ int main(int argAmount, char* arguments[])
 	{
 		setup_variables_error();
 
-		free_chess_board(board);
+		//free_chess_board(board);
 
 		return false;
 	}

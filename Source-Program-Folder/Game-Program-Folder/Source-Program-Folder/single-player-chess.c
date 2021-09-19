@@ -12,7 +12,10 @@ int main(int argAmount, char* arguments[])
 	if(!setup_game_variables(&board, &info, filename))
 	{
 		setup_variables_error();
-		free_chess_board(board); return false;
+
+		//free_chess_board(board); 
+
+		return false;
 	}
 
 	if(single_player_chess(&winner, board, &info))
@@ -79,7 +82,12 @@ bool computer_move_handler(Board board, Info* info)
 
 	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
 
-	if(!best_possible_move(&move, board, *info, STD_DEPTH, info->current)) return false;
+	if(!best_possible_move(&move, board, *info, STD_DEPTH, info->current))
+	{
+		can_not_find_move(board, *info, info->current);
+
+		return false;
+	}
 
 	if(!move_chess_piece(board, move, info)) return false;
 

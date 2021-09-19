@@ -101,7 +101,9 @@ bool create_chess_board(Board* board, char filename[])
 	{
 		file_pointer_error(filename);
 
-		fclose(filePointer); return false;
+		//fclose(filePointer);
+
+		return false;
 	}
 
 	if(!allocate_file_values(board, filePointer))
