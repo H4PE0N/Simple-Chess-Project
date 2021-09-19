@@ -22,24 +22,28 @@ bool setup_game_variables(Board* board, Info* info, char filename[])
 
 bool setup_game_info(Info* info, Board board)
 {
-	Castle whiteRKS = extract_rks_values(board, WHITE);
-	Castle blackRKS = extract_rks_values(board, BLACK);
-
-	Point blackKing = board_piece_point(board, (Piece) {KING, BLACK});
-	if(!point_inside_board(blackKing)) return false;
-
-	Point whiteKing = board_piece_point(board, (Piece) {KING, WHITE});
-	if(!point_inside_board(whiteKing)) return false;
+	Castles castles = extract_castles_values(board);
 
 	Move lastMove = {(Point) {-1, -1}, (Point) {-1, -1}};
-	int turns = 0;
+	Point passant = {-1, -1};
 
-	*info = (Info) {WHITE, whiteRKS, blackRKS, whiteKing, blackKing, turns, lastMove};
+	int counter = 0;
+	int turns = 1;
+
+	*info = (Info) {WHITE, castles, passant, counter, turns, lastMove};
 
 	return true;
 }
 
-Castle extract_rks_values(Board board, Team team)
+Castles extract_castles_values(Board board)
+{
+	Castle white = extract_castle_values(board, WHITE);
+	Castle black = extract_castle_values(board, BLACK);
+
+	return (Castles) {white, black};
+}
+
+Castle extract_castle_values(Board board, Team team)
 {
 	if(!piece_team_exists(team)) return (Castle) {false, false};
 

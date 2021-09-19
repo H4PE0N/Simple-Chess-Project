@@ -48,12 +48,10 @@ bool multi_player_chess(Team* winner, Board board, Info* info)
 
 		if(!move_chess_piece(board, move, info)) continue;
 
-		if(!update_kings_point(board, info)) return false;
-
 		info->lastMove = move;
 
 		info->turns += 1;
-		info->currTeam = (info->currTeam == WHITE) ? BLACK : WHITE;
+		info->current = (info->current == WHITE) ? BLACK : WHITE;
 	}
 	return true;
 }

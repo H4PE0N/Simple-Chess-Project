@@ -25,6 +25,8 @@ bool team_castle_acceptable(Board, Move, Info);
 
 bool castle_bool_valid(Point, Info, Team);
 
+Side rook_starting_side(int);
+
 bool check_after_castling(Board, Move, Info);
 
 

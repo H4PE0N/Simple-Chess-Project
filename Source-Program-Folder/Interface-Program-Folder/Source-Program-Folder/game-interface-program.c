@@ -201,7 +201,7 @@ void display_chess_result(Board board, Team winner)
 
 void display_chess_info(Info info)
 {
-	char* teamString = (info.currTeam == WHITE) ? "WHITE" : "BLACK";
+	char* teamString = (info.current == WHITE) ? "WHITE" : "BLACK";
 
 	char moveString[20] = "\0"; chess_move_string(moveString, info.lastMove);
 
@@ -262,13 +262,13 @@ bool parse_chess_move(Move* move, Board board, Info info, char string[])
 
 bool help_move_parser(Move* move, Board board, Info info, char string[])
 {
-	return best_possible_move(move, board, info, STD_DEPTH, info.currTeam);
+	return best_possible_move(move, board, info, STD_DEPTH, info.current);
 }
 
 bool hint_move_parser(Move* move, Board board, Info info, char string[])
 {
 	Move hintMove;
-	if(!best_possible_move(&hintMove, board, info, STD_DEPTH, info.currTeam)) return false;
+	if(!best_possible_move(&hintMove, board, info, STD_DEPTH, info.current)) return false;
 
 	char moveString[20];
 	if(!chess_move_string(moveString, hintMove)) return false;

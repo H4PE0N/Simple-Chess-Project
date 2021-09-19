@@ -28,7 +28,7 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 
 	for(int index = 0; index < amount; index += 1)
 	{
-		dummyInfo = info; dummyInfo.currTeam = team;
+		dummyInfo = info; dummyInfo.current = team;
 
 		currMove = moves[index];
 
@@ -69,7 +69,7 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 		return team_state_value(board, info, team);
 	}
 
-	Info dummyInfo = info; dummyInfo.currTeam = currTeam;
+	Info dummyInfo = info; dummyInfo.current = currTeam;
 
 	Move* moves = all_possible_moves(board, dummyInfo, currTeam);
 	int amount = moves_array_amount(moves);
@@ -93,7 +93,7 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 	{
 		currMove = moves[index];
 
-		dummyInfo = info; dummyInfo.currTeam = currTeam;
+		dummyInfo = info; dummyInfo.current = currTeam;
 
 		boardCopy = copy_chess_board(board);
 

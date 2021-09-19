@@ -12,7 +12,9 @@ bool create_chess_board(Board*, char[]);
 
 bool setup_game_info(Info*, Board);
 
-Castle extract_rks_values(Board, Team);
+Castle extract_castle_values(Board, Team);
+
+Castles extract_castles_values(Board);
 
 bool setup_game_variables(Board*, Info*, char[]);
 

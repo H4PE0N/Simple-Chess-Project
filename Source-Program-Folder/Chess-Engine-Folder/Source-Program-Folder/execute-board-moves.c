@@ -35,22 +35,19 @@ void execute_team_castle(Board board, Move move, Info* info)
 	Point start = move.start, stop = move.stop;
 
 	Team team = board_point_team(board, start);
-	Castle* RKS = (team == BLACK) ? &info->blackRKS : &info->whiteRKS;
 
 	int difference = (stop.width - start.width);
 
-	int kWidth = (difference < 0) ? 6 : 2;
-	int rWidth = (difference < 0) ? 5 : 3;
+	int kingWidth = (difference < 0) ? 6 : 2;
+	int rookWidth = (difference < 0) ? 5 : 3;
 
-	Point rook = {start.height, rWidth};
-	Point king = {stop.height, kWidth};
+	Point rook = {start.height, rookWidth};
+	Point king = {stop.height, kingWidth};
 
 	move_board_piece(board, stop, king);
 	move_board_piece(board, start, rook);
 
-	update_king_point(info, team, king);
-
-	*RKS = (Castle) {false, false};
+	update_castles_values(&info->castles, team, (Castle) {false, false});
 }
 
 void execute_rook_move(Board board, Move move, Info* info)
@@ -58,12 +55,12 @@ void execute_rook_move(Board board, Move move, Info* info)
 	Point start = move.start, stop = move.stop;
 
 	Team team = board_point_team(board, start);
-	Castle* RKS = (team == BLACK) ? &info->blackRKS : &info->whiteRKS;
 
 	move_board_piece(board, start, stop);
 
-	if(start.width == 0) 				RKS->queen = false;
-	if(start.width == (BOARD_WIDTH - 1))	RKS->king = false;
+	Side side = rook_starting_side(start.width);
+
+	update_castles_value(&info->castles, team, side, false);
 }
 
 void execute_knight_move(Board board, Move move)
@@ -81,17 +78,17 @@ void execute_queen_move(Board board, Move move)
 	move_board_piece(board, move.start, move.stop);
 }
 
-void turn_off_rook_switch(Info* info, Team team)
-{
-	Castle* RKS = (team == WHITE) ? &info->whiteRKS : &info->blackRKS;
-	*RKS = (Castle) {false, false};
-}
+// void turn_off_rook_switch(Info* info, Team team)
+// {
+// 	Castle* RKS = (team == WHITE) ? &info->whiteRKS : &info->blackRKS;
+// 	*RKS = (Castle) {false, false};
+// }
 
-void update_king_point(Info* info, Team team, Point point)
-{
-	Point* kingP = (team == WHITE) ? &info->whiteKing : &info->blackKing;
-	*kingP = (Point) {point.height, point.width};
-}
+// void update_king_point(Info* info, Team team, Point point)
+// {
+// 	Point* kingP = (team == WHITE) ? &info->whiteKing : &info->blackKing;
+// 	*kingP = (Point) {point.height, point.width};
+// }
 
 void execute_king_move(Board board, Move move, Info* info)
 {
@@ -99,10 +96,9 @@ void execute_king_move(Board board, Move move, Info* info)
 
 	Team team = board_point_team(board, start);
 
-	turn_off_rook_switch(info, team);
-	update_king_point(info, team, stop);
-
 	move_board_piece(board, start, stop);
+
+	update_castles_values(&info->castles, team, (Castle) {false, false});
 }
 
 void make_pawn_queen(Board board, Point point)

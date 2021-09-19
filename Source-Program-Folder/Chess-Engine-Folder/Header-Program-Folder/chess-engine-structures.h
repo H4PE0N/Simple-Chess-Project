@@ -50,18 +50,11 @@ typedef struct Castles
 
 typedef struct Info
 {
-	// Team current;
-  // Castles castles;
-	// Point passant;
-	// int counter;
-  // int turns;
-	// Move lastMove;
-	Team currTeam;
-	Castle whiteRKS;
-	Castle blackRKS;
-	Point whiteKing;
-	Point blackKing;
-	int turns;
+	Team current;
+  Castles castles;
+	Point passant;
+	int counter;
+  int turns;
 	Move lastMove;
 } Info;
 

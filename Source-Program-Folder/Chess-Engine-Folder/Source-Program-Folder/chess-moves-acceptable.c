@@ -217,12 +217,20 @@ bool knight_move_acceptable(Board board, Move move, Info info)
 
 bool castle_bool_valid(Point start, Info info, Team team)
 {
-	Castle castle = {false, false};
+	Side side = rook_starting_side(start.width);
 
-	if(team == WHITE) castle = info.whiteRKS;
-	if(team == BLACK) castle = info.blackRKS;
+	return board_castles_value(info.castles, team, side);
+}
 
-	return (start.width == 0) ? castle.queen : castle.king;
+Side rook_starting_side(int width)
+{
+	Side side = STILL;
+
+	if(width == 0) side = LEFT;
+
+	if(width == (BOARD_WIDTH - 1)) side = RIGHT;
+
+	return side;
 }
 
 bool team_castle_acceptable(Board board, Move move, Info info)

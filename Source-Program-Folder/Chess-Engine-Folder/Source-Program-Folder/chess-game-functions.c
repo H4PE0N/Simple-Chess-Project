@@ -8,6 +8,17 @@ bool game_still_running(Team* winner, Board board, Info info)
 	{
 		Team team = (round == 0) ? WHITE : BLACK;
 
+		Point king = board_piece_point(board, (Piece) {KING, team});
+
+		// If the king is not on the board, the other player winns.
+		// Or do neither of them win?
+		if(!point_inside_board(king))
+		{
+			*winner = (team == WHITE) ? BLACK : WHITE;
+			// *winner = NONE;
+			return false;
+		}
+
 		if(check_mate_situation(board, info, team))
 		{
 			*winner = (team == WHITE) ? BLACK : WHITE;
@@ -22,19 +33,19 @@ bool game_still_running(Team* winner, Board board, Info info)
 	return true;
 }
 
-bool update_kings_point(Board board, Info* info)
-{
-	Point blackKing = board_piece_point(board, (Piece) {KING, BLACK});
-	if(!point_inside_board(blackKing)) return false;
-
-	Point whiteKing = board_piece_point(board, (Piece) {KING, WHITE});
-	if(!point_inside_board(whiteKing)) return false;
-
-	info->blackKing = blackKing;
-	info->whiteKing = whiteKing;
-
-	return true;
-}
+// bool update_kings_point(Board board, Info* info)
+// {
+// 	Point blackKing = board_piece_point(board, (Piece) {KING, BLACK});
+// 	if(!point_inside_board(blackKing)) return false;
+//
+// 	Point whiteKing = board_piece_point(board, (Piece) {KING, WHITE});
+// 	if(!point_inside_board(whiteKing)) return false;
+//
+// 	info->blackKing = blackKing;
+// 	info->whiteKing = whiteKing;
+//
+// 	return true;
+// }
 
 bool other_pieces_moveable(Board board, Info info, Team team)
 {

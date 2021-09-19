@@ -19,6 +19,9 @@ remove output messages
 when checking if the point or the move is inside the board, it should return the bad value.
 
 
+the turn indicator should only increase every second play (white and black) -> turn ++
+
+
 pointer to those variables that is going to get changed (array int* -> int** );
 
 Create Check-Indicator

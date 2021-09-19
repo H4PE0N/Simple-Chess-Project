@@ -28,7 +28,7 @@ bool single_player_chess(Team* winner, Board board, Info* info)
 {
 	while(game_still_running(winner, board, *info))
 	{
-		if(info->currTeam == WHITE)
+		if(info->current == WHITE)
 		{
 			if(!user_move_handler(board, info)) return false;
 		}
@@ -37,10 +37,8 @@ bool single_player_chess(Team* winner, Board board, Info* info)
 			*winner = WHITE; break;
 		}
 
-		if(!update_kings_point(board, info)) return false;
-
 		info->turns += 1;
-		info->currTeam = (info->currTeam == WHITE) ? BLACK : WHITE;
+		info->current = (info->current == WHITE) ? BLACK : WHITE;
 	}
 	return true;
 }
@@ -81,7 +79,7 @@ bool computer_move_handler(Board board, Info* info)
 
 	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
 
-	if(!best_possible_move(&move, board, *info, STD_DEPTH, info->currTeam)) return false;
+	if(!best_possible_move(&move, board, *info, STD_DEPTH, info->current)) return false;
 
 	if(!move_chess_piece(board, move, info)) return false;
 
