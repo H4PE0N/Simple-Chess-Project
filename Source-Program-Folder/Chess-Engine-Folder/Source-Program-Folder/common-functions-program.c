@@ -31,6 +31,8 @@ bool chess_team_string(char* string, Team team)
 		case(WHITE): strcpy(string, "WHITE"); return true;
 
 		case(BLACK): strcpy(string, "BLACK"); return true;
+
+		default: return false;
 	}
 	return false;
 }
@@ -111,7 +113,7 @@ Point* create_point_array(int length)
 
 	for(int index = 0; index <= length; index += 1)
 	{
-		points[index] = (Point) {-1, -1};
+		points[index] = EMPTY_POINT;
 	}
 	return points;
 }
@@ -307,18 +309,16 @@ void clear_moves_array(Move* moves)
 
 	for(int index = 0; index < amount; index += 1)
 	{
-		moves[index] = (Move) {(Point) {-1, -1}, (Point) {-1, -1}};
+		moves[index] = EMPTY_MOVE;
 	}
 }
 
 Move* create_moves_array(int amount)
 {
 	Move* moves = malloc(sizeof(Move) * amount);
-	Point start, stop;
 	for(int index = 0; index < amount; index += 1)
 	{
-		start = (Point) {-1, -1}, stop = (Point) {-1, -1};
-		moves[index] = (Move) {start, stop};
+		moves[index] = EMPTY_MOVE;
 	}
 	return moves;
 }

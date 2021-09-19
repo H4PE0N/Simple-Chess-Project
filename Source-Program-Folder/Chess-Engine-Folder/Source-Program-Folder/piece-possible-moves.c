@@ -20,6 +20,8 @@ bool piece_possible_moves(Move* moves, Board board, Info info, Point start)
 		case(QUEEN): return queen_possible_moves(moves, board, info, start);
 
 		case(KING): return king_possible_moves(moves, board, info, start);
+
+		default: return false;
 	}
 	return false;
 }
@@ -32,9 +34,10 @@ bool pawn_possible_moves(Move* moves, Board board, Info info, Point start)
 
 	Team team = board_point_team(board, start);
 
-	if(team == NONE) return false;
+	if(!piece_team_exists(team)) return false;
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	int amount = 0;
 
@@ -77,7 +80,8 @@ bool rook_possible_moves(Move* moves, Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	int amount = 0;
 
@@ -123,7 +127,8 @@ bool bishop_possible_moves(Move* moves, Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	int amount = 0;
 
@@ -177,7 +182,8 @@ bool knight_possible_moves(Move* moves, Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	int amount = 0;
 
@@ -221,7 +227,8 @@ bool diagonal_possible_moves(Move* moves, Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	int amount = 0;
 
@@ -275,7 +282,8 @@ bool straight_possible_moves(Move* moves, Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	int amount = 0;
 
@@ -353,7 +361,8 @@ bool king_possible_moves(Move* moves, Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	int amount = 0;
 

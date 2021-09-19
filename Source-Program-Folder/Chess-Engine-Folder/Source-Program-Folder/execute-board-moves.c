@@ -20,11 +20,16 @@ void execute_piece_move(Board board, Move move, Info* info)
 		case(QUEEN): execute_queen_move(board, move); break;
 
 		case(KING): execute_king_move(board, move, info); break;
+
+		default: break;
 	}
 }
 
 void execute_pawn_move(Board board, Move move)
 {
+	// If the move is not in the board:
+	if(!move_inside_board(move)) return;
+
 	move_board_piece(board, move.start, move.stop);
 
 	make_pawn_queen(board, move.stop);
@@ -32,6 +37,9 @@ void execute_pawn_move(Board board, Move move)
 
 void execute_team_castle(Board board, Move move, Info* info)
 {
+	// If the move is not in the board:
+	if(!move_inside_board(move)) return;
+
 	Point start = move.start, stop = move.stop;
 
 	Team team = board_point_team(board, start);
@@ -52,6 +60,9 @@ void execute_team_castle(Board board, Move move, Info* info)
 
 void execute_rook_move(Board board, Move move, Info* info)
 {
+	// If the move is not in the board:
+	if(!move_inside_board(move)) return;
+
 	Point start = move.start, stop = move.stop;
 
 	Team team = board_point_team(board, start);
@@ -65,16 +76,25 @@ void execute_rook_move(Board board, Move move, Info* info)
 
 void execute_knight_move(Board board, Move move)
 {
+	// If the move is not in the board:
+	if(!move_inside_board(move)) return;
+
 	move_board_piece(board, move.start, move.stop);
 }
 
 void execute_bishop_move(Board board, Move move)
 {
+	// If the move is not in the board:
+	if(!move_inside_board(move)) return;
+
 	move_board_piece(board, move.start, move.stop);
 }
 
 void execute_queen_move(Board board, Move move)
 {
+	// If the move is not in the board:
+	if(!move_inside_board(move)) return;
+
 	move_board_piece(board, move.start, move.stop);
 }
 
@@ -92,6 +112,9 @@ void execute_queen_move(Board board, Move move)
 
 void execute_king_move(Board board, Move move, Info* info)
 {
+	// If the move is not in the board:
+	if(!move_inside_board(move)) return;
+
 	Point start = move.start, stop = move.stop;
 
 	Team team = board_point_team(board, start);
@@ -103,13 +126,19 @@ void execute_king_move(Board board, Move move, Info* info)
 
 void make_pawn_queen(Board board, Point point)
 {
+	// If the point is not inside the board:
+	if(!point_inside_board(point)) return;
+
 	Team team = board_point_team(board, point);
+
+	// If the team does not exists:
+	if(!piece_team_exists(team)) return;
 
 	bool whiteQueen = (team == WHITE && point.height == 0);
 	bool blackQueen = (team == BLACK && point.height == (BOARD_HEIGHT - 1));
 
 	if(whiteQueen || blackQueen)
 	{
-		board[point.height][point.width].type = QUEEN;
+		allocate_board_piece(board, point, (Piece) {QUEEN, team});
 	}
 }

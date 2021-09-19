@@ -20,6 +20,8 @@ bool board_piece_moveable(Board board, Info info, Point start)
 		case(QUEEN): return board_queen_moveable(board, info, start);
 
 		case(KING): return board_king_moveable(board, info, start);
+
+		default: return false;
 	}
 	return false;
 }
@@ -32,9 +34,10 @@ bool board_pawn_moveable(Board board, Info info, Point start)
 
 	Team team = board_point_team(board, start);
 
-	if(team == NONE) return false;
+	if(!piece_team_exists(team)) return false;
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	int realHeight, realWidth;
 
@@ -68,7 +71,8 @@ bool board_rook_moveable(Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
@@ -101,7 +105,8 @@ bool board_knight_moveable(Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	int realHeight, realWidth;
 
@@ -136,7 +141,8 @@ bool board_diagonal_moveable(Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	int height, width;
 
@@ -176,7 +182,8 @@ bool board_straight_moveable(Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
@@ -208,7 +215,8 @@ bool board_bishop_moveable(Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	int height, width;
 
@@ -261,7 +269,8 @@ bool board_king_moveable(Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
-	Point stop; Move currMove;
+	Point stop;
+	Move currMove;
 
 	int realHeight, realWidth;
 

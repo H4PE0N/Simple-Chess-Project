@@ -4,6 +4,8 @@
 // This is a function that JUST cover the regular moves; not RKS
 bool moving_piece_valid(Board board, Point start, Point stop)
 {
+	if(!points_inside_board(start, stop)) return false;
+
 	switch(board_point_type(board, start))
 	{
 		case(EMPTY): return false;
@@ -19,6 +21,8 @@ bool moving_piece_valid(Board board, Point start, Point stop)
 		case(QUEEN): return moving_queen_valid(start, stop);
 
 		case(KING): return moving_king_valid(start, stop);
+
+		default: return false;
 	}
 	return false;
 }
@@ -28,7 +32,7 @@ int pawn_height_offset(Point start, Point stop, Team team)
 	if(team == WHITE) return (start.height - stop.height);
 	if(team == BLACK) return (stop.height - start.height);
 
-	return MIN_VAL; // This is an invalid move for the pawn.
+	return -1; // This is an invalid move for the pawn.
 }
 
 bool pawn_starting_bool(Point start, Team team)
@@ -41,42 +45,52 @@ bool pawn_starting_bool(Point start, Team team)
 
 bool moving_pawn_valid(Board board, Point start, Point stop)
 {
+	if(!points_inside_board(start, stop)) return false;
+
 	Team team = board_point_team(board, start);
 
-	int hOffset = pawn_height_offset(start, stop, team);
-	int wOffset = abs(start.width - stop.width);
+	if(!piece_team_exists(team)) return false;
+
+	int heightOffset = pawn_height_offset(start, stop, team);
+	int widtheightOffset = abs(start.width - stop.width);
 
 	bool straight = (start.width == stop.width);
 	bool starting = pawn_starting_bool(start, team);
 
-	if(straight && hOffset == 1) return true;
-	if(straight && starting && hOffset == 2) return true;
-	if(hOffset == 1 && wOffset == 1) return true;
+	if(straight && heightOffset == 1) 						return true;
+	if(straight && starting && heightOffset == 2) return true;
+	if(heightOffset == 1 && widtheightOffset == 1) 		return true;
 
 	return false;
 }
 
+// Change this function
 bool rook_starting_bool(Point point, Team team)
 {
 	if(team == WHITE && point.height != (BOARD_HEIGHT - 1)) return false;
-	if(team == BLACK && point.height != 0) 				return false;
+	if(team == BLACK && point.height != 0) 									return false;
 
 	return (point.width == 0 || point.width == (BOARD_WIDTH - 1));
 }
 
+// Change this function
 bool king_starting_bool(Point point, Team team)
 {
 	if(team == WHITE && point.height != (BOARD_HEIGHT - 1)) return false;
-	if(team == BLACK && point.height != 0) 				return false;
+	if(team == BLACK && point.height != 0)									return false;
 
 	return (point.width == 4);
 }
 
 bool team_castle_valid(Board board, Point start, Point stop)
 {
+	if(!points_inside_board(start, stop)) return false;
+
 	if(!board_points_team(board, start, stop)) return false;
 
 	Team team = board_point_team(board, start);
+
+	if(!piece_team_exists(team)) return false;
 
 	if(!rook_starting_bool(start, team)) return false;
 
@@ -87,74 +101,88 @@ bool team_castle_valid(Board board, Point start, Point stop)
 
 bool moving_rook_valid(Point start, Point stop)
 {
+	if(!points_inside_board(start, stop)) return false;
+
 	if(board_points_equal(start, stop)) return false;
 
-	int hOffset = abs(start.height - stop.height);
-	int wOffset = abs(start.width - stop.width);
+	int heightOffset = abs(start.height - stop.height);
+	int widthOffset = abs(start.width - stop.width);
 
-	return (hOffset == 0) || (wOffset == 0);
+	return (heightOffset == 0) || (widthOffset == 0);
 }
 
 bool moving_knight_valid(Point start, Point stop)
 {
-	int hOffset = abs(start.height - stop.height);
-	int wOffset = abs(start.width - stop.width);
+	if(!points_inside_board(start, stop)) return false;
 
-	if(hOffset == 1 && wOffset == 2) return true;
-	if(hOffset == 2 && wOffset == 1) return true;
+	int heightOffset = abs(start.height - stop.height);
+	int widthOffset = abs(start.width - stop.width);
+
+	if(heightOffset == 1 && widthOffset == 2) return true;
+	if(heightOffset == 2 && widthOffset == 1) return true;
 
 	return false;
 }
 
 bool moving_bishop_valid(Point start, Point stop)
 {
+	if(!points_inside_board(start, stop)) return false;
+
 	if(board_points_equal(start, stop)) return false;
 
-	int hOffset = abs(start.height - stop.height);
-	int wOffset = abs(start.width - stop.width);
+	int heightOffset = abs(start.height - stop.height);
+	int widthOffset = abs(start.width - stop.width);
 
-	return (hOffset == wOffset);
+	return (heightOffset == widthOffset);
 }
 
 bool moving_queen_valid(Point start, Point stop)
 {
+	if(!points_inside_board(start, stop)) return false;
+
 	if(board_points_equal(start, stop)) return false;
 
-	int hOffset = abs(start.height - stop.height);
-	int wOffset = abs(start.width - stop.width);
+	int heightOffset = abs(start.height - stop.height);
+	int widthOffset = abs(start.width - stop.width);
 
-	if(hOffset == 0 || wOffset == 0) return true;
-	if(hOffset == wOffset) return true;
+	if(heightOffset == 0 || widthOffset == 0) return true;
+	if(heightOffset == widthOffset) return true;
 
 	return false;
 }
 
 bool moving_king_valid(Point start, Point stop)
 {
+	if(!points_inside_board(start, stop)) return false;
+
 	if(board_points_equal(start, stop)) return false;
 
-	int hOffset = abs(start.height - stop.height);
-	int wOffset = abs(start.width - stop.width);
+	int heightOffset = abs(start.height - stop.height);
+	int widthOffset = abs(start.width - stop.width);
 
-	return (hOffset <= 1) && (wOffset <= 1);
+	return (heightOffset <= 1) && (widthOffset <= 1);
 }
 
 bool moving_straight_valid(Point start, Point stop)
 {
+	if(!points_inside_board(start, stop)) return false;
+
 	if(board_points_equal(start, stop)) return false;
 
-	int hOffset = abs(start.height - stop.height);
-	int wOffset = abs(start.width - stop.width);
+	int heightOffset = abs(start.height - stop.height);
+	int widthOffset = abs(start.width - stop.width);
 
-	return (hOffset == 0) || (wOffset == 0);
+	return (heightOffset == 0) || (widthOffset == 0);
 }
 
 bool moving_diagonal_valid(Point start, Point stop)
 {
+	if(!points_inside_board(start, stop)) return false;
+
 	if(board_points_equal(start, stop)) return false;
 
-	int hOffset = abs(start.height - stop.height);
-	int wOffset = abs(start.width - stop.width);
+	int heightOffset = abs(start.height - stop.height);
+	int widthOffset = abs(start.width - stop.width);
 
-	return (hOffset == wOffset);
+	return (heightOffset == widthOffset);
 }

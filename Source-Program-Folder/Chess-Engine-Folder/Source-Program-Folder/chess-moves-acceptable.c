@@ -3,6 +3,8 @@
 
 bool piece_move_acceptable(Board board, Move move, Info info)
 {
+	if(!move_inside_board(move)) return false;
+
 	switch(board_point_type(board, move.start))
 	{
 		case(EMPTY): return false;
@@ -18,6 +20,8 @@ bool piece_move_acceptable(Board board, Move move, Info info)
 		case(QUEEN): return queen_move_acceptable(board, move, info);
 
 		case(KING): return king_move_acceptable(board, move, info);
+
+		default: return false;
 	}
 	return false;
 }
@@ -217,11 +221,20 @@ bool knight_move_acceptable(Board board, Move move, Info info)
 
 bool castle_bool_valid(Point start, Info info, Team team)
 {
+	// If the team, of the rook in this case, does not exist:
+	if(!piece_team_exists(team))
+	{
+		return false;
+	}
+	// If the rook is not at a width that supports by this function
+	// The function return the side STILL
 	Side side = rook_starting_side(start.width);
 
 	return board_castles_value(info.castles, team, side);
 }
 
+// If the rook is not at a width that supports by this function
+// The function return the side STILL
 Side rook_starting_side(int width)
 {
 	Side side = STILL;
@@ -309,6 +322,7 @@ bool clear_moving_path(Board board, Point start, Point stop)
 
 		point = (Point) {height, width};
 
+		// This means, that there is a full piece here:
 		if(!board_point_empty(board, point)) return false;
 		// Was board_point_clear
 	}

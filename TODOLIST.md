@@ -11,6 +11,13 @@ implement passant rule
 
 change every curr.. to current and so on..
 
+rename moveable to movable
+
+
+make the execute functions return a bool value. If they cant execute, it should return false;
+
+
+maybe: In the beginning of [prevent, movable, possible]
 
 change the matrix value for the rook. He should want to castle
 
