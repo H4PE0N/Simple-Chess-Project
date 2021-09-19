@@ -97,8 +97,7 @@ int main(int argAmount, char* arguments[])
 
 	// SDL_Quit();
 
-	return false;
-	/*srand(time(NULL));
+	srand(time(NULL));
 
 	char filename[200]; extract_file_name(filename, arguments, argAmount);
 
@@ -113,11 +112,21 @@ int main(int argAmount, char* arguments[])
 		return false;
 	}
 
-	test_game_program(board, info);
+	Move move = { (Point) {7, 0}, (Point) {7, 4} };
+
+	display_chess_board(board);
+
+	if(team_castle_acceptable(board, move, info))
+	{
+		printf("Ya!\n");
+		execute_team_castle(board, move, &info);
+	}
+
+	display_chess_board(board);
 
 	free_chess_board(board);
 
-	return false;*/
+	return false;
 }
 
 // bool test_game_loop(Board board, Info* info, SDL_Renderer* renderer, SDL_Window* window)

@@ -344,25 +344,24 @@ bool king_prevent_check(Board board, Info info, Point start)
 
 bool move_prevent_check(Board board, Move move, Info info)
 {
-	Point start = move.start, stop = move.stop;
+	Point start = move.start;
 
 	if(!move_inside_board(move)) return false;
 
 	if(board_point_empty(board, start)) return false;
 
-
-	Piece piece = board_point_piece(board, start);
+	Team team = board_point_team(board, start);
 
 	Board boardCopy = copy_chess_board(board);
 	Info dummyInfo = info;
 
 	execute_piece_move(boardCopy, move, &dummyInfo);
 
-	Point king = team_king_point(dummyInfo, piece.team);
+	Point king = board_piece_point(boardCopy, (Piece) {KING, team});
+	// If the king cant be found, it must have been taken
+	if(!point_inside_board(king)) return false;
 
-	// This is a fail-safe, if the king point dont update
-	if(piece.type == KING) king = stop;
-
+	// If the king is not inside check, the move had to have prevented the check
 	if(!king_inside_check(boardCopy, king))
 	{
 		free_chess_board(boardCopy); return true;

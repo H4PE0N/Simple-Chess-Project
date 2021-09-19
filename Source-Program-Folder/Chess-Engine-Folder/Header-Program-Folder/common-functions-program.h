@@ -46,7 +46,7 @@ void convert_string_upper(char*, int);
 
 // Team board_point_team(Board, Point);
 
-Point team_king_point(Info, Team);
+// Point team_king_point(Info, Team);
 
 // bool board_points_enemy(Board, Point, Point);
 

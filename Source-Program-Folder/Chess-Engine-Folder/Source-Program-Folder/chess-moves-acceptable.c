@@ -229,8 +229,12 @@ bool team_castle_acceptable(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
 
+	if(!points_inside_board(start, stop)) return false;
+
 	Team team = board_point_team(board, start);
-	Point king = team_king_point(info, team);
+
+	Point king = board_piece_point(board, (Piece) {KING, team});
+	if(!point_inside_board(king)) return false;
 
 	// This is a special case, you cant switch if the king is in check
 	if(king_inside_check(board, king)) return false;
@@ -238,10 +242,12 @@ bool team_castle_acceptable(Board board, Move move, Info info)
 	// This checks if the rook and the king is on the right place
 	if(!team_castle_valid(board, start, stop)) return false;
 
+	if(!clear_moving_path(board, start, stop)) return false;
+
 	// This checks that the operation is clear to go (true)
 	if(!castle_bool_valid(start, info, team)) return false;
 
-	if(!check_after_castling(board, move, info)) return false;
+	if(check_after_castling(board, move, info)) return false;
 
 	return true;
 }
@@ -257,9 +263,13 @@ bool check_after_castling(Board board, Move move, Info info)
 
 	execute_team_castle(boardCopy, move, &infoDummy);
 
-	Point king = team_king_point(infoDummy, team);
+	Point king = board_piece_point(boardCopy, (Piece) {KING, team});
 
-	if(!king_inside_check(boardCopy, king))
+	// If the king cant be found after the switch, it must have been taken
+	if(!point_inside_board(king)) return true;
+
+	// If the king is inside check, it is "check_after_castling" (true)
+	if(king_inside_check(boardCopy, king))
 	{
 		free_chess_board(boardCopy); return true;
 	}
