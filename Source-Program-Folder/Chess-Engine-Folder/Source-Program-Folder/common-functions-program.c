@@ -43,29 +43,20 @@ bool chess_team_string(char* string, Team team)
 // 	return (firstValid && secondValid);
 // }
 
-void free_chess_board(Board board)
-{
-	for(int height = 0; height < BOARD_HEIGHT; height += 1)
-	{
-		free(board[height]);
-	}
-	free(board);
-}
-
-int create_random_number(int minimum, int maximum)
-{
-	return (rand() % (maximum - minimum + 1) + minimum);
-}
+// int create_random_number(int minimum, int maximum)
+// {
+// 	return (rand() % (maximum - minimum + 1) + minimum);
+// }
 
 // Piece board_point_piece(Board board, Point point)
 // {
 // 	return board[point.height][point.width];
 // }
 
-void append_board_piece(Board board, Point point, Piece piece)
-{
-	board[point.height][point.width] = piece;
-}
+// void append_board_piece(Board board, Point point, Piece piece)
+// {
+// 	board[point.height][point.width] = piece;
+// }
 
 // void remove_board_piece(Board board, Point point)
 // {
@@ -87,13 +78,13 @@ void append_board_piece(Board board, Point point, Piece piece)
 // 	append_board_piece(board, second, firPiece);
 // }
 
-bool board_piece_equal(Piece first, Piece second)
-{
-	bool typeEqual = (first.type == second.type);
-	bool teamEqual = (first.team == second.team);
-
-	return (typeEqual && teamEqual);
-}
+// bool board_piece_equal(Piece first, Piece second)
+// {
+// 	bool typeEqual = (first.type == second.type);
+// 	bool teamEqual = (first.team == second.team);
+//
+// 	return (typeEqual && teamEqual);
+// }
 
 // bool board_piece_points(Point* points, Board board, Piece piece)
 // {
@@ -172,20 +163,6 @@ int point_array_amount(Point points[])
 // 	return piece.type;
 // }
 
-Board copy_chess_board(Board board)
-{
-	Board boardCopy = malloc(sizeof(Piece*) * BOARD_HEIGHT);
-	for(int height = 0; height < BOARD_HEIGHT; height = height + 1)
-	{
-		boardCopy[height] = malloc(sizeof(Piece) * BOARD_WIDTH);
-		for(int width = 0; width < BOARD_WIDTH; width = width + 1)
-		{
-			boardCopy[height][width] = board[height][width];
-		}
-	}
-	return boardCopy;
-}
-
 Point team_king_point(Info info, Team team)
 {
 	if(team == NONE) return (Point) {-1, -1};
@@ -208,21 +185,21 @@ Point team_king_point(Info info, Team team)
 // 	return (type == EMPTY || team == NONE);
 // }
 
-bool board_point_clear(Board board, Point point)
-{
-	Type type = board_point_type(board, point);
-	Team team = board_point_team(board, point);
-
-	return (type == EMPTY && team == NONE);
-}
-
-bool board_point_exists(Board board, Point point)
-{
-	Type type = board_point_type(board, point);
-	Team team = board_point_team(board, point);
-
-	return (type != EMPTY && team != NONE);
-}
+// bool board_point_clear(Board board, Point point)
+// {
+// 	Type type = board_point_type(board, point);
+// 	Team team = board_point_team(board, point);
+//
+// 	return (type == EMPTY && team == NONE);
+// }
+//
+// bool board_point_exists(Board board, Point point)
+// {
+// 	Type type = board_point_type(board, point);
+// 	Team team = board_point_team(board, point);
+//
+// 	return (type != EMPTY && team != NONE);
+// }
 
 // bool move_inside_board(Move move)
 // {
@@ -292,4 +269,56 @@ bool chess_move_string(char* string, Move move)
 	sprintf(string, "%s->%s", startString, stopString);
 
 	return true;
+}
+
+void switch_array_moves(Move* moves, int first, int second)
+{
+	Move firstMove = moves[first];
+	Move secondMove = moves[second];
+
+	moves[first] = secondMove;
+	moves[second] = firstMove;
+}
+
+void append_moves_array(Move* moves, Move adding[])
+{
+	int amount = moves_array_amount(moves);
+	int addAmount = moves_array_amount(adding);
+
+	for(int index = 0; index < addAmount; index += 1)
+	{
+		moves[amount + index] = adding[index];
+	}
+}
+
+int moves_array_amount(Move moves[])
+{
+	int amount = 0;
+	while(points_inside_board(moves[amount].start, moves[amount].stop))
+	{
+		amount += 1;
+	}
+	return amount;
+}
+
+void clear_moves_array(Move* moves)
+{
+	int amount = moves_array_amount(moves);
+
+	for(int index = 0; index < amount; index += 1)
+	{
+		moves[index] = (Move) {(Point) {-1, -1}, (Point) {-1, -1}};
+	}
+}
+
+Move* create_moves_array(int amount)
+{
+	Move* moves = malloc(sizeof(Move) * amount);
+	Point start, stop;
+	for(int index = 0; index < amount; index += 1)
+	{
+		start = (Point) {-1, -1}, stop = (Point) {-1, -1};
+		moves[index] = (Move) {start, stop};
+	}
+	return moves;
 }

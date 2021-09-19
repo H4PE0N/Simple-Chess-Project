@@ -135,3 +135,26 @@ void switch_chess_pieces(Board board, Point first, Point second)
 	allocate_board_piece(board, first, secPiece);
 	allocate_board_piece(board, second, firPiece);
 }
+
+Board copy_chess_board(Board board)
+{
+	Board boardCopy = malloc(sizeof(Piece*) * BOARD_HEIGHT);
+	for(int height = 0; height < BOARD_HEIGHT; height = height + 1)
+	{
+		boardCopy[height] = malloc(sizeof(Piece) * BOARD_WIDTH);
+		for(int width = 0; width < BOARD_WIDTH; width = width + 1)
+		{
+			boardCopy[height][width] = board[height][width];
+		}
+	}
+	return boardCopy;
+}
+
+void free_chess_board(Board board)
+{
+	for(int height = 0; height < BOARD_HEIGHT; height += 1)
+	{
+		free(board[height]);
+	}
+	free(board);
+}

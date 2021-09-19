@@ -123,15 +123,6 @@ int board_depth_value(Board board, Info info, int depth, int alpha, int beta, Te
 	return bestValue;
 }
 
-void switch_array_moves(Move* moves, int first, int second)
-{
-	Move firstMove = moves[first];
-	Move secondMove = moves[second];
-
-	moves[first] = secondMove;
-	moves[second] = firstMove;
-}
-
 /*
 This function goes through all pieces in the inputted team.
 You may can store every piece position in the info struct
@@ -167,49 +158,6 @@ Move* all_possible_moves(Board board, Info info, Team team)
 
 			free(adding);
 		}
-	}
-	return moves;
-}
-
-void append_moves_array(Move* moves, Move adding[])
-{
-	int amount = moves_array_amount(moves);
-	int addAmount = moves_array_amount(adding);
-
-	for(int index = 0; index < addAmount; index += 1)
-	{
-		moves[amount + index] = adding[index];
-	}
-}
-
-int moves_array_amount(Move moves[])
-{
-	int amount = 0;
-	while(points_inside_board(moves[amount].start, moves[amount].stop))
-	{
-		amount += 1;
-	}
-	return amount;
-}
-
-void clear_moves_array(Move* moves)
-{
-	int amount = moves_array_amount(moves);
-
-	for(int index = 0; index < amount; index += 1)
-	{
-		moves[index] = (Move) {(Point) {-1, -1}, (Point) {-1, -1}};
-	}
-}
-
-Move* create_moves_array(int amount)
-{
-	Move* moves = malloc(sizeof(Move) * amount);
-	Point start, stop;
-	for(int index = 0; index < amount; index += 1)
-	{
-		start = (Point) {-1, -1}, stop = (Point) {-1, -1};
-		moves[index] = (Move) {start, stop};
 	}
 	return moves;
 }

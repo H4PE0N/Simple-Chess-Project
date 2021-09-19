@@ -14,7 +14,7 @@ bool chess_team_string(char*, Team);
 
 // Piece board_point_piece(Board, Point);
 
-void append_board_piece(Board, Point, Piece);
+// void append_board_piece(Board, Point, Piece);
 
 // bool move_inside_board(Move);
 
@@ -22,21 +22,19 @@ void append_board_piece(Board, Point, Piece);
 
 // void move_board_piece(Board, Point, Point);
 
-int create_random_number(int, int);
+// int create_random_number(int, int);
 
 // void switch_chess_pieces(Board, Point, Point);
 
-bool board_point_exists(Board, Point);
-
-void free_chess_board(Board);
-
-bool board_point_clear(Board, Point);
+// bool board_point_exists(Board, Point);
+//
+// bool board_point_clear(Board, Point);
 
 int point_array_amount(Point[]);
 
 Point* create_point_array(int);
 
-bool board_piece_equal(Piece, Piece);
+// bool board_piece_equal(Piece, Piece);
 
 // bool board_piece_points(Point*, Board, Piece);
 //
@@ -47,8 +45,6 @@ char convert_char_upper(char);
 void convert_string_upper(char*, int);
 
 // Team board_point_team(Board, Point);
-
-Board copy_chess_board(Board);
 
 Point team_king_point(Info, Team);
 
@@ -65,6 +61,17 @@ Point team_king_point(Info, Team);
 bool board_point_string(char*, Point);
 
 bool chess_move_string(char*, Move);
+
+int moves_array_amount(Move[]);
+
+void append_moves_array(Move*, Move[]);
+
+void clear_moves_array(Move*);
+
+void switch_array_moves(Move*, int, int);
+
+Move* create_moves_array(int);
+
 
 extern const char letters[];
 extern const char numbers[];

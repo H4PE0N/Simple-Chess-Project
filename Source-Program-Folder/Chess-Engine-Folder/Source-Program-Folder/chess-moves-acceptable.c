@@ -291,7 +291,8 @@ bool clear_moving_path(Board board, Point start, Point stop)
 
 		point = (Point) {height, width};
 
-		if(!board_point_clear(board, point)) return false;
+		if(!board_point_empty(board, point)) return false;
+		// Was board_point_clear
 	}
 	return true;
 }

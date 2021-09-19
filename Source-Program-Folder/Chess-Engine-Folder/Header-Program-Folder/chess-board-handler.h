@@ -6,7 +6,7 @@ void allocate_board_piece(Board, Point, Piece);
 
 Piece board_point_piece(Board, Point);
 
-void copy_board_variable(Board, Board);
+void copy_board_variable(Board, Board); // Remove this
 
 Type board_point_type(Board, Point);
 
@@ -31,5 +31,9 @@ void move_board_piece(Board, Point, Point);
 void switch_chess_pieces(Board, Point, Point);
 
 void remove_board_piece(Board, Point);
+
+void free_chess_board(Board);
+
+Board copy_chess_board(Board);
 
 #endif

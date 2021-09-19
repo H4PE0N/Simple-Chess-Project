@@ -135,7 +135,7 @@ bool extract_file_line(Board board, char lineBuffer[], int height)
 	for(int index = 0; index < BOARD_WIDTH; index += 1)
 	{
 		if(!extract_file_value(&piece, lineBuffer, index)) return false;
-		append_board_piece(board, (Point) {height, index}, piece);
+		allocate_board_piece(board, (Point) {height, index}, piece);
 	}
 
 	return true;
