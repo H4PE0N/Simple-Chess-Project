@@ -65,8 +65,12 @@ bool test_game_loop(Board board, Info* info, Render* render, Window* window)
 {
 	Team winner;
 
+	SDL_Event event;
+
 	while(game_still_running(&winner, board, *info))
 	{
+		event; SDL_PollEvent(&event);
+
 		if(!render_full_board(render, board)) return false;
 
 		SDL_UpdateWindowSurface(window);

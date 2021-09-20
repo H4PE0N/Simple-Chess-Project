@@ -19,7 +19,7 @@ bool setup_display_variables(Window** window, Render** render, Surface** surface
 		return false;
 	}
 
-	if(!create_screen_window(window, (Point) {0, 0}, title))
+	if(!create_screen_window(window, title))
 	{
 		printf("Window Error: %s\n", SDL_GetError());
 

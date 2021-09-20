@@ -48,21 +48,23 @@ OBJECT_PROGRAMS := $(patsubst $(ENGINE_SOURCE_FOLDER)/%.c, $(OBJECT_FOLDER)/%.o,
 GAME_OBJECT_PROGRAMS := $(patsubst $(GAME_SOURCE_FOLDER)/%.c, $(OBJECT_FOLDER)/%.o, $(GAME_SOURCE_PROGRAMS))
 GAME_BINARY_PROGRAMS := $(patsubst $(GAME_SOURCE_FOLDER)/%.c, %, $(GAME_SOURCE_PROGRAMS))
 
-
-# This is the compilor and the standard compile flags
-COMPILE_COMPILOR := gcc
 COMPILE_FLAGS := -Wall -Werror --std=c99
 
-# This is the SDL compile flags for the include and the lib folders
-SDL_INCLUDE_FLAG := -ISDL2/include
-SDL_LIB_FLAG := -LSDL2/lib
+SDL_LIB_FLAGS := -lSDL2main -lSDL2 -lSDL2_image
+SDL_FOLDERS_LINKER := -ISDL2/include -LSDL2/lib
 
-# This is every SDL compile flag needed for the project
-#SDL_FLAGS := $(SDL_INCLUDE_FLAG) $(SDL_LIB_FLAG) -lmingw32 -lSDL2main -lSDL2
-SDL_FLAGS := `sdl2-config --libs --cflags` -lSDL2 -lSDL2main -lSDL2_image
+# This is the compile flags needed for Windows:
+WIN_SDL_FLAGS := $(SDL_FOLDERS_LINKER) -lmingw32 $(SDL_LIB_FLAGS)
+
+# This is the compile flags needed for MacOS:
+MAC_SDL_FLAGS := `sdl2-config --libs --cflags` $(SDL_LIB_FLAGS)
+
+
+COMPILE_COMPILOR := mingw32-gcc
+
 
 # When creating an executable file, this is the linkers that is useful
-EXE_LINKERS := $(SDL_FLAGS) -lm
+EXE_LINKERS := $(WIN_SDL_FLAGS) -lm
 
 default-targets: $(OBJECT_PROGRAMS) $(SOURCE_PROGRAMS) $(HEADER_PROGRAMS) $(GAME_BINARY_PROGRAMS)
 

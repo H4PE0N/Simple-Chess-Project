@@ -43,9 +43,9 @@ void free_display_variables(Window* window, Render* render, Surface* surface)
 	SDL_Quit();
 }
 
-bool create_screen_window(Window** window, Point position, char title[])
+bool create_screen_window(Window** window, char title[])
 {
-	*window = SDL_CreateWindow(title, position.width, position.height, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	*window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 
 	return (*window != NULL);
 }

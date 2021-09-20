@@ -11,7 +11,7 @@ bool extract_piece_filename(char*, Piece);
 
 void free_display_variables(Window*, Render*, Surface*);
 
-bool create_screen_window(Window**, Point, char[]);
+bool create_screen_window(Window**, char[]);
 
 bool create_window_surface(Surface**, Window*);
 
