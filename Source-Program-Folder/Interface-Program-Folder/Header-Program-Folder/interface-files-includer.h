@@ -15,4 +15,6 @@
 
 #include "game-interface-program.h"
 
+#include "display-help-functions.h"
+
 #endif

@@ -59,9 +59,10 @@ bool render_full_board(Render* renderer, Board board)
 	return true;
 }
 
-bool render_board_piece(Render* renderer, Piece piece, Point point)
+bool render_board_piece(Render* render, Piece piece, Point point)
 {
 	if(!point_inside_board(point)) return false;
+
 	if(piece.type == EMPTY || piece.team == NONE) return true;
 
 	int height = (point.height * SQUARE_HEIGHT);
@@ -69,55 +70,48 @@ bool render_board_piece(Render* renderer, Piece piece, Point point)
 
 	Rect position = {width, height, SQUARE_WIDTH, SQUARE_HEIGHT};
 
-	Surface* image = extract_piece_image(piece);
+	if(!render_piece_image(render, piece, position))
+	{
+		printf("Could not render piece!\n");
+		return false;
+	}
 
-	if(image == NULL)
+	return true;
+}
+
+bool render_piece_image(Render* render, Piece piece, Rect position)
+{
+	Surface* image = NULL;
+
+	if(!extract_piece_image(&image, piece))
 	{
 		printf("image, could not extract!\n");
 		return false;
 	}
 
-	Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
-
-	if(texture == NULL)
+	if(!render_surface_texture(render, image, position))
 	{
-		printf("Read image error %s\n", SDL_GetError());
+		printf("Could not render image!\n");
 		return false;
 	}
 
-	SDL_RenderCopy(renderer, texture, NULL, &position);
-
-	SDL_DestroyTexture(texture);
 	SDL_FreeSurface(image);
 
 	return true;
 }
 
-Surface* extract_piece_image(Piece piece)
+bool render_surface_texture(Render* render, Surface* surface, Rect position)
 {
-	char filename[200]; extract_piece_filename(filename, piece);
+	Texture* texture = NULL;
 
-	return IMG_Load(filename);
-}
+	if(!create_surface_texture(&texture, render, surface))
+	{
+		return false;
+	}
 
-const char* typeStrings[] = {"EMPTY", "PAWN", "BISHOP", "KNIGHT", "ROOK", "QUEEN", "KING"};
-const char* teamStrings[] = {"NONE", "WHITE", "BLACK"};
+	SDL_RenderCopy(render, texture, NULL, &position);
 
-bool extract_piece_filename(char* filename, Piece piece)
-{
-	if(!number_inside_bounds(piece.type, 0, 6)) return false;
-	if(!number_inside_bounds(piece.team, 0, 2)) return false;
-
-	const char* typeString = typeStrings[piece.type];
-	const char* teamString = teamStrings[piece.team];
-
-	char file[200];
-
-	sprintf(file, "%s-%s.png", teamString, typeString);
-
-	sprintf(filename, "%s/%s", PIECE_FOLDER, file);
-
-	//printf("Filename: %s\n", filename);
+	SDL_DestroyTexture(texture);
 
 	return true;
 }

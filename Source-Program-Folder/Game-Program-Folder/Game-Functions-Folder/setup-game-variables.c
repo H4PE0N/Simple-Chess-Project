@@ -3,33 +3,32 @@
 
 bool setup_display_variables(Window** window, Render** render, Surface** surface, char title[])
 {
-	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
+	if(SDL_Init(SDL_INIT_VIDEO) != 0)
 	{
 		printf("Init Error: %s\n", SDL_GetError());
+
 		return false;
 	}
 
 	if(IMG_Init(IMG_INIT_PNG) == 0)
 	{
 		printf("Init Error: %s\n", SDL_GetError());
+
 		SDL_Quit();
+
 		return false;
 	}
 
-	*window = SDL_CreateWindow(title, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-
-	if(*window == NULL)
+	if(!create_screen_window(window, (Point) {0, 0}, title))
 	{
 		printf("Window Error: %s\n", SDL_GetError());
 
 		SDL_Quit();
 
-		return true;
+		return false;
 	}
 
-	*surface = SDL_GetWindowSurface(*window);
-
-	if(*surface == NULL)
+	if(!create_window_surface(surface, *window))
 	{
 		printf("Surface is null: %s\n", SDL_GetError());
 
@@ -40,11 +39,9 @@ bool setup_display_variables(Window** window, Render** render, Surface** surface
 		return false;
 	}
 
-	*render = SDL_CreateSoftwareRenderer(*surface);
-
-	if(*render == NULL)
+	if(!create_surface_render(render, *surface))
 	{
-		printf("Surface is null: %s\n", SDL_GetError());
+		printf("Render is null: %s\n", SDL_GetError());
 
 		SDL_FreeSurface(*surface);
 
@@ -55,16 +52,10 @@ bool setup_display_variables(Window** window, Render** render, Surface** surface
 		return false;
 	}
 
+	// This line is just needed to make the window want to show it self:
+	SDL_Event event; SDL_PollEvent(&event);
+
 	return true;
-}
-
-void free_display_variables(Window* window, Render* render, Surface* surface)
-{
-	SDL_DestroyRenderer(render);
-
-	SDL_FreeSurface(surface);
-
-	SDL_DestroyWindow(window);
 }
 
 bool setup_game_variables(Board* board, Info* info, char filename[])
@@ -80,6 +71,8 @@ bool setup_game_variables(Board* board, Info* info, char filename[])
 	{
 		setup_info_error(*board);
 
+		free_chess_board(*board);
+
 		return false;
 	}
 
@@ -90,13 +83,15 @@ bool setup_game_info(Info* info, Board board)
 {
 	Castles castles = extract_castles_values(board);
 
+	Team current = WHITE;
+
 	Move lastMove = EMPTY_MOVE;
 	Point passant = EMPTY_POINT;
 
 	int counter = 0;
 	int turns = 0;
 
-	*info = (Info) {WHITE, castles, passant, counter, turns, lastMove};
+	*info = (Info) {current, castles, passant, counter, turns, lastMove};
 
 	return true;
 }

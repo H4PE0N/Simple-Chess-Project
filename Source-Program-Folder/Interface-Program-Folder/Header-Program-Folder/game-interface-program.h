@@ -6,10 +6,10 @@ void render_chess_board(Render*);
 
 bool render_board_piece(Render*, Piece, Point);
 
-Surface* extract_piece_image(Piece);
-
-bool extract_piece_filename(char*, Piece);
-
 bool render_full_board(Render*, Board);
+
+bool render_piece_image(Render*, Piece, Rect);
+
+bool render_surface_texture(Render*, Surface*, Rect);
 
 #endif
