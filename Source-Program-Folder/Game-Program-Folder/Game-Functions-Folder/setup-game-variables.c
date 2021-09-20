@@ -1,6 +1,72 @@
 
 #include "../Header-Program-Folder/game-files-includer.h"
 
+bool setup_display_variables(Window** window, Render** render, Surface** surface, char title[])
+{
+	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
+	{
+		printf("Init Error: %s\n", SDL_GetError());
+		return false;
+	}
+
+	if(IMG_Init(IMG_INIT_PNG) == 0)
+	{
+		printf("Init Error: %s\n", SDL_GetError());
+		SDL_Quit();
+		return false;
+	}
+
+	*window = SDL_CreateWindow(title, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+
+	if(*window == NULL)
+	{
+		printf("Window Error: %s\n", SDL_GetError());
+
+		SDL_Quit();
+
+		return true;
+	}
+
+	*surface = SDL_GetWindowSurface(*window);
+
+	if(*surface == NULL)
+	{
+		printf("Surface is null: %s\n", SDL_GetError());
+
+		SDL_DestroyWindow(*window);
+
+		SDL_Quit();
+
+		return false;
+	}
+
+	*render = SDL_CreateSoftwareRenderer(*surface);
+
+	if(*render == NULL)
+	{
+		printf("Surface is null: %s\n", SDL_GetError());
+
+		SDL_FreeSurface(*surface);
+
+		SDL_DestroyWindow(*window);
+
+		SDL_Quit();
+
+		return false;
+	}
+
+	return true;
+}
+
+void free_display_variables(Window* window, Render* render, Surface* surface)
+{
+	SDL_DestroyRenderer(render);
+
+	SDL_FreeSurface(surface);
+
+	SDL_DestroyWindow(window);
+}
+
 bool setup_game_variables(Board* board, Info* info, char filename[])
 {
 	if(!create_chess_board(board, filename))

@@ -9,8 +9,6 @@ start using FEN board.
 implement passant rule
 
 
-change every curr.. to current and so on..
-
 rename moveable to movable
 
 

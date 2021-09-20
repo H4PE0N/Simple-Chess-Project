@@ -54,11 +54,12 @@ COMPILE_COMPILOR := gcc
 COMPILE_FLAGS := -Wall -Werror --std=c99
 
 # This is the SDL compile flags for the include and the lib folders
-SDL_INCLUDE_FLAG := -I../Source-Program-Folder/SDL-Library-Programs/include
-SDL_LIB_FLAG := -L../Source-Program-Folder/SDL-Library-Programs/lib
+SDL_INCLUDE_FLAG := -ISDL2/include
+SDL_LIB_FLAG := -LSDL2/lib
 
 # This is every SDL compile flag needed for the project
-SDL_FLAGS := #$(SDL_INCLUDE_FLAG) $(SDL_LIB_FLAG) -lmingw32 -lSDL2main -lSDL2
+#SDL_FLAGS := $(SDL_INCLUDE_FLAG) $(SDL_LIB_FLAG) -lmingw32 -lSDL2main -lSDL2
+SDL_FLAGS := `sdl2-config --libs --cflags` -lSDL2 -lSDL2main -lSDL2_image
 
 # When creating an executable file, this is the linkers that is useful
 EXE_LINKERS := $(SDL_FLAGS) -lm

@@ -5,103 +5,12 @@
 
 int main(int argAmount, char* arguments[])
 {
-	// if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
-	// {
-	// 	printf("Init Error: %s\n", SDL_GetError());
-	// 	return true;
-	// }
-
-	// if(IMG_Init(IMG_INIT_PNG) == 0)
-	// {
-	// 	printf("Init Error: %s\n", SDL_GetError());
-	// 	SDL_Quit();
-	// 	return true;
-	// }
-
-	// char windowTitle[20] = "CHESS BOARD WINDOW";
-
-	// //												SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED
-	// Window* window = SDL_CreateWindow(windowTitle, 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-
-	// if(window == NULL)
-	// {
-	// 	printf("Window Error: %s\n", SDL_GetError());
-	// 	SDL_Quit();
-	// 	return true;
-	// }
-
-	// // ================================================================================================
-	// Surface* screenSurface = SDL_GetWindowSurface( window );
-
-	// // SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ) );
-	// // ================================================================================================
-
-	// Render* renderer = SDL_CreateSoftwareRenderer(screenSurface);
-	// if(renderer == NULL)
-	// {
-	// 	printf("Renderer Error: %s\n", SDL_GetError());
-
-	// 	SDL_FreeSurface(screenSurface);
-
-	// 	SDL_DestroyWindow(window);
-
-	// 	SDL_Quit();
-
-	// 	return true;
-	// }
-
-	// SDL_RenderPresent(renderer);
-
-	// SDL_UpdateWindowSurface(window);
-
- //    SDL_Event event;
- //    SDL_PollEvent(&event);
-
-	// // ================================================================================================
-
-	// srand(time(NULL));
-
-	// char filename[200]; extract_file_name(filename, arguments, argAmount);
-
-	// Board board; Info info;
-
-	// if(!setup_game_variables(&board, &info, filename))
-	// {
-	// 	setup_variables_error();
-
-	// 	free_chess_board(board);
-
-	// 	return false;
-	// }
-
-
-
-
-
-	// if(!test_game_loop(board, &info, renderer, window))
-	// {
-	// 	printf("The game was ended!\n");
-	// }
-
-
-
-
-	printf("EMPTY_PIECE: %d %d\n", EMPTY_PIECE.type, EMPTY_PIECE.team);
-
-
-	// // free_chess_board(board);
-
-	// SDL_FreeSurface(screenSurface);
-
-	// SDL_DestroyWindow(window);
-
-	// SDL_Quit();
-
 	srand(time(NULL));
 
 	char filename[200]; extract_file_name(filename, arguments, argAmount);
 
-	Board board; Info info;
+	Board board;
+	Info info;
 
 	if(!setup_game_variables(&board, &info, filename))
 	{
@@ -112,124 +21,161 @@ int main(int argAmount, char* arguments[])
 		return false;
 	}
 
-	Move move = { (Point) {7, 0}, (Point) {7, 4} };
+	Window* window = NULL;
+	Render* render = NULL;
+	Surface* surface = NULL;
 
-	display_chess_board(board);
-
-	if(team_castle_acceptable(board, move, info))
+	if(!setup_display_variables(&window, &render, &surface, "TITLE NAME"))
 	{
-		printf("Ya!\n");
-		execute_team_castle(board, move, &info);
+		printf("Error! Display!\n");
+
+		free_chess_board(board);
+
+		return true;
 	}
 
-	display_chess_board(board);
+    SDL_Event event;
+    SDL_PollEvent(&event);
 
-	free_chess_board(board);
+	if(!test_game_loop(board, &info, render, window))
+	{
+		printf("The game was ended!\n");
+	}
+
+	free_display_variables(window, render, surface);
+
+	SDL_Quit();
 
 	return false;
+
+// 	srand(time(NULL));
+//
+// 	char filename[200]; extract_file_name(filename, arguments, argAmount);
+//
+// 	Board board; Info info;
+//
+// 	if(!setup_game_variables(&board, &info, filename))
+// 	{
+// 		setup_variables_error();
+//
+// 		free_chess_board(board);
+//
+// 		return false;
+// 	}
+//
+// 	Move move = { (Point) {7, 0}, (Point) {7, 4} };
+//
+// 	display_chess_board(board);
+//
+// 	if(team_castle_acceptable(board, move, info))
+// 	{
+// 		printf("Ya!\n");
+// 		execute_team_castle(board, move, &info);
+// 	}
+//
+// 	display_chess_board(board);
+//
+// 	free_chess_board(board);
+//
+// 	return false;
 }
 
-// bool test_game_loop(Board board, Info* info, SDL_Renderer* renderer, SDL_Window* window)
-// {
-// 	Move move = {(Point) {-1, -1}, (Point) {-1, -1}};
-// 	char input[20];
-
-// 	Team* winner = NULL;
-
-// 	while(game_still_running(winner, board, *info))
-// 	{
-// 		if(!render_full_board(renderer, board)) return false;
-
-// 		SDL_RenderPresent(renderer);
-
-// 		SDL_UpdateWindowSurface(window);
-
-
-// 		if(!input_current_move(input)) continue;
-
-// 		if(!strcmp(input, "STOP")) return false;
-
-// 		if(!parse_chess_move(&move, board, *info, input)) continue;
-
-// 		if(!move_chess_piece(board, move, info)) continue;
-
-// 		if(!update_kings_point(board, info)) return false;
-
-// 		info->lastMove = move;
-
-// 		info->turns += 1;
-// 		info->currTeam = (info->currTeam == WHITE) ? BLACK : WHITE;
-// 	}
-// 	return true;
-// }
-
-/*void test_game_program(Board board, Info info)
+bool test_game_loop(Board board, Info* info, Render* render, Window* window)
 {
-	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
+	Move move = EMPTY_MOVE;
+	char input[20];
+
+	Team* winner = NULL;
+
+	while(game_still_running(winner, board, *info))
 	{
-		printf("Init Error: %s\n", SDL_GetError());
-		return;
+		if(!render_full_board(render, board)) return false;
+
+		SDL_UpdateWindowSurface(window);
+
+		if(!input_current_move(input)) continue;
+
+		if(!strcmp(input, "STOP")) return false;
+
+		if(!parse_chess_move(&move, board, *info, input)) continue;
+
+		if(!move_chess_piece(board, move, info)) continue;
+
+		info->lastMove = move;
+
+		info->turns += 1;
+		info->current = piece_team_enemy(info->current);
 	}
+	return true;
+}
 
-	char windowTitle[20] = "CHESS BOARD WINDOW";
-
-	//												SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED
-	SDL_Window* window = SDL_CreateWindow(windowTitle, 100, 100, W_WIDTH, W_HEIGHT, SDL_WINDOW_SHOWN);
-
-	if(window == NULL)
-	{
-		printf("Window Error: %s\n", SDL_GetError());
-		SDL_Quit();
-		return;
-	}
-
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
-	if(renderer == NULL)
-	{
-		printf("Renderer Error: %s\n", SDL_GetError());
-		SDL_DestroyWindow(window);
-		SDL_Quit();
-		return;
-	}
-
-	SDL_RenderClear(renderer);
-
-
-	// SDL_Rect rectangle = {0, 0, 100, 100};
-
-	// SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-	// SDL_RenderDrawRect(renderer, &rectangle);
-
-
-	// SDL_RenderPresent(renderer);
-
-
-
-	// SDL_Surface* window_surface = SDL_GetWindowSurface(window);
- //    SDL_Surface* image_surface = SDL_LoadBMP("../../bot-against-chess-com.PNG");
-
- //    SDL_BlitSurface(image_surface, NULL, window_surface, NULL);
-
- //    SDL_UpdateWindowSurface(window);
-
-
-
-	SDL_Surface* screenSurface = SDL_GetWindowSurface( window );
-
-	//Fill the surface white
-	SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ) );
-
-	//Update the surface
-	SDL_UpdateWindowSurface( window );
-
-	//SDL_FreeSurface(screenSurface);
-
-
-
-
-	SDL_Delay(10000);
-
-	SDL_DestroyWindow(window);
-	SDL_Quit();
-}*/
+// void test_game_program(Board board, Info info)
+// {
+// 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
+// 	{
+// 		printf("Init Error: %s\n", SDL_GetError());
+// 		return;
+// 	}
+//
+// 	char windowTitle[20] = "CHESS BOARD WINDOW";
+//
+// 	//												SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED
+// 	SDL_Window* window = SDL_CreateWindow(windowTitle, 100, 100, W_WIDTH, W_HEIGHT, SDL_WINDOW_SHOWN);
+//
+// 	if(window == NULL)
+// 	{
+// 		printf("Window Error: %s\n", SDL_GetError());
+// 		SDL_Quit();
+// 		return;
+// 	}
+//
+// 	SDL_render* render = SDL_Createrender(window, -1, SDL_render_ACCELERATED | SDL_render_PRESENTVSYNC);
+//
+// 	if(render == NULL)
+// 	{
+// 		printf("render Error: %s\n", SDL_GetError());
+// 		SDL_DestroyWindow(window);
+// 		SDL_Quit();
+// 		return;
+// 	}
+//
+// 	SDL_RenderClear(render);
+//
+//
+// 	// SDL_Rect rectangle = {0, 0, 100, 100};
+//
+// 	// SDL_SetRenderDrawColor(render, 0, 255, 0, 255);
+// 	// SDL_RenderDrawRect(render, &rectangle);
+//
+//
+// 	// SDL_RenderPresent(render);
+//
+//
+//
+// 	// SDL_Surface* window_surface = SDL_GetWindowSurface(window);
+//  //    SDL_Surface* image_surface = SDL_LoadBMP("../../bot-against-chess-com.PNG");
+//
+//  //    SDL_BlitSurface(image_surface, NULL, window_surface, NULL);
+//
+//  //    SDL_UpdateWindowSurface(window);
+//
+//
+//
+// 	SDL_Surface* surface = SDL_GetWindowSurface( window );
+//
+// 	//Fill the surface white
+// 	SDL_FillRect( surface, NULL, SDL_MapRGB( surface->format, 0xFF, 0xFF, 0xFF ) );
+//
+// 	//Update the surface
+// 	SDL_UpdateWindowSurface( window );
+//
+// 	//SDL_FreeSurface(surface);
+//
+//
+//
+//
+// 	SDL_Delay(10000);
+//
+// 	SDL_DestroyWindow(window);
+// 	SDL_Quit();
+// }

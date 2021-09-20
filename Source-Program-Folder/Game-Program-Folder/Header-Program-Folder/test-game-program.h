@@ -4,6 +4,6 @@
 
 // void test_game_program(Board, Info);
 
-// bool test_game_loop(Board, Info*, SDL_Renderer*, SDL_Window*);
+bool test_game_loop(Board, Info*, SDL_Renderer*, SDL_Window*);
 
 #endif
