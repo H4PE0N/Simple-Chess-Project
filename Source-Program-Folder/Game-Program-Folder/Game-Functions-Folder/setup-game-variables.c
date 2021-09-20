@@ -90,8 +90,8 @@ bool setup_game_info(Info* info, Board board)
 {
 	Castles castles = extract_castles_values(board);
 
-	Move lastMove = {(Point) {-1, -1}, (Point) {-1, -1}};
-	Point passant = {-1, -1};
+	Move lastMove = EMPTY_MOVE;
+	Point passant = EMPTY_POINT;
 
 	int counter = 0;
 	int turns = 0;
@@ -111,19 +111,19 @@ Castles extract_castles_values(Board board)
 
 Castle extract_castle_values(Board board, Team team)
 {
-	if(!piece_team_exists(team)) return (Castle) {false, false};
+	if(!piece_team_exists(team)) EMPTY_CASTLE;
 
-	Castle castle = {false, false};
+	Castle castle = EMPTY_CASTLE;
 
 	int expectedHeight = (team == WHITE) ? (BOARD_HEIGHT - 1) : 0;
 
 
 	Point king = board_piece_point(board, (Piece) {KING, team});
 
-	if(!point_inside_board(king)) return (Castle) {false, false};
+	if(!point_inside_board(king)) return EMPTY_CASTLE;
 
 
-	if(!board_points_equal(king, (Point) {expectedHeight, 4})) return (Castle) {false, false};
+	if(!board_points_equal(king, (Point) {expectedHeight, 4})) return EMPTY_CASTLE;
 
 	//Now the king exists and is in the right place
 
