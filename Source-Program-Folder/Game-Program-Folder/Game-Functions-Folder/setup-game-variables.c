@@ -106,7 +106,7 @@ Castles extract_castles_values(Board board)
 
 Castle extract_castle_values(Board board, Team team)
 {
-	if(!piece_team_exists(team)) EMPTY_CASTLE;
+	if(!piece_team_exists(team)) return EMPTY_CASTLE;
 
 	Castle castle = EMPTY_CASTLE;
 

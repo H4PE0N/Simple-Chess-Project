@@ -69,7 +69,7 @@ bool test_game_loop(Board board, Info* info, Render* render, Window* window)
 
 	while(game_still_running(&winner, board, *info))
 	{
-		event; SDL_PollEvent(&event);
+		SDL_PollEvent(&event);
 
 		if(!render_full_board(render, board)) return false;
 
