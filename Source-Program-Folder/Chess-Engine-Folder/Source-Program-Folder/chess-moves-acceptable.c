@@ -1,6 +1,31 @@
 
 #include "../Header-Program-Folder/chess-engine-includer.h"
 
+bool piece_move_acceptable(Board board, Move move, Info info)
+{
+	if(!move_inside_board(move)) return false;
+
+	switch(board_point_type(board, move.start))
+	{
+		case(EMPTY): return false;
+
+		case(PAWN): return pawn_move_acceptable(board, move, info);
+
+		case(ROOK): return rook_move_acceptable(board, move, info);
+
+		case(KNIGHT): return knight_move_acceptable(board, move, info);
+
+		case(BISHOP): return bishop_move_acceptable(board, move, info);
+
+		case(QUEEN): return queen_move_acceptable(board, move, info);
+
+		case(KING): return king_move_acceptable(board, move, info);
+
+		default: return false;
+	}
+	return false;
+}
+
 bool queen_move_acceptable(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
@@ -76,14 +101,39 @@ bool rook_move_acceptable(Board board, Move move, Info info)
 
 	if(board_point_empty(board, start)) return false;
 
-	if(board_points_team(board, start, stop)) return false;
 
-	if(board_point_type(board, stop) == KING) return false;
+	Team team = board_point_team(board, move);
+  if(!piece_team_exists(team)) return false;
 
-	// These controls are more specific, and should be done later
-	if(!moving_rook_valid(start, stop)) return false;
+  Piece stopPiece = board_point_piece(board, move.stop);
 
 	if(!clear_moving_path(board, start, stop)) return false;
+
+  // If the stop is the team king, then it is castles:
+  if(board_pieces_equal(stopPiece, (Piece) {KING, team}))
+	{
+		if(!team_castle_valid(start, stop, team)) return false;
+
+
+		// This two lines can be removed by "stopPiece"!
+		Point king = board_piece_point(board, (Piece) {KING, team});
+		if(!point_inside_board(king)) return false;
+
+		if(king_inside_check(board, king)) return false;
+
+
+		// This checks that the operation is clear to go (true)
+		if(!castle_bool_valid(start, info, team)) return false;
+	}
+	else
+	{
+		if(board_points_team(board, start, stop)) return false;
+
+		if(board_point_type(board, stop) == KING) return false;
+
+		// These controls are more specific, and should be done later
+		if(!moving_rook_valid(start, stop)) return false;
+	}
 
 	if(!move_prevent_check(board, move, info)) return false;
 
@@ -213,58 +263,37 @@ bool knight_move_acceptable(Board board, Move move, Info info)
 	return true;
 }
 
-bool castle_bool_valid(Point start, Info info, Team team)
-{
-	// If the team, of the rook in this case, does not exist:
-	if(!piece_team_exists(team)) return false;
-
-	// If the rook is not at a width that supports by this function
-	// The function return the side STILL
-	Side side = rook_starting_side(start.width);
-
-	return board_castles_value(info.castles, team, side);
-}
-
 // If the rook is not at a width that supports by this function
 // The function return the side STILL
-Side rook_starting_side(int width)
-{
-	Side side = STILL;
 
-	if(width == 0) side = LEFT;
-
-	if(width == (BOARD_WIDTH - 1)) side = RIGHT;
-
-	return side;
-}
-
-bool team_castle_acceptable(Board board, Move move, Info info)
-{
-	Point start = move.start, stop = move.stop;
-
-	if(!points_inside_board(start, stop)) return false;
-
-	Team team = board_point_team(board, start);
-	if(!piece_team_exists(team)) return false;
-
-	Point king = board_piece_point(board, (Piece) {KING, team});
-	if(!point_inside_board(king)) return false;
-
-	// This is a special case, you cant switch if the king is in check
-	if(king_inside_check(board, king)) return false;
-
-	// This checks if the rook and the king is on the right place
-	if(!team_castle_valid(start, stop, team)) return false;
-
-	if(!clear_moving_path(board, start, stop)) return false;
-
-	// This checks that the operation is clear to go (true)
-	if(!castle_bool_valid(start, info, team)) return false;
-
-	if(move_prevent_check(board, move, info)) return false;
-
-	return true;
-}
+//
+// bool team_castle_acceptable(Board board, Move move, Info info)
+// {
+// 	Point start = move.start, stop = move.stop;
+//
+// 	if(!points_inside_board(start, stop)) return false;
+//
+// 	Team team = board_point_team(board, start);
+// 	if(!piece_team_exists(team)) return false;
+//
+// 	Point king = board_piece_point(board, (Piece) {KING, team});
+// 	if(!point_inside_board(king)) return false;
+//
+// 	// This is a special case, you cant switch if the king is in check
+// 	if(king_inside_check(board, king)) return false;
+//
+// 	// This checks if the rook and the king is on the right place
+// 	if(!team_castle_valid(start, stop, team)) return false;
+//
+// 	if(!clear_moving_path(board, start, stop)) return false;
+//
+// 	// This checks that the operation is clear to go (true)
+// 	if(!castle_bool_valid(start, info, team)) return false;
+//
+// 	if(move_prevent_check(board, move, info)) return false;
+//
+// 	return true;
+// }
 
 // bool check_after_passant(Board board, Move move, Info info)
 // {

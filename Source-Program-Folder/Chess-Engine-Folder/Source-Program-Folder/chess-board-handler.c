@@ -11,6 +11,29 @@ Piece board_point_piece(Board board, Point point)
   return board[point.height][point.width];
 }
 
+bool castle_bool_valid(Point start, Info info, Team team)
+{
+	// If the team, of the rook in this case, does not exist:
+	if(!piece_team_exists(team)) return false;
+
+	// If the rook is not at a width that supports by this function
+	// The function return the side STILL
+	Side side = rook_starting_side(start.width);
+
+	return board_castles_value(info.castles, team, side);
+}
+
+Side rook_starting_side(int width)
+{
+	Side side = STILL;
+
+	if(width == 0) side = LEFT;
+
+	if(width == (BOARD_WIDTH - 1)) side = RIGHT;
+
+	return side;
+}
+
 void copy_board_variable(Board board, Board copying)
 {
   Point point;
