@@ -32,8 +32,10 @@ bool board_pawn_moveable(Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
-	Team team = board_point_team(board, start);
+	if(board_point_type(board, start) != PAWN) return false;
 
+
+	Team team = board_point_team(board, start);
 	if(!piece_team_exists(team)) return false;
 
 	Point stop;
@@ -71,6 +73,9 @@ bool board_rook_moveable(Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
+	if(board_point_type(board, start) != ROOK) return false;
+
+
 	Point stop;
 	Move currentMove;
 
@@ -104,6 +109,9 @@ bool board_knight_moveable(Board board, Info info, Point start)
 	if(!point_inside_board(start)) return false;
 
 	if(board_point_empty(board, start)) return false;
+
+	if(board_point_type(board, start) != KNIGHT) return false;
+
 
 	Point stop;
 	Move currentMove;
@@ -140,6 +148,7 @@ bool board_diagonal_moveable(Board board, Info info, Point start)
 	if(!point_inside_board(start)) return false;
 
 	if(board_point_empty(board, start)) return false;
+
 
 	Point stop;
 	Move currentMove;
@@ -182,6 +191,7 @@ bool board_straight_moveable(Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
+
 	Point stop;
 	Move currentMove;
 
@@ -214,6 +224,9 @@ bool board_bishop_moveable(Board board, Info info, Point start)
 	if(!point_inside_board(start)) return false;
 
 	if(board_point_empty(board, start)) return false;
+
+	if(board_point_type(board, start) != BISHOP) return false;
+
 
 	Point stop;
 	Move currentMove;
@@ -256,6 +269,9 @@ bool board_queen_moveable(Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
+	if(board_point_type(board, start) != QUEEN) return false;
+
+
 	if(board_diagonal_moveable(board, info, start)) return true;
 
 	if(board_straight_moveable(board, info, start)) return true;
@@ -268,6 +284,9 @@ bool board_king_moveable(Board board, Info info, Point start)
 	if(!point_inside_board(start)) return false;
 
 	if(board_point_empty(board, start)) return false;
+
+	if(board_point_type(board, start) != KING) return false;
+
 
 	Point stop;
 	Move currentMove;

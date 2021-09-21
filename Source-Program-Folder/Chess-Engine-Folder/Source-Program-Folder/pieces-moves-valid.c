@@ -1,7 +1,6 @@
 
 #include "../Header-Program-Folder/chess-engine-includer.h"
 
-// This is a function that JUST cover the regular moves; not RKS
 bool moving_piece_valid(Board board, Point start, Point stop)
 {
 	if(!points_inside_board(start, stop)) return false;
@@ -49,6 +48,8 @@ bool pawn_starting_bool(Point start, Team team)
 bool moving_pawn_valid(Point start, Point stop, Team team)
 {
 	if(!points_inside_board(start, stop)) return false;
+
+	if(board_points_equal(start, stop)) return false;
 
 	if(!piece_team_exists(team)) return false;
 
@@ -100,6 +101,8 @@ bool moving_rook_valid(Point start, Point stop)
 bool moving_knight_valid(Point start, Point stop)
 {
 	if(!points_inside_board(start, stop)) return false;
+
+	if(board_points_equal(start, stop)) return false;
 
 	int heightOffset = abs(start.height - stop.height);
 	int widthOffset = abs(start.width - stop.width);

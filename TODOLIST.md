@@ -11,11 +11,7 @@ implement passant rule
 
 rename moveable to movable
 
-
-make the execute functions return a bool value. If they cant execute, it should return false;
-
-
-maybe: In the beginning of [prevent, movable, possible]
+implement type check in valid functions (type == PAWN)
 
 change the matrix value for the rook. He should want to castle
 

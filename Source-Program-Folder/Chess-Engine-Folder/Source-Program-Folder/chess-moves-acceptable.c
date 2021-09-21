@@ -33,6 +33,8 @@ bool queen_move_acceptable(Board board, Move move, Info info)
 	// These controls is the most obvious, and should be done first
 	if(!points_inside_board(start, stop)) return false;
 
+	if(board_point_type(board, start) != QUEEN) return false;
+
 	if(board_point_empty(board, start)) return false;
 
 	if(board_points_team(board, start, stop)) return false;
@@ -56,7 +58,11 @@ bool pawn_move_acceptable(Board board, Move move, Info info)
 	// These controls is the most obvious, and should be done first
 	if(!points_inside_board(start, stop)) return false;
 
+	if(board_point_type(board, start) != PAWN) return false;
+
 	if(board_point_empty(board, start)) return false;
+
+	if(board_points_team(board, start, stop)) return false;
 
 	if(board_point_type(board, stop) == KING) return false;
 
@@ -87,6 +93,8 @@ bool rook_move_acceptable(Board board, Move move, Info info)
 	// These controls is the most obvious, and should be done first
 	if(!points_inside_board(start, stop)) return false;
 
+	if(board_point_type(board, start) != ROOK) return false;
+
 	if(board_point_empty(board, start)) return false;
 
 	// These controls are more specific, and should be done later
@@ -114,6 +122,8 @@ bool bishop_move_acceptable(Board board, Move move, Info info)
 	// These controls is the most obvious, and should be done first
 	if(!points_inside_board(start, stop)) return false;
 
+	if(board_point_type(board, start) != BISHOP) return false;
+
 	if(board_point_empty(board, start)) return false;
 
 	if(board_points_team(board, start, stop)) return false;
@@ -136,6 +146,8 @@ bool king_move_acceptable(Board board, Move move, Info info)
 
 	// These controls is the most obvious, and should be done first
 	if(!points_inside_board(start, stop)) return false;
+
+	if(board_point_type(board, start) != KING) return false;
 
 	if(board_point_empty(board, start)) return false;
 
@@ -207,6 +219,8 @@ bool knight_move_acceptable(Board board, Move move, Info info)
 
 	// These controls is the most obvious, and should be done first
 	if(!points_inside_board(start, stop)) return false;
+
+	if(board_point_type(board, start) != KNIGHT) return false;
 
 	if(board_point_empty(board, start)) return false;
 

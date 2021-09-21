@@ -32,8 +32,10 @@ bool pawn_possible_moves(Move* moves, Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
-	Team team = board_point_team(board, start);
+	if(board_point_type(board, start) != PAWN) return false;
 
+
+	Team team = board_point_team(board, start);
 	if(!piece_team_exists(team)) return false;
 
 	Point stop;
@@ -79,6 +81,9 @@ bool rook_possible_moves(Move* moves, Board board, Info info, Point start)
 	if(!point_inside_board(start)) return false;
 
 	if(board_point_empty(board, start)) return false;
+
+	if(board_point_type(board, start) != ROOK) return false;
+
 
 	Point stop;
 	Move currentMove;
@@ -126,6 +131,9 @@ bool bishop_possible_moves(Move* moves, Board board, Info info, Point start)
 	if(!point_inside_board(start)) return false;
 
 	if(board_point_empty(board, start)) return false;
+
+	if(board_point_type(board, start) != BISHOP) return false;
+
 
 	Point stop;
 	Move currentMove;
@@ -182,6 +190,9 @@ bool knight_possible_moves(Move* moves, Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
+	if(board_point_type(board, start) != KNIGHT) return false;
+
+
 	Point stop;
 	Move currentMove;
 
@@ -226,6 +237,7 @@ bool diagonal_possible_moves(Move* moves, Board board, Info info, Point start)
 	if(!point_inside_board(start)) return false;
 
 	if(board_point_empty(board, start)) return false;
+
 
 	Point stop;
 	Move currentMove;
@@ -282,6 +294,7 @@ bool straight_possible_moves(Move* moves, Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
+
 	Point stop;
 	Move currentMove;
 
@@ -329,6 +342,9 @@ bool queen_possible_moves(Move* moves, Board board, Info info, Point start)
 
 	if(board_point_empty(board, start)) return false;
 
+	if(board_point_type(board, start) != QUEEN) return false;
+
+
 	Move* diagonalMoves = create_moves_array(40);
 	Move* straightMoves = create_moves_array(40);
 
@@ -360,6 +376,9 @@ bool king_possible_moves(Move* moves, Board board, Info info, Point start)
 	if(!point_inside_board(start)) return false;
 
 	if(board_point_empty(board, start)) return false;
+
+	if(board_point_type(board, start) != KING) return false;
+
 
 	Point stop;
 	Move currentMove;
