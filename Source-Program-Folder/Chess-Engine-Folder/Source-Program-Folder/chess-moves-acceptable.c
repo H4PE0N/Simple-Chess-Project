@@ -61,7 +61,10 @@ bool pawn_move_acceptable(Board board, Move move, Info info)
 	if(board_point_type(board, stop) == KING) return false;
 
 	// These controls are more specific, and should be done later
-	if(!moving_pawn_valid(board, start, stop)) return false;
+	Team team = board_point_team(board, start);
+	if(!piece_team_exists(team)) return false;
+
+	if(!moving_pawn_valid(start, stop, team)) return false;
 
 	if(!clear_moving_path(board, start, stop)) return false;
 
@@ -222,10 +225,8 @@ bool knight_move_acceptable(Board board, Move move, Info info)
 bool castle_bool_valid(Point start, Info info, Team team)
 {
 	// If the team, of the rook in this case, does not exist:
-	if(!piece_team_exists(team))
-	{
-		return false;
-	}
+	if(!piece_team_exists(team)) return false;
+
 	// If the rook is not at a width that supports by this function
 	// The function return the side STILL
 	Side side = rook_starting_side(start.width);
@@ -253,6 +254,7 @@ bool team_castle_acceptable(Board board, Move move, Info info)
 	if(!points_inside_board(start, stop)) return false;
 
 	Team team = board_point_team(board, start);
+	if(!piece_team_exists(team)) return false;
 
 	Point king = board_piece_point(board, (Piece) {KING, team});
 	if(!point_inside_board(king)) return false;
@@ -261,7 +263,7 @@ bool team_castle_acceptable(Board board, Move move, Info info)
 	if(king_inside_check(board, king)) return false;
 
 	// This checks if the rook and the king is on the right place
-	if(!team_castle_valid(board, start, stop)) return false;
+	if(!team_castle_valid(start, stop, team)) return false;
 
 	if(!clear_moving_path(board, start, stop)) return false;
 

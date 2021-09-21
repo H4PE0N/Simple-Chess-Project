@@ -2,9 +2,9 @@
 #ifndef PIECES_MOVES_VALID_H
 #define PIECES_MOVES_VALID_H
 
-bool moving_pawn_valid(Board, Point, Point);
+bool moving_pawn_valid(Point, Point, Team);
 
-bool team_castle_valid(Board, Point, Point);
+bool team_castle_valid(Point, Point, Team);
 
 bool moving_rook_valid(Point, Point);
 

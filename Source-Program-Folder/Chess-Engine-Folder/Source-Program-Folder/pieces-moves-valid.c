@@ -6,11 +6,14 @@ bool moving_piece_valid(Board board, Point start, Point stop)
 {
 	if(!points_inside_board(start, stop)) return false;
 
+	Team team = board_point_team(board, start);
+	if(!piece_team_exists(team)) return false;
+
 	switch(board_point_type(board, start))
 	{
 		case(EMPTY): return false;
 
-		case(PAWN): return moving_pawn_valid(board, start, stop);
+		case(PAWN): return moving_pawn_valid(start, stop, team);
 
 		case(ROOK): return moving_rook_valid(start, stop);
 
@@ -37,17 +40,15 @@ int pawn_height_offset(Point start, Point stop, Team team)
 
 bool pawn_starting_bool(Point start, Team team)
 {
-	if(team == WHITE && start.height == 6) return true;
-	if(team == BLACK && start.height == 1) return true;
+	if(team == WHITE && start.height == (BOARD_HEIGHT - 2)) 	return true;
+	if(team == BLACK && start.height == 1) 										return true;
 
 	return false;
 }
 
-bool moving_pawn_valid(Board board, Point start, Point stop)
+bool moving_pawn_valid(Point start, Point stop, Team team)
 {
 	if(!points_inside_board(start, stop)) return false;
-
-	Team team = board_point_team(board, start);
 
 	if(!piece_team_exists(team)) return false;
 
@@ -64,37 +65,22 @@ bool moving_pawn_valid(Board board, Point start, Point stop)
 	return false;
 }
 
-// Change this function
-bool rook_starting_bool(Point point, Team team)
+bool team_castle_valid(Point rook, Point king, Team team)
 {
-	if(team == WHITE && point.height != (BOARD_HEIGHT - 1)) return false;
-	if(team == BLACK && point.height != 0) 									return false;
+	if(!points_inside_board(rook, king)) return false;
 
-	return (point.width == 0 || point.width == (BOARD_WIDTH - 1));
-}
-
-// Change this function
-bool king_starting_bool(Point point, Team team)
-{
-	if(team == WHITE && point.height != (BOARD_HEIGHT - 1)) return false;
-	if(team == BLACK && point.height != 0)									return false;
-
-	return (point.width == 4);
-}
-
-bool team_castle_valid(Board board, Point start, Point stop)
-{
-	if(!points_inside_board(start, stop)) return false;
-
-	if(!board_points_team(board, start, stop)) return false;
-
-	Team team = board_point_team(board, start);
+	if(board_points_equal(rook, king)) return false;
 
 	if(!piece_team_exists(team)) return false;
 
-	if(!rook_starting_bool(start, team)) return false;
+	if(rook.height != king.height) return false;
 
-	if(!king_starting_bool(stop, team)) return false;
+	if(team == WHITE && rook.height != (BOARD_HEIGHT - 1)) return false;
+	if(team == BLACK && rook.height != 0) return false;
+
+	if(king.width != KING_WIDTH) return false;
+
+	if(rook.width != 0 && rook.width != (BOARD_WIDTH - 1)) return false;
 
 	return true;
 }

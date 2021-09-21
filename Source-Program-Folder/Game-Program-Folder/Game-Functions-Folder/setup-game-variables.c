@@ -118,7 +118,7 @@ Castle extract_castle_values(Board board, Team team)
 	if(!point_inside_board(king)) return EMPTY_CASTLE;
 
 
-	if(!board_points_equal(king, (Point) {expectedHeight, 4})) return EMPTY_CASTLE;
+	if(!board_points_equal(king, (Point) {expectedHeight, KING_WIDTH})) return EMPTY_CASTLE;
 
 	//Now the king exists and is in the right place
 
@@ -130,7 +130,7 @@ Castle extract_castle_values(Board board, Team team)
 	{
 		free(rooks);
 
-		return (Castle) {false, false};
+		return EMPTY_CASTLE;
 	}
 
 	int amount = point_array_amount(rooks);

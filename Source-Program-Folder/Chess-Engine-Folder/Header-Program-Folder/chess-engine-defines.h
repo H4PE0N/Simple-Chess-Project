@@ -5,6 +5,8 @@
 #define BOARD_HEIGHT 8
 #define BOARD_WIDTH 8
 
+#define KING_WIDTH 4
+
 #define EMPTY_PIECE (Piece) {EMPTY, NONE}
 
 #define EMPTY_POINT (Point) {-1, -1}
