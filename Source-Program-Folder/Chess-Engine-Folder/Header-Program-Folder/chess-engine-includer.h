@@ -40,7 +40,9 @@
 
 #include "pieces-moves-valid.h"
 
-// #include "setup-game-variables.h"
+#include "move-acceptable-handler.h"
+
+#include "piece-execute-handler.h"
 
 #include "output-message-functions.h"
 

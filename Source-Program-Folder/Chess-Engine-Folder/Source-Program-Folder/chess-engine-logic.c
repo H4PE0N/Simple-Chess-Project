@@ -49,6 +49,19 @@ bool board_pieces_equal(Piece first, Piece second)
   return (typeEqual && teamEqual);
 }
 
+bool pawn_becomes_queen(Point point, Team team)
+{
+	// If the point is not inside the board:
+	if(!point_inside_board(point)) return false;
+
+	if(!piece_team_exists(team)) return false;
+
+	if(team == WHITE && point.height == 0) return true;
+	if(team == BLACK && point.height == (BOARD_HEIGHT - 1)) return true;
+
+	return false;
+}
+
 bool board_points_enemy(Board board, Point first, Point second)
 {
   Team firstTeam = board_point_team(board, first);

@@ -16,6 +16,9 @@ implement type check in valid functions (type == PAWN)
 change the matrix value for the rook. He should want to castle
 
 
+every acceptable function is the same, make a common function
+
+
 check the bool values of the functions. I think that the bool values returned is wrong in some cases
 
 when checking if the point or the move is inside the board, it should return the bad value.

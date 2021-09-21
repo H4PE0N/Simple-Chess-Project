@@ -1,32 +1,7 @@
 
 #include "../Header-Program-Folder/chess-engine-includer.h"
 
-bool execute_piece_move(Board board, Move move, Info* info)
-{
-	if(!move_inside_board(move)) return false;
-
-	switch(board_point_type(board, move.start))
-	{
-		case(EMPTY): return false;
-
-		case(PAWN): return execute_pawn_move(board, move);
-
-		case(ROOK): return execute_rook_move(board, move, info);
-
-		case(KNIGHT): return execute_knight_move(board, move);
-
-		case(BISHOP): return execute_bishop_move(board, move);
-
-		case(QUEEN): return execute_queen_move(board, move);
-
-		case(KING): return execute_king_move(board, move, info);
-
-		default: return false;
-	}
-	return false;
-}
-
-bool execute_pawn_move(Board board, Move move)
+bool execute_pawn_move(Board board, Move move, Info* info)
 {
 	// If the move is not in the board:
 	if(!move_inside_board(move)) return false;
@@ -34,7 +9,16 @@ bool execute_pawn_move(Board board, Move move)
 	Team team = board_point_team(board, move.start);
 	if(!piece_team_exists(team)) return false;
 
-	move_board_piece(board, move.start, move.stop);
+
+	if(board_points_equal(info->passant, move.stop))
+	{
+		move_board_piece(board, move.start, move.stop);
+		remove_board_piece(board, info->passant);
+
+		info->passant = EMPTY_POINT;
+	}
+	else move_board_piece(board, move.start, move.stop);
+
 
 	if(pawn_becomes_queen(move.stop, team))
 	{
@@ -104,39 +88,75 @@ bool execute_rook_move(Board board, Move move, Info* info)
 
 	Side side = rook_starting_side(start.width);
 
-	move_board_piece(board, start, stop);
+
+	if(board_points_equal(info->passant, move.stop))
+	{
+		move_board_piece(board, move.start, move.stop);
+		remove_board_piece(board, info->passant);
+
+		info->passant = EMPTY_POINT;
+	}
+	else move_board_piece(board, start, stop);
+
 
 	update_castles_value(&info->castles, team, side, false);
 
 	return true;
 }
 
-bool execute_knight_move(Board board, Move move)
+bool execute_knight_move(Board board, Move move, Info* info)
 {
 	// If the move is not in the board:
 	if(!move_inside_board(move)) return false;
 
-	move_board_piece(board, move.start, move.stop);
+
+	if(board_points_equal(info->passant, move.stop))
+	{
+		move_board_piece(board, move.start, move.stop);
+		remove_board_piece(board, info->passant);
+
+		info->passant = EMPTY_POINT;
+	}
+	else move_board_piece(board, move.start, move.stop);
+
 
 	return true;
 }
 
-bool execute_bishop_move(Board board, Move move)
+bool execute_bishop_move(Board board, Move move, Info* info)
 {
 	// If the move is not in the board:
 	if(!move_inside_board(move)) return false;
 
-	move_board_piece(board, move.start, move.stop);
+
+	if(board_points_equal(info->passant, move.stop))
+	{
+		move_board_piece(board, move.start, move.stop);
+		remove_board_piece(board, info->passant);
+
+		info->passant = EMPTY_POINT;
+	}
+	else move_board_piece(board, move.start, move.stop);
+
 
 	return true;
 }
 
-bool execute_queen_move(Board board, Move move)
+bool execute_queen_move(Board board, Move move, Info* info)
 {
 	// If the move is not in the board:
 	if(!move_inside_board(move)) return false;
 
-	move_board_piece(board, move.start, move.stop);
+
+	if(board_points_equal(info->passant, move.stop))
+	{
+		move_board_piece(board, move.start, move.stop);
+		remove_board_piece(board, info->passant);
+
+		info->passant = EMPTY_POINT;
+	}
+	else move_board_piece(board, move.start, move.stop);
+
 
 	return true;
 }
@@ -165,22 +185,17 @@ bool execute_king_move(Board board, Move move, Info* info)
 	if(!piece_team_exists(team)) return false;
 
 
-	move_board_piece(board, start, stop);
+	if(board_points_equal(info->passant, move.stop))
+	{
+		move_board_piece(board, move.start, move.stop);
+		remove_board_piece(board, info->passant);
+
+		info->passant = EMPTY_POINT;
+	}
+	else move_board_piece(board, start, stop);
+
 
 	update_castles_values(&info->castles, team, EMPTY_CASTLE);
 
 	return true;
-}
-
-bool pawn_becomes_queen(Point point, Team team)
-{
-	// If the point is not inside the board:
-	if(!point_inside_board(point)) return false;
-
-	if(!piece_team_exists(team)) return false;
-
-	if(team == WHITE && point.height == 0) return true;
-	if(team == BLACK && point.height == (BOARD_HEIGHT - 1)) return true;
-
-	return false;
 }

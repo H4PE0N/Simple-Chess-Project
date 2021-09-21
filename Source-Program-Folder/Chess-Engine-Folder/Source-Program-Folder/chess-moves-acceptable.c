@@ -1,31 +1,6 @@
 
 #include "../Header-Program-Folder/chess-engine-includer.h"
 
-bool piece_move_acceptable(Board board, Move move, Info info)
-{
-	if(!move_inside_board(move)) return false;
-
-	switch(board_point_type(board, move.start))
-	{
-		case(EMPTY): return false;
-
-		case(PAWN): return pawn_move_acceptable(board, move, info);
-
-		case(ROOK): return rook_move_acceptable(board, move, info);
-
-		case(KNIGHT): return knight_move_acceptable(board, move, info);
-
-		case(BISHOP): return bishop_move_acceptable(board, move, info);
-
-		case(QUEEN): return queen_move_acceptable(board, move, info);
-
-		case(KING): return king_move_acceptable(board, move, info);
-
-		default: return false;
-	}
-	return false;
-}
-
 bool queen_move_acceptable(Board board, Move move, Info info)
 {
 	Point start = move.start, stop = move.stop;
@@ -79,7 +54,11 @@ bool pawn_move_acceptable(Board board, Move move, Info info)
 	{
 		if(!board_point_empty(board, stop)) return false;
 	}
-	else if(points_not_enemy(board, start, stop)) return false;
+	else if(!point_inside_board(info.passant))
+	{
+		// If there is no en-passant currently
+		if(points_not_enemy(board, start, stop)) return false;
+	}
 
 	if(!move_prevent_check(board, move, info)) return false;
 
@@ -97,18 +76,14 @@ bool rook_move_acceptable(Board board, Move move, Info info)
 
 	if(board_point_empty(board, start)) return false;
 
+	if(board_points_team(board, start, stop)) return false;
+
+	if(board_point_type(board, stop) == KING) return false;
+
 	// These controls are more specific, and should be done later
 	if(!moving_rook_valid(start, stop)) return false;
 
 	if(!clear_moving_path(board, start, stop)) return false;
-
-	// This is a special case, and will skip the following controls
-	if(team_castle_acceptable(board, move, info)) return true;
-
-	// These controls are more specific, and should be done later
-	if(board_points_team(board, start, stop)) return false;
-
-	if(board_point_type(board, stop) == KING) return false;
 
 	if(!move_prevent_check(board, move, info)) return false;
 
@@ -157,6 +132,8 @@ bool king_move_acceptable(Board board, Move move, Info info)
 
 	// These controls are more specific, and should be done later
 	if(!moving_king_valid(start, stop)) return false;
+
+	if(!clear_moving_path(board, start, stop)) return false;
 
 	if(!move_prevent_check(board, move, info)) return false;
 
@@ -284,35 +261,68 @@ bool team_castle_acceptable(Board board, Move move, Info info)
 	// This checks that the operation is clear to go (true)
 	if(!castle_bool_valid(start, info, team)) return false;
 
-	if(check_after_castling(board, move, info)) return false;
+	if(move_prevent_check(board, move, info)) return false;
 
 	return true;
 }
 
-bool check_after_castling(Board board, Move move, Info info)
-{
-	if(!move_inside_board(move)) return false;
-
-	Team team = board_point_team(board, move.start);
-
-	Board boardCopy = copy_chess_board(board);
-	Info infoDummy = info;
-
-	execute_team_castle(boardCopy, move, &infoDummy);
-
-	Point king = board_piece_point(boardCopy, (Piece) {KING, team});
-
-	// If the king cant be found after the switch, it must have been taken
-	if(!point_inside_board(king)) return true;
-
-	// If the king is inside check, it is "check_after_castling" (true)
-	if(king_inside_check(boardCopy, king))
-	{
-		free_chess_board(boardCopy); return true;
-	}
-
-	free_chess_board(boardCopy); return false;
-}
+// bool check_after_passant(Board board, Move move, Info info)
+// {
+// 	if(!move_inside_board(move)) return false;
+//
+// 	Team team = board_point_team(board, move.start);
+// 	if(!piece_team_exists(team)) return false;
+//
+// 	Board boardCopy = copy_chess_board(board);
+// 	Info infoDummy = info;
+//
+// 	if(!execute_passant_take(boardCopy, move, &infoDummy))
+// 	{
+// 		free_chess_board(boardCopy); return false;
+// 	}
+//
+// 	Point king = board_piece_point(boardCopy, (Piece) {KING, team});
+//
+// 	// If the king cant be found after the switch, it must have been taken
+// 	if(!point_inside_board(king)) return true;
+//
+// 	// If the king is inside check, it is "check_after_castling" (true)
+// 	if(king_inside_check(boardCopy, king))
+// 	{
+// 		free_chess_board(boardCopy); return true;
+// 	}
+//
+// 	free_chess_board(boardCopy); return false;
+// }
+//
+// bool check_after_castling(Board board, Move move, Info info)
+// {
+// 	if(!move_inside_board(move)) return false;
+//
+// 	Team team = board_point_team(board, move.start);
+// 	if(!piece_team_exists(team)) return false;
+//
+// 	Board boardCopy = copy_chess_board(board);
+// 	Info infoDummy = info;
+//
+// 	if!(execute_team_castle(boardCopy, move, &infoDummy))
+// 	{
+// 		free_chess_board(boardCopy); return false;
+// 	}
+//
+// 	Point king = board_piece_point(boardCopy, (Piece) {KING, team});
+//
+// 	// If the king cant be found after the switch, it must have been taken
+// 	if(!point_inside_board(king)) return true;
+//
+// 	// If the king is inside check, it is "check_after_castling" (true)
+// 	if(king_inside_check(boardCopy, king))
+// 	{
+// 		free_chess_board(boardCopy); return true;
+// 	}
+//
+// 	free_chess_board(boardCopy); return false;
+// }
 
 bool clear_moving_path(Board board, Point start, Point stop)
 {

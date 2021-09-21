@@ -14,6 +14,8 @@ bool board_points_enemy(Board, Point, Point);
 
 bool board_points_team(Board, Point, Point);
 
+bool pawn_becomes_queen(Point, Team);
+
 bool board_pieces_team(Team, Team);
 
 bool board_pieces_enemy(Team, Team);

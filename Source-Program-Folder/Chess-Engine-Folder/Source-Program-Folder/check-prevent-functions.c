@@ -82,7 +82,7 @@ bool pawn_prevent_check(Board board, Info info, Point start)
 
 			currentMove = (Move) {start, stop};
 
-			if(!pawn_move_acceptable(board, currentMove, info)) continue;
+			if(!pawn_acceptable_handler(board, currentMove, info)) continue;
 
 			if(move_prevent_check(board, currentMove, info)) return true;
 		}
@@ -110,7 +110,7 @@ bool rook_prevent_check(Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(!rook_move_acceptable(board, currentMove, info)) continue;
+		if(!rook_acceptable_handler(board, currentMove, info)) continue;
 
 		if(move_prevent_check(board, currentMove, info)) return true;
 	}
@@ -123,7 +123,7 @@ bool rook_prevent_check(Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(!rook_move_acceptable(board, currentMove, info)) continue;
+		if(!rook_acceptable_handler(board, currentMove, info)) continue;
 
 		if(move_prevent_check(board, currentMove, info)) return true;
 	}
@@ -164,7 +164,7 @@ bool knight_prevent_check(Board board, Info info, Point start)
 
 			currentMove = (Move) {start, stop};
 
-			if(!knight_move_acceptable(board, currentMove, info)) continue;
+			if(!knight_acceptable_handler(board, currentMove, info)) continue;
 
 			if(move_prevent_check(board, currentMove, info)) return true;
 		}
@@ -197,7 +197,7 @@ bool bishop_prevent_check(Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(!bishop_move_acceptable(board, currentMove, info)) continue;
+		if(!bishop_acceptable_handler(board, currentMove, info)) continue;
 
 		if(move_prevent_check(board, currentMove, info)) return true;
 	}
@@ -213,7 +213,7 @@ bool bishop_prevent_check(Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(!bishop_move_acceptable(board, currentMove, info)) continue;
+		if(!bishop_acceptable_handler(board, currentMove, info)) continue;
 
 		if(move_prevent_check(board, currentMove, info)) return true;
 	}
@@ -242,7 +242,7 @@ bool diagonal_prevent_check(Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(!diagonal_move_acceptable(board, currentMove, info)) continue;
+		if(!diagonal_acceptable_handler(board, currentMove, info)) continue;
 
 		if(move_prevent_check(board, currentMove, info)) return true;
 	}
@@ -258,7 +258,7 @@ bool diagonal_prevent_check(Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(!diagonal_move_acceptable(board, currentMove, info)) continue;
+		if(!diagonal_acceptable_handler(board, currentMove, info)) continue;
 
 		if(move_prevent_check(board, currentMove, info)) return true;
 	}
@@ -282,7 +282,7 @@ bool straight_prevent_check(Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(!straight_move_acceptable(board, currentMove, info)) continue;
+		if(!straight_acceptable_handler(board, currentMove, info)) continue;
 
 		if(move_prevent_check(board, currentMove, info)) return true;
 	}
@@ -295,7 +295,7 @@ bool straight_prevent_check(Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(!straight_move_acceptable(board, currentMove, info)) continue;
+		if(!straight_acceptable_handler(board, currentMove, info)) continue;
 
 		if(move_prevent_check(board, currentMove, info)) return true;
 	}
@@ -345,7 +345,7 @@ bool king_prevent_check(Board board, Info info, Point start)
 
 			currentMove = (Move) {start, stop};
 
-			if(!king_move_acceptable(board, currentMove, info)) continue;
+			if(!king_acceptable_handler(board, currentMove, info)) continue;
 
 			if(move_prevent_check(board, currentMove, info)) return true;
 		}
@@ -366,7 +366,7 @@ bool move_prevent_check(Board board, Move move, Info info)
 	Board boardCopy = copy_chess_board(board);
 	Info dummyInfo = info;
 
-	execute_piece_move(boardCopy, move, &dummyInfo);
+	if(!execute_piece_move(boardCopy, move, &dummyInfo)) return false;
 
 	Point king = board_piece_point(boardCopy, (Piece) {KING, team});
 	// If the king cant be found, it must have been taken

@@ -61,7 +61,7 @@ bool board_pawn_moveable(Board board, Info info, Point start)
 
 			currentMove = (Move) {start, stop};
 
-			if(pawn_move_acceptable(board, currentMove, info)) return true;
+			if(pawn_acceptable_handler(board, currentMove, info)) return true;
 		}
 	}
 	return false;
@@ -87,7 +87,7 @@ bool board_rook_moveable(Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(rook_move_acceptable(board, currentMove, info)) return true;
+		if(rook_acceptable_handler(board, currentMove, info)) return true;
 	}
 
 	for(int width = 0; width < BOARD_WIDTH; width += 1)
@@ -98,7 +98,7 @@ bool board_rook_moveable(Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(rook_move_acceptable(board, currentMove, info)) return true;
+		if(rook_acceptable_handler(board, currentMove, info)) return true;
 	}
 
 	return false;
@@ -137,7 +137,7 @@ bool board_knight_moveable(Board board, Info info, Point start)
 
 			currentMove = (Move) {start, stop};
 
-			if(knight_move_acceptable(board, currentMove, info)) return true;
+			if(knight_acceptable_handler(board, currentMove, info)) return true;
 		}
 	}
 	return false;
@@ -166,7 +166,7 @@ bool board_diagonal_moveable(Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(diagonal_move_acceptable(board, currentMove, info)) return true;
+		if(diagonal_acceptable_handler(board, currentMove, info)) return true;
 	}
 
 	for(int index = -8; index <= 16; index = index + 1)
@@ -180,7 +180,7 @@ bool board_diagonal_moveable(Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(diagonal_move_acceptable(board, currentMove, info)) return true;
+		if(diagonal_acceptable_handler(board, currentMove, info)) return true;
 	}
 	return false;
 }
@@ -203,7 +203,7 @@ bool board_straight_moveable(Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(straight_move_acceptable(board, currentMove, info)) return true;
+		if(straight_acceptable_handler(board, currentMove, info)) return true;
 	}
 
 	for(int width = 0; width < BOARD_WIDTH; width += 1)
@@ -214,7 +214,7 @@ bool board_straight_moveable(Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(straight_move_acceptable(board, currentMove, info)) return true;
+		if(straight_acceptable_handler(board, currentMove, info)) return true;
 	}
 	return false;
 }
@@ -244,7 +244,7 @@ bool board_bishop_moveable(Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(bishop_move_acceptable(board, currentMove, info)) return true;
+		if(bishop_acceptable_handler(board, currentMove, info)) return true;
 	}
 
 	for(int index = -8; index <= 16; index = index + 1)
@@ -258,7 +258,7 @@ bool board_bishop_moveable(Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(bishop_move_acceptable(board, currentMove, info)) return true;
+		if(bishop_acceptable_handler(board, currentMove, info)) return true;
 	}
 	return false;
 }
@@ -306,7 +306,7 @@ bool board_king_moveable(Board board, Info info, Point start)
 
 			currentMove = (Move) {start, stop};
 
-			if(king_move_acceptable(board, currentMove, info)) return true;
+			if(king_acceptable_handler(board, currentMove, info)) return true;
 		}
 	}
 	return false;

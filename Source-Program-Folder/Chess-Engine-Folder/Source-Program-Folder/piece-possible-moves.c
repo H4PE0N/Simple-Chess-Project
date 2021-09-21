@@ -66,7 +66,7 @@ bool pawn_possible_moves(Move* moves, Board board, Info info, Point start)
 
 			currentMove = (Move) {start, stop};
 
-			if(!pawn_move_acceptable(board, currentMove, info)) continue;
+			if(!pawn_acceptable_handler(board, currentMove, info)) continue;
 
 			moves[amount] = currentMove;
 
@@ -101,7 +101,7 @@ bool rook_possible_moves(Move* moves, Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(!rook_move_acceptable(board, currentMove, info)) continue;
+		if(!rook_acceptable_handler(board, currentMove, info)) continue;
 
 		moves[amount] = currentMove;
 
@@ -116,7 +116,7 @@ bool rook_possible_moves(Move* moves, Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(!rook_move_acceptable(board, currentMove, info)) continue;
+		if(!rook_acceptable_handler(board, currentMove, info)) continue;
 
 		moves[amount] = currentMove;
 
@@ -156,7 +156,7 @@ bool bishop_possible_moves(Move* moves, Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(!bishop_move_acceptable(board, currentMove, info)) continue;
+		if(!bishop_acceptable_handler(board, currentMove, info)) continue;
 
 		moves[amount] = currentMove;
 
@@ -174,7 +174,7 @@ bool bishop_possible_moves(Move* moves, Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(!bishop_move_acceptable(board, currentMove, info)) continue;
+		if(!bishop_acceptable_handler(board, currentMove, info)) continue;
 
 		moves[amount] = currentMove;
 
@@ -222,7 +222,7 @@ bool knight_possible_moves(Move* moves, Board board, Info info, Point start)
 
 			currentMove = (Move) {start, stop};
 
-			if(!knight_move_acceptable(board, currentMove, info)) continue;
+			if(!knight_acceptable_handler(board, currentMove, info)) continue;
 
 			moves[amount] = currentMove;
 
@@ -260,7 +260,7 @@ bool diagonal_possible_moves(Move* moves, Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(!diagonal_move_acceptable(board, currentMove, info)) continue;
+		if(!diagonal_acceptable_handler(board, currentMove, info)) continue;
 
 		moves[amount] = currentMove;
 
@@ -278,7 +278,7 @@ bool diagonal_possible_moves(Move* moves, Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(!diagonal_move_acceptable(board, currentMove, info)) continue;
+		if(!diagonal_acceptable_handler(board, currentMove, info)) continue;
 
 		moves[amount] = currentMove;
 
@@ -311,7 +311,7 @@ bool straight_possible_moves(Move* moves, Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(!straight_move_acceptable(board, currentMove, info)) continue;
+		if(!straight_acceptable_handler(board, currentMove, info)) continue;
 
 		moves[amount] = currentMove;
 
@@ -326,7 +326,7 @@ bool straight_possible_moves(Move* moves, Board board, Info info, Point start)
 
 		currentMove = (Move) {start, stop};
 
-		if(!straight_move_acceptable(board, currentMove, info)) continue;
+		if(!straight_acceptable_handler(board, currentMove, info)) continue;
 
 		moves[amount] = currentMove;
 
@@ -403,7 +403,7 @@ bool king_possible_moves(Move* moves, Board board, Info info, Point start)
 
 			currentMove = (Move) {start, stop};
 
-			if(!king_move_acceptable(board, currentMove, info)) continue;
+			if(!king_acceptable_handler(board, currentMove, info)) continue;
 
 			moves[amount] = currentMove;
 
