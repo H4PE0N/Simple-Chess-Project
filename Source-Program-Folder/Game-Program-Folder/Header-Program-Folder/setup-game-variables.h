@@ -18,6 +18,6 @@ Castles extract_castles_values(Board);
 
 bool setup_game_variables(Board*, Info*, char[]);
 
-bool setup_display_variables(Window**, Render**, Surface**, char[]);
+// bool setup_display_variables(Window**, Render**, Surface**, char[]);
 
 #endif

@@ -60,11 +60,11 @@ WIN_SDL_FLAGS := $(SDL_FOLDERS_LINKER) -lmingw32 $(SDL_LIB_FLAGS)
 MAC_SDL_FLAGS := `sdl2-config --libs --cflags` $(SDL_LIB_FLAGS)
 
 
-COMPILE_COMPILOR := mingw32-gcc
+COMPILE_COMPILOR := gcc
 
 
 # When creating an executable file, this is the linkers that is useful
-EXE_LINKERS := $(WIN_SDL_FLAGS) -lm
+EXE_LINKERS := -lm
 
 default-targets: $(OBJECT_PROGRAMS) $(SOURCE_PROGRAMS) $(HEADER_PROGRAMS) $(GAME_BINARY_PROGRAMS)
 

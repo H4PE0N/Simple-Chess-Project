@@ -1,62 +1,62 @@
 
 #include "../Header-Program-Folder/game-files-includer.h"
 
-bool setup_display_variables(Window** window, Render** render, Surface** surface, char title[])
-{
-	if(SDL_Init(SDL_INIT_VIDEO) != 0)
-	{
-		printf("Init Error: %s\n", SDL_GetError());
-
-		return false;
-	}
-
-	if(IMG_Init(IMG_INIT_PNG) == 0)
-	{
-		printf("Init Error: %s\n", SDL_GetError());
-
-		SDL_Quit();
-
-		return false;
-	}
-
-	if(!create_screen_window(window, title))
-	{
-		printf("Window Error: %s\n", SDL_GetError());
-
-		SDL_Quit();
-
-		return false;
-	}
-
-	if(!create_window_surface(surface, *window))
-	{
-		printf("Surface is null: %s\n", SDL_GetError());
-
-		SDL_DestroyWindow(*window);
-
-		SDL_Quit();
-
-		return false;
-	}
-
-	if(!create_surface_render(render, *surface))
-	{
-		printf("Render is null: %s\n", SDL_GetError());
-
-		SDL_FreeSurface(*surface);
-
-		SDL_DestroyWindow(*window);
-
-		SDL_Quit();
-
-		return false;
-	}
-
-	// This line is just needed to make the window want to show it self:
-	SDL_Event event; SDL_PollEvent(&event);
-
-	return true;
-}
+// bool setup_display_variables(Window** window, Render** render, Surface** surface, char title[])
+// {
+// 	if(SDL_Init(SDL_INIT_VIDEO) != 0)
+// 	{
+// 		printf("Init Error: %s\n", SDL_GetError());
+//
+// 		return false;
+// 	}
+//
+// 	if(IMG_Init(IMG_INIT_PNG) == 0)
+// 	{
+// 		printf("Init Error: %s\n", SDL_GetError());
+//
+// 		SDL_Quit();
+//
+// 		return false;
+// 	}
+//
+// 	if(!create_screen_window(window, title))
+// 	{
+// 		printf("Window Error: %s\n", SDL_GetError());
+//
+// 		SDL_Quit();
+//
+// 		return false;
+// 	}
+//
+// 	if(!create_window_surface(surface, *window))
+// 	{
+// 		printf("Surface is null: %s\n", SDL_GetError());
+//
+// 		SDL_DestroyWindow(*window);
+//
+// 		SDL_Quit();
+//
+// 		return false;
+// 	}
+//
+// 	if(!create_surface_render(render, *surface))
+// 	{
+// 		printf("Render is null: %s\n", SDL_GetError());
+//
+// 		SDL_FreeSurface(*surface);
+//
+// 		SDL_DestroyWindow(*window);
+//
+// 		SDL_Quit();
+//
+// 		return false;
+// 	}
+//
+// 	// This line is just needed to make the window want to show it self:
+// 	SDL_Event event; SDL_PollEvent(&event);
+//
+// 	return true;
+// }
 
 bool setup_game_variables(Board* board, Info* info, char filename[])
 {
