@@ -66,7 +66,7 @@ bool user_move_handler(Board board, Info* info)
 
 	if(!move_chess_piece(board, move, info))
 	{
-		user_move_handler(board, info);
+		return user_move_handler(board, info);
 	}
 
 	info->lastMove = move;

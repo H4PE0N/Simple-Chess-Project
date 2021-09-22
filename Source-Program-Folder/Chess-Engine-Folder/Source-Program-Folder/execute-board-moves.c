@@ -44,29 +44,29 @@ bool execute_pawn_move(Board board, Move move)
 	return true;
 }
 
-bool execute_team_castle(Board board, Move move, Info* info)
-{
-	// If the move is not in the board:
-	if(!move_inside_board(move)) return false;
-
-	Point rook = move.start, king = move.stop;
-
-	Team team = board_point_team(board, rook);
-	if(!piece_team_exists(team)) return false;
-
-	Point castleRook, castleKing;
-	if(!extract_castle_points(&castleRook, &castleKing, rook, king, team))
-	{
-		return false;
-	}
-
-	move_board_piece(board, king, castleKing);
-	move_board_piece(board, rook, castleRook);
-
-	update_castles_values(&info->castles, team, EMPTY_CASTLE);
-
-	return true;
-}
+// bool execute_team_castle(Board board, Move move, Info* info)
+// {
+// 	// If the move is not in the board:
+// 	if(!move_inside_board(move)) return false;
+//
+// 	Point rook = move.start, king = move.stop;
+//
+// 	Team team = board_point_team(board, rook);
+// 	if(!piece_team_exists(team)) return false;
+//
+// 	Point castleRook, castleKing;
+// 	if(!extract_castle_points(&castleRook, &castleKing, rook, king, team))
+// 	{
+// 		return false;
+// 	}
+//
+// 	move_board_piece(board, king, castleKing);
+// 	move_board_piece(board, rook, castleRook);
+//
+// 	update_castles_values(&info->castles, team, EMPTY_CASTLE);
+//
+// 	return true;
+// }
 
 bool extract_castle_points(Point* castleRook, Point* castleKing, Point rook, Point king, Team team)
 {
@@ -102,11 +102,25 @@ bool execute_rook_move(Board board, Move move, Info* info)
 	// The rook needs to be in a team to change the castle value
 	if(!piece_team_exists(team)) return false;
 
-	Side side = rook_starting_side(start.width);
+	// This executes the castle
+	if(team_castle_valid(start, stop, team))
+	{
+		Point castleRook, castleKing;
+		if(!extract_castle_points(&castleRook, &castleKing, start, stop, team)) return false;
 
-	move_board_piece(board, start, stop);
+		move_board_piece(board, stop, castleKing);
+		move_board_piece(board, start, castleRook);
 
-	update_castles_value(&info->castles, team, side, false);
+		update_castles_values(&info->castles, team, EMPTY_CASTLE);
+	}
+	else
+	{
+		Side side = rook_starting_side(start.width);
+
+		move_board_piece(board, start, stop);
+
+		update_castles_value(&info->castles, team, side, false);
+	}
 
 	return true;
 }

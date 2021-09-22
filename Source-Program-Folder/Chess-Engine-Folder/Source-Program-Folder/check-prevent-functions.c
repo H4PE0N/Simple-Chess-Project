@@ -366,7 +366,10 @@ bool move_prevent_check(Board board, Move move, Info info)
 	Board boardCopy = copy_chess_board(board);
 	Info dummyInfo = info;
 
-	execute_piece_move(boardCopy, move, &dummyInfo);
+	if(!execute_piece_move(boardCopy, move, &dummyInfo))
+	{
+		free_chess_board(boardCopy); return false;
+	}
 
 	Point king = board_piece_point(boardCopy, (Piece) {KING, team});
 	// If the king cant be found, it must have been taken

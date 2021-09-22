@@ -8,7 +8,7 @@ bool move_chess_piece(Board board, Move move, Info* info)
 	// It must be the current team that is moving the piece!
 	Team team = board_point_team(board, move.start);
 	if(!piece_team_exists(team)) return false;
-	
+
 	if(team != info->current) return false;
 
 	switch(board_point_type(board, move.start))
@@ -45,11 +45,7 @@ bool rook_move_handler(Board board, Move move, Info* info)
 {
 	if(!rook_move_acceptable(board, move, *info)) return false;
 
-	if(team_castle_acceptable(board, move, *info))
-	{
-		if(!execute_team_castle(board, move, info)) return false;
-	}
-	else if(!execute_rook_move(board, move, info)) return false;
+	if(!execute_rook_move(board, move, info)) return false;
 
 	return true;
 }
