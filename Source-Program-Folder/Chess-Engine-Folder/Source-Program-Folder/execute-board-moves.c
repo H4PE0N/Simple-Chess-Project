@@ -9,15 +9,15 @@ bool execute_piece_move(Board board, Move move, Info* info)
 	{
 		case(EMPTY): return false;
 
-		case(PAWN): return execute_pawn_move(board, move);
+		case(PAWN): return execute_pawn_move(board, move, info);
 
 		case(ROOK): return execute_rook_move(board, move, info);
 
-		case(KNIGHT): return execute_knight_move(board, move);
+		case(KNIGHT): return execute_knight_move(board, move, info);
 
-		case(BISHOP): return execute_bishop_move(board, move);
+		case(BISHOP): return execute_bishop_move(board, move, info);
 
-		case(QUEEN): return execute_queen_move(board, move);
+		case(QUEEN): return execute_queen_move(board, move, info);
 
 		case(KING): return execute_king_move(board, move, info);
 
@@ -26,7 +26,7 @@ bool execute_piece_move(Board board, Move move, Info* info)
 	return false;
 }
 
-bool execute_pawn_move(Board board, Move move)
+bool execute_pawn_move(Board board, Move move, Info* info)
 {
 	// If the move is not in the board:
 	if(!move_inside_board(move)) return false;
@@ -68,29 +68,6 @@ bool execute_pawn_move(Board board, Move move)
 // 	return true;
 // }
 
-bool extract_castle_points(Point* castleRook, Point* castleKing, Point rook, Point king, Team team)
-{
-	if(!team_castle_valid(rook, king, team)) return false;
-
-	if(rook.width == 0)
-	{
-		*castleRook = (Point) {rook.height, king.width - 1};
-		*castleKing = (Point) {king.height, king.width - 2};
-
-		return true;
-	}
-
-	if(rook.width == (BOARD_WIDTH - 1))
-	{
-		*castleRook = (Point) {rook.height, king.width + 1};
-		*castleKing = (Point) {king.height, king.width + 2};
-
-		return true;
-	}
-
-	return false;
-}
-
 bool execute_rook_move(Board board, Move move, Info* info)
 {
 	// If the move is not in the board:
@@ -125,7 +102,7 @@ bool execute_rook_move(Board board, Move move, Info* info)
 	return true;
 }
 
-bool execute_knight_move(Board board, Move move)
+bool execute_knight_move(Board board, Move move, Info* info)
 {
 	// If the move is not in the board:
 	if(!move_inside_board(move)) return false;
@@ -135,7 +112,7 @@ bool execute_knight_move(Board board, Move move)
 	return true;
 }
 
-bool execute_bishop_move(Board board, Move move)
+bool execute_bishop_move(Board board, Move move, Info* info)
 {
 	// If the move is not in the board:
 	if(!move_inside_board(move)) return false;
@@ -145,7 +122,7 @@ bool execute_bishop_move(Board board, Move move)
 	return true;
 }
 
-bool execute_queen_move(Board board, Move move)
+bool execute_queen_move(Board board, Move move, Info* info)
 {
 	// If the move is not in the board:
 	if(!move_inside_board(move)) return false;
@@ -184,17 +161,4 @@ bool execute_king_move(Board board, Move move, Info* info)
 	update_castles_values(&info->castles, team, EMPTY_CASTLE);
 
 	return true;
-}
-
-bool pawn_becomes_queen(Point point, Team team)
-{
-	// If the point is not inside the board:
-	if(!point_inside_board(point)) return false;
-
-	if(!piece_team_exists(team)) return false;
-
-	if(team == WHITE && point.height == 0) return true;
-	if(team == BLACK && point.height == (BOARD_HEIGHT - 1)) return true;
-
-	return false;
 }

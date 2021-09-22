@@ -14,6 +14,19 @@ bool number_inside_bounds(int number, int minimum, int maximum)
   return ( (number >= minimum) && (number <= maximum) );
 }
 
+bool pawn_becomes_queen(Point point, Team team)
+{
+	// If the point is not inside the board:
+	if(!point_inside_board(point)) return false;
+
+	if(!piece_team_exists(team)) return false;
+
+	if(team == WHITE && point.height == 0) return true;
+	if(team == BLACK && point.height == (BOARD_HEIGHT - 1)) return true;
+
+	return false;
+}
+
 bool point_inside_board(Point point)
 {
   bool heightValid = number_inside_bounds(point.height, 0, BOARD_HEIGHT - 1);

@@ -11,6 +11,29 @@ Piece board_point_piece(Board board, Point point)
   return board[point.height][point.width];
 }
 
+bool extract_castle_points(Point* castleRook, Point* castleKing, Point rook, Point king, Team team)
+{
+	if(!team_castle_valid(rook, king, team)) return false;
+
+	if(rook.width == 0)
+	{
+		*castleRook = (Point) {rook.height, king.width - 1};
+		*castleKing = (Point) {king.height, king.width - 2};
+
+		return true;
+	}
+
+	if(rook.width == (BOARD_WIDTH - 1))
+	{
+		*castleRook = (Point) {rook.height, king.width + 1};
+		*castleKing = (Point) {king.height, king.width + 2};
+
+		return true;
+	}
+
+	return false;
+}
+
 void copy_board_variable(Board board, Board copying)
 {
   Point point;

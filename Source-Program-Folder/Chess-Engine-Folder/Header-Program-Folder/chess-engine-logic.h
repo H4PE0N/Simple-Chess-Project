@@ -8,6 +8,8 @@ bool number_inside_bounds(int, int, int);
 
 bool move_inside_board(Move);
 
+bool pawn_becomes_queen(Point, Team);
+
 bool board_points_equal(Point, Point);
 
 bool board_points_enemy(Board, Point, Point);

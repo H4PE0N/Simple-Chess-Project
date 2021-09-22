@@ -8,6 +8,8 @@ Piece board_point_piece(Board, Point);
 
 void copy_board_variable(Board, Board); // Remove this
 
+bool extract_castle_points(Point*, Point*, Point, Point, Team);
+
 Type board_point_type(Board, Point);
 
 Team board_point_team(Board, Point);

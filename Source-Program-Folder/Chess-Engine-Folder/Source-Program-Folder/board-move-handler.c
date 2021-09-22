@@ -15,15 +15,15 @@ bool move_chess_piece(Board board, Move move, Info* info)
 	{
 		case(EMPTY): return false;
 
-		case(PAWN): return pawn_move_handler(board, move, *info);
+		case(PAWN): return pawn_move_handler(board, move, info);
 
 		case(ROOK): return rook_move_handler(board, move, info);
 
-		case(KNIGHT): return knight_move_handler(board, move, *info);
+		case(KNIGHT): return knight_move_handler(board, move, info);
 
-		case(BISHOP): return bishop_move_handler(board, move, *info);
+		case(BISHOP): return bishop_move_handler(board, move, info);
 
-		case(QUEEN): return queen_move_handler(board, move, *info);
+		case(QUEEN): return queen_move_handler(board, move, info);
 
 		case(KING): return king_move_handler(board, move, info);
 
@@ -32,11 +32,11 @@ bool move_chess_piece(Board board, Move move, Info* info)
 	return false;
 }
 
-bool pawn_move_handler(Board board, Move move, Info info)
+bool pawn_move_handler(Board board, Move move, Info* info)
 {
-	if(!pawn_move_acceptable(board, move, info)) return false;
+	if(!pawn_move_acceptable(board, move, *info)) return false;
 
-	if(!execute_pawn_move(board, move)) return false;
+	if(!execute_pawn_move(board, move, info)) return false;
 
 	return true;
 }
@@ -50,29 +50,29 @@ bool rook_move_handler(Board board, Move move, Info* info)
 	return true;
 }
 
-bool knight_move_handler(Board board, Move move, Info info)
+bool knight_move_handler(Board board, Move move, Info* info)
 {
-	if(!knight_move_acceptable(board, move, info)) return false;
+	if(!knight_move_acceptable(board, move, *info)) return false;
 
-	if(!execute_knight_move(board, move)) return false;
+	if(!execute_knight_move(board, move, info)) return false;
 
 	return true;
 }
 
-bool bishop_move_handler(Board board, Move move, Info info)
+bool bishop_move_handler(Board board, Move move, Info* info)
 {
-	if(!bishop_move_acceptable(board, move, info)) return false;
+	if(!bishop_move_acceptable(board, move, *info)) return false;
 
-	if(!execute_bishop_move(board, move)) return false;
+	if(!execute_bishop_move(board, move, info)) return false;
 
 	return true;
 }
 
-bool queen_move_handler(Board board, Move move, Info info)
+bool queen_move_handler(Board board, Move move, Info* info)
 {
-	if(!queen_move_acceptable(board, move, info)) return false;
+	if(!queen_move_acceptable(board, move, *info)) return false;
 
-	if(!execute_queen_move(board, move)) return false;
+	if(!execute_queen_move(board, move, info)) return false;
 
 	return true;
 }
