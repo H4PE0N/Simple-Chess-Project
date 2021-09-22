@@ -21,15 +21,6 @@ bool straight_move_acceptable(Board, Move, Info);
 bool diagonal_move_acceptable(Board, Move, Info);
 
 
-bool team_castle_acceptable(Board, Move, Info);
-
-bool castle_bool_valid(Point, Info, Team);
-
-Side rook_starting_side(int);
-
-bool check_after_castling(Board, Move, Info);
-
-
 bool clear_moving_path(Board, Point, Point);
 
 #endif

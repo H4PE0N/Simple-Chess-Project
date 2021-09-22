@@ -119,7 +119,7 @@ bool rook_move_acceptable(Board board, Move move, Info info)
 		if(king_inside_check(board, king)) return false;
 
 		// This checks that the operation is clear to go (true)
-		if(!castle_bool_valid(start, info, team)) return false;
+		if(!castle_bool_valid(start, info.castles, team)) return false;
 	}
 	else
 	{
@@ -249,31 +249,6 @@ bool knight_move_acceptable(Board board, Move move, Info info)
 	if(!move_prevent_check(board, move, info)) return false;
 
 	return true;
-}
-
-bool castle_bool_valid(Point start, Info info, Team team)
-{
-	// If the team, of the rook in this case, does not exist:
-	if(!piece_team_exists(team)) return false;
-
-	// If the rook is not at a width that supports by this function
-	// The function return the side STILL
-	Side side = rook_starting_side(start.width);
-
-	return board_castles_value(info.castles, team, side);
-}
-
-// If the rook is not at a width that supports by this function
-// The function return the side STILL
-Side rook_starting_side(int width)
-{
-	Side side = STILL;
-
-	if(width == 0) side = LEFT;
-
-	if(width == (BOARD_WIDTH - 1)) side = RIGHT;
-
-	return side;
 }
 
 bool clear_moving_path(Board board, Point start, Point stop)

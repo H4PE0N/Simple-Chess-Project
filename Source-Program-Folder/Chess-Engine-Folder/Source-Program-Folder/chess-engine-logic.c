@@ -14,6 +14,18 @@ bool number_inside_bounds(int number, int minimum, int maximum)
   return ( (number >= minimum) && (number <= maximum) );
 }
 
+bool castle_bool_valid(Point start, Castles castles, Team team)
+{
+	// If the team, of the rook in this case, does not exist:
+	if(!piece_team_exists(team)) return false;
+
+	// If the rook is not at a width that supports by this function
+	// The function return the side STILL
+	Side side = rook_starting_side(start.width);
+
+	return board_castles_value(castles, team, side);
+}
+
 bool pawn_becomes_queen(Point point, Team team)
 {
 	// If the point is not inside the board:

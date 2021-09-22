@@ -11,6 +11,19 @@ Piece board_point_piece(Board board, Point point)
   return board[point.height][point.width];
 }
 
+// If the rook is not at a width that supports by this function
+// The function return the side STILL
+Side rook_starting_side(int width)
+{
+	Side side = STILL;
+
+	if(width == 0) side = LEFT;
+
+	if(width == (BOARD_WIDTH - 1)) side = RIGHT;
+
+	return side;
+}
+
 bool extract_castle_points(Point* castleRook, Point* castleKing, Point rook, Point king, Team team)
 {
 	if(!team_castle_valid(rook, king, team)) return false;

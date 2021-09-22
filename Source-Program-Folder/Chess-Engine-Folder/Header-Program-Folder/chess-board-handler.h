@@ -20,6 +20,8 @@ Team board_point_team(Board, Point);
 
 bool board_piece_points(Point*, Board, Piece);
 
+Side rook_starting_side(int);
+
 Point board_piece_point(Board, Piece);
 
 void update_castle_value(Castle*, Side, bool);

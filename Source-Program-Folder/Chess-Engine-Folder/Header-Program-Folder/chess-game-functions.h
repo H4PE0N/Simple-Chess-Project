@@ -2,7 +2,7 @@
 #ifndef CHESS_GAME_FUNCTIONS_H
 #define CHESS_GAME_FUNCTIONS_H
 
-bool other_pieces_moveable(Board, Info, Team);
+bool team_pieces_movable(Board, Info, Team);
 
 bool check_mate_situation(Board, Info, Team);
 

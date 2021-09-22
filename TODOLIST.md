@@ -14,10 +14,12 @@ possible, movable and prevent functions are most the same. Don't have repeating 
 
 add move to game move list in the execute functions
 
-when board are passed in functions, pass pointer to board when it is changed
-
 check the error handling
 
+
+
+
+when board are passed in functions, pass pointer to board when it is changed
 
 
 change the matrix value for the rook. He should want to castle

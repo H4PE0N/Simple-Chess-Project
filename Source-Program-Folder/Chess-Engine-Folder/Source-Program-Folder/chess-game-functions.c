@@ -37,7 +37,7 @@ bool game_still_running(Team* winner, Board board, Info info)
 	return true;
 }
 
-bool other_pieces_movable(Board board, Info info, Team team)
+bool team_pieces_movable(Board board, Info info, Team team)
 {
 	if(!piece_team_exists(team)) return false;
 
@@ -63,17 +63,11 @@ bool check_draw_situation(Board board, Info info, Team team)
 {
 	Point king = board_piece_point(board, (Piece) {KING, team});
 
-	// If the king does not exists:
-	if(!point_inside_board(king))
-	{
-		return false;
-	}
+	if(!point_inside_board(king)) return false;
 
 	if(king_inside_check(board, king)) return false;
 
-	if(board_piece_movable(board, info, king)) return false;
-
-	if(other_pieces_movable(board, info, team)) return false;
+	if(team_pieces_movable(board, info, team)) return false;
 
 	return true;
 }
@@ -82,17 +76,11 @@ bool check_mate_situation(Board board, Info info, Team team)
 {
 	Point king = board_piece_point(board, (Piece) {KING, team});
 
-	// If the king does not exists:
-	if(!point_inside_board(king))
-	{
-		// I think that you return true in this case
-		// If the king does not exist, it must be checkmate of some kind?
-		return true;
-	}
+	// I think that you return true in this case
+	// If the king does not exist, it must be checkmate of some kind?
+	if(!point_inside_board(king)) return true;
 
 	if(!king_inside_check(board, king)) return false;
-
-	if(board_piece_movable(board, info, king)) return false;
 
 	if(team_prevent_check(board, info, team)) return false;
 
