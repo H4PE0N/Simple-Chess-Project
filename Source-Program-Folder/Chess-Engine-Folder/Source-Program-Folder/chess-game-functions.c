@@ -51,7 +51,7 @@ bool game_still_running(Team* winner, Board board, Info info)
 // 	return true;
 // }
 
-bool other_pieces_moveable(Board board, Info info, Team team)
+bool other_pieces_movable(Board board, Info info, Team team)
 {
 	if(!piece_team_exists(team)) return false;
 
@@ -67,7 +67,7 @@ bool other_pieces_moveable(Board board, Info info, Team team)
 
 			if(currentTeam != team) continue;
 
-			if(board_piece_moveable(board, info, point)) return true;
+			if(board_piece_movable(board, info, point)) return true;
 		}
 	}
 	return false;
@@ -85,9 +85,9 @@ bool check_draw_situation(Board board, Info info, Team team)
 
 	if(king_inside_check(board, king)) return false;
 
-	if(board_piece_moveable(board, info, king)) return false;
+	if(board_piece_movable(board, info, king)) return false;
 
-	if(other_pieces_moveable(board, info, team)) return false;
+	if(other_pieces_movable(board, info, team)) return false;
 
 	return true;
 }
@@ -106,7 +106,7 @@ bool check_mate_situation(Board board, Info info, Team team)
 
 	if(!king_inside_check(board, king)) return false;
 
-	if(board_piece_moveable(board, info, king)) return false;
+	if(board_piece_movable(board, info, king)) return false;
 
 	if(team_prevent_check(board, info, team)) return false;
 

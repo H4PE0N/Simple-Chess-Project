@@ -1,7 +1,7 @@
 
 #include "../Header-Program-Folder/chess-engine-includer.h"
 
-bool board_piece_moveable(Board board, Info info, Point start)
+bool board_piece_movable(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
 
@@ -9,24 +9,24 @@ bool board_piece_moveable(Board board, Info info, Point start)
 	{
 		case(EMPTY): return false;
 
-		case(PAWN): return board_pawn_moveable(board, info, start);
+		case(PAWN): return board_pawn_movable(board, info, start);
 
-		case(ROOK): return board_rook_moveable(board, info, start);
+		case(ROOK): return board_rook_movable(board, info, start);
 
-		case(KNIGHT): return board_knight_moveable(board, info, start);
+		case(KNIGHT): return board_knight_movable(board, info, start);
 
-		case(BISHOP): return board_bishop_moveable(board, info, start);
+		case(BISHOP): return board_bishop_movable(board, info, start);
 
-		case(QUEEN): return board_queen_moveable(board, info, start);
+		case(QUEEN): return board_queen_movable(board, info, start);
 
-		case(KING): return board_king_moveable(board, info, start);
+		case(KING): return board_king_movable(board, info, start);
 
 		default: return false;
 	}
 	return false;
 }
 
-bool board_pawn_moveable(Board board, Info info, Point start)
+bool board_pawn_movable(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
 
@@ -67,7 +67,7 @@ bool board_pawn_moveable(Board board, Info info, Point start)
 	return false;
 }
 
-bool board_rook_moveable(Board board, Info info, Point start)
+bool board_rook_movable(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
 
@@ -104,7 +104,7 @@ bool board_rook_moveable(Board board, Info info, Point start)
 	return false;
 }
 
-bool board_knight_moveable(Board board, Info info, Point start)
+bool board_knight_movable(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
 
@@ -143,7 +143,7 @@ bool board_knight_moveable(Board board, Info info, Point start)
 	return false;
 }
 
-bool board_diagonal_moveable(Board board, Info info, Point start)
+bool board_diagonal_movable(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
 
@@ -185,7 +185,7 @@ bool board_diagonal_moveable(Board board, Info info, Point start)
 	return false;
 }
 
-bool board_straight_moveable(Board board, Info info, Point start)
+bool board_straight_movable(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
 
@@ -219,7 +219,7 @@ bool board_straight_moveable(Board board, Info info, Point start)
 	return false;
 }
 
-bool board_bishop_moveable(Board board, Info info, Point start)
+bool board_bishop_movable(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
 
@@ -263,7 +263,7 @@ bool board_bishop_moveable(Board board, Info info, Point start)
 	return false;
 }
 
-bool board_queen_moveable(Board board, Info info, Point start)
+bool board_queen_movable(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
 
@@ -272,14 +272,14 @@ bool board_queen_moveable(Board board, Info info, Point start)
 	if(board_point_type(board, start) != QUEEN) return false;
 
 
-	if(board_diagonal_moveable(board, info, start)) return true;
+	if(board_diagonal_movable(board, info, start)) return true;
 
-	if(board_straight_moveable(board, info, start)) return true;
+	if(board_straight_movable(board, info, start)) return true;
 
 	return false;
 }
 
-bool board_king_moveable(Board board, Info info, Point start)
+bool board_king_movable(Board board, Info info, Point start)
 {
 	if(!point_inside_board(start)) return false;
 

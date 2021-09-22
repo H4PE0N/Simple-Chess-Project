@@ -30,7 +30,7 @@
 
 #include "chess-moves-acceptable.h"
 
-#include "chess-pieces-moveable.h"
+#include "chess-pieces-movable.h"
 
 #include "execute-board-moves.h"
 
