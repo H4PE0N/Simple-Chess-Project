@@ -173,6 +173,26 @@ Board copy_chess_board(Board board)
 	return boardCopy;
 }
 
+Point passant_remove_point(Point passant, Team team)
+{
+	int height = passant.height, width = passant.width;
+
+	if(team == WHITE) return (Point) {height - 1, width};
+	if(team == BLACK) return (Point) {height + 1, width};
+
+	return EMPTY_POINT;
+}
+
+Point pawn_passant_point(Point pawn, Team team)
+{
+  int height = pawn.height, width = pawn.width;
+
+	if(team == WHITE) return (Point) {height + 1, width};
+	if(team == BLACK) return (Point) {height - 1, width};
+
+	return EMPTY_POINT;
+}
+
 void free_chess_board(Board board)
 {
 	for(int height = 0; height < BOARD_HEIGHT; height += 1)
