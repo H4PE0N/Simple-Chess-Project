@@ -58,7 +58,7 @@
 // 	return true;
 // }
 
-bool setup_game_variables(Board* board, Info* info, char filename[])
+bool setup_game_variables(Board board, Info* info, char filename[])
 {
 	if(!create_chess_board(board, filename))
 	{
@@ -67,11 +67,9 @@ bool setup_game_variables(Board* board, Info* info, char filename[])
 		return false;
 	}
 
-	if(!setup_game_info(info, *board))
+	if(!setup_game_info(info, board))
 	{
-		setup_info_error(*board);
-
-		free_chess_board(*board);
+		setup_info_error(board);
 
 		return false;
 	}
@@ -154,7 +152,7 @@ Castle extract_castle_values(Board board, Team team)
 	return castle;
 }
 
-bool create_chess_board(Board* board, char filename[])
+bool create_chess_board(Board board, char filename[])
 {
 	FILE* filePointer = fopen(filename, "r");
 
@@ -177,18 +175,15 @@ bool create_chess_board(Board* board, char filename[])
 	fclose(filePointer); return true;
 }
 
-bool allocate_file_values(Board* board, FILE* filePointer)
+bool allocate_file_values(Board board, FILE* filePointer)
 {
-	(*board) = malloc(sizeof(Piece*) * BOARD_HEIGHT);
 	char lineBuffer[1024];
 
 	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
 		if(fgets(lineBuffer, 1024, filePointer) == NULL) return false;
 
-		(*board)[height] = malloc(sizeof(Piece) * BOARD_WIDTH);
-
-		if(!extract_file_line(*board, lineBuffer, height)) return false;
+		if(!extract_file_line(board, lineBuffer, height)) return false;
 	}
 	return true;
 }

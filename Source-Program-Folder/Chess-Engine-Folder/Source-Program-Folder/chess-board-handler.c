@@ -143,16 +143,32 @@ void switch_chess_pieces(Board board, Point first, Point second)
 
 Board copy_chess_board(Board board)
 {
-	Board boardCopy = malloc(sizeof(Piece*) * BOARD_HEIGHT);
+	Board boardCopy = create_board_memory(BOARD_HEIGHT, BOARD_WIDTH);
+
 	for(int height = 0; height < BOARD_HEIGHT; height = height + 1)
 	{
-		boardCopy[height] = malloc(sizeof(Piece) * BOARD_WIDTH);
 		for(int width = 0; width < BOARD_WIDTH; width = width + 1)
 		{
 			boardCopy[height][width] = board[height][width];
 		}
 	}
 	return boardCopy;
+}
+
+Board create_board_memory(int boardHeight, int boardWidth)
+{
+  Board board = malloc(sizeof(Piece*) * boardHeight);
+
+  for(int height = 0; height < boardHeight; height += 1)
+  {
+    board[height] = malloc(sizeof(Piece) * boardWidth);
+
+    for(int width = 0; width < boardWidth; width += 1)
+    {
+      board[height][width] = EMPTY_PIECE;
+    }
+  }
+  return board;
 }
 
 Point passant_remove_point(Point passant, Team team)

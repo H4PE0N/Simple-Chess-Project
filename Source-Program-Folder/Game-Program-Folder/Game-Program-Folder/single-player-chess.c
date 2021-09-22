@@ -7,13 +7,15 @@ int main(int argAmount, char* arguments[])
 
 	char filename[200]; extract_file_name(filename, arguments, argAmount);
 
-	Board board; Team winner = NONE; Info info;
+	Board board = create_board_memory(BOARD_HEIGHT, BOARD_WIDTH);
+	Team winner = NONE;
+	Info info;
 
-	if(!setup_game_variables(&board, &info, filename))
+	if(!setup_game_variables(board, &info, filename))
 	{
 		setup_variables_error();
 
-		//free_chess_board(board);
+		free_chess_board(board);
 
 		return false;
 	}
@@ -24,7 +26,9 @@ int main(int argAmount, char* arguments[])
 	}
 	else chess_game_quitted(board, info);
 
-	free_chess_board(board); return false;
+	free_chess_board(board);
+
+	return false;
 }
 
 bool single_player_chess(Team* winner, Board board, Info* info)

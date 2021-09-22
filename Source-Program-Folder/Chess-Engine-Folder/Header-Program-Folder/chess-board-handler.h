@@ -14,6 +14,8 @@ bool extract_castle_points(Point*, Point*, Point, Point, Team);
 
 Type board_point_type(Board, Point);
 
+Board create_board_memory(int, int);
+
 Team board_point_team(Board, Point);
 
 bool board_piece_points(Point*, Board, Piece);
