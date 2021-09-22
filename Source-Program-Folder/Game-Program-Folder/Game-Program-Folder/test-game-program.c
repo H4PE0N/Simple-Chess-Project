@@ -7,8 +7,6 @@ int main(int argAmount, char* arguments[])
 	return false;
 }
 
-// // gcc ../Source-Program-Folder/Game-Program-Folder/test-game-program.c -ISDL2-64/include -LSDL2-64/lib -Wall -lmingw32 -lSDL2main -lSDL2 -o main
-//
 // int main(int argAmount, char* arguments[])
 // {
 // 	srand(time(NULL));

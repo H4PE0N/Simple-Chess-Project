@@ -6,8 +6,6 @@ void allocate_board_piece(Board, Point, Piece);
 
 Piece board_point_piece(Board, Point);
 
-void copy_board_variable(Board, Board); // Remove this
-
 Point passant_remove_point(Point, Team);
 
 Point pawn_passant_point(Point, Team);

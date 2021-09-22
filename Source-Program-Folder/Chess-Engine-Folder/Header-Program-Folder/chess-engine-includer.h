@@ -40,8 +40,6 @@
 
 #include "pieces-moves-valid.h"
 
-// #include "setup-game-variables.h"
-
 #include "output-message-functions.h"
 
 #include "chess-engine-defines.h"

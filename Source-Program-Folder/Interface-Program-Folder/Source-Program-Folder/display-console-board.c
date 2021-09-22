@@ -80,10 +80,10 @@ void display_chess_info(Info info)
 
 	char moveString[20] = "\0"; chess_move_string(moveString, info.lastMove);
 
-	CLEAR_LINE; printf("WHITE RKS (%d %d)\n", info.castles.white.queen, info.castles.white.king);
-	CLEAR_LINE; printf("BLACK RKS (%d %d)\n", info.castles.black.queen, info.castles.black.king);
+	// CLEAR_LINE; printf("WHITE RKS (%d %d)\n", info.castles.white.queen, info.castles.white.king);
+	// CLEAR_LINE; printf("BLACK RKS (%d %d)\n", info.castles.black.queen, info.castles.black.king);
+	// CLEAR_LINE; printf("PASSANT: [%d %d]\n", info.passant.height, info.passant.width);
 
-	CLEAR_LINE; printf("PASSANT: [%d %d]\n", info.passant.height, info.passant.width);
 	CLEAR_LINE; printf("[+] LAST MADE MOVE  : [%s]\n", moveString);
 	CLEAR_LINE; printf("[+] CURRENT PLAYER  : [%s]\n", teamString);
 	CLEAR_LINE; printf("[+] NUMBER OF TURNS : [%dst]\n", info.turns);

@@ -10,10 +10,6 @@ bool execute_rook_move(Board, Move, Info*);
 
 bool execute_team_castle(Board, Move, Info*);
 
-// bool update_king_point(Info*, Team, Point);
-//
-// bool turn_off_rook_switch(Info*, Team);
-
 bool execute_knight_move(Board, Move, Info*);
 
 bool execute_bishop_move(Board, Move, Info*);

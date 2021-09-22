@@ -10,6 +10,4 @@ bool check_draw_situation(Board, Info, Team);
 
 bool game_still_running(Team*, Board, Info);
 
-// bool update_kings_point(Board, Info*);
-
 #endif

@@ -6,7 +6,6 @@ bool best_possible_move(Move*, Board, Info, int, Team);
 
 int board_depth_value(Board, Info, int, int, int, Team, Team);
 
-
 Move* all_possible_moves(Board, Info, Team);
 
 #endif

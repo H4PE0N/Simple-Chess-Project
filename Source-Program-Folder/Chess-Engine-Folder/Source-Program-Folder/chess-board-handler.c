@@ -34,24 +34,6 @@ bool extract_castle_points(Point* castleRook, Point* castleKing, Point rook, Poi
 	return false;
 }
 
-void copy_board_variable(Board board, Board copying)
-{
-  Point point;
-  Piece piece;
-
-  for(int height = 0; height < BOARD_HEIGHT; height += 1)
-  {
-    for(int width = 0; width < BOARD_WIDTH; width += 1)
-    {
-      point = (Point) {height, width};
-
-      piece = board_point_piece(copying, point);
-
-      allocate_board_piece(board, point, piece);
-    }
-  }
-}
-
 Type board_point_type(Board board, Point point)
 {
   return board_point_piece(board, point).type;

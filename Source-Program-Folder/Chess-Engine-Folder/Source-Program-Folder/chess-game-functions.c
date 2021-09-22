@@ -37,20 +37,6 @@ bool game_still_running(Team* winner, Board board, Info info)
 	return true;
 }
 
-// bool update_kings_point(Board board, Info* info)
-// {
-// 	Point blackKing = board_piece_point(board, (Piece) {KING, BLACK});
-// 	if(!point_inside_board(blackKing)) return false;
-//
-// 	Point whiteKing = board_piece_point(board, (Piece) {KING, WHITE});
-// 	if(!point_inside_board(whiteKing)) return false;
-//
-// 	info->blackKing = blackKing;
-// 	info->whiteKing = whiteKing;
-//
-// 	return true;
-// }
-
 bool other_pieces_movable(Board board, Info info, Team team)
 {
 	if(!piece_team_exists(team)) return false;

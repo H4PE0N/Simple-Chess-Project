@@ -71,30 +71,6 @@ bool execute_pawn_move(Board board, Move move, Info* info)
 	return true;
 }
 
-// bool execute_team_castle(Board board, Move move, Info* info)
-// {
-// 	// If the move is not in the board:
-// 	if(!move_inside_board(move)) return false;
-//
-// 	Point rook = move.start, king = move.stop;
-//
-// 	Team team = board_point_team(board, rook);
-// 	if(!piece_team_exists(team)) return false;
-//
-// 	Point castleRook, castleKing;
-// 	if(!extract_castle_points(&castleRook, &castleKing, rook, king, team))
-// 	{
-// 		return false;
-// 	}
-//
-// 	move_board_piece(board, king, castleKing);
-// 	move_board_piece(board, rook, castleRook);
-//
-// 	update_castles_values(&info->castles, team, EMPTY_CASTLE);
-//
-// 	return true;
-// }
-
 bool execute_rook_move(Board board, Move move, Info* info)
 {
 	// If the move is not in the board:
@@ -229,18 +205,6 @@ bool execute_queen_move(Board board, Move move, Info* info)
 
 	return true;
 }
-
-// void turn_off_rook_switch(Info* info, Team team)
-// {
-// 	Castle* RKS = (team == WHITE) ? &info->whiteRKS : &info->blackRKS;
-// 	*RKS = (Castle) {false, false};
-// }
-
-// void update_king_point(Info* info, Team team, Point point)
-// {
-// 	Point* kingP = (team == WHITE) ? &info->whiteKing : &info->blackKing;
-// 	*kingP = (Point) {point.height, point.width};
-// }
 
 bool execute_king_move(Board board, Move move, Info* info)
 {
