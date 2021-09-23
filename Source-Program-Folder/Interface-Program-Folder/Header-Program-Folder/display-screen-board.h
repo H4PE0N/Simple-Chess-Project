@@ -2,17 +2,16 @@
 #ifndef DISPLAY_SCREEN_BOARD_H
 #define DISPLAY_SCREEN_BOARD_H
 
-// extern const Color whiteColor;
-// extern const Color blackColor;
+bool display_screen_board(Window*, Renderer*, Board board, Info info);
 
-// void render_chess_board(Render*);
-//
-// bool render_board_piece(Render*, Piece, Point);
-//
-// bool render_full_board(Render*, Board);
-//
-// bool render_piece_image(Render*, Piece, Rect);
-//
-// bool render_surface_texture(Render*, Surface*, Rect);
+bool render_board_grid(Renderer*);
+
+bool render_board_pieces(Renderer*, Board);
+
+bool render_board_piece(Renderer*, Point, Piece);
+
+bool render_piece_moves(Renderer*, Board, Info, Point);
+
+bool render_last_move(Renderer*, Move);
 
 #endif

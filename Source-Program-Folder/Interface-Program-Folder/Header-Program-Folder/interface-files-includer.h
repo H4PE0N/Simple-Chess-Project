@@ -4,8 +4,8 @@
 
 #include "../../Chess-Engine-Folder/Header-Program-Folder/chess-engine-includer.h"
 
-// #include <SDL2/SDL.h>
-// #include <SDL2/SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 #include "console-help-functions.h"
 
@@ -21,6 +21,6 @@
 
 #include "console-move-parser.h"
 
-// #include "screen-move-parser.h"
+#include "screen-move-parser.h"
 
 #endif

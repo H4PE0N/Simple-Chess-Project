@@ -55,3 +55,13 @@ bool console_computer_handler(Board board, Info* info)
 
 	return true;
 }
+
+bool screen_user_handler(Board board, Info* info, Window* window, Renderer* renderer)
+{
+	return false;
+}
+
+bool screen_computer_handler(Board board, Info* info, Window* window, Renderer* renderer)
+{
+	return false;
+}

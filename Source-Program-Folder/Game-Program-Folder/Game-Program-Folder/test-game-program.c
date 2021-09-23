@@ -20,7 +20,20 @@ int main(int argAmount, char* arguments[])
 		return false;
 	}
 
-	if(test_game_program(&winner, board, &info))
+	Window* window = NULL;
+	Renderer* renderer = NULL;
+	Surface* surface = NULL;
+
+	if(!setup_screen_variables(&window, &surface, &renderer, "TEST PROGRAM"))
+	{
+		printf("Error screen vars!\n");
+
+		free_chess_board(board);
+
+		return false;
+	}
+
+	if(test_game_program(&winner, board, &info, window, renderer))
 	{
 		display_game_result(board, winner);
 	}
@@ -31,13 +44,14 @@ int main(int argAmount, char* arguments[])
 	return false;
 }
 
-bool test_game_program(Team* winner, Board board, Info* info)
+bool test_game_program(Team* winner, Board board, Info* info, Window* window, Renderer* renderer)
 {
 	Move move = EMPTY_MOVE;
 
 	while(game_still_running(winner, board, *info))
 	{
 		display_console_board(board, *info);
+		display_screen_board(board, *info, window, renderer);
 
 		if(!input_console_move(&move, board, *info)) return false;
 

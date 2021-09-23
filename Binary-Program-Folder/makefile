@@ -64,7 +64,7 @@ COMPILE_COMPILOR := gcc
 
 
 # When creating an executable file, this is the linkers that is useful
-EXE_LINKERS := -lm
+EXE_LINKERS := $(MAC_SDL_FLAGS) -lm
 
 default-targets: $(OBJECT_PROGRAMS) $(SOURCE_PROGRAMS) $(HEADER_PROGRAMS) $(GAME_BINARY_PROGRAMS)
 
