@@ -20,6 +20,4 @@
 
 #include "single-player-chess.h"
 
-#include "zero-player-chess.h"
-
 #endif

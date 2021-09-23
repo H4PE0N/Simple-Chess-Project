@@ -18,3 +18,40 @@ bool display_game_result(Board board, Team winner)
 	}
 	return true;
 }
+
+bool console_user_handler(Board board, Info* info)
+{
+	Move move = EMPTY_MOVE;
+
+	while(!move_inside_board(move))
+	{
+		display_console_board(board, *info);
+
+		if(!input_console_move(&move, board, *info)) return false;
+	}
+
+	if(!move_chess_piece(board, move, info))
+	{
+		return console_user_handler(board, info);
+	}
+
+	return true;
+}
+
+bool console_computer_handler(Board board, Info* info)
+{
+	display_console_board(board, *info);
+
+	Move move = EMPTY_MOVE;
+
+	if(!best_possible_move(&move, board, *info, STD_DEPTH, info->current))
+	{
+		can_not_find_move(board, *info, info->current);
+
+		return false;
+	}
+
+	if(!move_chess_piece(board, move, info)) return false;
+
+	return true;
+}

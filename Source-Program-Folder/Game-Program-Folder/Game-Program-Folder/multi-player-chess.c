@@ -20,7 +20,7 @@ int main(int argAmount, char* arguments[])
 		return false;
 	}
 
-	if(multi_player_chess(&winner, board, &info))
+	if(console_multi_player(&winner, board, &info))
 	{
 		display_game_result(board, winner);
 	}
@@ -31,7 +31,7 @@ int main(int argAmount, char* arguments[])
 	return false;
 }
 
-bool multi_player_chess(Team* winner, Board board, Info* info)
+bool console_multi_player(Team* winner, Board board, Info* info)
 {
 	Move move = EMPTY_MOVE;
 
