@@ -55,7 +55,8 @@ bool test_game_program(Team* winner, Board board, Info* info, Window* window, Re
 		display_screen_board(window, renderer, board, *info);
 		display_console_board(board, *info);
 
-		if(!input_console_move(&move, board, *info)) return false;
+		//if(!input_console_move(&move, board, *info)) return false;
+		if(!input_screen_move(&move, window, renderer, board, *info)) return false;
 
 		if(!move_chess_piece(board, move, info)) continue;
 

@@ -2,6 +2,12 @@
 #ifndef DISPLAY_SCREEN_BOARD_H
 #define DISPLAY_SCREEN_BOARD_H
 
+extern const Color gridWhite;
+extern const Color gridBlack;
+
+extern const Color startColor;
+extern const Color stopColor;
+
 bool display_screen_board(Window*, Renderer*, Board board, Info info);
 
 bool render_board_grid(Renderer*);
