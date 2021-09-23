@@ -203,6 +203,13 @@ bool extract_file_line(Board board, char lineBuffer[], int height)
 	return true;
 }
 
+void extract_file_name(char* filename, char* arguments[], int amount)
+{
+	if(amount >= 2) strcpy(filename, arguments[1]);
+
+	else strcpy(filename, STD_FILE);
+}
+
 bool extract_file_value(Piece* piece, char lineBuffer[], int index)
 {
 	char typeChar = lineBuffer[(index * 2) + 0];

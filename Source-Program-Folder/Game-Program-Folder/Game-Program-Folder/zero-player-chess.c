@@ -39,9 +39,13 @@ bool zero_player_chess(Team* winner, Board board, Info* info)
 		display_console_board(board, *info);
 
 		fgets (input, 20, stdin);
+
+		fflush(stdin);
+
 		input[strlen(input) - 1] = '\0';
 
 		convert_string_upper(input, strlen(input));
+		
 		if(!strcmp(input, "STOP")) return false;
 
 		if(!computer_move_handler(board, info))

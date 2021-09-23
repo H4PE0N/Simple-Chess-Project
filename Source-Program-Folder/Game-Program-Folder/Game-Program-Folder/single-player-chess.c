@@ -53,17 +53,12 @@ bool single_player_chess(Team* winner, Board board, Info* info)
 bool user_move_handler(Board board, Info* info)
 {
 	Move move = EMPTY_MOVE;
-	char input[20];
 
 	while(!move_inside_board(move))
 	{
 		display_console_board(board, *info);
 
-		if(!input_current_move(input)) continue;
-
-		if(!strcmp(input, "STOP")) return false;
-
-		if(!parse_chess_move(&move, board, *info, input)) continue;
+		if(!input_console_move(&move, board, *info)) return false;
 	}
 
 	if(!move_chess_piece(board, move, info))
