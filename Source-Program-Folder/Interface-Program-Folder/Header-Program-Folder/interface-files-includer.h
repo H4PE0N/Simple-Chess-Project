@@ -17,4 +17,6 @@
 
 #include "display-help-functions.h"
 
+#include "display-screen-board.h"
+
 #endif
