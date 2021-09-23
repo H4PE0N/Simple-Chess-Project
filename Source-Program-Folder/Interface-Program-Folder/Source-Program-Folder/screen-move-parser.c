@@ -10,7 +10,7 @@ bool input_screen_move(Move* move, Window* window, Renderer* renderer, Board boa
 	{
 		if(SDL_PollEvent(&event))
     {
-      if(event.type == SDL_QUIT || event.key.keysym.sym == SDLK_q)
+      if(event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_q))
       {
         // if(!render_quit_board(renderer, board)) continue;
         render_quit_board(renderer, board);
@@ -30,8 +30,7 @@ bool input_screen_move(Move* move, Window* window, Renderer* renderer, Board boa
       }
       else if(!screen_move_parser(&inputMove, window, renderer, board, info, event))
       {
-        render_screen_board(renderer, board, info);
-        SDL_UpdateWindowSurface(window);
+        continue;
       }
     }
 	}
