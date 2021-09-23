@@ -8,9 +8,16 @@ extern const Color gridBlack;
 extern const Color startColor;
 extern const Color stopColor;
 
-bool display_screen_board(Window*, Renderer*, Board board, Info info);
+extern const Color hintColor;
+extern const Color quitColor;
+
+bool render_screen_board(Renderer*, Board, Info);
 
 bool render_board_grid(Renderer*);
+
+bool render_board_color(Renderer*, Color);
+
+bool render_quit_board(Renderer*, Board);
 
 bool render_board_pieces(Renderer*, Board);
 

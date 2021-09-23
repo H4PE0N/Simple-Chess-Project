@@ -52,7 +52,9 @@ bool test_game_program(Team* winner, Board board, Info* info, Window* window, Re
 
 	while(game_still_running(winner, board, *info))
 	{
-		display_screen_board(window, renderer, board, *info);
+		render_screen_board(renderer, board, *info);
+		SDL_UpdateWindowSurface(window);
+
 		display_console_board(board, *info);
 
 		//if(!input_console_move(&move, board, *info)) return false;

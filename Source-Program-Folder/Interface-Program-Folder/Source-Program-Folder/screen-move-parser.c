@@ -1,8 +1,6 @@
 
 #include "../Header-Program-Folder/interface-files-includer.h"
 
-const Color hintColor = {0, 255, 150};
-
 bool input_screen_move(Move* move, Window* window, Renderer* renderer, Board board, Info info)
 {
   Move inputMove = EMPTY_MOVE;
@@ -12,13 +10,22 @@ bool input_screen_move(Move* move, Window* window, Renderer* renderer, Board boa
 	{
 		if(SDL_PollEvent(&event))
     {
-      if(event.type == SDL_QUIT || event.key.keysym.sym == SDLK_q) return false;
+      if(event.type == SDL_QUIT || event.key.keysym.sym == SDLK_q)
+      {
+        render_quit_board(renderer, board);
+        SDL_UpdateWindowSurface(window);
+
+        char string[20];
+        scanf("%s", string);
+        convert_string_upper(string, strlen(string));
+        
+        if(!strcmp(string, "STOP")) return false;
+      }
 
       if(!screen_move_parser(&inputMove, window, renderer, board, info, event)) continue;
     }
 	}
-
-	*move = inputMove;
+  *move = inputMove;
 
 	return true;
 }
@@ -38,7 +45,7 @@ bool screen_move_parser(Move* move, Window* window, Renderer* renderer, Board bo
 
 bool screen_help_parser(Move* move, Window* window, Renderer* renderer, Board board, Info info)
 {
-  display_screen_board(window, renderer, board, info);
+  render_screen_board(renderer, board, info);
   SDL_UpdateWindowSurface(window);
 
   return best_possible_move(move, board, info, STD_DEPTH, info.current);
@@ -49,13 +56,11 @@ bool screen_hint_parser(Move* move, Window* window, Renderer* renderer, Board bo
   Move hintMove;
 	if(!best_possible_move(&hintMove, board, info, STD_DEPTH, info.current)) return false;
 
-  display_screen_board(window, renderer, board, info);
+  render_screen_board(renderer, board, info);
 
 	if(!color_point_square(renderer, hintMove.stop, hintColor)) return false;
 
   SDL_UpdateWindowSurface(window);
-
-	*move = EMPTY_MOVE;
 
 	return false;
 }
@@ -64,14 +69,39 @@ bool screen_default_parser(Move* move, Window* window, Renderer* renderer, Board
 {
   if(event.type == SDL_MOUSEBUTTONDOWN)
   {
-    display_screen_board(window, renderer, board, info);
+    render_screen_board(renderer, board, info);
     SDL_UpdateWindowSurface(window);
-  }
-  else if(event.type == SDL_MOUSEBUTTONUP)
-  {
-    display_screen_board(window, renderer, board, info);
+
+    move->start = parse_mouse_point(event);
+
+    render_piece_moves(renderer, board, info, move->start);
     SDL_UpdateWindowSurface(window);
+
+    Event upEvent;
+
+    while(upEvent.type != SDL_MOUSEBUTTONUP)
+    {
+      SDL_PollEvent(&upEvent);
+    }
+
+    move->stop = parse_mouse_point(upEvent);
+
+    return true;
   }
 
+  render_screen_board(renderer, board, info);
+  SDL_UpdateWindowSurface(window);
+
   return false;
+}
+
+Point parse_mouse_point(Event event)
+{
+  float squareHeight = SQUARE_HEIGHT;
+  float squareWidth = SQUARE_WIDTH;
+
+  int width = floor( (float) event.motion.x / squareWidth);
+  int height = floor( (float) event.motion.y / squareHeight);
+
+  return (Point) {height, width};
 }

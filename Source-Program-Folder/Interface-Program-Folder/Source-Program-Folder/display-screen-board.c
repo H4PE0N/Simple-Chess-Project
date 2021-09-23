@@ -7,15 +7,16 @@ const Color gridBlack = {70, 50, 0};
 const Color startColor = {100, 100, 100};
 const Color stopColor = {100, 100, 100};
 
-bool display_screen_board(Window* window, Renderer* renderer, Board board, Info info)
+const Color hintColor = {0, 255, 150};
+const Color quitColor = {255, 0, 0};
+
+bool render_screen_board(Renderer* renderer, Board board, Info info)
 {
   if(!render_board_grid(renderer)) return false;
 
   render_last_move(renderer, info.lastMove);
 
   if(!render_board_pieces(renderer, board)) return false;
-
-  SDL_UpdateWindowSurface(window);
 
   return true;
 }
@@ -35,6 +36,34 @@ bool render_board_grid(Renderer* renderer)
 			currentColor = (Color) (((height + width) % 2 == 0) ? gridWhite : gridBlack);
 
 			if(!color_point_square(renderer, point, currentColor)) return false;
+		}
+	}
+
+  SDL_RenderPresent(renderer);
+
+  return true;
+}
+
+bool render_quit_board(Renderer* renderer, Board board)
+{
+  if(!render_board_color(renderer, quitColor)) return false;
+
+  if(!render_board_pieces(renderer, board)) return false;
+
+  return true;
+}
+
+bool render_board_color(Renderer* renderer, Color color)
+{
+  Point point;
+
+	for(int height = 0; height < BOARD_HEIGHT; height += 1)
+	{
+		for(int width = 0; width < BOARD_WIDTH; width += 1)
+		{
+      point = (Point) {height, width};
+
+			if(!color_point_square(renderer, point, color)) return false;
 		}
 	}
 
