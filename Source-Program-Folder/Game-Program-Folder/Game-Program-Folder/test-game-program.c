@@ -24,7 +24,7 @@ int main(int argAmount, char* arguments[])
 	Renderer* renderer = NULL;
 	Surface* surface = NULL;
 
-	if(!setup_screen_variables(&window, &surface, &renderer, "TEST PROGRAM"))
+	if(!setup_screen_variables(&window, &renderer, &surface, "TEST PROGRAM"))
 	{
 		printf("Error screen vars!\n");
 
@@ -39,6 +39,8 @@ int main(int argAmount, char* arguments[])
 	}
 	else chess_game_quitted(board, info);
 
+	free_screen_variables(window, renderer, surface);
+
 	free_chess_board(board);
 
 	return false;
@@ -51,7 +53,7 @@ bool test_game_program(Team* winner, Board board, Info* info, Window* window, Re
 	while(game_still_running(winner, board, *info))
 	{
 		display_console_board(board, *info);
-		display_screen_board(board, *info, window, renderer);
+		display_screen_board(window, renderer, board, *info);
 
 		if(!input_console_move(&move, board, *info)) return false;
 

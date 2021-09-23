@@ -14,4 +14,6 @@ typedef SDL_Rect Rect;
 
 typedef SDL_Color Color;
 
+typedef SDL_Event Event;
+
 #endif

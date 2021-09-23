@@ -53,7 +53,7 @@ bool setup_screen_variables(Window** window, Renderer** renderer, Surface** surf
 	}
 
 	// This line is just needed to make the window want to show it self:
-	SDL_Event event; SDL_PollEvent(&event);
+	Event event; SDL_PollEvent(&event);
 
 	return true;
 }
