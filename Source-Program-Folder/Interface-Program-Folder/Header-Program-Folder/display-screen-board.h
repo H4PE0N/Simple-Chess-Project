@@ -25,7 +25,7 @@ bool render_board_piece(Renderer*, Point, Piece);
 
 bool render_piece_moves(Renderer*, Board, Info, Point);
 
-bool render_last_move(Renderer*, Move);
+bool render_board_move(Renderer*, Move, Color);
 
 bool color_point_square(Renderer*, Point, Color);
 

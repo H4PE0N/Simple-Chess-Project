@@ -12,14 +12,11 @@ patch version:
 
 possible, movable and prevent functions are most the same. Don't have repeating code!
 
-add move to game move list in the execute functions
+possible moves could check if the info.current matches the piece that is moving.
 
 check the error handling
 
 
-
-
-when board are passed in functions, pass pointer to board when it is changed
 
 
 change the matrix value for the rook. He should want to castle
@@ -32,6 +29,3 @@ the turn indicator should only increase every second play (white and black) -> t
 
 
 pointer to those variables that is going to get changed (array int* -> int** );
-
-
-Create Check-Indicator

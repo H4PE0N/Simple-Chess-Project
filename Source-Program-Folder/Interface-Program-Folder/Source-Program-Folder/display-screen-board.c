@@ -1,20 +1,22 @@
 
 #include "../Header-Program-Folder/interface-files-includer.h"
 
-const Color gridWhite = {255, 247, 204};
-const Color gridBlack = {70, 50, 0};
+const Color gridWhite = {232, 235, 239};
+const Color gridBlack = {125, 135, 150};
 
-const Color startColor = {100, 100, 100};
-const Color stopColor = {100, 100, 100};
+const Color moveColor = {100, 100, 100};
 
 const Color hintColor = {0, 255, 150};
 const Color quitColor = {255, 0, 0};
+
+const Color movableColor = {0, 0, 255};
+const Color checkColor = {255, 0, 0};
 
 bool render_screen_board(Renderer* renderer, Board board, Info info)
 {
   if(!render_board_grid(renderer)) return false;
 
-  render_last_move(renderer, info.lastMove);
+  render_board_move(renderer, info.lastMove, moveColor);
 
   if(!render_board_pieces(renderer, board)) return false;
 
@@ -175,17 +177,40 @@ bool render_surface_texture(Renderer* renderer, Surface* surface, Rect position)
 
 bool render_piece_moves(Renderer* renderer, Board board, Info info, Point point)
 {
+  if(!point_inside_board(point)) return false;
+  if(board_point_team(board, point) != info.current) return false;
+
+  Move* moves = create_moves_array(32);
+
+  if(!piece_possible_moves(moves, board, info, point))
+  {
+    free(moves);
+
+    return true;
+  }
+
+  int amount = moves_array_amount(moves);
+
+  for(int index = 0; index < amount; index += 1)
+  {
+    render_board_move(renderer, moves[index], movableColor);
+  }
+
+  free(moves);
+
+  render_board_pieces(renderer, board);
+
   SDL_RenderPresent(renderer);
 
   return true;
 }
 
-bool render_last_move(Renderer* renderer, Move move)
+bool render_board_move(Renderer* renderer, Move move, Color color)
 {
   if(!move_inside_board(move)) return false;
 
-	if(!color_point_square(renderer, move.start, startColor)) return false;
-	if(!color_point_square(renderer, move.stop, stopColor)) return false;
+	if(!color_point_square(renderer, move.start, color)) return false;
+	if(!color_point_square(renderer, move.stop, color)) return false;
 
   SDL_RenderPresent(renderer);
 

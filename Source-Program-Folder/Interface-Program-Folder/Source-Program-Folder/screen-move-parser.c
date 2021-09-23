@@ -12,17 +12,27 @@ bool input_screen_move(Move* move, Window* window, Renderer* renderer, Board boa
     {
       if(event.type == SDL_QUIT || event.key.keysym.sym == SDLK_q)
       {
+        // if(!render_quit_board(renderer, board)) continue;
         render_quit_board(renderer, board);
         SDL_UpdateWindowSurface(window);
 
         char string[20];
-        scanf("%s", string);
-        convert_string_upper(string, strlen(string));
-        
-        if(!strcmp(string, "STOP")) return false;
-      }
 
-      if(!screen_move_parser(&inputMove, window, renderer, board, info, event)) continue;
+        printf("ACTION: ");
+        scanf("%s", string); fflush(stdin);
+
+        convert_string_upper(string, strlen(string));
+
+        if(!strcmp(string, "STOP")) return false;
+
+        render_screen_board(renderer, board, info);
+        SDL_UpdateWindowSurface(window);
+      }
+      else if(!screen_move_parser(&inputMove, window, renderer, board, info, event))
+      {
+        render_screen_board(renderer, board, info);
+        SDL_UpdateWindowSurface(window);
+      }
     }
 	}
   *move = inputMove;
@@ -45,7 +55,7 @@ bool screen_move_parser(Move* move, Window* window, Renderer* renderer, Board bo
 
 bool screen_help_parser(Move* move, Window* window, Renderer* renderer, Board board, Info info)
 {
-  render_screen_board(renderer, board, info);
+  if(!render_screen_board(renderer, board, info)) return false;
   SDL_UpdateWindowSurface(window);
 
   return best_possible_move(move, board, info, STD_DEPTH, info.current);
@@ -56,25 +66,27 @@ bool screen_hint_parser(Move* move, Window* window, Renderer* renderer, Board bo
   Move hintMove;
 	if(!best_possible_move(&hintMove, board, info, STD_DEPTH, info.current)) return false;
 
-  render_screen_board(renderer, board, info);
+  if(!render_screen_board(renderer, board, info)) return false;
 
-	if(!color_point_square(renderer, hintMove.stop, hintColor)) return false;
+	if(!render_board_move(renderer, hintMove, hintColor)) return false;
+
+  if(!render_board_pieces(renderer, board)) return false;
 
   SDL_UpdateWindowSurface(window);
 
-	return false;
+	return true;
 }
 
 bool screen_default_parser(Move* move, Window* window, Renderer* renderer, Board board, Info info, Event event)
 {
   if(event.type == SDL_MOUSEBUTTONDOWN)
   {
-    render_screen_board(renderer, board, info);
+    if(!render_screen_board(renderer, board, info)) return false;
     SDL_UpdateWindowSurface(window);
 
     move->start = parse_mouse_point(event);
 
-    render_piece_moves(renderer, board, info, move->start);
+    if(!render_piece_moves(renderer, board, info, move->start)) return false;
     SDL_UpdateWindowSurface(window);
 
     Event upEvent;
@@ -88,9 +100,6 @@ bool screen_default_parser(Move* move, Window* window, Renderer* renderer, Board
 
     return true;
   }
-
-  render_screen_board(renderer, board, info);
-  SDL_UpdateWindowSurface(window);
 
   return false;
 }
