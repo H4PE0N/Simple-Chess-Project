@@ -71,7 +71,5 @@ bool computer_move_handler(Board board, Info* info)
 
 	if(!move_chess_piece(board, move, info)) return false;
 
-	info->lastMove = move;
-
 	return true;
 }

@@ -50,8 +50,6 @@ bool multi_player_chess(Team* winner, Board board, Info* info)
 
 		if(!move_chess_piece(board, move, info)) continue;
 
-		info->lastMove = move;
-
 		info->turns += 1;
 		info->current = piece_team_enemy(info->current);
 	}

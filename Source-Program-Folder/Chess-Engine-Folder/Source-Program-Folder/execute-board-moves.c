@@ -53,6 +53,7 @@ bool execute_pawn_move(Board board, Move move, Info* info)
 		move_board_piece(board, start, stop);
 	}
 
+	info->lastMove = move;
 
 	if(start.width == stop.width && abs(start.height - stop.height) == 2)
 	{
@@ -118,6 +119,8 @@ bool execute_rook_move(Board board, Move move, Info* info)
 		update_castles_value(&info->castles, team, side, false);
 	}
 
+	info->lastMove = move;
+
 	info->passant = EMPTY_POINT;
 
 	return true;
@@ -148,6 +151,8 @@ bool execute_knight_move(Board board, Move move, Info* info)
 	{
 		move_board_piece(board, start, stop);
 	}
+
+	info->lastMove = move;
 
 	info->passant = EMPTY_POINT;
 
@@ -180,6 +185,8 @@ bool execute_bishop_move(Board board, Move move, Info* info)
 		move_board_piece(board, start, stop);
 	}
 
+	info->lastMove = move;
+
 	info->passant = EMPTY_POINT;
 
 	return true;
@@ -210,6 +217,8 @@ bool execute_queen_move(Board board, Move move, Info* info)
 	{
 		move_board_piece(board, start, stop);
 	}
+
+	info->lastMove = move;
 
 	info->passant = EMPTY_POINT;
 
@@ -243,6 +252,8 @@ bool execute_king_move(Board board, Move move, Info* info)
 	}
 
 	update_castles_values(&info->castles, team, EMPTY_CASTLE);
+
+	info->lastMove = move;
 
 	info->passant = EMPTY_POINT;
 

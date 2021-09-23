@@ -73,8 +73,6 @@ bool user_move_handler(Board board, Info* info)
 		return user_move_handler(board, info);
 	}
 
-	info->lastMove = move;
-
 	return true;
 }
 
@@ -94,8 +92,6 @@ bool computer_move_handler(Board board, Info* info)
 	}
 
 	if(!move_chess_piece(board, move, info)) return false;
-
-	info->lastMove = move;
 
 	return true;
 }
