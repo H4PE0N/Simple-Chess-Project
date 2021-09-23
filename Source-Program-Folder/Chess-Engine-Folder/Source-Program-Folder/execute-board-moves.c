@@ -28,19 +28,21 @@ bool execute_piece_move(Board board, Move move, Info* info)
 
 bool execute_pawn_move(Board board, Move move, Info* info)
 {
-	// If the move is not in the board:
-	if(!move_inside_board(move)) return false;
-
 	Point start = move.start, stop = move.stop;
 
+	if(!move_inside_board(move)) return false;
+
+	if(board_point_empty(board, start)) return false;
+
+
 	Team team = board_point_team(board, start);
-	if(!piece_team_exists(team)) return false;
+
 
 	if(board_points_equal(stop, info->passant))
 	{
 		Team enemy = piece_team_enemy(team);
+		
 		Point removePoint = passant_remove_point(info->passant, enemy);
-
 		if(!point_inside_board(removePoint)) return false;
 
 		move_board_piece(board, start, stop);
@@ -50,6 +52,7 @@ bool execute_pawn_move(Board board, Move move, Info* info)
 	{
 		move_board_piece(board, start, stop);
 	}
+
 
 	if(start.width == stop.width && abs(start.height - stop.height) == 2)
 	{
@@ -63,6 +66,7 @@ bool execute_pawn_move(Board board, Move move, Info* info)
 		info->passant = EMPTY_POINT;
 	}
 
+
 	if(pawn_becomes_queen(stop, team))
 	{
 		allocate_board_piece(board, stop, (Piece) {QUEEN, team});
@@ -73,13 +77,16 @@ bool execute_pawn_move(Board board, Move move, Info* info)
 
 bool execute_rook_move(Board board, Move move, Info* info)
 {
-	// If the move is not in the board:
-	if(!move_inside_board(move)) return false;
-
 	Point start = move.start, stop = move.stop;
 
+	if(!move_inside_board(move)) return false;
+
+	if(board_point_empty(board, start)) return false;
+
+
 	Team team = board_point_team(board, start);
-	if(!piece_team_exists(team)) return false;
+
+	Side side = rook_starting_side(start.width);
 
 	// This executes the castle
 	if(team_castle_valid(start, stop, team))
@@ -95,17 +102,17 @@ bool execute_rook_move(Board board, Move move, Info* info)
 	else if(board_points_equal(stop, info->passant))
 	{
 		Team enemy = piece_team_enemy(team);
-		Point removePoint = passant_remove_point(info->passant, enemy);
 
+		Point removePoint = passant_remove_point(info->passant, enemy);
 		if(!point_inside_board(removePoint)) return false;
 
 		move_board_piece(board, start, stop);
 		remove_board_piece(board, removePoint);
+
+		update_castles_value(&info->castles, team, side, false);
 	}
 	else
 	{
-		Side side = rook_starting_side(start.width);
-
 		move_board_piece(board, start, stop);
 
 		update_castles_value(&info->castles, team, side, false);
@@ -118,19 +125,20 @@ bool execute_rook_move(Board board, Move move, Info* info)
 
 bool execute_knight_move(Board board, Move move, Info* info)
 {
-	// If the move is not in the board:
-	if(!move_inside_board(move)) return false;
-
 	Point start = move.start, stop = move.stop;
 
+	if(!move_inside_board(move)) return false;
+
+	if(board_point_empty(board, start)) return false;
+
+
 	Team team = board_point_team(board, start);
-	if(!piece_team_exists(team)) return false;
 
 	if(board_points_equal(stop, info->passant))
 	{
 		Team enemy = piece_team_enemy(team);
-		Point removePoint = passant_remove_point(info->passant, enemy);
 
+		Point removePoint = passant_remove_point(info->passant, enemy);
 		if(!point_inside_board(removePoint)) return false;
 
 		move_board_piece(board, start, stop);
@@ -148,19 +156,20 @@ bool execute_knight_move(Board board, Move move, Info* info)
 
 bool execute_bishop_move(Board board, Move move, Info* info)
 {
-	// If the move is not in the board:
-	if(!move_inside_board(move)) return false;
-
 	Point start = move.start, stop = move.stop;
 
+	if(!move_inside_board(move)) return false;
+
+	if(board_point_empty(board, start)) return false;
+
+
 	Team team = board_point_team(board, start);
-	if(!piece_team_exists(team)) return false;
 
 	if(board_points_equal(stop, info->passant))
 	{
 		Team enemy = piece_team_enemy(team);
-		Point removePoint = passant_remove_point(info->passant, enemy);
 
+		Point removePoint = passant_remove_point(info->passant, enemy);
 		if(!point_inside_board(removePoint)) return false;
 
 		move_board_piece(board, start, stop);
@@ -178,19 +187,20 @@ bool execute_bishop_move(Board board, Move move, Info* info)
 
 bool execute_queen_move(Board board, Move move, Info* info)
 {
-	// If the move is not in the board:
-	if(!move_inside_board(move)) return false;
-
 	Point start = move.start, stop = move.stop;
 
+	if(!move_inside_board(move)) return false;
+
+	if(board_point_empty(board, start)) return false;
+
+
 	Team team = board_point_team(board, start);
-	if(!piece_team_exists(team)) return false;
 
 	if(board_points_equal(stop, info->passant))
 	{
 		Team enemy = piece_team_enemy(team);
-		Point removePoint = passant_remove_point(info->passant, enemy);
 
+		Point removePoint = passant_remove_point(info->passant, enemy);
 		if(!point_inside_board(removePoint)) return false;
 
 		move_board_piece(board, start, stop);
@@ -208,19 +218,20 @@ bool execute_queen_move(Board board, Move move, Info* info)
 
 bool execute_king_move(Board board, Move move, Info* info)
 {
-	// If the move is not in the board:
-	if(!move_inside_board(move)) return false;
-
 	Point start = move.start, stop = move.stop;
 
+	if(!move_inside_board(move)) return false;
+
+	if(board_point_empty(board, start)) return false;
+
+
 	Team team = board_point_team(board, start);
-	if(!piece_team_exists(team)) return false;
 
 	if(board_points_equal(stop, info->passant))
 	{
 		Team enemy = piece_team_enemy(team);
-		Point removePoint = passant_remove_point(info->passant, enemy);
 
+		Point removePoint = passant_remove_point(info->passant, enemy);
 		if(!point_inside_board(removePoint)) return false;
 
 		move_board_piece(board, start, stop);
