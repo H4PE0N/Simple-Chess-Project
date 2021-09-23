@@ -1,90 +1,108 @@
 
 #include "../Header-Program-Folder/interface-files-includer.h"
 
-const char* blackSymbols[] = {" ", "P", "B", "H", "R", "Q", "K"};
-const char* whiteSymbols[] = {" ", "p", "b", "h", "r", "q", "k"};
-
-#define DIS_LETS "  | A | B | C | D | E | F | G | H |"
-#define DIS_ROW "--+---+---+---+---+---+---+---+---+--"
-
-void display_chess_board(Board board)
+bool display_console_board(Board board, Info info)
 {
-	CLEAR_LINE; printf("%s\n", DIS_LETS);
+	if(!display_chess_board(board)) return false;
 
-	for(int height = 0; height < BOARD_HEIGHT; height = height + 1)
+	if(!display_game_info(info)) return false;
+
+	return true;
+}
+
+bool display_chess_board(Board board)
+{
+	Point point;
+	bool boolean = true;
+
+	display_board_letters((char*) boardLetters);
+
+	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
-		CLEAR_LINE; printf("%s\n", DIS_ROW);
+		CLEAR_LINE; printf("%c ", boardNumbers[height]);
 
-		CLEAR_LINE; printf("%c", numbers[height]);
-
-		printf(" ");
-
-		for(int width = 0; width < BOARD_WIDTH; width = width + 1)
+		for(int width = 0; width < BOARD_WIDTH; width += 1)
 		{
-			printf("|");
+			point = (Point) {height, width};
 
-			Piece piece = board[height][width];
-			display_board_symbol(height, width, piece);
+			if(!display_board_symbol(board, point)) boolean = false;
 		}
 
-		printf("|"); printf(" ");
-
-		printf("%c", numbers[height]);
-
-		printf("\n");
+		printf("%c\n", boardNumbers[height]);
 	}
-	CLEAR_LINE; printf("%s\n", DIS_ROW);
 
-	CLEAR_LINE; printf("%s\n", DIS_LETS);
+	display_board_letters((char*) boardLetters);
+
+	return boolean;
 }
 
-void display_game_round(Board board, Info info)
+void display_board_letters(char letters[])
 {
-	display_chess_board(board);
-
-	display_chess_info(info);
-}
-
-void display_board_symbol(int height, int width, Piece piece)
-{
-	const char* blackSymbol = blackSymbols[piece.type];
-	const char* whiteSymbol = whiteSymbols[piece.type];
-
-	const char* symbol = (piece.team == WHITE) ? whiteSymbol : blackSymbol;
-
-	printf(" ");
-
-	printf("%s", symbol);
-
-	printf(" ");
-}
-
-void display_chess_result(Board board, Team winner)
-{
-	display_chess_board(board);
-
-	if(winner == NONE)
+	CLEAR_LINE; printf("  ");
+	for(int index = 0; index < BOARD_WIDTH; index += 1)
 	{
-		CLEAR_LINE; printf("[!] THE GAME ENDED WITH A DRAW!\n");
+		printf("%c ", letters[index]);
+	}
+	printf("\n");
+}
+
+bool display_board_symbol(Board board, Point point)
+{
+	if(!point_inside_board(point)) return false;
+
+	Piece piece = board_point_piece(board, point);
+
+	char symbol = extract_piece_symbol(piece);
+
+	printf("%c ", symbol);
+
+	return true;
+}
+
+char extract_piece_symbol(Piece piece)
+{
+	if(board_piece_empty(piece)) return '_';
+
+	if(piece.team == WHITE) return whiteSymbols[piece.type];
+
+	if(piece.team == BLACK) return blackSymbols[piece.type];
+
+	return '_';
+}
+
+bool display_game_info(Info info)
+{
+	char teamString[20] = "\0";
+	chess_team_string(teamString, info.current);
+
+	char moveString[20] = "\0";
+	chess_move_string(moveString, info.lastMove);
+
+	CLEAR_LINE; printf("LAST MOVE : [%s]\n", moveString);
+	CLEAR_LINE; printf("CURRENT   : [%s]\n", teamString);
+	CLEAR_LINE; printf("TURNES    : [%dst]\n", info.turns);
+	CLEAR_LINE; printf("COUNTER   : [%d]\n", info.counter);
+	CLEAR_LINE; printf("PASSANT   : [%d %d]\n", info.passant.height, info.passant.width);
+	CLEAR_LINE; printf("W CASTLES : [%d %d]\n", info.castles.white.queen, info.castles.white.king);
+	CLEAR_LINE; printf("B CASTLES : [%d %d]\n", info.castles.black.queen, info.castles.black.king);
+
+	return true;
+}
+
+bool display_game_result(Board board, Team winner)
+{
+	if(!display_chess_board(board)) return false;
+
+	if(!piece_team_exists(winner))
+	{
+		char teamString[20] = "\0";
+		if(!chess_team_string(teamString, winner)) return false;
+
+		CLEAR_LINE; printf("[!] THE WINNER IS [%s]!\n", teamString);
 	}
 	else
 	{
-		char* team = (winner == WHITE) ? "WHITE" : "BLACK";
-		CLEAR_LINE; printf("[!] THE WINNER IS [%s]!\n", team);
+		CLEAR_LINE; printf("[!] THE GAME ENDED WITH A DRAW!\n");
 	}
-}
-
-void display_chess_info(Info info)
-{
-	char* teamString = (info.current == WHITE) ? "WHITE" : "BLACK";
-
-	char moveString[20] = "\0"; chess_move_string(moveString, info.lastMove);
-
-	// CLEAR_LINE; printf("WHITE RKS (%d %d)\n", info.castles.white.queen, info.castles.white.king);
-	// CLEAR_LINE; printf("BLACK RKS (%d %d)\n", info.castles.black.queen, info.castles.black.king);
-	// CLEAR_LINE; printf("PASSANT: [%d %d]\n", info.passant.height, info.passant.width);
-
-	CLEAR_LINE; printf("[+] LAST MADE MOVE  : [%s]\n", moveString);
-	CLEAR_LINE; printf("[+] CURRENT PLAYER  : [%s]\n", teamString);
-	CLEAR_LINE; printf("[+] NUMBER OF TURNS : [%dst]\n", info.turns);
+	return true;
 }

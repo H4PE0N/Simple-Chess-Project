@@ -9,8 +9,6 @@
 
 #include "setup-error-functions.h"
 
-#include "move-parser-functions.h"
-
 #include "game-setup-defines.h"
 
 

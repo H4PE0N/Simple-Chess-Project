@@ -2,13 +2,22 @@
 #ifndef INTERFACE_DEFINES_FILE_H
 #define INTERFACE_DEFINES_FILE_H
 
+extern const char blackSymbols[];
+extern const char whiteSymbols[];
+
+extern const char boardNumbers[];
+extern const char boardLetters[];
+
 #define PIECE_FOLDER "../Source-Program-Folder/Interface-Program-Folder/Piece-Image-Folder"
+
+#define SAVE_FILE	"../Source-Program-Folder/Game-Program-Folder/Data-Program-Folder/saved-chess-board.txt"
+#define STD_FILE	"../Source-Program-Folder/Game-Program-Folder/Data-Program-Folder/default-chess-board.txt"
 
 #define SCREEN_HEIGHT	800
 #define SCREEN_WIDTH	800
 
-#define SQUARE_HEIGHT SCREEN_HEIGHT / BOARD_HEIGHT
-#define SQUARE_WIDTH SCREEN_WIDTH / BOARD_WIDTH
+#define SQUARE_HEIGHT (SCREEN_HEIGHT / BOARD_HEIGHT)
+#define SQUARE_WIDTH (SCREEN_WIDTH / BOARD_WIDTH)
 
 #define CLEAR_LINE printf("\033[2K")
 

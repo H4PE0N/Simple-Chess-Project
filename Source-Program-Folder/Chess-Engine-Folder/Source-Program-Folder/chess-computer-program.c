@@ -5,8 +5,6 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 {
 	if(depth <= 0 || !piece_team_exists(team)) return false;
 
-	time_t startTime = time(NULL);
-
 	Move* moves = all_possible_moves(board, info, team);
 	int amount = moves_array_amount(moves);
 
@@ -58,13 +56,6 @@ bool best_possible_move(Move* move, Board board, Info info, int depth, Team team
 	}
 
 	free(moves);
-
-	time_t stopTime = time(NULL);
-	time_t time = difftime(stopTime, startTime);
-
-	char moveString[20]; chess_move_string(moveString, bestMove);
-	printf("\033[2K");
-	printf("[!] BEST MOVE: [%s] VALUE: [%d] TIME: [%ds]\n", moveString, bestValue, (int) time);
 
 	*move = bestMove;
 

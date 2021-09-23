@@ -1,6 +1,6 @@
 
-#ifndef MOVE_PARSER_FUNCTIONS_H
-#define MOVE_PARSER_FUNCTIONS_H
+#ifndef CONSOLE_MOVE_PARSER_H
+#define CONSOLE_MOVE_PARSER_H
 
 bool input_current_move(char*);
 

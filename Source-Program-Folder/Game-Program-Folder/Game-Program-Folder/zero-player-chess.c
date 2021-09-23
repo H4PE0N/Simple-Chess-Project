@@ -22,7 +22,7 @@ int main(int argAmount, char* arguments[])
 
 	if(zero_player_chess(&winner, board, &info))
 	{
-		display_chess_result(board, winner);
+		display_game_result(board, winner);
 	}
 	else chess_game_quitted(board, info);
 
@@ -36,15 +36,13 @@ bool zero_player_chess(Team* winner, Board board, Info* info)
 	char input[20];
 	while(game_still_running(winner, board, *info))
 	{
-		display_game_round(board, *info);
+		display_console_board(board, *info);
 
 		fgets (input, 20, stdin);
 		input[strlen(input) - 1] = '\0';
 
 		convert_string_upper(input, strlen(input));
 		if(!strcmp(input, "STOP")) return false;
-
-		MOVE_UP_BOARD; MOVE_UP_INFO; MOVE_UP_INPUT;
 
 		if(!computer_move_handler(board, info))
 		{

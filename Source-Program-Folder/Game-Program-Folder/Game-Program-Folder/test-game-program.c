@@ -22,7 +22,7 @@ int main(int argAmount, char* arguments[])
 
 	if(test_game_program(&winner, board, &info))
 	{
-		display_chess_result(board, winner);
+		display_game_result(board, winner);
 	}
 	else chess_game_quitted(board, info);
 
@@ -38,7 +38,7 @@ bool test_game_program(Team* winner, Board board, Info* info)
 
 	while(game_still_running(winner, board, *info))
 	{
-		display_game_round(board, *info);
+		display_console_board(board, *info);
 
 		if(!input_current_move(input)) continue;
 

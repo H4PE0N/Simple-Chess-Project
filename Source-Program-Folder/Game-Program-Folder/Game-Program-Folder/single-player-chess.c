@@ -22,7 +22,7 @@ int main(int argAmount, char* arguments[])
 
 	if(single_player_chess(&winner, board, &info))
 	{
-		display_chess_result(board, winner);
+		display_game_result(board, winner);
 	}
 	else chess_game_quitted(board, info);
 
@@ -57,11 +57,9 @@ bool user_move_handler(Board board, Info* info)
 
 	while(!move_inside_board(move))
 	{
-		display_game_round(board, *info);
+		display_console_board(board, *info);
 
 		if(!input_current_move(input)) continue;
-
-		MOVE_UP_BOARD; MOVE_UP_INFO; MOVE_UP_INPUT;
 
 		if(!strcmp(input, "STOP")) return false;
 
@@ -78,9 +76,7 @@ bool user_move_handler(Board board, Info* info)
 
 bool computer_move_handler(Board board, Info* info)
 {
-	display_game_round(board, *info);
-
-	MOVE_UP_BOARD; MOVE_UP_INFO;
+	display_console_board(board, *info);
 
 	Move move = EMPTY_MOVE;
 

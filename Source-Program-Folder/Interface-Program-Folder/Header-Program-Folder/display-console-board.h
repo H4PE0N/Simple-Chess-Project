@@ -2,20 +2,18 @@
 #ifndef DISPLAY_CONSOLE_BOARD_H
 #define DISPLAY_CONSOLE_BOARD_H
 
-extern const char* blackSymbols[];
-extern const char* whiteSymbols[];
+bool display_console_board(Board, Info);
 
-#define DIS_LETS "  | A | B | C | D | E | F | G | H |"
-#define DIS_ROW "--+---+---+---+---+---+---+---+---+--"
+bool display_chess_board(Board);
 
-void display_chess_board(Board);
+bool display_game_info(Info);
 
-void display_chess_info(Info);
+bool display_game_result(Board, Team);
 
-void display_game_round(Board, Info);
+bool display_board_symbol(Board, Point);
 
-void display_chess_result(Board, Team);
+char extract_piece_symbol(Piece);
 
-void display_board_symbol(int, int, Piece);
+void display_board_letters(char[]);
 
 #endif

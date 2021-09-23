@@ -7,6 +7,8 @@
 // #include <SDL2/SDL.h>
 // #include <SDL2/SDL_image.h>
 
+#include "console-help-functions.h"
+
 #include "display-console-board.h"
 
 #include "interface-defines-file.h"
@@ -15,8 +17,12 @@
 
 #include "game-interface-program.h"
 
-#include "display-help-functions.h"
+#include "screen-help-functions.h"
 
 #include "display-screen-board.h"
+
+#include "console-move-parser.h"
+
+// #include "screen-move-parser.h"
 
 #endif

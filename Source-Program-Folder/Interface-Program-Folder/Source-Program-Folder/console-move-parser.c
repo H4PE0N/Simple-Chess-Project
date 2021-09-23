@@ -1,9 +1,9 @@
 
-#include "../Header-Program-Folder/game-files-includer.h"
+#include "../Header-Program-Folder/interface-files-includer.h"
 
 bool input_current_move(char* string)
 {
-	CLEAR_LINE; printf("[?] INPUT CURRENT MOVE\t: ");
+	CLEAR_LINE; printf("INPUT MOVE : ");
 
 	if(!input_string_variable(string)) return false;
 
@@ -72,8 +72,6 @@ bool save_move_parser(Move* move, Board board, Info info, char string[])
 
 	if(filePointer == NULL)
 	{
-		file_pointer_error(SAVE_FILE);
-
 		fclose(filePointer); return false;
 	}
 
@@ -123,8 +121,8 @@ bool parse_chess_position(Point* point, char string[])
 {
 	if(strlen(string) < 2 || strlen(string) > 2) return false;
 
-	int width = string_letter_index((char*) letters, BOARD_WIDTH, string[0]);
-	int height = string_letter_index((char*) numbers, BOARD_HEIGHT, string[1]);
+	int width = string_letter_index((char*) boardLetters, BOARD_WIDTH, string[0]);
+	int height = string_letter_index((char*) boardNumbers, BOARD_HEIGHT, string[1]);
 
 	if(width == -1 || height == -1) return false;
 

@@ -1,6 +1,6 @@
 
-#ifndef DISPLAY_HELP_FUNCTIONS_H
-#define DISPLAY_HELP_FUNCTIONS_H
+#ifndef SCREEN_HELP_FUNCTIONS_H
+#define SCREEN_HELP_FUNCTIONS_H
 
 extern const char* typeStrings[];
 extern const char* teamStrings[];
