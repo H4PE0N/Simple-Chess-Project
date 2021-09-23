@@ -1,7 +1,0 @@
-
-#ifndef INTERFACE_ERROR_FUNCTIONS_H
-#define INTERFACE_ERROR_FUNCTIONS_H
-
-
-
-#endif

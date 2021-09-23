@@ -15,8 +15,6 @@
 
 #include "interface-data-structures.h"
 
-#include "game-interface-program.h"
-
 #include "screen-help-functions.h"
 
 #include "display-screen-board.h"

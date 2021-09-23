@@ -8,8 +8,6 @@ bool display_chess_board(Board);
 
 bool display_game_info(Info);
 
-bool display_game_result(Board, Team);
-
 bool display_board_symbol(Board, Point);
 
 char extract_piece_symbol(Piece);

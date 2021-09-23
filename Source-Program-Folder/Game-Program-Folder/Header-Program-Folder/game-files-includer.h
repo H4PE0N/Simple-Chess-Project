@@ -11,6 +11,8 @@
 
 #include "game-setup-defines.h"
 
+#include "game-help-functions.h"
+
 
 #include "test-game-program.h"
 
