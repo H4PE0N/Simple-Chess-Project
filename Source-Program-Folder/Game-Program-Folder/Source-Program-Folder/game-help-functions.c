@@ -37,6 +37,16 @@ bool render_screen_result(Renderer* renderer, Board board, Team winner)
 	return true;
 }
 
+bool screen_result_handler(Window* window, Renderer* renderer, Board board, Team winner)
+{
+	if(!render_screen_result(renderer, board, winner)) return false;
+	SDL_UpdateWindowSurface(window);
+
+	printf("[!] PRESS ENTER TO QUIT..."); getchar();
+
+	return true;
+}
+
 bool console_user_handler(Board board, Info* info)
 {
 	Move move = EMPTY_MOVE;

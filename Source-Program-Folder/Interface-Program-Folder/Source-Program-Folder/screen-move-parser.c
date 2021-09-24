@@ -12,31 +12,33 @@ bool input_screen_move(Move* move, Window* window, Renderer* renderer, Board boa
     {
       if(event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_q))
       {
-        // if(!render_color_board(renderer, board, quitColor)) continue;
-        render_color_board(renderer, board, quitColor);
-        SDL_UpdateWindowSurface(window);
-
-        char string[20];
-
-        printf("ACTION: ");
-        scanf("%s", string); fflush(stdin);
-
-        convert_string_upper(string, strlen(string));
-
-        if(!strcmp(string, "STOP")) return false;
+        if(confirm_quit_screen(window, renderer, board)) return false;
 
         render_screen_board(renderer, board, info);
         SDL_UpdateWindowSurface(window);
       }
-      else if(!screen_move_parser(&inputMove, window, renderer, board, info, event))
-      {
-        continue;
-      }
+      else if(!screen_move_parser(&inputMove, window, renderer, board, info, event)) continue;
     }
 	}
   *move = inputMove;
 
 	return true;
+}
+
+bool confirm_quit_screen(Window* window, Renderer* renderer, Board board)
+{
+  // if(!render_color_board(renderer, board, quitColor)) continue;
+  render_color_board(renderer, board, quitColor);
+  SDL_UpdateWindowSurface(window);
+
+  char string[20];
+
+  printf("[!] CONFIRM QUIT: ");
+  scanf("%s", string); fflush(stdin);
+
+  convert_string_upper(string, strlen(string));
+
+  return !strcmp(string, "YES");
 }
 
 bool screen_move_parser(Move* move, Window* window, Renderer* renderer, Board board, Info info, Event event)

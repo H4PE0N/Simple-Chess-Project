@@ -30,7 +30,7 @@ bool board_point_checking(Board board, Point point, Point king)
 	if(board_point_empty(board, point)) return false;
 	if(board_point_empty(board, king)) return false;
 
-	if(!board_points_enemy(board, point, king)) return false;
+	if(points_not_enemy(board, point, king)) return false;
 
 	// These controls are more specific, and should be done later
 	if(!moving_piece_valid(board, point, king)) return false;

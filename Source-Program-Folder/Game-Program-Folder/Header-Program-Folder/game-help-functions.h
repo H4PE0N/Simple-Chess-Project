@@ -14,4 +14,6 @@ bool screen_computer_handler(Board, Info*, Window*, Renderer*);
 
 bool render_screen_result(Renderer*, Board, Team);
 
+bool screen_result_handler(Window*, Renderer*, Board, Team);
+
 #endif

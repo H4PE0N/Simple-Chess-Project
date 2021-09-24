@@ -14,4 +14,6 @@ bool screen_default_parser(Move*, Window*, Renderer*, Board, Info, Event);
 
 Point parse_mouse_point(Event);
 
+bool confirm_quit_screen(Window*, Renderer*, Board);
+
 #endif

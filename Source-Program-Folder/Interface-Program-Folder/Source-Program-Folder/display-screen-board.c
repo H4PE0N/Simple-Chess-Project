@@ -1,10 +1,10 @@
 
 #include "../Header-Program-Folder/interface-files-includer.h"
 
-const Color gridWhite = {232, 235, 239};
-const Color gridBlack = {125, 135, 150};
+const Color gridWhite = {230, 230, 230};
+const Color gridBlack = {100, 100, 100};
 
-const Color moveColor = {100, 100, 100};
+const Color moveColor = {60, 60, 60};
 
 const Color hintColor = {0, 255, 150};
 const Color quitColor = {255, 0, 0};
@@ -17,9 +17,49 @@ bool render_screen_board(Renderer* renderer, Board board, Info info)
 {
   if(!render_board_grid(renderer)) return false;
 
+  // if(!render_board_move(renderer, info.lastMove, moveColor)) return false;
   render_board_move(renderer, info.lastMove, moveColor);
 
+  if(!render_check_squares(renderer, board)) return false;
+
   if(!render_board_pieces(renderer, board)) return false;
+
+  return true;
+}
+
+bool render_check_squares(Renderer* renderer, Board board)
+{
+  Point whiteKing = board_piece_point(board, (Piece) {KING, WHITE});
+  if(!point_inside_board(whiteKing)) return false;
+
+  Point blackKing = board_piece_point(board, (Piece) {KING, WHITE});
+  if(!point_inside_board(blackKing)) return false;
+
+	Point point;
+
+	for(int height = 0; height < BOARD_HEIGHT; height += 1)
+	{
+		for(int width = 0; width < BOARD_WIDTH; width += 1)
+		{
+			point = (Point) {height, width};
+
+			if(board_point_checking(board, point, whiteKing))
+      {
+        if(!color_point_square(renderer, point, checkColor)) return false;
+
+        if(!color_point_square(renderer, whiteKing, checkColor)) return false;
+      }
+
+      if(board_point_checking(board, point, blackKing))
+      {
+        if(!color_point_square(renderer, point, checkColor)) return false;
+
+        if(!color_point_square(renderer, blackKing, checkColor)) return false;
+      }
+		}
+	}
+
+  SDL_RenderPresent(renderer);
 
   return true;
 }

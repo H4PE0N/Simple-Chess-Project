@@ -18,6 +18,8 @@ bool render_board_grid(Renderer*);
 
 bool render_board_color(Renderer*, Color);
 
+bool render_check_squares(Renderer*, Board);
+
 bool render_color_board(Renderer*, Board, Color);
 
 bool render_board_pieces(Renderer*, Board);

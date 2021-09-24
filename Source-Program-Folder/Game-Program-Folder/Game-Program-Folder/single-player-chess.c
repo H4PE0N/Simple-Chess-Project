@@ -33,15 +33,16 @@ int main(int argAmount, char* arguments[])
 		return false;
 	}
 
+
 	// if(console_single_player(&winner, board, &info))
+	// {
+	// 	display_console_result(board, winner);
+	// }
+	// else chess_game_quitted();
+
 	if(screen_single_player(&winner, board, &info, window, renderer))
 	{
-		// display_console_result(board, winner);
-		render_screen_result(renderer, board, winner);
-		SDL_UpdateWindowSurface(window);
-
-		printf("PRESS ANY KEY TO CONTINUE...");
-		getchar();
+		screen_result_handler(window, renderer, board, winner);
 	}
 	else chess_game_quitted();
 

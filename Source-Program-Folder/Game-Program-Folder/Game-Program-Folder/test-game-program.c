@@ -33,16 +33,13 @@ int main(int argAmount, char* arguments[])
 		return false;
 	}
 
+
 	if(test_game_program(&winner, board, &info, window, renderer))
 	{
-		// display_console_result(board, winner);
-		render_screen_result(renderer, board, winner);
-		SDL_UpdateWindowSurface(window);
-
-		printf("PRESS ANY KEY TO CONTINUE...");
-		getchar();
+		screen_result_handler(window, renderer, board, winner);
 	}
-	else chess_game_quitted(board, info);
+	else chess_game_quitted();
+
 
 	free_screen_variables(window, renderer, surface);
 
