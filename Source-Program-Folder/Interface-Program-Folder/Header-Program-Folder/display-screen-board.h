@@ -10,6 +10,7 @@ extern const Color stopColor;
 
 extern const Color hintColor;
 extern const Color quitColor;
+extern const Color drawColor;
 
 bool render_screen_board(Renderer*, Board, Info);
 
@@ -17,7 +18,7 @@ bool render_board_grid(Renderer*);
 
 bool render_board_color(Renderer*, Color);
 
-bool render_quit_board(Renderer*, Board);
+bool render_color_board(Renderer*, Board, Color);
 
 bool render_board_pieces(Renderer*, Board);
 

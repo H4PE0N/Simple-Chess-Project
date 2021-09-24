@@ -18,6 +18,8 @@ check the error handling
 
 
 
+console funtions rename!
+
 
 change the matrix value for the rook. He should want to castle
 

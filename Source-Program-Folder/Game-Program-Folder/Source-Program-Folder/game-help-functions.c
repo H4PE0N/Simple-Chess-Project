@@ -1,7 +1,7 @@
 
 #include "../Header-Program-Folder/game-files-includer.h"
 
-bool display_game_result(Board board, Team winner)
+bool display_console_result(Board board, Team winner)
 {
 	if(!display_chess_board(board)) return false;
 
@@ -16,6 +16,24 @@ bool display_game_result(Board board, Team winner)
 	{
 		CLEAR_LINE; printf("[!] THE GAME ENDED WITH A DRAW!\n");
 	}
+	return true;
+}
+
+bool render_screen_result(Renderer* renderer, Board board, Team winner)
+{
+	if(winner == WHITE)
+	{
+		if(!render_color_board(renderer, board, gridWhite)) return false;
+	}
+	else if(winner == BLACK)
+	{
+		if(!render_color_board(renderer, board, gridBlack)) return false;
+	}
+	else
+	{
+		if(!render_color_board(renderer, board, drawColor)) return false;
+	}
+
 	return true;
 }
 

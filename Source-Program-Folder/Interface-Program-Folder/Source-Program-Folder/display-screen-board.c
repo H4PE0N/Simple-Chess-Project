@@ -10,6 +10,7 @@ const Color hintColor = {0, 255, 150};
 const Color quitColor = {255, 0, 0};
 
 const Color movableColor = {0, 0, 255};
+const Color drawColor = {100, 100, 100};
 const Color checkColor = {255, 0, 0};
 
 bool render_screen_board(Renderer* renderer, Board board, Info info)
@@ -46,9 +47,9 @@ bool render_board_grid(Renderer* renderer)
   return true;
 }
 
-bool render_quit_board(Renderer* renderer, Board board)
+bool render_color_board(Renderer* renderer, Board board, Color color)
 {
-  if(!render_board_color(renderer, quitColor)) return false;
+  if(!render_board_color(renderer, color)) return false;
 
   if(!render_board_pieces(renderer, board)) return false;
 
