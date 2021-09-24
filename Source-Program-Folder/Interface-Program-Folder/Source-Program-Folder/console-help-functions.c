@@ -5,11 +5,11 @@ bool chess_team_string(char* string, Team team)
 {
 	switch(team)
 	{
-		case (NONE): strcpy(string, "NONE"); return true;
+		case (NONE): strcpy(string, NONE_STRING); return true;
 
-		case(WHITE): strcpy(string, "WHITE"); return true;
+		case(WHITE): strcpy(string, WHITE_STRING); return true;
 
-		case(BLACK): strcpy(string, "BLACK"); return true;
+		case(BLACK): strcpy(string, BLACK_STRING); return true;
 
 		default: return false;
 	}

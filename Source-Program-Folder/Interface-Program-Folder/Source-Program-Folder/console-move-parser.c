@@ -10,7 +10,7 @@ bool input_console_move(Move* move, Board board, Info info)
 	{
 		if(!input_string_move(inputString)) continue;
 
-		if(!strcmp(inputString, "STOP")) return false;
+		if(!strcmp(inputString, QUIT_STRING)) return false;
 
 		if(!parse_move_string(&inputMove, board, info, inputString)) continue;
 	}
@@ -22,7 +22,7 @@ bool input_console_move(Move* move, Board board, Info info)
 
 bool input_string_move(char* string)
 {
-	printf("INPUT MOVE : ");
+	printf("%s", MOVE_STRING_INPUT);
 
 	bool output = scanf("%[^\n]%*c", string);
 
@@ -43,11 +43,11 @@ bool parse_move_string(Move* move, Board board, Info info, char string[])
 {
 	convert_string_upper(string, strlen(string));
 
-	if(!strcmp(string, "HELP"))
+	if(!strcmp(string, HELP_STRING))
 	{
 		return help_move_parser(move, board, info);
 	}
-	else if(!strcmp(string, "HINT"))
+	else if(!strcmp(string, HINT_STRING))
 	{
 		return hint_move_parser(move, board, info);
 	}
@@ -67,7 +67,7 @@ bool hint_move_parser(Move* move, Board board, Info info)
 	char moveString[20];
 	if(!chess_move_string(moveString, hintMove)) return false;
 
-	printf("HINT MOVE : [%s]\n", moveString);
+	printf("%s[%s]\n", HINT_MOVE_OUTPUT, moveString);
 
 	*move = EMPTY_MOVE;
 

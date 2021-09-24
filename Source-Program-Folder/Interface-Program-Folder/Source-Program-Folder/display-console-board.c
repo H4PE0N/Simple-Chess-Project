@@ -78,19 +78,19 @@ bool display_game_info(Info info)
 	char moveString[20] = "\0";
 	chess_move_string(moveString, info.lastMove);
 
-	printf("LAST MOVE : [%s]\n", moveString);
+	printf("%s[%s]\n", LAST_MOVE_OUTPUT, moveString);
 
-	printf("CURRENT   : [%s]\n", teamString);
+	printf("%s[%s]\n", CURRENT_TEAM_OUTPUT, teamString);
 
-	printf("TURNES    : [%dst]\n", info.turns);
+	printf("%s[%dst]\n", TURNS_OUTPUT, info.turns);
 
-	printf("COUNTER   : [%d]\n", info.counter);
+	printf("%s[%d]\n", COUNTER_OUTPUT, info.counter);
 
-	printf("PASSANT   : [%d %d]\n", info.passant.height, info.passant.width);
+	printf("%s[%d %d]\n", PASSANT_OUTPUT, info.passant.height, info.passant.width);
 
-	printf("W CASTLES : [%d %d]\n", info.castles.white.queen, info.castles.white.king);
+	printf("%s[%d %d]\n", WHITE_CASTLE_OUTPUT, info.castles.white.queen, info.castles.white.king);
 	
-	printf("B CASTLES : [%d %d]\n", info.castles.black.queen, info.castles.black.king);
+	printf("%s[%d %d]\n", BLACK_CASTLE_OUTPUT, info.castles.black.queen, info.castles.black.king);
 
 	return true;
 }

@@ -1,24 +1,12 @@
 
 #include "../Header-Program-Folder/interface-files-includer.h"
 
-const Color gridWhite = {230, 230, 230};
-const Color gridBlack = {100, 100, 100};
-
-const Color moveColor = {60, 60, 60};
-
-const Color hintColor = {0, 255, 150};
-const Color quitColor = {255, 0, 0};
-
-const Color movableColor = {0, 0, 255};
-const Color drawColor = {100, 100, 100};
-const Color checkColor = {255, 0, 0};
-
 bool render_screen_board(Renderer* renderer, Board board, Info info)
 {
   if(!render_board_grid(renderer)) return false;
 
   // if(!render_board_move(renderer, info.lastMove, moveColor)) return false;
-  render_board_move(renderer, info.lastMove, moveColor);
+  render_board_move(renderer, info.lastMove, BOARD_MOVE_COLOR);
 
   if(!render_check_squares(renderer, board)) return false;
 
@@ -45,16 +33,16 @@ bool render_check_squares(Renderer* renderer, Board board)
 
 			if(board_point_checking(board, point, whiteKing))
       {
-        if(!color_point_square(renderer, point, checkColor)) return false;
+        if(!color_point_square(renderer, point, CHECK_KING_COLOR)) return false;
 
-        if(!color_point_square(renderer, whiteKing, checkColor)) return false;
+        if(!color_point_square(renderer, whiteKing, CHECK_KING_COLOR)) return false;
       }
 
       if(board_point_checking(board, point, blackKing))
       {
-        if(!color_point_square(renderer, point, checkColor)) return false;
+        if(!color_point_square(renderer, point, CHECK_KING_COLOR)) return false;
 
-        if(!color_point_square(renderer, blackKing, checkColor)) return false;
+        if(!color_point_square(renderer, blackKing, CHECK_KING_COLOR)) return false;
       }
 		}
 	}
@@ -76,7 +64,7 @@ bool render_board_grid(Renderer* renderer)
 		{
       point = (Point) {height, width};
 
-			currentColor = (Color) (((height + width) % 2 == 0) ? gridWhite : gridBlack);
+			currentColor = (Color) (((height + width) % 2 == 0) ? GRID_WHITE_COLOR : GRID_BLACK_COLOR);
 
 			if(!color_point_square(renderer, point, currentColor)) return false;
 		}
@@ -234,7 +222,7 @@ bool render_piece_moves(Renderer* renderer, Board board, Info info, Point point)
 
   for(int index = 0; index < amount; index += 1)
   {
-    render_board_move(renderer, moves[index], movableColor);
+    render_board_move(renderer, moves[index], MOVABLE_COLOR);
   }
 
   free(moves);

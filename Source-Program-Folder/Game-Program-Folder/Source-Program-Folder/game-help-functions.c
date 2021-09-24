@@ -23,15 +23,15 @@ bool render_screen_result(Renderer* renderer, Board board, Team winner)
 {
 	if(winner == WHITE)
 	{
-		if(!render_color_board(renderer, board, gridWhite)) return false;
+		if(!render_color_board(renderer, board, GRID_WHITE_COLOR)) return false;
 	}
 	else if(winner == BLACK)
 	{
-		if(!render_color_board(renderer, board, gridBlack)) return false;
+		if(!render_color_board(renderer, board, GRID_BLACK_COLOR)) return false;
 	}
 	else
 	{
-		if(!render_color_board(renderer, board, drawColor)) return false;
+		if(!render_color_board(renderer, board, DRAW_GAME_COLOR)) return false;
 	}
 
 	return true;

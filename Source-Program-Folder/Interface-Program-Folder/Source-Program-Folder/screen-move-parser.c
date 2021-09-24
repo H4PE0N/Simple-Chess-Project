@@ -8,17 +8,16 @@ bool input_screen_move(Move* move, Window* window, Renderer* renderer, Board boa
 
 	while(!move_inside_board(inputMove))
 	{
-		if(SDL_PollEvent(&event))
-    {
-      if(event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_q))
-      {
-        if(confirm_quit_screen(window, renderer, board)) return false;
+		if(!SDL_PollEvent(&event)) continue;
 
-        render_screen_board(renderer, board, info);
-        SDL_UpdateWindowSurface(window);
-      }
-      else if(!screen_move_parser(&inputMove, window, renderer, board, info, event)) continue;
+    if(event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_q))
+    {
+      if(confirm_quit_screen(window, renderer, board)) return false;
+
+      render_screen_board(renderer, board, info);
+      SDL_UpdateWindowSurface(window);
     }
+    else if(!screen_move_parser(&inputMove, window, renderer, board, info, event)) continue;
 	}
   *move = inputMove;
 
@@ -28,17 +27,26 @@ bool input_screen_move(Move* move, Window* window, Renderer* renderer, Board boa
 bool confirm_quit_screen(Window* window, Renderer* renderer, Board board)
 {
   // if(!render_color_board(renderer, board, quitColor)) continue;
-  render_color_board(renderer, board, quitColor);
+  render_color_board(renderer, board, QUIT_GAME_COLOR);
   SDL_UpdateWindowSurface(window);
 
   char string[20];
 
-  printf("[!] CONFIRM QUIT: ");
-  scanf("%s", string); fflush(stdin);
+  printf("%s", CONFIRM_QUIT_INPUT);
 
-  convert_string_upper(string, strlen(string));
+  bool output = scanf("%[^\n]%*c", string);
 
-  return !strcmp(string, "YES");
+	fflush(stdin);
+
+	if(output <= 0) return false;
+
+	int length = strlen(string);
+
+	if(length <= 0) return false;
+
+	convert_string_upper(string, length);
+
+  return !strcmp(string, QUIT_STRING);
 }
 
 bool screen_move_parser(Move* move, Window* window, Renderer* renderer, Board board, Info info, Event event)
@@ -69,7 +77,7 @@ bool screen_hint_parser(Move* move, Window* window, Renderer* renderer, Board bo
 
   if(!render_screen_board(renderer, board, info)) return false;
 
-	if(!render_board_move(renderer, hintMove, hintColor)) return false;
+	if(!render_board_move(renderer, hintMove, HINT_MOVE_COLOR)) return false;
 
   if(!render_board_pieces(renderer, board)) return false;
 
