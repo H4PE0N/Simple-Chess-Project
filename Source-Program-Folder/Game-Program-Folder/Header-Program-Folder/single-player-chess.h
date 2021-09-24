@@ -4,4 +4,6 @@
 
 bool console_single_player(Team*, Board, Info*);
 
+bool screen_single_player(Team*, Board, Info*, Window*, Renderer*);
+
 #endif

@@ -58,10 +58,43 @@ bool console_computer_handler(Board board, Info* info)
 
 bool screen_user_handler(Board board, Info* info, Window* window, Renderer* renderer)
 {
-	return false;
+	Move move = EMPTY_MOVE;
+
+	while(!move_inside_board(move))
+	{
+		render_screen_board(renderer, board, *info);
+		SDL_UpdateWindowSurface(window);
+
+		// display_console_board(board, *info);
+
+		if(!input_screen_move(&move, window, renderer, board, *info)) return false;
+	}
+
+	if(!move_chess_piece(board, move, info))
+	{
+		return screen_user_handler(board, info, window, renderer);
+	}
+
+	return true;
 }
 
 bool screen_computer_handler(Board board, Info* info, Window* window, Renderer* renderer)
 {
-	return false;
+	render_screen_board(renderer, board, *info);
+	SDL_UpdateWindowSurface(window);
+
+	// display_console_board(board, *info);
+
+	Move move = EMPTY_MOVE;
+
+	if(!best_possible_move(&move, board, *info, STD_DEPTH, info->current))
+	{
+		can_not_find_move(board, *info, info->current);
+
+		return false;
+	}
+
+	if(!move_chess_piece(board, move, info)) return false;
+
+	return true;
 }
