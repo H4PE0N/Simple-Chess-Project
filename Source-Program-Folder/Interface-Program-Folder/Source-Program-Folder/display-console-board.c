@@ -19,7 +19,7 @@ bool display_chess_board(Board board)
 
 	for(int height = 0; height < BOARD_HEIGHT; height += 1)
 	{
-		CLEAR_LINE; printf("%c ", boardNumbers[height]);
+		printf("%c ", boardNumbers[height]);
 
 		for(int width = 0; width < BOARD_WIDTH; width += 1)
 		{
@@ -38,7 +38,7 @@ bool display_chess_board(Board board)
 
 void display_board_letters(char letters[])
 {
-	CLEAR_LINE; printf("  ");
+	printf("  ");
 	for(int index = 0; index < BOARD_WIDTH; index += 1)
 	{
 		printf("%c ", letters[index]);
@@ -78,13 +78,19 @@ bool display_game_info(Info info)
 	char moveString[20] = "\0";
 	chess_move_string(moveString, info.lastMove);
 
-	CLEAR_LINE; printf("LAST MOVE : [%s]\n", moveString);
-	CLEAR_LINE; printf("CURRENT   : [%s]\n", teamString);
-	CLEAR_LINE; printf("TURNES    : [%dst]\n", info.turns);
-	CLEAR_LINE; printf("COUNTER   : [%d]\n", info.counter);
-	CLEAR_LINE; printf("PASSANT   : [%d %d]\n", info.passant.height, info.passant.width);
-	CLEAR_LINE; printf("W CASTLES : [%d %d]\n", info.castles.white.queen, info.castles.white.king);
-	CLEAR_LINE; printf("B CASTLES : [%d %d]\n", info.castles.black.queen, info.castles.black.king);
+	printf("LAST MOVE : [%s]\n", moveString);
+
+	printf("CURRENT   : [%s]\n", teamString);
+
+	printf("TURNES    : [%dst]\n", info.turns);
+
+	printf("COUNTER   : [%d]\n", info.counter);
+
+	printf("PASSANT   : [%d %d]\n", info.passant.height, info.passant.width);
+
+	printf("W CASTLES : [%d %d]\n", info.castles.white.queen, info.castles.white.king);
+	
+	printf("B CASTLES : [%d %d]\n", info.castles.black.queen, info.castles.black.king);
 
 	return true;
 }

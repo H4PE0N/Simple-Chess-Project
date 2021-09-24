@@ -41,7 +41,7 @@ bool execute_pawn_move(Board board, Move move, Info* info)
 	if(board_points_equal(stop, info->passant))
 	{
 		Team enemy = piece_team_enemy(team);
-		
+
 		Point removePoint = passant_remove_point(info->passant, enemy);
 		if(!point_inside_board(removePoint)) return false;
 
@@ -86,11 +86,15 @@ bool execute_rook_move(Board board, Move move, Info* info)
 
 
 	Team team = board_point_team(board, start);
+	if(!piece_team_exists(team)) return false;
 
 	Side side = rook_starting_side(start.width);
 
+	Piece stopPiece = board_point_piece(board, stop);
+	bool isKing = board_pieces_equal(stopPiece, (Piece) {KING, team});
+
 	// This executes the castle
-	if(team_castle_valid(start, stop, team))
+	if(team_castle_valid(start, stop, team) && isKing)
 	{
 		Point castleRook, castleKing;
 		if(!extract_castle_points(&castleRook, &castleKing, start, stop, team)) return false;

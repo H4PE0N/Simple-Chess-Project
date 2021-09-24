@@ -3,66 +3,100 @@
 
 void create_board_error(char filename[])
 {
-	CLEAR_LINE; printf("\n");
-	display_error_header("CREATE BOARD ERROR");
-	CLEAR_LINE; printf("THE FILE NAMED [%s] CUASED THE ERROR!\n", filename);
+	printf("\n");
 	display_error_message("THE CHESS BOARD COULD NOT BE CREATED!");
+	display_file_error(filename);
 }
 
-void setup_info_error(Board board)
+void setup_info_error()
 {
-	CLEAR_LINE; printf("\n");
-	display_error_header("SETUP INFO ERROR");
+	printf("\n");
 	display_error_message("THE BOARD INFO COULD NOT BE EXTRACTED!");
 }
 
 void file_values_error(char filename[])
 {
-	CLEAR_LINE; printf("\n");
-	display_error_header("FILE VALUES ERROR");
-	CLEAR_LINE; printf("THE FILE NAMED [%s] CUASED THE ERROR!\n", filename);
+	printf("\n");
 	display_error_message("THE FILE HAD INVALID BOARD VALUES!");
+	display_file_error(filename);
 }
 
-void setup_variables_error()
+void game_variables_error()
 {
-	CLEAR_LINE; printf("\n");
-	display_error_header("SETUP VARIABLES ERROR");
+	printf("\n");
 	display_error_message("THE GAME-VARIABLES COULD NOT BE CREATED!");
 }
 
 void chess_game_quitted()
 {
-	CLEAR_LINE; printf("\n");
-	display_error_header("CHESS GAME QUITTED");
+	printf("\n");
 	display_error_message("THE CHESS GAME QUITTED UNEXPECTEDLY!");
 }
 
 void file_pointer_error(char filename[])
 {
-	CLEAR_LINE; printf("\n");
-	display_error_header("FILE POINTER ERROR");
-	CLEAR_LINE; printf("THE FILE NAMED [%s] CUASED THE ERROR!\n", filename);
+	printf("\n");
 	display_error_message("THE FILE COULD NOT BE OPENED [NO FILE]!");
+	display_file_error(filename);
 }
 
-void can_not_find_move(Board board, Info info, Team team)
+
+void screen_variables_error()
 {
-	CLEAR_LINE; printf("\n");
-	display_error_header("COMPUTER MOVE ERROR");
-
-	char teamString[20]; chess_team_string(teamString, team);
-	CLEAR_LINE; printf("TEAM [%s] CANT FIND A MOVE ON THE BOARD!\n", teamString);
-
-	display_error_message("THE COMPUTER COULD NOT FIND A MOVE!");
+	printf("\n");
+	display_error_message("THE SCREEN-VARIABLES COULD NOT BE CREATED!");
 }
 
-void display_error_header(char header[])
+void init_screen_error()
 {
-	CLEAR_LINE; printf("[!] === %s === [!]\n", header);
+	printf("\n");
+	display_error_message("THE SDL SCREEN COULD NOT INITIALIZE!");
+	display_sdl_error();
 }
+
+void init_image_error()
+{
+	printf("\n");
+	display_error_message("THE SDL IMAGE COULD NOT INITIALIZE!");
+	display_sdl_error();
+}
+
+void create_window_error(char title[])
+{
+	printf("\n");
+	display_error_message("COULD NOT CREATE WINDOW VARIABLE!");
+	printf("[!] WINDOW TITLE WOULD BE: (%s)\n", title);
+	display_sdl_error();
+}
+
+void create_surface_error(Window* window)
+{
+	printf("\n");
+	display_error_message("COULD NOT CRAETE SURFACE VARIABLE!");
+	printf("[!] ADDRESS OF WINDOW VARIABLE: (%p)\n", window);
+	display_sdl_error();
+}
+
+void create_renderer_error(Surface* surface)
+{
+	printf("\n");
+	display_error_message("COULD NOT CREATE RENDERER VARIABLE!");
+	printf("[!] ADDRESS OF SURFACE VARIABLE: (%p)\n", surface);
+	display_sdl_error();
+}
+
 
 void display_error_message(char message[])
 {
-	CLEAR_LINE; printf("[ERROR]: %s\n", message);
+	printf("[ERROR]: %s\n", message);
+}
+
+void display_file_error(char filename[])
+{
+	printf("[!] FILE THAT CAUSED ERROR: (%s)\n", filename);
+}
+
+void display_sdl_error()
+{
+	printf("[SDL]: %s\n", SDL_GetError());
 }

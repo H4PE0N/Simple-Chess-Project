@@ -20,6 +20,4 @@ bool setup_game_variables(Board, Info*, char[]);
 
 void extract_file_name(char*, char*[], int);
 
-bool setup_screen_variables(Window**, Renderer**, Surface**, char[]);
-
 #endif

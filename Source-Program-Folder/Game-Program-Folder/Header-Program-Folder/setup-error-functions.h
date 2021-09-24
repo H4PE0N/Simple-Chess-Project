@@ -4,20 +4,39 @@
 
 void create_board_error(char[]);
 
-void setup_info_error(Board);
+void setup_info_error();
 
 void file_pointer_error(char[]);
 
 void file_values_error(char[]);
 
-void setup_variables_error();
-
-void can_not_find_move(Board, Info, Team);
+void game_variables_error();
 
 void chess_game_quitted();
 
-void display_error_header(char[]);
+
+void init_screen_error();
+
+void init_image_error();
+
+void create_window_error();
+
+void create_surface_error(Window*);
+
+void create_renderer_error(Surface*);
 
 void display_error_message(char[]);
+
+void screen_variables_error();
+
+
+void chess_game_quitted();
+
+
+void display_error_message(char[]);
+
+void display_file_error(char[]);
+
+void display_sdl_error();
 
 #endif

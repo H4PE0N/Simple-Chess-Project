@@ -21,11 +21,7 @@ bool extract_piece_filename(char* filename, Piece piece)
 	const char* typeString = typeStrings[piece.type];
 	const char* teamString = teamStrings[piece.team];
 
-	char file[200];
-
-	sprintf(file, "%s-%s.png", teamString, typeString);
-
-	sprintf(filename, "%s/%s", PIECE_FOLDER, file);
+	sprintf(filename, "%s/%s-%s.png", PIECE_FOLDER, teamString, typeString);
 
 	return true;
 }

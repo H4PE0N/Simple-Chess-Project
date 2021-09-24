@@ -110,13 +110,17 @@ bool rook_move_acceptable(Board board, Move move, Info info)
 	Team team = board_point_team(board, start);
 	if(!piece_team_exists(team)) return false;
 
+	Piece stopPiece = board_point_piece(board, stop);
+	bool isKing = board_pieces_equal(stopPiece, (Piece) {KING, team});
 
-	if(team_castle_valid(start, stop, team))
+
+	if(team_castle_valid(start, stop, team) && isKing)
 	{
-		Point king = board_piece_point(board, (Piece) {KING, team});
-		if(!point_inside_board(king)) return false;
-
-		if(king_inside_check(board, king)) return false;
+		// Point king = board_piece_point(board, (Piece) {KING, team});
+		// if(!point_inside_board(king)) return false;
+		//
+		// if(king_inside_check(board, king)) return false;
+		if(king_inside_check(board, stop)) return false;
 
 		// This checks that the operation is clear to go (true)
 		if(!castle_bool_valid(start, info.castles, team)) return false;

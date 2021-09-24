@@ -7,6 +7,8 @@
 
 #include "setup-game-variables.h"
 
+#include "setup-screen-variables.h"
+
 #include "setup-error-functions.h"
 
 #include "game-setup-defines.h"

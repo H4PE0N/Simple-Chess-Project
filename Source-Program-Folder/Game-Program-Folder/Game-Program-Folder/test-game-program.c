@@ -13,7 +13,7 @@ int main(int argAmount, char* arguments[])
 
 	if(!setup_game_variables(board, &info, filename))
 	{
-		setup_variables_error();
+		game_variables_error();
 
 		free_chess_board(board);
 
@@ -26,7 +26,7 @@ int main(int argAmount, char* arguments[])
 
 	if(!setup_screen_variables(&window, &renderer, &surface, "TEST PROGRAM"))
 	{
-		printf("Error screen vars!\n");
+		screen_variables_error();
 
 		free_chess_board(board);
 

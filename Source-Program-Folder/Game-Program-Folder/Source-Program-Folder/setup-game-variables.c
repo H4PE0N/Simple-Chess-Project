@@ -1,63 +1,6 @@
 
 #include "../Header-Program-Folder/game-files-includer.h"
 
-bool setup_screen_variables(Window** window, Renderer** renderer, Surface** surface, char title[])
-{
-	if(SDL_Init(SDL_INIT_VIDEO) != 0)
-	{
-		printf("Init Error: %s\n", SDL_GetError());
-
-		return false;
-	}
-
-	if(IMG_Init(IMG_INIT_PNG) == 0)
-	{
-		printf("Init Error: %s\n", SDL_GetError());
-
-		SDL_Quit();
-
-		return false;
-	}
-
-	if(!create_screen_window(window, title))
-	{
-		printf("Window Error: %s\n", SDL_GetError());
-
-		SDL_Quit();
-
-		return false;
-	}
-
-	if(!create_window_surface(surface, *window))
-	{
-		printf("Surface is null: %s\n", SDL_GetError());
-
-		SDL_DestroyWindow(*window);
-
-		SDL_Quit();
-
-		return false;
-	}
-
-	if(!create_surface_renderer(renderer, *surface))
-	{
-		printf("renderer is null: %s\n", SDL_GetError());
-
-		SDL_FreeSurface(*surface);
-
-		SDL_DestroyWindow(*window);
-
-		SDL_Quit();
-
-		return false;
-	}
-
-	// This line is just needed to make the window want to show it self:
-	Event event; SDL_PollEvent(&event);
-
-	return true;
-}
-
 bool setup_game_variables(Board board, Info* info, char filename[])
 {
 	if(!create_chess_board(board, filename))
@@ -207,7 +150,7 @@ void extract_file_name(char* filename, char* arguments[], int amount)
 {
 	if(amount >= 2) strcpy(filename, arguments[1]);
 
-	else strcpy(filename, STD_FILE);
+	else strcpy(filename, BOARD_FILE);
 }
 
 bool extract_file_value(Piece* piece, char lineBuffer[], int index)

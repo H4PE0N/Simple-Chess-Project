@@ -22,7 +22,7 @@ bool input_console_move(Move* move, Board board, Info info)
 
 bool input_string_move(char* string)
 {
-	CLEAR_LINE; printf("INPUT MOVE : ");
+	printf("INPUT MOVE : ");
 
 	bool output = scanf("%[^\n]%*c", string);
 
@@ -67,7 +67,7 @@ bool hint_move_parser(Move* move, Board board, Info info)
 	char moveString[20];
 	if(!chess_move_string(moveString, hintMove)) return false;
 
-	CLEAR_LINE; printf("HINT MOVE : [%s]\n", moveString);
+	printf("HINT MOVE : [%s]\n", moveString);
 
 	*move = EMPTY_MOVE;
 
