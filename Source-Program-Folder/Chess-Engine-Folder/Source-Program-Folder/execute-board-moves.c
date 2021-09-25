@@ -53,12 +53,16 @@ bool execute_pawn_move(Board board, Move move, Info* info)
 		move_board_piece(board, start, stop);
 	}
 
+
 	info->lastMove = move;
 
+
+	// The pawn has just moved 2 steps the first thing it did
+	// This logic line should be replced by a real logic function
 	if(start.width == stop.width && abs(start.height - stop.height) == 2)
 	{
 		Point passantPoint = pawn_passant_point(stop, team);
-		if(!point_inside_board(passantPoint)) return false;
+		// if(!point_inside_board(passantPoint)) return false;
 
 		info->passant = passantPoint;
 	}
@@ -88,7 +92,6 @@ bool execute_rook_move(Board board, Move move, Info* info)
 	Team team = board_point_team(board, start);
 	if(!piece_team_exists(team)) return false;
 
-	Side side = rook_starting_side(start.width);
 
 	Piece stopPiece = board_point_piece(board, stop);
 	bool isKing = board_pieces_equal(stopPiece, (Piece) {KING, team});
@@ -104,24 +107,15 @@ bool execute_rook_move(Board board, Move move, Info* info)
 
 		update_castles_values(&info->castles, team, EMPTY_CASTLE);
 	}
-	else if(board_points_equal(stop, info->passant))
-	{
-		Team enemy = piece_team_enemy(team);
-
-		Point removePoint = passant_remove_point(info->passant, enemy);
-		if(!point_inside_board(removePoint)) return false;
-
-		move_board_piece(board, start, stop);
-		remove_board_piece(board, removePoint);
-
-		update_castles_value(&info->castles, team, side, false);
-	}
 	else
 	{
+		Side side = rook_starting_side(start.width);
+
 		move_board_piece(board, start, stop);
 
 		update_castles_value(&info->castles, team, side, false);
 	}
+
 
 	info->lastMove = move;
 
@@ -139,22 +133,8 @@ bool execute_knight_move(Board board, Move move, Info* info)
 	if(board_point_empty(board, start)) return false;
 
 
-	Team team = board_point_team(board, start);
+	move_board_piece(board, start, stop);
 
-	if(board_points_equal(stop, info->passant))
-	{
-		Team enemy = piece_team_enemy(team);
-
-		Point removePoint = passant_remove_point(info->passant, enemy);
-		if(!point_inside_board(removePoint)) return false;
-
-		move_board_piece(board, start, stop);
-		remove_board_piece(board, removePoint);
-	}
-	else
-	{
-		move_board_piece(board, start, stop);
-	}
 
 	info->lastMove = move;
 
@@ -172,22 +152,8 @@ bool execute_bishop_move(Board board, Move move, Info* info)
 	if(board_point_empty(board, start)) return false;
 
 
-	Team team = board_point_team(board, start);
+	move_board_piece(board, start, stop);
 
-	if(board_points_equal(stop, info->passant))
-	{
-		Team enemy = piece_team_enemy(team);
-
-		Point removePoint = passant_remove_point(info->passant, enemy);
-		if(!point_inside_board(removePoint)) return false;
-
-		move_board_piece(board, start, stop);
-		remove_board_piece(board, removePoint);
-	}
-	else
-	{
-		move_board_piece(board, start, stop);
-	}
 
 	info->lastMove = move;
 
@@ -205,22 +171,8 @@ bool execute_queen_move(Board board, Move move, Info* info)
 	if(board_point_empty(board, start)) return false;
 
 
-	Team team = board_point_team(board, start);
+	move_board_piece(board, start, stop);
 
-	if(board_points_equal(stop, info->passant))
-	{
-		Team enemy = piece_team_enemy(team);
-
-		Point removePoint = passant_remove_point(info->passant, enemy);
-		if(!point_inside_board(removePoint)) return false;
-
-		move_board_piece(board, start, stop);
-		remove_board_piece(board, removePoint);
-	}
-	else
-	{
-		move_board_piece(board, start, stop);
-	}
 
 	info->lastMove = move;
 
@@ -240,20 +192,9 @@ bool execute_king_move(Board board, Move move, Info* info)
 
 	Team team = board_point_team(board, start);
 
-	if(board_points_equal(stop, info->passant))
-	{
-		Team enemy = piece_team_enemy(team);
 
-		Point removePoint = passant_remove_point(info->passant, enemy);
-		if(!point_inside_board(removePoint)) return false;
+	move_board_piece(board, start, stop);
 
-		move_board_piece(board, start, stop);
-		remove_board_piece(board, removePoint);
-	}
-	else
-	{
-		move_board_piece(board, start, stop);
-	}
 
 	update_castles_values(&info->castles, team, EMPTY_CASTLE);
 
