@@ -8,7 +8,7 @@
 #define HINT_MOVE_COLOR (Color) {255, 255, 0}
 #define QUIT_GAME_COLOR (Color) {255, 0, 0}
 
-#define DRAW_GAME_COLOR (Color) {100, 100, 100}
+#define DRAW_GAME_COLOR (Color) {0, 100, 100}
 #define CHECK_KING_COLOR (Color) {255, 0, 0}
 
 #define MOVABLE_COLOR (Color) {0, 0, 255}
