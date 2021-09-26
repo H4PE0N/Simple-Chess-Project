@@ -20,7 +20,7 @@ bool render_check_squares(Renderer* renderer, Board board)
   Point whiteKing = board_piece_point(board, (Piece) {KING, WHITE});
   if(!point_inside_board(whiteKing)) return false;
 
-  Point blackKing = board_piece_point(board, (Piece) {KING, WHITE});
+  Point blackKing = board_piece_point(board, (Piece) {KING, BLACK});
   if(!point_inside_board(blackKing)) return false;
 
 	Point point;
