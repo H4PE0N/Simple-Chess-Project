@@ -9,10 +9,6 @@ computer program: best_possible_move -> init "best move" should be last move in 
 
 fix draw function: If only two kings remain -> draw
 
-fix "en passant": only a pawn can capture an "en passant"
-
-
-
 
 
 when checking if the point or the move is inside the board, it should return the bad value.
