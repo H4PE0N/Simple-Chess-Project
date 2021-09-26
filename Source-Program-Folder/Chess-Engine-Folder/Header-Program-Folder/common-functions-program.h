@@ -2,9 +2,6 @@
 #ifndef COMMON_FUNCTIONS_PROGRAM_H
 #define COMMON_FUNCTIONS_PROGRAM_H
 
-extern const char letters[];
-extern const char numbers[];
-
 int point_array_amount(Point[]);
 
 Point* create_point_array(int);
