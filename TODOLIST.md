@@ -19,6 +19,8 @@ the code should be more hard-coded. BOARD_HEIGHT is fine, but not so loose code 
 
 fix the errors that can occur in the screen display functions
 
+the variables can be defined inside of a loop. The code will look better that way.
+
 
 
 possible, movable and prevent functions are most the same. Don't have repeating code!
