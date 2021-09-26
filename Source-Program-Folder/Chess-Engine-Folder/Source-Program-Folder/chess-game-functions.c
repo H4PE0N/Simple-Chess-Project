@@ -61,6 +61,11 @@ bool team_pieces_movable(Board board, Info info, Team team)
 
 bool check_draw_situation(Board board, Info info, Team team)
 {
+	if(!piece_team_exists(team)) return false;
+
+	// if(team != info.current) return false;
+
+
 	Point king = board_piece_point(board, (Piece) {KING, team});
 
 	if(!point_inside_board(king)) return false;
@@ -74,6 +79,9 @@ bool check_draw_situation(Board board, Info info, Team team)
 
 bool check_mate_situation(Board board, Info info, Team team)
 {
+	if(!piece_team_exists(team)) return false;
+
+
 	Point king = board_piece_point(board, (Piece) {KING, team});
 
 	// I think that you return true in this case
