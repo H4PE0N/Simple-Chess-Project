@@ -20,8 +20,6 @@
 
 #include "common-functions-program.h"
 
-#include "board-move-handler.h"
-
 #include "check-prevent-functions.h"
 
 #include "chess-computer-program.h"
@@ -33,8 +31,6 @@
 #include "chess-pieces-movable.h"
 
 #include "execute-board-moves.h"
-
-#include "game-check-functions.h"
 
 #include "piece-possible-moves.h"
 

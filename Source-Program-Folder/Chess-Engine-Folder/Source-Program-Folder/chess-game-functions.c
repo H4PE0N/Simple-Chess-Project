@@ -154,3 +154,64 @@ bool check_mate_situation(Board board, Info info, Team team)
 
 	return true;
 }
+
+bool move_chess_piece(Board board, Move move, Info* info)
+{
+	if(!move_inside_board(move)) return false;
+
+	// It must be the current team that is moving the piece!
+	Team team = board_point_team(board, move.start);
+	if(!piece_team_exists(team)) return false;
+
+	if(team != info->current) return false;
+
+	if(!piece_move_acceptable(board, move, *info)) return false;
+
+	if(!execute_piece_move(board, move, info)) return false;
+
+	return true;
+}
+
+bool king_inside_check(Board board, Point king)
+{
+	if(!point_inside_board(king)) return false;
+
+	// If it isn't a king, it cant be in check
+	if(board_point_type(board, king) != KING) return false;
+
+	Point point;
+
+	for(int height = 0; height < BOARD_HEIGHT; height += 1)
+	{
+		for(int width = 0; width < BOARD_WIDTH; width += 1)
+		{
+			point = (Point) {height, width};
+
+			if(board_point_checking(board, point, king)) return true;
+		}
+	}
+	return false;
+}
+
+bool board_point_checking(Board board, Point point, Point king)
+{
+	// These controls is the most obvious, and should be done first
+	if(!points_inside_board(point, king)) return false;
+
+	if(board_point_empty(board, point)) return false;
+	if(board_point_empty(board, king)) return false;
+
+	if(points_not_enemy(board, point, king)) return false;
+
+	// These controls are more specific, and should be done later
+	if(!moving_piece_valid(board, point, king)) return false;
+
+	if(!clear_moving_path(board, point, king)) return false;
+
+	// If it is a pawn, that is moving forward, it cant check
+	// and therefor it should not count as a check
+	bool isPawn = (board_point_type(board, point) == PAWN);
+	if(isPawn && point.width == king.width) return false;
+
+	return true;
+}
