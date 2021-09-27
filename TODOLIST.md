@@ -7,8 +7,6 @@ patch version:
 
 computer program: best_possible_move -> init "best move" should be last move in move array
 
-fix draw function: If only two kings remain -> draw
-
 
 
 when checking if the point or the move is inside the board, it should return the bad value.
