@@ -103,8 +103,6 @@ bool create_chess_board(Board board, char filename[])
 	{
 		file_pointer_error(filename);
 
-		//fclose(filePointer);
-
 		return false;
 	}
 
@@ -112,7 +110,9 @@ bool create_chess_board(Board board, char filename[])
 	{
 		file_values_error(filename);
 
-		fclose(filePointer); return false;
+		fclose(filePointer);
+
+		return false;
 	}
 
 	fclose(filePointer); return true;

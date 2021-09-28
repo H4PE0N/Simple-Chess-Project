@@ -60,7 +60,12 @@ bool console_multi_player(Team* winner, Board board, Info* info)
 
 	while(game_still_running(winner, board, *info))
 	{
-		display_console_board(board, *info);
+		if(!display_console_board(board, *info))
+		{
+			printf("Could not display console board!\n");
+
+			return false;
+		}
 
 		if(!input_console_move(&move, board, *info)) return false;
 
@@ -78,7 +83,13 @@ bool screen_multi_player(Team* winner, Board board, Info* info, Window* window, 
 
 	while(game_still_running(winner, board, *info))
 	{
-		render_screen_board(renderer, board, *info);
+		if(!render_screen_board(renderer, board, *info))
+		{
+			printf("Game loop render screen board error!\n");
+
+			return false;
+		}
+
 		SDL_UpdateWindowSurface(window);
 
 		// display_console_board(board, *info);

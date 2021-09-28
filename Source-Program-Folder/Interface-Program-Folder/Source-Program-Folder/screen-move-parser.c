@@ -6,6 +6,9 @@ bool input_screen_move(Move* move, Window* window, Renderer* renderer, Board boa
   Move inputMove = EMPTY_MOVE;
   Event event;
 
+  if(!render_screen_board(renderer, board, info)) return false;
+  SDL_UpdateWindowSurface(window);
+
 	while(!move_inside_board(inputMove))
 	{
 		if(!SDL_PollEvent(&event)) continue;
@@ -14,10 +17,10 @@ bool input_screen_move(Move* move, Window* window, Renderer* renderer, Board boa
     {
       if(confirm_quit_screen(window, renderer, board)) return false;
 
-      render_screen_board(renderer, board, info);
+      if(!render_screen_board(renderer, board, info)) return false;
       SDL_UpdateWindowSurface(window);
     }
-    else if(!screen_move_parser(&inputMove, window, renderer, board, info, event)) continue;
+    else if(!screen_move_parser(&inputMove, window, renderer, board, info, event)) return false;
 	}
   *move = inputMove;
 
@@ -26,8 +29,8 @@ bool input_screen_move(Move* move, Window* window, Renderer* renderer, Board boa
 
 bool confirm_quit_screen(Window* window, Renderer* renderer, Board board)
 {
-  // if(!render_color_board(renderer, board, quitColor)) continue;
-  render_color_board(renderer, board, QUIT_GAME_COLOR);
+  // If the board can not render properly, it is best to accept the quit.
+  if(!render_color_board(renderer, board, QUIT_GAME_COLOR)) return true;
   SDL_UpdateWindowSurface(window);
 
   char string[20];
@@ -107,10 +110,14 @@ bool screen_default_parser(Move* move, Window* window, Renderer* renderer, Board
 
     move->stop = parse_mouse_point(upEvent);
 
+    if(!render_screen_board(renderer, board, info)) return false;
+    SDL_UpdateWindowSurface(window);
+
     return true;
   }
 
-  return false;
+  // This return true is because the parser did not fail, it just did not parse.
+  return true;
 }
 
 Point parse_mouse_point(Event event)
