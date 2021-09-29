@@ -1,6 +1,6 @@
 
-#ifndef COMMON_FUNCTIONS_PROGRAM_H
-#define COMMON_FUNCTIONS_PROGRAM_H
+#ifndef ENGINE_HELP_FUNCTIONS_H
+#define ENGINE_HELP_FUNCTIONS_H
 
 int point_array_amount(Point[]);
 

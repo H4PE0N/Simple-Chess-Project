@@ -18,7 +18,7 @@
 
 #include "chess-engine-structures.h"
 
-#include "common-functions-program.h"
+#include "engine-help-functions.h"
 
 #include "check-prevent-functions.h"
 
