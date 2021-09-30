@@ -3,14 +3,36 @@
 
 bool render_screen_board(Renderer* renderer, Board board, Info info)
 {
-  if(!render_board_grid(renderer)) return false;
+  if(!render_board_grid(renderer))
+  {
+    printf("Could not render board grid!\n");
 
-  // if(!render_board_move(renderer, info.lastMove, moveColor)) return false;
-  render_board_move(renderer, info.lastMove, BOARD_MOVE_COLOR);
+    return false;
+  }
 
-  if(!render_check_squares(renderer, board)) return false;
+  if(move_inside_board(info.lastMove))
+  {
+    if(!render_board_move(renderer, info.lastMove, BOARD_MOVE_COLOR))
+    {
+      printf("Could not render board move!\n");
 
-  if(!render_board_pieces(renderer, board)) return false;
+      return false;
+    }
+  }
+
+  if(!render_check_squares(renderer, board))
+  {
+    printf("Could not render check squares!\n");
+
+    return false;
+  }
+
+  if(!render_board_pieces(renderer, board))
+  {
+    printf("Could not render board pieces!\n");
+
+    return false;
+  }
 
   return true;
 }
@@ -77,9 +99,19 @@ bool render_board_grid(Renderer* renderer)
 
 bool render_color_board(Renderer* renderer, Board board, Color color)
 {
-  if(!render_board_color(renderer, color)) return false;
+  if(!render_board_color(renderer, color))
+  {
+    printf("Could not color board!\n");
 
-  if(!render_board_pieces(renderer, board)) return false;
+    return false;
+  }
+
+  if(!render_board_pieces(renderer, board))
+  {
+    printf("Could not render board pieces!\n");
+
+    return false;
+  }
 
   return true;
 }
@@ -132,11 +164,9 @@ bool render_board_pieces(Renderer* renderer, Board board)
 			piece = (Piece) board_point_piece(board, point);
 
 			if(!render_board_piece(renderer, point, piece))
-			{
-				printf("Could not render piece!\n");
-
-				return false;
-			}
+      {
+        return false;
+      }
 		}
 	}
 
@@ -158,7 +188,6 @@ bool render_board_piece(Renderer* renderer, Point point, Piece piece)
 
 	if(!render_piece_image(renderer, piece, position))
 	{
-		printf("Could not render piece!\n");
 		return false;
 	}
 
@@ -173,13 +202,11 @@ bool render_piece_image(Renderer* renderer, Piece piece, Rect position)
 
 	if(!extract_piece_image(&image, piece))
 	{
-		printf("image, could not extract!\n");
 		return false;
 	}
 
 	if(!render_surface_texture(renderer, image, position))
 	{
-		printf("Could not render image!\n");
 		return false;
 	}
 
@@ -222,12 +249,22 @@ bool render_piece_moves(Renderer* renderer, Board board, Info info, Point point)
 
   for(int index = 0; index < amount; index += 1)
   {
-    render_board_move(renderer, moves[index], MOVABLE_COLOR);
+    if(!render_board_move(renderer, moves[index], MOVABLE_COLOR))
+    {
+      free(moves);
+
+      return false;
+    }
   }
 
   free(moves);
 
-  render_board_pieces(renderer, board);
+  if(!render_board_pieces(renderer, board))
+  {
+    printf("Could not render board pieces!\n");
+
+    return false;
+  }
 
   SDL_RenderPresent(renderer);
 
