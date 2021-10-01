@@ -1,5 +1,5 @@
 
-#include "../Header-Program-Folder/interface-files-includer.h"
+#include "../Header-Program-Folder/game-files-includer.h"
 
 bool input_console_move(Move* move, Board board, Info info)
 {

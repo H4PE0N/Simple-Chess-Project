@@ -1,17 +1,20 @@
 
-#include "../Header-Program-Folder/interface-files-includer.h"
+#include "../Header-Program-Folder/game-files-includer.h"
 
 bool input_screen_move(Move* move, Window* window, Renderer* renderer, Board board, Info info)
 {
   Move inputMove = EMPTY_MOVE;
   Event event;
 
+
   if(!render_screen_board(renderer, board, info)) return false;
   SDL_UpdateWindowSurface(window);
+
 
 	while(!move_inside_board(inputMove))
 	{
 		if(!SDL_PollEvent(&event)) continue;
+
 
     if(event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_q))
     {
@@ -22,6 +25,7 @@ bool input_screen_move(Move* move, Window* window, Renderer* renderer, Board boa
     }
     else if(!screen_move_parser(&inputMove, window, renderer, board, info, event)) return false;
 	}
+
   *move = inputMove;
 
 	return true;
@@ -98,7 +102,7 @@ bool screen_default_parser(Move* move, Window* window, Renderer* renderer, Board
 
     move->start = parse_mouse_point(event);
 
-    if(!render_piece_moves(renderer, board, info, move->start)) return false;
+    if(!render_movable_board(renderer, board, info, move->start)) return false;
     SDL_UpdateWindowSurface(window);
 
     Event upEvent;

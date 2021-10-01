@@ -2,8 +2,6 @@
 #ifndef DISPLAY_CONSOLE_BOARD_H
 #define DISPLAY_CONSOLE_BOARD_H
 
-bool display_console_board(Board, Info);
-
 bool display_chess_board(Board);
 
 bool display_game_info(Info);

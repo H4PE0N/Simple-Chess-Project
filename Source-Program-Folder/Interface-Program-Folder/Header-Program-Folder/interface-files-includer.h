@@ -19,10 +19,6 @@
 
 #include "display-screen-board.h"
 
-#include "console-move-parser.h"
-
-#include "screen-move-parser.h"
-
 #include "screen-color-defines.h"
 
 #include "console-text-defines.h"

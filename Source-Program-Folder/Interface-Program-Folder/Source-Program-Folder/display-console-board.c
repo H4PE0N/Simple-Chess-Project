@@ -1,15 +1,6 @@
 
 #include "../Header-Program-Folder/interface-files-includer.h"
 
-bool display_console_board(Board board, Info info)
-{
-	if(!display_chess_board(board)) return false;
-
-	if(!display_game_info(info)) return false;
-
-	return true;
-}
-
 bool display_chess_board(Board board)
 {
 	Point point;
@@ -73,9 +64,11 @@ char extract_piece_symbol(Piece piece)
 bool display_game_info(Info info)
 {
 	char teamString[20] = "\0";
+	// if(!chess_team_string(teamString, info.current))
 	chess_team_string(teamString, info.current);
 
 	char moveString[20] = "\0";
+	// if(!chess_move_string(moveString, info.lastMove))
 	chess_move_string(moveString, info.lastMove);
 
 	printf("%s[%s]\n", LAST_MOVE_OUTPUT, moveString);

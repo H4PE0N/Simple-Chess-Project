@@ -15,6 +15,13 @@
 
 #include "game-help-functions.h"
 
+#include "console-move-parser.h"
+
+#include "screen-move-parser.h"
+
+#include "game-interface-functions.h"
+
+
 
 #include "test-game-program.h"
 

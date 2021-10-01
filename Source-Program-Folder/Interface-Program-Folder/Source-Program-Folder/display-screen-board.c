@@ -1,42 +1,6 @@
 
 #include "../Header-Program-Folder/interface-files-includer.h"
 
-bool render_screen_board(Renderer* renderer, Board board, Info info)
-{
-  if(!render_board_grid(renderer))
-  {
-    printf("Could not render board grid!\n");
-
-    return false;
-  }
-
-  if(move_inside_board(info.lastMove))
-  {
-    if(!render_board_move(renderer, info.lastMove, BOARD_MOVE_COLOR))
-    {
-      printf("Could not render board move!\n");
-
-      return false;
-    }
-  }
-
-  if(!render_check_squares(renderer, board))
-  {
-    printf("Could not render check squares!\n");
-
-    return false;
-  }
-
-  if(!render_board_pieces(renderer, board))
-  {
-    printf("Could not render board pieces!\n");
-
-    return false;
-  }
-
-  return true;
-}
-
 bool render_check_squares(Renderer* renderer, Board board)
 {
   Point whiteKing = board_piece_point(board, (Piece) {KING, WHITE});
@@ -93,25 +57,6 @@ bool render_board_grid(Renderer* renderer)
 	}
 
   SDL_RenderPresent(renderer);
-
-  return true;
-}
-
-bool render_color_board(Renderer* renderer, Board board, Color color)
-{
-  if(!render_board_color(renderer, color))
-  {
-    printf("Could not color board!\n");
-
-    return false;
-  }
-
-  if(!render_board_pieces(renderer, board))
-  {
-    printf("Could not render board pieces!\n");
-
-    return false;
-  }
 
   return true;
 }
@@ -259,13 +204,6 @@ bool render_piece_moves(Renderer* renderer, Board board, Info info, Point point)
 
   free(moves);
 
-  if(!render_board_pieces(renderer, board))
-  {
-    printf("Could not render board pieces!\n");
-
-    return false;
-  }
-
   SDL_RenderPresent(renderer);
 
   return true;
@@ -276,6 +214,7 @@ bool render_board_move(Renderer* renderer, Move move, Color color)
   if(!move_inside_board(move)) return false;
 
 	if(!color_point_square(renderer, move.start, color)) return false;
+  
 	if(!color_point_square(renderer, move.stop, color)) return false;
 
   SDL_RenderPresent(renderer);
