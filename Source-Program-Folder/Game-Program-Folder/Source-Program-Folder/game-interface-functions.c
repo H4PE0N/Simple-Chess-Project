@@ -77,19 +77,22 @@ bool render_color_board(Renderer* renderer, Board board, Color color)
 
 bool render_movable_board(Renderer* renderer, Board board, Info info, Point point)
 {
-	if(!render_piece_moves(renderer, board, info, point))
-	{
-		printf("Could not render piece moves!\n");
+  if(board_point_team(board, point) == info.current)
+  {
+    if(!render_piece_moves(renderer, board, info, point))
+    {
+      printf("Could not render piece moves!\n");
 
-		return false;
-	}
+      return false;
+    }
 
-	if(!render_board_pieces(renderer, board))
-	{
-		printf("Could not render board pieces!\n");
+    if(!render_board_pieces(renderer, board))
+    {
+      printf("Could not render board pieces!\n");
 
-		return false;
-	}
+      return false;
+    }
+  }
 
 	return true;
 }

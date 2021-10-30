@@ -12,6 +12,7 @@ remove some error messages, only the necessary error messages should exists.
 
 fix the errors that can occur in the screen display functions
 
+clear SDL event input. (clear_event)
 
 
 2.0.4
